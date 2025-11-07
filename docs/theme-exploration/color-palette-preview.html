@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildRight Color Palette Options</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      padding: 40px;
+      background: #f5f5f5;
+      color: #1e293b;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #1e293b;
+    }
+
+    .header p {
+      color: #64748b;
+      font-size: 1.125rem;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .palette-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .palette-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1e293b;
+    }
+
+    .palette-subtitle {
+      color: #64748b;
+      margin-bottom: 30px;
+      font-size: 0.875rem;
+      font-style: italic;
+    }
+
+    .color-section {
+      margin-bottom: 25px;
+    }
+
+    .section-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .color-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .color-swatch {
+      width: 80px;
+      height: 50px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      flex-shrink: 0;
+    }
+
+    .color-info {
+      flex: 1;
+    }
+
+    .color-name {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #1e293b;
+    }
+
+    .color-hex {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .button-examples {
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .button-examples-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .demo-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .demo-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-example {
+      margin-top: 20px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .progress-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .progress-steps {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: white;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .step-connector {
+      width: 40px;
+      height: 2px;
+      background: #cbd5e1;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .palette-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>BuildRight Color Palette Options</h1>
+    <p>Compare four professional color systems for the construction industry</p>
+  </div>
+
+  <div class="palette-grid">
+    
+    <!-- OPTION 1 -->
+    <div class="palette-card">
+      <h2 class="palette-title">Option 1: Professional Blue + Safety Orange</h2>
+      <p class="palette-subtitle">Trust + Energy - Industry Standard</p>
+
+      <div class="color-section">
+        <div class="section-label">Core Brand</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #154360;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Navy</div>
+            <div class="color-hex">#154360</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #0d2d44;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Dark</div>
+            <div class="color-hex">#0d2d44</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #2e6b91;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Light</div>
+            <div class="color-hex">#2e6b91</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">High-Priority CTAs</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #FF6600;"></div>
+          <div class="color-info">
+            <div class="color-name">Safety Orange</div>
+            <div class="color-hex">#FF6600</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #e65c00;"></div>
+          <div class="color-info">
+            <div class="color-name">Orange Hover</div>
+            <div class="color-hex">#e65c00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">Semantic Colors</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #10b981;"></div>
+          <div class="color-info">
+            <div class="color-name">Success Green</div>
+            <div class="color-hex">#10b981</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #f59e0b;"></div>
+          <div class="color-info">
+            <div class="color-name">Warning Amber</div>
+            <div class="color-hex">#f59e0b</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #dc2626;"></div>
+          <div class="color-info">
+            <div class="color-name">Error Red</div>
+            <div class="color-hex">#dc2626</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-examples">
+        <div class="button-examples-label">Button Examples</div>
+        <div class="button-row">
+          <button class="demo-button" style="background: #154360; color: white;">Primary Action</button>
+          <button class="demo-button" style="background: #FF6600; color: white;">Start Project</button>
+          <button class="demo-button" style="background: transparent; border: 2px solid #154360; color: #154360;">Secondary</button>
+        </div>
+      </div>
+
+      <div class="progress-example">
+        <div class="progress-label">Project Builder Steps</div>
+        <div class="progress-steps">
+          <div class="progress-step">
+            <div class="step-circle" style="background: #FF6600;">1</div>
+            <div class="step-label">Active</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #2e6b91;">2</div>
+            <div class="step-label">Completed</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #cbd5e1; color: #64748b;">3</div>
+            <div class="step-label">Future</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION 2 -->
+    <div class="palette-card">
+      <h2 class="palette-title">Option 2: Modern Slate + Vibrant Accents</h2>
+      <p class="palette-subtitle">Contemporary Industrial</p>
+
+      <div class="color-section">
+        <div class="section-label">Core Brand</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #334155;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Slate</div>
+            <div class="color-hex">#334155</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #1e293b;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Dark</div>
+            <div class="color-hex">#1e293b</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #475569;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Light</div>
+            <div class="color-hex">#475569</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">High-Priority CTAs</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #10b981;"></div>
+          <div class="color-info">
+            <div class="color-name">Emerald</div>
+            <div class="color-hex">#10b981</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #059669;"></div>
+          <div class="color-info">
+            <div class="color-name">Emerald Hover</div>
+            <div class="color-hex">#059669</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">Semantic Colors</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #10b981;"></div>
+          <div class="color-info">
+            <div class="color-name">Success Emerald</div>
+            <div class="color-hex">#10b981</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #f59e0b;"></div>
+          <div class="color-info">
+            <div class="color-name">Warning Amber</div>
+            <div class="color-hex">#f59e0b</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #e11d48;"></div>
+          <div class="color-info">
+            <div class="color-name">Error Rose</div>
+            <div class="color-hex">#e11d48</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-examples">
+        <div class="button-examples-label">Button Examples</div>
+        <div class="button-row">
+          <button class="demo-button" style="background: #334155; color: white;">Primary Action</button>
+          <button class="demo-button" style="background: #10b981; color: white;">Start Project</button>
+          <button class="demo-button" style="background: transparent; border: 2px solid #334155; color: #334155;">Secondary</button>
+        </div>
+      </div>
+
+      <div class="progress-example">
+        <div class="progress-label">Project Builder Steps</div>
+        <div class="progress-steps">
+          <div class="progress-step">
+            <div class="step-circle" style="background: #10b981;">1</div>
+            <div class="step-label">Active</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #0ea5e9;">2</div>
+            <div class="step-label">Completed</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #cbd5e1; color: #64748b;">3</div>
+            <div class="step-label">Future</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION 3 -->
+    <div class="palette-card">
+      <h2 class="palette-title">Option 3: Deep Blue + Warm Orange</h2>
+      <p class="palette-subtitle">Classic Construction with Warmth</p>
+
+      <div class="color-section">
+        <div class="section-label">Core Brand</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #0f5ba7;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Sapphire</div>
+            <div class="color-hex">#0f5ba7</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #0a4580;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Dark</div>
+            <div class="color-hex">#0a4580</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #1e7cd6;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Light</div>
+            <div class="color-hex">#1e7cd6</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">High-Priority CTAs</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #f97316;"></div>
+          <div class="color-info">
+            <div class="color-name">Tangerine</div>
+            <div class="color-hex">#f97316</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #ea580c;"></div>
+          <div class="color-info">
+            <div class="color-name">Tangerine Hover</div>
+            <div class="color-hex">#ea580c</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">Semantic Colors</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #059669;"></div>
+          <div class="color-info">
+            <div class="color-name">Success Green</div>
+            <div class="color-hex">#059669</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #d97706;"></div>
+          <div class="color-info">
+            <div class="color-name">Warning Amber</div>
+            <div class="color-hex">#d97706</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #dc2626;"></div>
+          <div class="color-info">
+            <div class="color-name">Error Crimson</div>
+            <div class="color-hex">#dc2626</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-examples">
+        <div class="button-examples-label">Button Examples</div>
+        <div class="button-row">
+          <button class="demo-button" style="background: #0f5ba7; color: white;">Primary Action</button>
+          <button class="demo-button" style="background: #f97316; color: white;">Start Project</button>
+          <button class="demo-button" style="background: transparent; border: 2px solid #0f5ba7; color: #0f5ba7;">Secondary</button>
+        </div>
+      </div>
+
+      <div class="progress-example">
+        <div class="progress-label">Project Builder Steps</div>
+        <div class="progress-steps">
+          <div class="progress-step">
+            <div class="step-circle" style="background: #f97316;">1</div>
+            <div class="step-label">Active</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #1e7cd6;">2</div>
+            <div class="step-label">Completed</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #cbd5e1; color: #64748b;">3</div>
+            <div class="step-label">Future</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION 4 -->
+    <div class="palette-card">
+      <h2 class="palette-title">Option 4: Industrial Gray + Electric Blue</h2>
+      <p class="palette-subtitle">Tech-Forward B2B Platform</p>
+
+      <div class="color-section">
+        <div class="section-label">Core Brand</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #475569;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Steel</div>
+            <div class="color-hex">#475569</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #1e293b;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Charcoal</div>
+            <div class="color-hex">#1e293b</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #64748b;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Slate</div>
+            <div class="color-hex">#64748b</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">High-Priority CTAs</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #0ea5e9;"></div>
+          <div class="color-info">
+            <div class="color-name">Electric Blue</div>
+            <div class="color-hex">#0ea5e9</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #0284c7;"></div>
+          <div class="color-info">
+            <div class="color-name">Electric Hover</div>
+            <div class="color-hex">#0284c7</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="section-label">Semantic Colors</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #14b8a6;"></div>
+          <div class="color-info">
+            <div class="color-name">Success Teal</div>
+            <div class="color-hex">#14b8a6</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #f59e0b;"></div>
+          <div class="color-info">
+            <div class="color-name">Warning Amber</div>
+            <div class="color-hex">#f59e0b</div>
+          </div>
+        </div>
+        <div class="color-row">
+          <div class="color-swatch" style="background: #ef4444;"></div>
+          <div class="color-info">
+            <div class="color-name">Error Red</div>
+            <div class="color-hex">#ef4444</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-examples">
+        <div class="button-examples-label">Button Examples</div>
+        <div class="button-row">
+          <button class="demo-button" style="background: #475569; color: white;">Primary Action</button>
+          <button class="demo-button" style="background: #0ea5e9; color: white;">Start Project</button>
+          <button class="demo-button" style="background: transparent; border: 2px solid #475569; color: #475569;">Secondary</button>
+        </div>
+      </div>
+
+      <div class="progress-example">
+        <div class="progress-label">Project Builder Steps</div>
+        <div class="progress-steps">
+          <div class="progress-step">
+            <div class="step-circle" style="background: #0ea5e9;">1</div>
+            <div class="step-label">Active</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #14b8a6;">2</div>
+            <div class="step-label">Completed</div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="progress-step">
+            <div class="step-circle" style="background: #cbd5e1; color: #64748b;">3</div>
+            <div class="step-label">Future</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
+

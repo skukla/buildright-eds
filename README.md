@@ -53,58 +53,174 @@ buildright-website/
 
 ## Design System
 
-### Color Palette (B2B Construction Aesthetic - Muted Blue Theme)
+This design system follows **Adobe Commerce Storefront / Edge Delivery Services** design token conventions for consistency and compatibility with Adobe's ecosystem.
 
-- **Primary Blue**: `#1e3a8a` (blue-900) - Darker, muted professional blue
-- **Primary Dark**: `#1e40af` (blue-800) - Hover states
-- **Primary Light**: `#3b82f6` (blue-500) - Lighter variant for accents
-- **Secondary Gray**: `#475569` (slate-600) - Secondary actions, text
-- **Secondary Dark**: `#334155` (slate-700) - Secondary hover states
-- **Accent Teal**: `#0d9488` (teal-600) - Informational badges, Project Builder features, highlights
-- **Accent Light**: `#14b8a6` (teal-500) - Lighter accent variant
-- **CTA Teal**: `#0d9488` (teal-600) - **High-priority CTAs only** (checkout, major conversions)
-- **CTA Dark**: `#0f766e` (teal-700) - CTA hover states
-- **Success Green**: `#10B981` (green-500) - In stock, success states
-- **Warning Yellow**: `#F59E0B` (amber-500) - Low stock warnings
-- **Error Red**: `#EF4444` (red-500) - Out of stock, errors
+### Design Token Structure
+
+Design tokens are organized using Adobe's naming conventions:
+- **Brand Colors**: `--color-brand-*` (numbered scale: 300-700)
+- **Semantic Colors**: `--color-positive-*`, `--color-negative-*`, `--color-warning-*`
+- **Typography**: `--type-*` prefix (display, headline, body, button, details)
+- **Spacing**: `--spacing-*` (semantic names: xsmall, small, medium, large, xlarge)
+- **Shape**: `--shape-*` (border-radius, shadows)
+
+### Color Palette (B2B Construction Aesthetic - Deep Blue + Warm Orange Theme)
+
+#### Brand Colors
+
+**Primary Brand - Sapphire Blue** (`--color-brand-*`):
+- `--color-brand-500`: `#0f5ba7` - Base color (Professional authority, headers, navigation, standard actions)
+- `--color-brand-600`: `#0a4580` - Darker (Hover states)
+- `--color-brand-700`: `#083d6f` - Darkest (Active/pressed states)
+- `--color-brand-400`: `#1e7cd6` - Lighter (Accents, completed project builder steps)
+- `--color-brand-300`: `#3d9ae8` - Lightest (Subtle backgrounds)
+
+**Secondary Brand - Slate Gray** (`--color-secondary-*`):
+- `--color-secondary-500`: `#475569` - Base (Secondary actions, text)
+- `--color-secondary-600`: `#334155` - Darker (Secondary hover)
+- `--color-secondary-400`: `#64748b` - Lighter (Secondary text)
+- `--color-secondary-300`: `#94a3b8` - Lightest (Disabled states)
+
+**Accent Brand - Tangerine Orange** (`--color-accent-*`):
+- `--color-accent-500`: `#f97316` - Base (Project Builder features, informational badges, high-priority CTAs)
+- `--color-accent-600`: `#ea580c` - Darker (Hover states)
+- `--color-accent-700`: `#c2410c` - Darkest (Active/pressed states)
+- `--color-accent-400`: `#fb923c` - Lighter (Light accent variant)
+- `--color-accent-300`: `#fdba74` - Lightest (Subtle backgrounds)
+
+#### Semantic Colors
+
+**Positive/Success** (`--color-positive-*`):
+- `--color-positive-500`: `#059669` - Base (In stock, success states)
+- `--color-positive-600`: `#047857` - Darker (Success hover)
+- `--color-positive-200`: `#d1fae5` - Light background (Success messages)
+- `--color-positive-100`: `#ecfdf5` - Lightest background
+
+**Warning** (`--color-warning-*`):
+- `--color-warning-500`: `#d97706` - Base (Low stock warnings)
+- `--color-warning-600`: `#b45309` - Darker (Warning hover)
+- `--color-warning-200`: `#fef3c7` - Light background (Warning messages)
+- `--color-warning-100`: `#fffbeb` - Lightest background
+
+**Negative/Error** (`--color-negative-*`):
+- `--color-negative-500`: `#dc2626` - Base (Out of stock, errors)
+- `--color-negative-600`: `#b91c1c` - Darker (Error hover)
+- `--color-negative-200`: `#fee2e2` - Light background (Error messages)
+- `--color-negative-100`: `#fef2f2` - Lightest background
 
 ### Color Usage Guidelines
 
-**Primary Blue** - Standard actions:
+**Primary Sapphire Blue** (`--color-brand-500`) - Standard actions:
 - Add to Cart buttons (product cards, detail pages)
 - Navigation links
 - Standard form buttons (Login, Submit)
 - Default interactive elements
+- Completed project builder steps (`--color-brand-400`)
 
-**Teal Accent** - Informational and branded:
-- Project Builder features (navigation link, badges, bundle indicators)
+**Tangerine Orange** (`--color-accent-500`) - High-priority actions and Project Builder:
+- Project Builder active step indicator
+- Project Builder navigation link and badges
+- High-priority CTAs (checkout, "Start New Project", "Add Kit to Cart")
+- Informational highlights and bundle indicators
 - Content badges (Ideas Center tags, category labels)
-- Informational highlights
-- Secondary emphasis (not for actions)
 
-**Teal CTA** - High-priority conversions only:
+**Tangerine CTA** - High-priority conversions only:
 - Checkout button
 - "Start New Project" hero CTA
 - "Add Kit to Cart" in Project Builder
 - Final conversion steps
 - **Not** for standard "Add to Cart" buttons
 
-### Typography
+### Typography Tokens
 
-- **Headings**: Bold, sans-serif (Arial/Helvetica fallback)
-  - H1: 2.5rem (40px), font-weight: 700
-  - H2: 2rem (32px), font-weight: 700
-  - H3: 1.5rem (24px), font-weight: 600
-- **Body**: Regular weight, readable sizes
-  - Base: 1rem (16px), line-height: 1.5
-  - Small: 0.875rem (14px)
+Following Adobe Commerce Storefront typography conventions (`--type-*`):
+
+**Display** (Hero titles, banners):
+- `--type-display-1-font`: 2.5rem/1.25, weight 700 (40px - Hero title)
+- `--type-display-2-font`: 2rem/1.25, weight 700 (32px - Banner title)
+- `--type-display-3-font`: 1.5rem/1.25, weight 600 (24px - Section title)
+
+**Headline** (Page titles, section headers):
+- `--type-headline-1-font`: 2rem/1.25, weight 700 (32px - Page title)
+- `--type-headline-2-font`: 1.5rem/1.25, weight 600 (24px - Section header)
+- `--type-headline-2-strong-font`: 1.5rem/1.25, weight 700 (24px - Strong header)
+
+**Body** (Paragraphs, general text):
+- `--type-body-1-default-font`: 1rem/1.5, weight 400 (16px - Normal text)
+- `--type-body-1-strong-font`: 1rem/1.5, weight 600 (16px - Strong text)
+- `--type-body-1-emphasized-font`: 1rem/1.5, weight 700 (16px - Emphasized text)
+- `--type-body-2-default-font`: 0.875rem/1.5, weight 400 (14px - Small text)
+- `--type-body-2-strong-font`: 0.875rem/1.5, weight 600 (14px - Small strong)
+
+**Button** (Button text):
+- `--type-button-1-font`: 1.125rem/1.5, weight 600 (18px - Primary button)
+- `--type-button-2-font`: 1rem/1.5, weight 600 (16px - Secondary button)
+
+**Details** (Captions, labels, overline):
+- `--type-details-caption-1-font`: 0.75rem/1.33, weight 400 (12px - Caption)
+- `--type-details-caption-2-font`: 0.75rem/1.33, weight 300 (12px - Light caption)
+- `--type-details-overline-font`: 0.75rem/1.67, weight 700 (12px - Overline)
 
 ### Spacing System
 
-- Base unit: 4px
-- Scale: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80px
-- Container max-width: 1280px
-- Section padding: 80px vertical, 24px horizontal
+Following Adobe Commerce Storefront spacing conventions (`--spacing-*`):
+
+- `--spacing-xsmall`: 0.25rem (4px)
+- `--spacing-small`: 0.5rem (8px)
+- `--spacing-medium`: 1rem (16px)
+- `--spacing-large`: 1.5rem (24px)
+- `--spacing-xlarge`: 2rem (32px)
+- `--spacing-xxlarge`: 3rem (48px)
+
+**Backward compatibility**: Numbered scale (`--spacing-1` through `--spacing-20`) is also available.
+
+### Shape Tokens
+
+Following Adobe Commerce Storefront shape conventions (`--shape-*`):
+
+**Border Radius**:
+- `--shape-border-radius-1`: 0 (Square)
+- `--shape-border-radius-2`: 0.25rem (4px - Small)
+- `--shape-border-radius-3`: 0.5rem (8px - Default for buttons)
+- `--shape-border-radius-4`: 0.75rem (12px - Large)
+- `--shape-border-radius-5`: 1rem (16px - Extra large)
+- `--shape-border-radius-full`: 9999px (Pill shape)
+
+**Shadows**:
+- `--shape-shadow-1`: Subtle shadow
+- `--shape-shadow-2`: Medium shadow
+- `--shape-shadow-3`: Large shadow
+
+### Backward Compatibility
+
+All existing variable names are maintained as aliases to the new Adobe-style tokens, ensuring existing code continues to work without modification. For example:
+- `--color-primary` → `var(--color-brand-500)`
+- `--color-cta` → `var(--color-accent-500)`
+- `--spacing-4` → `var(--spacing-medium)`
+- `--radius-md` → `var(--shape-border-radius-3)`
+
+### Usage Examples
+
+```css
+/* Using Adobe Commerce Storefront conventions */
+.button-primary {
+  background-color: var(--color-brand-500);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-small) var(--spacing-medium);
+  font: var(--type-button-1-font);
+}
+
+.button-primary:hover {
+  background-color: var(--color-brand-600);
+}
+
+/* Using backward-compatible names (still works) */
+.button-primary {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2) var(--spacing-4);
+}
+```
 
 ## Pages and Features
 
@@ -340,6 +456,49 @@ Default customer context (can be changed via login):
    - View product detail pages
    - See inventory status at all 6 warehouse locations
    - Primary warehouse highlighted
+
+## GitHub Pages Deployment
+
+This site is automatically deployed to GitHub Pages when changes are pushed to the `wip` branch. The deployment is scoped exclusively to the `buildright-eds` directory.
+
+### How It Works
+
+- **Automatic Deployment**: A GitHub Actions workflow (`.github/workflows/deploy-pages.yml`) automatically deploys the site when files in `buildright-eds/` are changed on the `wip` branch
+- **Deployment Scope**: Only the `buildright-eds/` directory is deployed - other directories in the repository are not included
+- **Trigger**: The workflow only runs when files matching `buildright-eds/**` are changed, ensuring deployments only happen for relevant changes
+
+### Accessing the Deployed Site
+
+Once deployed, the site will be available at:
+```
+https://[your-username].github.io/[repository-name]/
+```
+
+The exact URL depends on your GitHub repository settings. Check the repository's GitHub Pages settings or the Actions workflow run logs for the deployment URL.
+
+### Theme Exploration Files
+
+Theme exploration files are accessible but tucked away in the `docs/theme-exploration/` directory:
+- **Main Landing Page**: `/docs/index.html` - Overview of all color palette options
+- **Individual Previews**: `/docs/theme-exploration/palette-option-*.html` - Detailed previews for each palette option
+- **Comparison View**: `/docs/theme-exploration/palette-comparison.html` - Side-by-side comparison of all options
+- **Color Palette Preview**: `/docs/theme-exploration/color-palette-preview.html` - Comprehensive color palette exploration
+
+These files are kept in the repository for reference and are accessible via GitHub Pages, but are organized separately from the main site content.
+
+### Manual Deployment
+
+If you need to manually trigger a deployment:
+1. Make a small change to any file in `buildright-eds/`
+2. Commit and push to the `wip` branch
+3. The GitHub Actions workflow will automatically deploy the changes
+
+### Configuration
+
+The deployment configuration is located in `.github/workflows/deploy-pages.yml` in the repository root. The workflow:
+- Uses GitHub's official Pages deployment actions
+- Requires `pages: write` permission (configured in repository settings)
+- Deploys only the `buildright-eds` directory contents
 
 ## EDS Migration Path
 
