@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="./styles/base.css">
   <link rel="stylesheet" href="./styles/components.css">
   <link rel="stylesheet" href="./styles/utilities.css">
+  <link rel="stylesheet" href="./styles/blocks/hero-banner.css">
+  <link rel="stylesheet" href="./styles/blocks/ideas-center.css">
+  <link rel="stylesheet" href="./styles/blocks/shop-by-job.css">
   <link rel="stylesheet" href="./blocks/header/header.css">
   <link rel="stylesheet" href="./blocks/product-grid/product-grid.css">
 </head>
@@ -129,63 +132,23 @@
     - Search: "modern construction materials warehouse"
     - Image should be high-resolution (1920x1080 minimum), professional, well-lit
   -->
-  <section class="hero-banner" style="
-    background: var(--color-background);
-    padding: 0;
-    overflow: hidden;
-  ">
-    <div class="hero-container" style="
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      min-height: 600px;
-      max-width: 100%;
-    ">
+  <section class="hero-banner">
+    <div class="hero-banner__container">
       <!-- Left: Large Hero Image -->
-      <div class="hero-image" style="
-        background-image: url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        min-height: 600px;
-      "></div>
+      <div class="hero-banner__image" style="background-image: url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
       
       <!-- Right: Content -->
-      <div class="hero-content" style="
-        padding: 4rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        max-width: 600px;
-        margin: 0 auto;
-      ">
-        <h1 style="
-          color: var(--color-text);
-          font-size: 2.75rem;
-          font-weight: 700;
-          line-height: 1.2;
-          margin: 0 0 1.5rem 0;
-          font-family: var(--type-font-family-display);
-        ">
+      <div class="hero-banner__content">
+        <h1 class="hero-banner__title">
           Your Trusted Partner in Building Materials
         </h1>
         
-        <p style="
-          color: var(--color-text-secondary);
-          font-size: 1.125rem;
-          line-height: 1.6;
-          margin: 0 0 2.5rem 0;
-        ">
+        <p class="hero-banner__subtitle">
           Professional-grade supplies with transparent pricing, real-time inventory, and expert support for contractors and builders.
         </p>
         
         <!-- CTA Buttons -->
-        <div class="hero-cta" style="
-          display: flex;
-          gap: 1rem;
-          margin-bottom: 3rem;
-          flex-wrap: wrap;
-        ">
+        <div class="hero-banner__cta">
           <a href="pages/project-builder.html" class="btn btn-cta btn-lg">
             Start Project Builder
           </a>
@@ -195,79 +158,28 @@
         </div>
         
         <!-- Trust Indicators -->
-        <div class="hero-stats" style="
-          display: flex;
-          gap: 2rem;
-          padding-top: 2rem;
-          border-top: 1px solid var(--color-border);
-        ">
+        <div class="hero-banner__stats">
           <div>
-            <div style="
-              font-size: 1.5rem;
-              font-weight: 700;
-              color: var(--color-brand-500);
-              margin-bottom: 0.25rem;
-            ">50K+</div>
-            <div style="
-              font-size: 0.875rem;
-              color: var(--color-text-secondary);
-            ">Products</div>
+            <div class="hero-banner__stat-value">50K+</div>
+            <div class="hero-banner__stat-label">Products</div>
           </div>
           <div>
-            <div style="
-              font-size: 1.5rem;
-              font-weight: 700;
-              color: var(--color-brand-500);
-              margin-bottom: 0.25rem;
-            ">Same-Day</div>
-            <div style="
-              font-size: 0.875rem;
-              color: var(--color-text-secondary);
-            ">Delivery</div>
+            <div class="hero-banner__stat-value">Same-Day</div>
+            <div class="hero-banner__stat-label">Delivery</div>
           </div>
           <div>
-            <div style="
-              font-size: 1.5rem;
-              font-weight: 700;
-              color: var(--color-brand-500);
-              margin-bottom: 0.25rem;
-            ">24/7</div>
-            <div style="
-              font-size: 0.875rem;
-              color: var(--color-text-secondary);
-            ">Support</div>
+            <div class="hero-banner__stat-value">24/7</div>
+            <div class="hero-banner__stat-label">Support</div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  
-  <!-- Responsive styles for mobile -->
-  <style>
-    @media (max-width: 768px) {
-      .hero-container {
-        grid-template-columns: 1fr !important;
-      }
-      .hero-image {
-        min-height: 400px !important;
-      }
-      .hero-content {
-        padding: 2rem !important;
-      }
-      .hero-content h1 {
-        font-size: 2rem !important;
-      }
-      .hero-stats {
-        flex-direction: column;
-        gap: 1.5rem !important;
-      }
-    }
-  </style>
 
   <!-- Featured Products - Main Content -->
   <section class="section" style="padding-top: 2rem; padding-bottom: 3rem;">
     <div class="container">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+      <div class="flex justify-between items-center mb-4">
         <h1 style="margin: 0; font-size: 1.75rem; font-weight: 700;">Featured Products</h1>
         <a href="pages/catalog.html" style="color: var(--color-primary); text-decoration: none; font-weight: 600; font-size: var(--font-size-base);">View All Products →</a>
       </div>
@@ -280,54 +192,54 @@
   <!-- Ideas Center -->
   <section class="section" style="padding: 2rem 0; background: var(--color-surface);">
     <div class="container">
-      <h2 style="text-align: center; margin-bottom: 1rem; font-size: 1.5rem;">Ideas Center</h2>
-      <p style="text-align: center; color: var(--color-text-light); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Expert tips, guides, and inspiration for your next project</p>
-      <div class="grid grid-4" style="gap: 1.5rem;">
+      <h2 class="text-center mb-2 text-2xl">Ideas Center</h2>
+      <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Expert tips, guides, and inspiration for your next project</p>
+      <div class="grid grid-4 gap-6">
         <!-- Card 1: How-To Guide -->
         <!-- Adobe Stock: "lumber grade wood texture" -->
-        <div class="card" style="padding: 0; border: 1px solid var(--color-border); transition: all 0.2s; overflow: hidden;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div style="width: 100%; height: 200px; background-size: cover; background-position: center; background-image: url('https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div style="padding: 1.5rem;">
-            <span class="badge badge-warning" style="margin-bottom: 1rem;">How-To Guide</span>
-            <h3 style="margin: 0 0 0.5rem; color: var(--color-text); font-size: 1rem; font-weight: 600;">How to Choose the Right Lumber Grade</h3>
-            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0 0 1rem;">Learn about different lumber grades and when to use each for optimal results.</p>
-            <a href="#" style="color: var(--color-primary); font-weight: 600; font-size: 0.875rem; text-decoration: none;">Read More →</a>
+        <div class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-warning mb-4">How-To Guide</span>
+            <h3 class="ideas-center__heading">How to Choose the Right Lumber Grade</h3>
+            <p class="ideas-center__text">Learn about different lumber grades and when to use each for optimal results.</p>
+            <a href="#" class="ideas-center__link">Read More →</a>
           </div>
         </div>
         
         <!-- Card 2: Project Ideas -->
         <!-- Adobe Stock: "modern kitchen remodel" -->
-        <div class="card" style="padding: 0; border: 1px solid var(--color-border); transition: all 0.2s; overflow: hidden;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div style="width: 100%; height: 200px; background-size: cover; background-position: center; background-image: url('https://images.unsplash.com/photo-1556912173-46c336c7fd55?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div style="padding: 1.5rem;">
-            <span class="badge badge-primary" style="margin-bottom: 1rem;">Project Ideas</span>
-            <h3 style="margin: 0 0 0.5rem; color: var(--color-text); font-size: 1rem; font-weight: 600;">10 Kitchen Remodel Ideas</h3>
-            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0 0 1rem;">Inspiration and material recommendations for your kitchen renovation.</p>
-            <a href="#" style="color: var(--color-primary); font-weight: 600; font-size: 0.875rem; text-decoration: none;">Read More →</a>
+        <div class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1556912173-46c336c7fd55?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-primary mb-4">Project Ideas</span>
+            <h3 class="ideas-center__heading">10 Kitchen Remodel Ideas</h3>
+            <p class="ideas-center__text">Inspiration and material recommendations for your kitchen renovation.</p>
+            <a href="#" class="ideas-center__link">Read More →</a>
           </div>
         </div>
         
         <!-- Card 3: Expert Tips -->
         <!-- Adobe Stock: "contractor framing wall construction" -->
-        <div class="card" style="padding: 0; border: 1px solid var(--color-border); transition: all 0.2s; overflow: hidden;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div style="width: 100%; height: 200px; background-size: cover; background-position: center; background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div style="padding: 1.5rem;">
-            <span class="badge badge-success" style="margin-bottom: 1rem;">Expert Tips</span>
-            <h3 style="margin: 0 0 0.5rem; color: var(--color-text); font-size: 1rem; font-weight: 600;">Pro Tips for Framing</h3>
-            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0 0 1rem;">Professional framing techniques and best practices from experienced contractors.</p>
-            <a href="#" style="color: var(--color-primary); font-weight: 600; font-size: 0.875rem; text-decoration: none;">Read More →</a>
+        <div class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-success mb-4">Expert Tips</span>
+            <h3 class="ideas-center__heading">Pro Tips for Framing</h3>
+            <p class="ideas-center__text">Professional framing techniques and best practices from experienced contractors.</p>
+            <a href="#" class="ideas-center__link">Read More →</a>
           </div>
         </div>
         
         <!-- Card 4: Product Spotlight -->
         <!-- Adobe Stock: "construction fasteners hardware assortment" -->
-        <div class="card" style="padding: 0; border: 1px solid var(--color-border); transition: all 0.2s; overflow: hidden;" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div style="width: 100%; height: 200px; background-size: cover; background-position: center; background-image: url('https://images.unsplash.com/photo-1581244277943-fe4a9c777189?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div style="padding: 1.5rem;">
-            <span class="badge badge-secondary" style="margin-bottom: 1rem;">Product Spotlight</span>
-            <h3 style="margin: 0 0 0.5rem; color: var(--color-text); font-size: 1rem; font-weight: 600;">Best Fasteners for Outdoor Projects</h3>
-            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0 0 1rem;">Choosing the right fasteners for weather-resistant outdoor construction.</p>
-            <a href="#" style="color: var(--color-primary); font-weight: 600; font-size: 0.875rem; text-decoration: none;">Read More →</a>
+        <div class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1581244277943-fe4a9c777189?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-secondary mb-4">Product Spotlight</span>
+            <h3 class="ideas-center__heading">Best Fasteners for Outdoor Projects</h3>
+            <p class="ideas-center__text">Choosing the right fasteners for weather-resistant outdoor construction.</p>
+            <a href="#" class="ideas-center__link">Read More →</a>
           </div>
         </div>
       </div>
@@ -337,8 +249,8 @@
   <!-- Featured Categories -->
   <section class="section" style="padding: 2rem 0; background: var(--color-surface);">
     <div class="container">
-      <h2 style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">Featured Categories</h2>
-      <div class="grid grid-3" style="gap: 1.5rem;">
+      <h2 class="text-center mb-4 text-2xl">Featured Categories</h2>
+      <div class="grid grid-3 gap-6">
         <a href="pages/catalog.html?category=structural_materials" class="card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
           <div style="width: 64px; height: 64px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; background: rgba(30, 58, 138, 0.1); border-radius: 50%; font-size: 2rem;">🏗️</div>
           <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Structural Materials</h3>
@@ -376,56 +288,56 @@
   <!-- Shop By Job -->
   <section class="section">
     <div class="container">
-      <h2 style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">Shop By Job</h2>
-      <p style="text-align: center; color: var(--color-text-light); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Get a customized material kit for your specific construction job</p>
-      <div class="grid grid-3" style="gap: 1.5rem;">
+      <h2 class="text-center mb-4 text-2xl">Shop By Job</h2>
+      <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Get a customized material kit for your specific construction job</p>
+      <div class="grid grid-3 gap-6">
         <!-- Adobe Stock: "residential wall framing construction" -->
-        <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=moderate" class="card" style="text-decoration: none; color: inherit; padding: 0; transition: all 0.2s; border: 1px solid var(--color-border); overflow: hidden; position: relative; border-radius: var(--shape-border-radius-3); background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; min-height: 220px;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);"></div>
-          <div style="position: relative; z-index: 1; padding: 1.5rem; color: white; display: flex; flex-direction: column; justify-content: flex-end; min-height: 220px;">
-            <h3 style="margin: 0 0 0.5rem; color: white; font-size: 1.125rem; font-weight: 600;">Frame a Wall</h3>
-            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; margin: 0 0 1rem;">Complete framing materials for residential wall construction</p>
-            <span style="color: var(--color-accent-300); font-weight: 600; font-size: 0.875rem;">Start Project →</span>
+        <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+          <div class="shop-by-job__overlay"></div>
+          <div class="shop-by-job__content">
+            <h3 class="shop-by-job__heading">Frame a Wall</h3>
+            <p class="shop-by-job__text">Complete framing materials for residential wall construction</p>
+            <span class="shop-by-job__cta">Start Project →</span>
           </div>
         </a>
         
         <!-- Adobe Stock: "bathroom renovation modern" -->
-        <a href="pages/project-builder.html?projectType=remodel&projectDetail=bathroom&complexity=moderate" class="card" style="text-decoration: none; color: inherit; padding: 0; transition: all 0.2s; border: 1px solid var(--color-border); overflow: hidden; position: relative; border-radius: var(--shape-border-radius-3); background-image: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; min-height: 220px;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);"></div>
-          <div style="position: relative; z-index: 1; padding: 1.5rem; color: white; display: flex; flex-direction: column; justify-content: flex-end; min-height: 220px;">
-            <h3 style="margin: 0 0 0.5rem; color: white; font-size: 1.125rem; font-weight: 600;">Remodel a Bathroom</h3>
-            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; margin: 0 0 1rem;">Materials for bathroom renovation and remodeling projects</p>
-            <span style="color: var(--color-accent-300); font-weight: 600; font-size: 0.875rem;">Start Project →</span>
+        <a href="pages/project-builder.html?projectType=remodel&projectDetail=bathroom&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+          <div class="shop-by-job__overlay"></div>
+          <div class="shop-by-job__content">
+            <h3 class="shop-by-job__heading">Remodel a Bathroom</h3>
+            <p class="shop-by-job__text">Materials for bathroom renovation and remodeling projects</p>
+            <span class="shop-by-job__cta">Start Project →</span>
           </div>
         </a>
         
         <!-- Adobe Stock: "window installation construction" -->
-        <a href="pages/project-builder.html?projectType=remodel&projectDetail=exterior&complexity=basic" class="card" style="text-decoration: none; color: inherit; padding: 0; transition: all 0.2s; border: 1px solid var(--color-border); overflow: hidden; position: relative; border-radius: var(--shape-border-radius-3); background-image: url('https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; min-height: 220px;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);"></div>
-          <div style="position: relative; z-index: 1; padding: 1.5rem; color: white; display: flex; flex-direction: column; justify-content: flex-end; min-height: 220px;">
-            <h3 style="margin: 0 0 0.5rem; color: white; font-size: 1.125rem; font-weight: 600;">Install Windows</h3>
-            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; margin: 0 0 1rem;">Window installation materials and hardware</p>
-            <span style="color: var(--color-accent-300); font-weight: 600; font-size: 0.875rem;">Start Project →</span>
+        <a href="pages/project-builder.html?projectType=remodel&projectDetail=exterior&complexity=basic" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+          <div class="shop-by-job__overlay"></div>
+          <div class="shop-by-job__content">
+            <h3 class="shop-by-job__heading">Install Windows</h3>
+            <p class="shop-by-job__text">Window installation materials and hardware</p>
+            <span class="shop-by-job__cta">Start Project →</span>
           </div>
         </a>
         
         <!-- Adobe Stock: "roofing construction shingles installation" -->
-        <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=complex" class="card" style="text-decoration: none; color: inherit; padding: 0; transition: all 0.2s; border: 1px solid var(--color-border); overflow: hidden; position: relative; border-radius: var(--shape-border-radius-3); background-image: url('https://images.unsplash.com/photo-1632482587655-c3b7c94616b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; min-height: 220px;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);"></div>
-          <div style="position: relative; z-index: 1; padding: 1.5rem; color: white; display: flex; flex-direction: column; justify-content: flex-end; min-height: 220px;">
-            <h3 style="margin: 0 0 0.5rem; color: white; font-size: 1.125rem; font-weight: 600;">Roof a House</h3>
-            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; margin: 0 0 1rem;">Complete roofing materials for new construction</p>
-            <span style="color: var(--color-accent-300); font-weight: 600; font-size: 0.875rem;">Start Project →</span>
+        <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=complex" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1632482587655-c3b7c94616b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+          <div class="shop-by-job__overlay"></div>
+          <div class="shop-by-job__content">
+            <h3 class="shop-by-job__heading">Roof a House</h3>
+            <p class="shop-by-job__text">Complete roofing materials for new construction</p>
+            <span class="shop-by-job__cta">Start Project →</span>
           </div>
         </a>
         
         <!-- Adobe Stock: "plumbing tools pipes repair" -->
-        <a href="pages/project-builder.html?projectType=repair&projectDetail=plumbing&complexity=basic" class="card" style="text-decoration: none; color: inherit; padding: 0; transition: all 0.2s; border: 1px solid var(--color-border); overflow: hidden; position: relative; border-radius: var(--shape-border-radius-3); background-image: url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; min-height: 220px;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);"></div>
-          <div style="position: relative; z-index: 1; padding: 1.5rem; color: white; display: flex; flex-direction: column; justify-content: flex-end; min-height: 220px;">
-            <h3 style="margin: 0 0 0.5rem; color: white; font-size: 1.125rem; font-weight: 600;">Repair Plumbing</h3>
-            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; margin: 0 0 1rem;">Essential materials for plumbing repairs and maintenance</p>
-            <span style="color: var(--color-accent-300); font-weight: 600; font-size: 0.875rem;">Start Project →</span>
+        <a href="pages/project-builder.html?projectType=repair&projectDetail=plumbing&complexity=basic" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+          <div class="shop-by-job__overlay"></div>
+          <div class="shop-by-job__content">
+            <h3 class="shop-by-job__heading">Repair Plumbing</h3>
+            <p class="shop-by-job__text">Essential materials for plumbing repairs and maintenance</p>
+            <span class="shop-by-job__cta">Start Project →</span>
           </div>
         </a>
       </div>

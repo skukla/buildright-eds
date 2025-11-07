@@ -153,6 +153,46 @@
   font-size: 2.25rem;
 }
 
+/* Text alignment */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+/* Max width containers */
+.max-w-600 { max-width: 600px; }
+.max-w-1072 { max-width: 1072px; }
+
+/* Auto margins for centering */
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Typography scale */
+.text-subtitle { font-size: 1.125rem; line-height: 1.6; }
+.text-hero { font-size: 2.75rem; font-weight: 700; line-height: 1.2; }
+
+/* Overflow */
+.overflow-hidden { overflow: hidden; }
+
+/* Border */
+.border-top { border-top: 1px solid var(--color-border); }
+
+/* Position */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.inset-0 { inset: 0; }
+
+/* Z-index */
+.z-1 { z-index: 1; }
+
+/* Flex wrap */
+.flex-wrap { flex-wrap: wrap; }
+
+/* Justify self */
+.justify-self-end { justify-self: end; }
+
+/* Min height */
+.min-h-600 { min-height: 600px; }
+.min-h-220 { min-height: 220px; }
+
 /* Responsive Utilities */
 @media (max-width: 768px) {
   .hidden-mobile {
