@@ -39,6 +39,7 @@
   position: relative;
   transition: all var(--transition-fast);
   border-radius: var(--shape-border-radius-3);
+  background-color: transparent;
 }
 
 /* Outline container when dropdown is active */
@@ -46,6 +47,19 @@
   background-color: white;
   border: 1px solid var(--color-border);
   box-shadow: var(--shape-shadow-2);
+}
+
+/* Extend wrapper height to cover dropdown area when active */
+.location-selector-wrapper:has(.location-menu.active)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  border-radius: var(--shape-border-radius-3);
+  z-index: 999;
 }
 
 .location-selector {
@@ -61,6 +75,7 @@
   font: var(--type-body-2-default-font);
   transition: all var(--transition-fast);
   position: relative;
+  z-index: 1001;
 }
 
 /* Add padding when dropdown is active */
@@ -113,6 +128,7 @@
   background-color: white;
   border: none;
   z-index: 1000;
+  border-radius: 0 0 var(--shape-border-radius-3) var(--shape-border-radius-3);
 }
 
 .location-menu.active {
