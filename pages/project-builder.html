@@ -609,10 +609,21 @@
       <div class="header-top-content">
         <div class="header-location">
           <span class="location-label">You're Shopping</span>
-          <button class="location-selector" id="location-selector">
-            <span class="location-name">Sacramento RDC, CA</span>
-            <span class="location-icon">▼</span>
-          </button>
+          <div class="location-selector-wrapper">
+            <button class="location-selector" id="location-selector">
+              <span class="location-name">Sacramento RDC, CA</span>
+              <span class="location-icon">▼</span>
+            </button>
+            <!-- Location Dropdown -->
+            <div class="location-menu" id="location-menu">
+              <div class="location-menu-content">
+                <h3 class="location-menu-company" id="location-menu-company">Premium Commercial Builders</h3>
+                <ul class="location-menu-list" id="location-menu-list">
+                  <!-- Locations will be populated by JavaScript -->
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="header-top-links">
           <a href="./order-history.html">Order History</a>
