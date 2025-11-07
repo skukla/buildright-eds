@@ -15,7 +15,15 @@ async function loadMockData() {
   
   try {
     const response = await fetch('data/mock-products.json');
+    if (!response.ok) {
+      console.error(`Failed to load mock data: ${response.status} ${response.statusText}`);
+      return null;
+    }
     mockData = await response.json();
+    if (!mockData || !mockData.products) {
+      console.error('Invalid mock data structure');
+      return null;
+    }
     return mockData;
   } catch (error) {
     console.error('Error loading mock data:', error);

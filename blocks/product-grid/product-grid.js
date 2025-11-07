@@ -118,21 +118,36 @@ export default async function decorate(block) {
 
   // Load and filter products
   async function loadProducts() {
-    const projectType = localStorage.getItem('buildright_project_type') || '';
-    let products;
+    try {
+      const projectType = localStorage.getItem('buildright_project_type') || '';
+      let products;
 
-    if (projectType) {
-      products = await getProductsByProjectType(projectType);
-    } else {
-      products = await getProducts();
+      if (projectType) {
+        products = await getProductsByProjectType(projectType);
+      } else {
+        products = await getProducts();
+      }
+
+      if (!products || products.length === 0) {
+        console.warn('No products found');
+        if (container) {
+          container.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; padding: 3rem;">No products found.</p>';
+        }
+        return;
+      }
+
+      // If this is the featured products container, limit to 4
+      if (container.id === 'featured-products' || container.classList.contains('featured-products')) {
+        products = products.slice(0, 4);
+      }
+
+      renderProducts(products);
+    } catch (error) {
+      console.error('Error loading products:', error);
+      if (container) {
+        container.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; padding: 3rem; color: var(--color-negative-500);">Error loading products. Please refresh the page.</p>';
+      }
     }
-
-    // If this is the featured products container, limit to 4
-    if (container.id === 'featured-products' || container.classList.contains('featured-products')) {
-      products = products.slice(0, 4);
-    }
-
-    renderProducts(products);
   }
 
   // Listen for filter changes

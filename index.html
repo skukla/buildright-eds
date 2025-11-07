@@ -266,55 +266,72 @@
     
     // Load featured products
     async function loadFeaturedProducts() {
-      const products = await getProducts();
-      const featured = products.slice(0, 4);
-      const container = document.getElementById('featured-products');
-      
-      if (!container) return;
-      
-      container.innerHTML = '';
-      const primaryWarehouse = getPrimaryWarehouse();
-      
-      for (const product of featured) {
-        const price = getPrice(product, 1);
-        const status = getInventoryStatus(product, primaryWarehouse);
-        const inventory = product.inventory[primaryWarehouse] || 0;
+      try {
+        const products = await getProducts();
+        if (!products || products.length === 0) {
+          console.warn('No products loaded');
+          return;
+        }
         
-        const card = document.createElement('a');
-        card.className = 'product-card';
-        card.href = `pages/product-detail.html?sku=${product.sku}`;
+        const featured = products.slice(0, 4);
+        const container = document.getElementById('featured-products');
         
-        // Image placeholder
-        const image = document.createElement('div');
-        image.className = 'product-card-image';
-        card.appendChild(image);
+        if (!container) {
+          console.warn('Featured products container not found');
+          return;
+        }
         
-        card.innerHTML += `
-          <div class="product-card-header">
-            <div class="product-card-sku">${product.sku}</div>
-            <div class="product-card-name">${product.name}</div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-description">${product.description || ''}</div>
-          </div>
-          <div class="product-card-footer">
-            <div class="product-card-pricing">
-              <span class="product-card-price">$${price.toFixed(2)}</span>
-              <span class="product-card-price-label">per unit</span>
+        container.innerHTML = '';
+        const primaryWarehouse = getPrimaryWarehouse();
+        
+        for (const product of featured) {
+          const price = getPrice(product, 1);
+          const status = getInventoryStatus(product, primaryWarehouse);
+          const inventory = product.inventory[primaryWarehouse] || 0;
+          
+          const card = document.createElement('a');
+          card.className = 'product-card';
+          card.href = `pages/product-detail.html?sku=${product.sku}`;
+          
+          // Image placeholder
+          const image = document.createElement('div');
+          image.className = 'product-card-image';
+          card.appendChild(image);
+          
+          card.innerHTML += `
+            <div class="product-card-header">
+              <div class="product-card-sku">${product.sku}</div>
+              <div class="product-card-name">${product.name}</div>
             </div>
-            <div class="product-card-inventory">
-              <span class="status ${status}">${status === 'in-stock' ? `${inventory} available` : status === 'low-stock' ? `Low stock (${inventory})` : 'Out of stock'}</span>
+            <div class="product-card-body">
+              <div class="product-card-description">${product.description || ''}</div>
             </div>
-            <div class="product-card-actions">
-              <button class="btn btn-primary btn-sm" onclick="event.preventDefault(); event.stopPropagation(); window.dispatchEvent(new CustomEvent('addToCart', {detail: {sku: '${product.sku}', quantity: 1}}));">Add to Cart</button>
+            <div class="product-card-footer">
+              <div class="product-card-pricing">
+                <span class="product-card-price">$${price.toFixed(2)}</span>
+                <span class="product-card-price-label">per unit</span>
+              </div>
+              <div class="product-card-inventory">
+                <span class="status ${status}">${status === 'in-stock' ? `${inventory} available` : status === 'low-stock' ? `Low stock (${inventory})` : 'Out of stock'}</span>
+              </div>
+              <div class="product-card-actions">
+                <button class="btn btn-primary btn-sm" onclick="event.preventDefault(); event.stopPropagation(); window.dispatchEvent(new CustomEvent('addToCart', {detail: {sku: '${product.sku}', quantity: 1}}));">Add to Cart</button>
+              </div>
             </div>
-          </div>
-        `;
-        container.appendChild(card);
+          `;
+          container.appendChild(card);
+        }
+      } catch (error) {
+        console.error('Error loading featured products:', error);
       }
     }
     
-    loadFeaturedProducts();
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadFeaturedProducts);
+    } else {
+      loadFeaturedProducts();
+    }
   </script>
 </body>
 </html>
