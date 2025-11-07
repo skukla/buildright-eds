@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildRight - Option 3: Deep Blue + Warm Orange</title>
+  <style>
+    /* Option 3: Deep Blue + Warm Orange Color Palette */
+    :root {
+      /* Core Brand */
+      --color-primary: #0f5ba7;
+      --color-primary-dark: #0a4580;
+      --color-primary-light: #1e7cd6;
+      
+      /* CTAs */
+      --color-cta: #f97316;
+      --color-cta-dark: #ea580c;
+      
+      /* Progress States */
+      --color-active-step: #f97316;
+      --color-completed-step: #1e7cd6;
+      
+      /* Semantic */
+      --color-success: #059669;
+      --color-warning: #d97706;
+      --color-error: #dc2626;
+      
+      /* Accents */
+      --color-accent: #f97316;
+      --color-accent-light: #fb923c;
+      
+      /* Neutrals */
+      --color-secondary: #64748b;
+      --color-secondary-dark: #475569;
+      --color-background: #FFFFFF;
+      --color-surface: #F8FAFC;
+      --color-border: #E2E8F0;
+      --color-text: #1E293B;
+      --color-text-light: #64748B;
+      
+      /* Typography */
+      --font-family: Arial, Helvetica, sans-serif;
+      --font-size-base: 1rem;
+      --font-size-sm: 0.875rem;
+      --font-size-lg: 1.125rem;
+      
+      /* Spacing */
+      --spacing-1: 0.25rem;
+      --spacing-2: 0.5rem;
+      --spacing-3: 0.75rem;
+      --spacing-4: 1rem;
+      --spacing-6: 1.5rem;
+      --spacing-8: 2rem;
+      
+      /* Radius */
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-full: 9999px;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      
+      /* Transitions */
+      --transition-fast: 150ms ease-in-out;
+      --transition-base: 200ms ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      line-height: 1.5;
+      color: var(--color-text);
+      background-color: var(--color-background);
+    }
+
+    .preview-header {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--spacing-4);
+      text-align: center;
+    }
+
+    .preview-header h1 {
+      font-size: 1.5rem;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .preview-header p {
+      color: var(--color-text-light);
+      font-size: var(--font-size-sm);
+    }
+
+    /* Header Styles */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .header-main {
+      padding: var(--spacing-4) var(--spacing-6);
+    }
+
+    .header-main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-6);
+    }
+
+    .header-brand a {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .header-search {
+      flex: 1;
+      display: flex;
+      max-width: 600px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: var(--spacing-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+      font-size: var(--font-size-base);
+    }
+
+    .search-button {
+      padding: var(--spacing-3) var(--spacing-4);
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      cursor: pointer;
+    }
+
+    .search-button:hover {
+      background: var(--color-primary-dark);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+    }
+
+    .header-action-link {
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+    }
+
+    .header-action-link:hover {
+      color: var(--color-primary);
+    }
+
+    .cart-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-4);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: var(--color-text);
+      font-size: var(--font-size-sm);
+    }
+
+    .cart-link:hover {
+      background: var(--color-border);
+    }
+
+    .header-nav-bar {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .header-nav-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--spacing-3) var(--spacing-6);
+      display: flex;
+      gap: var(--spacing-6);
+    }
+
+    .nav-link {
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+    }
+
+    .nav-link:hover {
+      background: var(--color-border);
+      color: var(--color-primary);
+    }
+
+    .nav-link.active {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--color-surface) 0%, white 100%);
+      padding: var(--spacing-8) var(--spacing-6);
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-4);
+      color: var(--color-primary);
+    }
+
+    .hero p {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-6);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: var(--spacing-3) var(--spacing-6);
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      text-align: center;
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-primary {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-cta {
+      background-color: var(--color-cta);
+      color: white;
+      font-weight: 700;
+    }
+
+    .btn-cta:hover {
+      background-color: var(--color-cta-dark);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    /* Product Cards */
+    .products-section {
+      padding: var(--spacing-8) var(--spacing-6);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-6);
+      color: var(--color-primary);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--spacing-6);
+    }
+
+    .product-card {
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+      transition: all var(--transition-base);
+    }
+
+    .product-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-light);
+    }
+
+    .product-title {
+      font-weight: 600;
+      margin-bottom: var(--spacing-2);
+      color: var(--color-text);
+    }
+
+    .product-price {
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-4);
+    }
+
+    .product-status {
+      display: inline-block;
+      padding: var(--spacing-1) var(--spacing-3);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      margin-bottom: var(--spacing-4);
+    }
+
+    .status.in-stock {
+      background-color: rgba(5, 150, 105, 0.1);
+      color: var(--color-success);
+    }
+
+    /* Project Builder Steps */
+    .project-builder-section {
+      padding: var(--spacing-8) var(--spacing-6);
+      background: var(--color-surface);
+    }
+
+    .builder-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .wizard-progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-8);
+      position: relative;
+    }
+
+    .wizard-progress::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--color-border);
+      z-index: 0;
+    }
+
+    .wizard-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      flex: 1;
+    }
+
+    .wizard-step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-2);
+      font-weight: 600;
+      color: var(--color-text-light);
+      transition: all var(--transition-base);
+    }
+
+    .wizard-step.active .wizard-step-circle {
+      background: var(--color-active-step);
+      border-color: var(--color-active-step);
+      color: white;
+    }
+
+    .wizard-step.completed .wizard-step-circle {
+      background: var(--color-completed-step);
+      border-color: var(--color-completed-step);
+      color: white;
+    }
+
+    .wizard-step-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-light);
+    }
+
+    .wizard-step.active .wizard-step-label {
+      color: var(--color-active-step);
+      font-weight: 600;
+    }
+
+    /* Tier Badge */
+    .tier-badge {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+      color: white;
+      padding: var(--spacing-4) var(--spacing-6);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .tier-label {
+      font-size: 1.125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .savings-indicator {
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    /* Cart Section */
+    .cart-section {
+      padding: var(--spacing-8) var(--spacing-6);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cart-summary {
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-3) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-4) 0;
+      font-size: var(--font-size-lg);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    /* Form Elements */
+    .form-section {
+      padding: var(--spacing-8) var(--spacing-6);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-4);
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: var(--spacing-2);
+      color: var(--color-text);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--spacing-3);
+      font-size: var(--font-size-base);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: white;
+      transition: border-color var(--transition-fast);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(15, 91, 167, 0.1);
+    }
+
+    /* Status Messages */
+    .status-messages {
+      padding: var(--spacing-6);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .status-message {
+      padding: var(--spacing-4);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-4);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+
+    .status-message.success {
+      background-color: rgba(5, 150, 105, 0.1);
+      color: var(--color-success);
+      border: 1px solid rgba(5, 150, 105, 0.2);
+    }
+
+    .status-message.warning {
+      background-color: rgba(217, 119, 6, 0.1);
+      color: var(--color-warning);
+      border: 1px solid rgba(217, 119, 6, 0.2);
+    }
+
+    .status-message.error {
+      background-color: rgba(220, 38, 38, 0.1);
+      color: var(--color-error);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-6);
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-header">
+    <h1>Option 3: Deep Blue + Warm Orange</h1>
+    <p>Classic Construction with Warmth - Professional Authority with Approachable Energy</p>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-main">
+      <div class="header-main-content">
+        <div class="header-brand">
+          <a href="#">BuildRight</a>
+        </div>
+        <div class="header-search">
+          <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input">
+          <button class="search-button">🔍</button>
+        </div>
+        <div class="header-actions">
+          <a href="#" class="header-action-link">Login</a>
+          <span>|</span>
+          <a href="#" class="header-action-link">Create Account</a>
+          <a href="#" class="cart-link">🛒 Cart (0)</a>
+        </div>
+      </div>
+    </div>
+    <div class="header-nav-bar">
+      <div class="header-nav-content">
+        <a href="#" class="nav-link">All Products</a>
+        <a href="#" class="nav-link">Structural Materials</a>
+        <a href="#" class="nav-link active">Project Builder</a>
+        <a href="#" class="nav-link">Windows & Doors</a>
+        <a href="#" class="nav-link">Fasteners</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-content">
+      <h2>Build Your Project with Confidence</h2>
+      <p>Professional-grade materials for commercial and residential construction projects</p>
+      <a href="#" class="btn btn-cta">Start New Project</a>
+    </div>
+  </div>
+
+  <!-- Tier Badge -->
+  <div class="container">
+    <div class="tier-badge">
+      <div class="tier-label">Commercial Tier 1</div>
+      <div class="savings-indicator">Save up to 15%</div>
+    </div>
+  </div>
+
+  <!-- Product Cards -->
+  <div class="products-section">
+    <h2 class="section-title">Featured Products</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-image">Product Image</div>
+        <h3 class="product-title">Steel Beam 8" x 10"</h3>
+        <div class="product-price">$245.99</div>
+        <span class="product-status status in-stock">In Stock</span>
+        <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <div class="product-image">Product Image</div>
+        <h3 class="product-title">Concrete Mix 50lb Bag</h3>
+        <div class="product-price">$8.99</div>
+        <span class="product-status status in-stock">In Stock</span>
+        <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <div class="product-image">Product Image</div>
+        <h3 class="product-title">Pressure Treated Lumber 2x4x8</h3>
+        <div class="product-price">$12.49</div>
+        <span class="product-status status in-stock">In Stock</span>
+        <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <div class="product-image">Product Image</div>
+        <h3 class="product-title">Roofing Shingles Bundle</h3>
+        <div class="product-price">$89.99</div>
+        <span class="product-status status in-stock">In Stock</span>
+        <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Builder Steps -->
+  <div class="project-builder-section">
+    <div class="builder-container">
+      <h2 class="section-title" style="text-align: center; margin-bottom: var(--spacing-8);">Project Builder</h2>
+      <div class="wizard-progress">
+        <div class="wizard-step completed">
+          <div class="wizard-step-circle">✓</div>
+          <div class="wizard-step-label">Project Type</div>
+        </div>
+        <div class="wizard-step active">
+          <div class="wizard-step-circle">2</div>
+          <div class="wizard-step-label">Select Products</div>
+        </div>
+        <div class="wizard-step">
+          <div class="wizard-step-circle">3</div>
+          <div class="wizard-step-label">Review & Order</div>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <p style="margin-bottom: var(--spacing-6); color: var(--color-text-light);">
+          Step 2: Choose the products for your project
+        </p>
+        <button class="btn btn-cta">Add Kit to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart -->
+  <div class="cart-section">
+    <h2 class="section-title">Shopping Cart</h2>
+    <div class="cart-summary">
+      <div class="cart-row">
+        <span>Steel Beam 8" x 10"</span>
+        <span>$245.99</span>
+      </div>
+      <div class="cart-row">
+        <span>Concrete Mix 50lb Bag (x5)</span>
+        <span>$44.95</span>
+      </div>
+      <div class="cart-row">
+        <span>Subtotal</span>
+        <span>$290.94</span>
+      </div>
+      <div class="cart-total">
+        <span>Total</span>
+        <span>$290.94</span>
+      </div>
+      <button class="btn btn-cta" style="width: 100%; margin-top: var(--spacing-6);">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- Form Elements -->
+  <div class="form-section">
+    <h2 class="section-title">Contact Form</h2>
+    <div class="form-group">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-input" placeholder="Enter your name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-input" placeholder="Enter your email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Message</label>
+      <textarea class="form-input" rows="4" placeholder="Enter your message"></textarea>
+    </div>
+    <button class="btn btn-primary">Submit</button>
+  </div>
+
+  <!-- Status Indicators -->
+  <div class="status-messages">
+    <h2 class="section-title">Status Messages</h2>
+    <div class="status-message success">
+      <span>✓</span>
+      <span>Order confirmed! Your items will ship within 2-3 business days.</span>
+    </div>
+    <div class="status-message warning">
+      <span>⚠</span>
+      <span>Low stock alert: Only 3 items remaining in this product.</span>
+    </div>
+    <div class="status-message error">
+      <span>✗</span>
+      <span>Error: Unable to process payment. Please try again.</span>
+    </div>
+  </div>
+
+</body>
+</html>
+
