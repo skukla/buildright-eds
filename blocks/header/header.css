@@ -106,12 +106,13 @@
 /* Location Dropdown Menu */
 .location-menu {
   display: none;
-  position: relative;
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
   background-color: white;
   border: none;
   z-index: 1000;
-  min-width: 100%;
-  width: 100%;
 }
 
 .location-menu.active {
