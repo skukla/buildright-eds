@@ -14,7 +14,7 @@ async function loadMockData() {
   if (mockData) return mockData;
   
   try {
-    const response = await fetch('/data/mock-products.json');
+    const response = await fetch('data/mock-products.json');
     mockData = await response.json();
     return mockData;
   } catch (error) {

@@ -35,7 +35,7 @@ function debounce(func, wait) {
 // Load block HTML
 async function loadBlockHTML(blockName) {
   try {
-    const response = await fetch(`/blocks/${blockName}/${blockName}.html`);
+    const response = await fetch(`blocks/${blockName}/${blockName}.html`);
     if (!response.ok) return null;
     return await response.text();
   } catch (error) {
@@ -48,14 +48,14 @@ async function loadBlockHTML(blockName) {
 function loadBlockCSS(blockName) {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = `/blocks/${blockName}/${blockName}.css`;
+  link.href = `blocks/${blockName}/${blockName}.css`;
   document.head.appendChild(link);
 }
 
 // Load block JS
 async function loadBlockJS(blockName) {
   try {
-    const module = await import(`/blocks/${blockName}/${blockName}.js`);
+    const module = await import(`blocks/${blockName}/${blockName}.js`);
     return module.default;
   } catch (error) {
     console.error(`Error loading block JS ${blockName}:`, error);

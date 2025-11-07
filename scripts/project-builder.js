@@ -9,7 +9,7 @@ async function loadRecommendationsData() {
   if (recommendationsData) return recommendationsData;
   
   try {
-    const response = await fetch('/data/project-recommendations.json');
+    const response = await fetch('data/project-recommendations.json');
     recommendationsData = await response.json();
     return recommendationsData;
   } catch (error) {
