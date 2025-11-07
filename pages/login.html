@@ -15,16 +15,16 @@
     <div>
       <div>
         <div class="header-brand">
-          <a href="index.html">BuildRight Solutions</a>
+          <a href="../index.html">BuildRight Solutions</a>
         </div>
         <nav class="header-nav">
-          <a href="index.html">Home</a>
-          <a href="pages/catalog.html">Catalog</a>
-          <a href="pages/account.html">Account</a>
+          <a href="../index.html">Home</a>
+          <a href="./catalog.html">Catalog</a>
+          <a href="./account.html">Account</a>
         </nav>
         <div class="header-actions">
-          <a href="pages/cart.html" class="cart-link">Cart (<span class="cart-count">0</span>)</a>
-          <a href="pages/login.html" class="login-link">Login</a>
+          <a href="./cart.html" class="cart-link">Cart (<span class="cart-count">0</span>)</a>
+          <a href="./login.html" class="login-link">Login</a>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@
         localStorage.setItem('buildright_logged_in', 'true');
         
         // Redirect to account page
-        window.location.href = 'pages/account.html';
+        window.location.href = './account.html';
       } else {
         alert('Please select a company');
       }

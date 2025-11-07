@@ -79,7 +79,8 @@ export default function decorate(block) {
     const performSearch = () => {
       const query = searchInput.value.trim();
       if (query) {
-        window.location.href = `pages/catalog.html?search=${encodeURIComponent(query)}`;
+        // Use absolute path for consistency
+        window.location.href = `/pages/catalog.html?search=${encodeURIComponent(query)}`;
       }
     };
 
@@ -99,9 +100,9 @@ export default function decorate(block) {
       if (category) {
         e.preventDefault();
         if (category === 'all') {
-          window.location.href = 'pages/catalog.html';
+          window.location.href = '/pages/catalog.html';
         } else {
-          window.location.href = `pages/catalog.html?category=${category}`;
+          window.location.href = `/pages/catalog.html?category=${category}`;
         }
       }
     });
@@ -112,8 +113,39 @@ export default function decorate(block) {
   const currentCategory = new URLSearchParams(window.location.search).get('category');
   navLinks.forEach(link => {
     const linkCategory = link.getAttribute('data-category');
-    if (linkCategory === currentCategory || (currentPath.includes('catalog') && linkCategory === 'all' && !currentCategory)) {
+    const linkHref = link.getAttribute('href');
+    
+    // Normalize paths for comparison
+    const normalizePath = (path) => {
+      if (!path) return '';
+      // Remove leading/trailing slashes and convert to lowercase for comparison
+      return path.replace(/^\/+|\/+$/g, '').toLowerCase();
+    };
+    
+    const normalizedCurrentPath = normalizePath(currentPath);
+    const normalizedLinkHref = normalizePath(linkHref);
+    
+    // Check if link matches current page by href (must be exact match)
+    const isActiveByHref = linkHref && (
+      normalizedCurrentPath === normalizedLinkHref ||
+      normalizedCurrentPath === normalizedLinkHref.replace(/^pages\//, '') ||
+      normalizedCurrentPath.endsWith('/' + normalizedLinkHref) ||
+      normalizedCurrentPath.endsWith('/' + normalizedLinkHref.replace(/^pages\//, ''))
+    );
+    
+    // Check if link matches by category (only on catalog page)
+    const isActiveByCategory = currentPath.includes('catalog') && (
+      linkCategory === currentCategory || 
+      (linkCategory === 'all' && !currentCategory)
+    );
+    
+    // Only highlight if we're actually on the catalog page (not homepage)
+    if (isActiveByHref && currentPath.includes('catalog')) {
       link.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+      link.setAttribute('aria-current', 'page');
+    } else if (isActiveByCategory) {
+      link.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+      link.setAttribute('aria-current', 'page');
     }
   });
 }
