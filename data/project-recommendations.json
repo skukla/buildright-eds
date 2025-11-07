@@ -1,0 +1,104 @@
+{
+  "roomCategories": {
+    "bathroom": ["fasteners_hardware", "framing_drywall", "windows_doors"],
+    "kitchen": ["fasteners_hardware", "framing_drywall", "windows_doors", "structural_materials"],
+    "basement": ["structural_materials", "framing_drywall", "fasteners_hardware"],
+    "whole_house": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"],
+    "exterior": ["windows_doors", "roofing", "structural_materials", "fasteners_hardware"],
+    "other": ["structural_materials", "framing_drywall", "fasteners_hardware"]
+  },
+  "complexityMultipliers": {
+    "basic": {
+      "itemCount": 0.6,
+      "quantityMultiplier": 0.7,
+      "qualityTier": "standard"
+    },
+    "moderate": {
+      "itemCount": 1.0,
+      "quantityMultiplier": 1.0,
+      "qualityTier": "standard"
+    },
+    "complex": {
+      "itemCount": 1.5,
+      "quantityMultiplier": 1.3,
+      "qualityTier": "premium"
+    }
+  },
+  "budgetRanges": {
+    "under_5k": {
+      "maxItems": 8,
+      "maxTotalPrice": 5000,
+      "preferredCategories": ["fasteners_hardware", "framing_drywall"]
+    },
+    "5k_15k": {
+      "maxItems": 15,
+      "maxTotalPrice": 15000,
+      "preferredCategories": ["fasteners_hardware", "framing_drywall", "windows_doors", "structural_materials"]
+    },
+    "15k_30k": {
+      "maxItems": 25,
+      "maxTotalPrice": 30000,
+      "preferredCategories": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"]
+    },
+    "30k_50k": {
+      "maxItems": 35,
+      "maxTotalPrice": 50000,
+      "preferredCategories": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"]
+    },
+    "50k_plus": {
+      "maxItems": 50,
+      "maxTotalPrice": 1000000,
+      "preferredCategories": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"]
+    }
+  },
+  "projectTypeCategories": {
+    "new_construction": {
+      "primary": ["structural_materials", "framing_drywall", "fasteners_hardware"],
+      "secondary": ["windows_doors", "roofing"]
+    },
+    "remodel": {
+      "primary": ["framing_drywall", "windows_doors", "fasteners_hardware"],
+      "secondary": ["structural_materials"]
+    },
+    "repair": {
+      "primary": ["fasteners_hardware"],
+      "secondary": ["framing_drywall", "structural_materials"]
+    },
+    "restoration": {
+      "primary": ["windows_doors", "structural_materials"],
+      "secondary": ["framing_drywall", "fasteners_hardware"]
+    }
+  },
+  "itemReasons": {
+    "bathroom": {
+      "framing_drywall": "Essential for wall construction and moisture-resistant drywall",
+      "fasteners_hardware": "Required for securing fixtures and hardware",
+      "windows_doors": "May need replacement windows or door frames"
+    },
+    "kitchen": {
+      "framing_drywall": "Needed for wall construction and cabinet installation",
+      "fasteners_hardware": "Essential for cabinet and fixture installation",
+      "windows_doors": "Kitchen windows and door frames",
+      "structural_materials": "May need structural support for heavy cabinets"
+    },
+    "basement": {
+      "structural_materials": "Foundation and structural support materials",
+      "framing_drywall": "Wall framing and finishing",
+      "fasteners_hardware": "Securing materials and fixtures"
+    },
+    "whole_house": {
+      "structural_materials": "Core structural components for entire home",
+      "framing_drywall": "Complete wall systems throughout",
+      "windows_doors": "All windows and doors",
+      "fasteners_hardware": "Comprehensive hardware needs",
+      "roofing": "Complete roofing system"
+    },
+    "exterior": {
+      "windows_doors": "Exterior windows and doors",
+      "roofing": "Roofing materials and components",
+      "structural_materials": "Exterior structural elements",
+      "fasteners_hardware": "Exterior fasteners and hardware"
+    }
+  }
+}
+

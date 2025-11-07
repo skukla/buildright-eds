@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Builder - BuildRight Solutions</title>
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/utilities.css">
+  <link rel="stylesheet" href="/blocks/header/header.css">
+  <style>
+    .wizard-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 var(--section-padding-horizontal);
+    }
+
+    .wizard-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .wizard-main {
+      min-width: 0;
+    }
+
+    .wizard-progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .wizard-progress::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--color-border);
+      z-index: 0;
+    }
+
+    .wizard-progress-bar {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      height: 2px;
+      background: var(--color-primary);
+      transition: width 0.3s ease;
+      z-index: 1;
+    }
+
+    .wizard-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      flex: 1;
+    }
+
+    .wizard-step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      transition: all 0.3s ease;
+    }
+
+    .wizard-step.active .wizard-step-circle {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+    }
+
+    .wizard-step.completed .wizard-step-circle {
+      background: var(--color-success);
+      border-color: var(--color-success);
+      color: white;
+    }
+
+    .wizard-step-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-light);
+    }
+
+    .wizard-step.active .wizard-step-label {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .wizard-content {
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+
+    .wizard-step-content {
+      display: none;
+    }
+
+    .wizard-step-content.active {
+      display: block;
+    }
+
+    .wizard-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .wizard-option {
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .wizard-option:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .wizard-option:hover .wizard-icon {
+      color: var(--color-primary);
+      transform: scale(1.05);
+    }
+
+    .wizard-option.selected {
+      border-color: var(--color-primary);
+      background: rgba(30, 58, 138, 0.05);
+    }
+
+    .wizard-option.selected .wizard-icon {
+      color: var(--color-accent);
+    }
+
+    .wizard-icon {
+      width: 56px;
+      height: 56px;
+      color: var(--color-text-light);
+      transition: all 0.2s ease;
+    }
+
+    .wizard-option h3 {
+      margin: 0 0 0.5rem;
+      font-size: var(--font-size-lg);
+      color: var(--color-text);
+    }
+
+    .wizard-option p {
+      margin: 0;
+      font-size: var(--font-size-sm);
+      color: var(--color-text-light);
+    }
+
+    .wizard-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .wizard-results {
+      text-align: center;
+    }
+
+    .wizard-results h2 {
+      margin-bottom: 1rem;
+    }
+
+    .wizard-results p {
+      color: var(--color-text-light);
+      margin-bottom: 2rem;
+    }
+
+    /* Sidebar Styles */
+    .wizard-sidebar {
+      position: sticky;
+      top: 2rem;
+    }
+
+    .sidebar-card {
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar-title {
+      margin: 0 0 1rem;
+      font-size: var(--font-size-lg);
+      color: var(--color-text);
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .sidebar-content {
+      font-size: var(--font-size-sm);
+    }
+
+    .sidebar-selections {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .sidebar-selection {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-selection-label {
+      font-weight: 600;
+      color: var(--color-text-light);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-selection-value {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+
+    .sidebar-empty {
+      color: var(--color-text-light);
+      font-style: italic;
+      margin: 0;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 1rem 0;
+    }
+
+    .sidebar-estimate {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .sidebar-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-stat-label {
+      color: var(--color-text-light);
+      font-weight: 500;
+    }
+
+    .sidebar-stat-value {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    .sidebar-stat-total {
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--color-border);
+      margin-top: 0.5rem;
+    }
+
+    .sidebar-stat-total .sidebar-stat-label {
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: var(--font-size-base);
+    }
+
+    .sidebar-stat-total .sidebar-stat-value {
+      color: var(--color-primary);
+      font-weight: 700;
+      font-size: var(--font-size-lg);
+    }
+
+    .conditional-options {
+      display: none;
+    }
+
+    .conditional-options.active {
+      display: grid;
+    }
+
+    /* Responsive Layout */
+    @media (max-width: 1023px) {
+      .wizard-layout {
+        grid-template-columns: 1fr 280px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .wizard-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .wizard-sidebar {
+        position: static;
+        order: -1;
+      }
+
+      .sidebar-card {
+        margin-bottom: 2rem;
+      }
+
+      .wizard-icon {
+        width: 48px;
+        height: 48px;
+      }
+
+      .wizard-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Enhanced Bundle Display Styles */
+    .project-bundle {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+
+    .bundle-header {
+      margin-bottom: 2rem;
+    }
+
+    .bundle-badge {
+      display: inline-block;
+      background: var(--color-accent);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .bundle-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .bundle-subtitle {
+      margin: 0;
+      color: var(--color-text-light);
+      font-size: var(--font-size-sm);
+    }
+
+    .bundle-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      background: var(--color-background);
+      border-radius: var(--radius-md);
+      margin-bottom: 2rem;
+    }
+
+    .bundle-total-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .bundle-total-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .bundle-products {
+      margin-bottom: 2rem;
+    }
+
+    .bundle-products-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+    }
+
+    .bundle-category-section {
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .category-toggle {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: var(--color-background);
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--color-text);
+      transition: background-color 0.2s;
+    }
+
+    .category-toggle:hover {
+      background: var(--color-surface);
+    }
+
+    .category-name {
+      flex: 1;
+      text-align: left;
+    }
+
+    .category-count {
+      margin: 0 1rem;
+      color: var(--color-text-light);
+      font-weight: 400;
+      font-size: var(--font-size-sm);
+    }
+
+    .toggle-icon {
+      transition: transform 0.2s;
+      font-size: var(--font-size-sm);
+    }
+
+    .category-items {
+      padding: 1rem;
+      background: var(--color-surface);
+    }
+
+    .products-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .products-table thead {
+      background: var(--color-background);
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .products-table th {
+      padding: 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+      color: var(--color-text);
+    }
+
+    .products-table td {
+      padding: 1rem 0.75rem;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+
+    .products-table tbody tr:hover {
+      background: var(--color-background);
+    }
+
+    .product-info {
+      min-width: 200px;
+    }
+
+    .product-name {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--color-text);
+    }
+
+    .product-reason {
+      font-size: var(--font-size-xs);
+      color: var(--color-accent);
+      font-style: italic;
+    }
+
+    .product-sku {
+      font-family: monospace;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-light);
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--color-border);
+      background: var(--color-background);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+    }
+
+    .qty-value {
+      min-width: 30px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .product-unit-price,
+    .product-subtotal {
+      text-align: right;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .bundle-actions {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* Print Styles */
+    @media print {
+      .wizard-progress,
+      .wizard-navigation,
+      .header,
+      .industry-menu,
+      .wizard-sidebar,
+      .bundle-actions,
+      .category-toggle {
+        display: none !important;
+      }
+
+      .wizard-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .wizard-sidebar {
+        position: static;
+        page-break-inside: avoid;
+      }
+
+      .sidebar-card {
+        border: 2px solid var(--color-border);
+      }
+
+      .wizard-content {
+        page-break-inside: avoid;
+      }
+
+      .category-items {
+        display: block !important;
+      }
+
+      .products-table {
+        font-size: 10pt;
+      }
+
+      .products-table th,
+      .products-table td {
+        padding: 0.5rem;
+      }
+
+      body {
+        font-size: 12pt;
+      }
+
+      .bundle-summary {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Block -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-top-content">
+        <div class="header-location">
+          <span class="location-label">You're Shopping</span>
+          <button class="location-selector" id="location-selector">
+            <span class="location-name">Sacramento RDC, CA</span>
+            <span class="location-icon">▼</span>
+          </button>
+        </div>
+        <div class="header-top-links">
+          <a href="/pages/order-history.html">Order History</a>
+          <a href="/pages/rewards.html">Rewards</a>
+          <a href="/pages/account.html#lists">My Lists</a>
+          <a href="/pages/account.html#help">Help</a>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="header-main-content">
+        <div class="header-brand">
+          <a href="/">BuildRight</a>
+        </div>
+        <div class="header-search">
+          <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
+          <button class="search-button" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="header-actions">
+          <a href="/pages/login.html" class="header-action-link">
+            <span class="action-label">Login</span>
+          </a>
+          <span class="action-separator">|</span>
+          <a href="/pages/login.html" class="header-action-link">
+            <span class="action-label">Create Account</span>
+          </a>
+          <a href="/pages/cart.html" class="cart-link">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-label">Cart</span>
+            <span class="cart-count">0</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="header-nav-bar">
+      <div class="header-nav-content">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="main-nav">
+          <div class="nav-item">
+            <a href="/pages/catalog.html" class="nav-link">All Products</a>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="structural">Structural Materials</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="windows">Windows & Doors</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="fasteners">Fasteners & Hardware</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="roofing">Roofing</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="framing">Framing & Drywall</button>
+          </div>
+        </nav>
+        <div class="nav-industry">
+          <button class="industry-toggle" id="industry-toggle">Shop By Industry ▼</button>
+        </div>
+      </div>
+    </div>
+    <div class="industry-menu" id="industry-menu">
+      <div class="industry-menu-content">
+        <div class="industry-column">
+          <h3>Commercial</h3>
+          <ul>
+            <li><a href="/pages/catalog.html?division=commercial">Commercial Construction</a></li>
+            <li><a href="/pages/catalog.html?division=commercial&category=structural_materials">Structural Materials</a></li>
+            <li><a href="/pages/catalog.html?division=commercial&category=windows_doors">Windows & Doors</a></li>
+          </ul>
+        </div>
+        <div class="industry-column">
+          <h3>Residential</h3>
+          <ul>
+            <li><a href="/pages/catalog.html?division=residential">Residential Construction</a></li>
+            <li><a href="/pages/catalog.html?division=residential&category=structural_materials">Framing Materials</a></li>
+            <li><a href="/pages/catalog.html?division=residential&category=windows_doors">Residential Windows</a></li>
+          </ul>
+        </div>
+        <div class="industry-column">
+          <h3>Pro</h3>
+          <ul>
+            <li><a href="/pages/catalog.html?division=pro">Trade Contractors</a></li>
+            <li><a href="/pages/catalog.html?division=pro&category=fasteners_hardware">Fasteners & Tools</a></li>
+            <li><a href="/pages/catalog.html?division=pro&category=roofing">Roofing Supplies</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard Container -->
+  <div class="wizard-container">
+    <h1 style="text-align: center; margin-bottom: 1rem;">Build Your Project</h1>
+    <p style="text-align: center; color: var(--color-text-light); margin-bottom: 2rem;">Answer a few questions to get a customized kit of materials for your project</p>
+
+    <!-- Progress Indicator -->
+    <div class="wizard-progress">
+      <div class="wizard-progress-bar" id="progress-bar"></div>
+      <div class="wizard-step" data-step="1">
+        <div class="wizard-step-circle">1</div>
+        <div class="wizard-step-label">Project Type</div>
+      </div>
+      <div class="wizard-step" data-step="2">
+        <div class="wizard-step-circle">2</div>
+        <div class="wizard-step-label">Details</div>
+      </div>
+      <div class="wizard-step" data-step="3">
+        <div class="wizard-step-circle">3</div>
+        <div class="wizard-step-label">Complexity</div>
+      </div>
+      <div class="wizard-step" data-step="4">
+        <div class="wizard-step-circle">4</div>
+        <div class="wizard-step-label">Budget</div>
+      </div>
+      <div class="wizard-step" data-step="5">
+        <div class="wizard-step-circle">5</div>
+        <div class="wizard-step-label">Results</div>
+      </div>
+    </div>
+
+    <!-- Wizard Layout (Main + Sidebar) -->
+    <div class="wizard-layout">
+      <!-- Wizard Main Content -->
+      <div class="wizard-main">
+        <div class="wizard-content">
+      <!-- Step 1: Project Type -->
+      <div class="wizard-step-content active" data-step="1">
+        <h2>What type of project are you working on?</h2>
+        <div class="wizard-options">
+          <div class="wizard-option" data-value="new_construction">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 8L8 24V56H24V40H40V56H56V24L32 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M24 28H32M40 28H48" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>New Construction</h3>
+            <p>Building from the ground up</p>
+          </div>
+          <div class="wizard-option" data-value="remodel">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M48 20L56 28L32 52L8 28L16 20" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M24 12L32 4L40 12M32 4V24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="20" cy="44" r="3" fill="currentColor"/>
+              <circle cx="44" cy="44" r="3" fill="currentColor"/>
+            </svg>
+            <h3>Remodel</h3>
+            <p>Renovating existing space</p>
+          </div>
+          <div class="wizard-option" data-value="repair">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38 12L52 26L42 36L28 22L38 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M28 22L12 38V52H26L42 36" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M18 52L12 46" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>Repair</h3>
+            <p>Fixing or maintaining</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Project Details (Conditional) -->
+      <div class="wizard-step-content" data-step="2">
+        <h2 id="step2-title">Tell us more about your project</h2>
+        <div class="wizard-options" id="step2-options">
+          <!-- Options will be populated by JavaScript based on Step 1 -->
+        </div>
+      </div>
+
+      <!-- Step 3: Complexity -->
+      <div class="wizard-step-content" data-step="3">
+        <h2>How complex is this project?</h2>
+        <div class="wizard-options">
+          <div class="wizard-option" data-value="basic">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
+              <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>Basic</h3>
+            <p>DIY-friendly, standard materials</p>
+          </div>
+          <div class="wizard-option" data-value="moderate">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
+              <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="32" cy="12" r="3" fill="currentColor"/>
+              <circle cx="32" cy="52" r="3" fill="currentColor"/>
+            </svg>
+            <h3>Moderate</h3>
+            <p>Some professional help, mid-range materials</p>
+          </div>
+          <div class="wizard-option" data-value="complex">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
+              <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="32" cy="12" r="3" fill="currentColor"/>
+              <circle cx="32" cy="52" r="3" fill="currentColor"/>
+              <circle cx="12" cy="32" r="3" fill="currentColor"/>
+              <circle cx="52" cy="32" r="3" fill="currentColor"/>
+            </svg>
+            <h3>Complex</h3>
+            <p>Professional required, premium materials</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Budget -->
+      <div class="wizard-step-content" data-step="4">
+        <h2>What's your budget range?</h2>
+        <div class="wizard-options">
+          <div class="wizard-option" data-value="under_5k">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="12" y="48" width="8" height="8" fill="currentColor"/>
+              <rect x="28" y="40" width="8" height="16" fill="currentColor"/>
+              <rect x="44" y="32" width="8" height="24" fill="currentColor" opacity="0.3"/>
+            </svg>
+            <h3>Under $5,000</h3>
+            <p>Small projects</p>
+          </div>
+          <div class="wizard-option" data-value="5k_15k">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="12" y="48" width="8" height="8" fill="currentColor"/>
+              <rect x="28" y="40" width="8" height="16" fill="currentColor"/>
+              <rect x="44" y="32" width="8" height="24" fill="currentColor"/>
+            </svg>
+            <h3>$5,000 - $15,000</h3>
+            <p>Medium projects</p>
+          </div>
+          <div class="wizard-option" data-value="15k_30k">
+            <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="48" width="8" height="8" fill="currentColor"/>
+              <rect x="20" y="40" width="8" height="16" fill="currentColor"/>
+              <rect x="32" y="32" width="8" height="24" fill="currentColor"/>
+              <rect x="44" y="20" width="8" height="36" fill="currentColor"/>
+            </svg>
+            <h3>$15,000 - $30,000</h3>
+            <p>Large projects</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Results -->
+      <div class="wizard-step-content" data-step="5">
+        <div class="wizard-results">
+          <h2>Your Project Kit is Ready!</h2>
+          <p>We've curated a bundle of materials based on your selections.</p>
+          <div id="bundle-container">
+            <!-- Bundle will be rendered here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="wizard-navigation">
+      <button class="btn btn-outline" id="wizard-back" style="display: none;">← Back</button>
+      <button class="btn btn-primary" id="wizard-next" style="display: none;">Next →</button>
+      <button class="btn btn-secondary" id="wizard-start-over" style="display: none;">Start Over</button>
+      <button class="btn btn-outline" id="wizard-print" style="display: none;">🖨 Print Summary</button>
+    </div>
+      </div>
+      <!-- End Wizard Main -->
+
+      <!-- Wizard Sidebar -->
+      <div class="wizard-sidebar">
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Project Summary</h3>
+          <div class="sidebar-content">
+            <!-- Selection Progress -->
+            <div class="sidebar-selections" id="sidebar-selections">
+              <p class="sidebar-empty">Make your selections to see summary</p>
+            </div>
+
+            <!-- Estimated Details -->
+            <div class="sidebar-estimate" id="sidebar-estimate" style="display: none;">
+              <div class="sidebar-divider"></div>
+              <div class="sidebar-stat">
+                <span class="sidebar-stat-label">Items:</span>
+                <span class="sidebar-stat-value" id="sidebar-items">--</span>
+              </div>
+              <div class="sidebar-stat sidebar-stat-total">
+                <span class="sidebar-stat-label">Estimated Total:</span>
+                <span class="sidebar-stat-value" id="sidebar-total">$--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Wizard Sidebar -->
+    </div>
+    <!-- End Wizard Layout -->
+  </div>
+
+  <script type="module">
+    import { saveWizardState, getWizardState, generateBundle, addBundleToCart } from '/scripts/project-builder.js';
+    import { decorateBlock } from '/scripts/utils.js';
+
+    // Wizard state
+    let currentStep = 1;
+    const totalSteps = 5;
+    const wizardState = getWizardState() || {};
+
+    // Step 2 options based on project type
+    const step2Options = {
+      new_construction: [
+        { value: 'residential_home', label: 'Residential Home', desc: 'Single-family or multi-family home' },
+        { value: 'commercial_building', label: 'Commercial Building', desc: 'Office, retail, or commercial space' },
+        { value: 'addition', label: 'Addition', desc: 'Adding to existing structure' },
+        { value: 'other', label: 'Other', desc: 'Other new construction' }
+      ],
+      remodel: [
+        { value: 'bathroom', label: 'Bathroom', desc: 'Bathroom renovation' },
+        { value: 'kitchen', label: 'Kitchen', desc: 'Kitchen renovation' },
+        { value: 'basement', label: 'Basement', desc: 'Basement finishing' },
+        { value: 'whole_house', label: 'Whole House', desc: 'Complete home remodel' },
+        { value: 'exterior', label: 'Exterior', desc: 'Exterior renovation' },
+        { value: 'other', label: 'Other', desc: 'Other remodeling' }
+      ],
+      repair: [
+        { value: 'plumbing', label: 'Plumbing', desc: 'Plumbing repairs' },
+        { value: 'electrical', label: 'Electrical', desc: 'Electrical repairs' },
+        { value: 'structural', label: 'Structural', desc: 'Structural repairs' },
+        { value: 'roofing', label: 'Roofing', desc: 'Roof repairs' },
+        { value: 'other', label: 'Other', desc: 'Other repairs' }
+      ]
+    };
+
+    // Initialize wizard
+    function initWizard() {
+      // Check for URL parameters first (from Shop By Job links)
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectType = urlParams.get('projectType');
+      const projectDetail = urlParams.get('projectDetail');
+      const complexity = urlParams.get('complexity');
+      const budget = urlParams.get('budget');
+      
+      if (projectType) {
+        // URL params override saved state
+        wizardState = {
+          projectType: projectType,
+          projectDetail: projectDetail || null,
+          complexity: complexity || null,
+          budget: budget || null,
+          currentStep: 1
+        };
+        saveWizardState(wizardState);
+        // Auto-advance through pre-filled steps
+        if (projectType) {
+          currentStep = 1;
+          if (projectDetail) {
+            populateStep2(projectType);
+            currentStep = 2;
+            if (complexity) {
+              currentStep = 3;
+              if (budget) {
+                currentStep = 4;
+              }
+            }
+          }
+        }
+        restoreWizardState();
+        showStep(currentStep);
+      } else if (wizardState.projectType) {
+        // Load saved state if no URL params
+        currentStep = wizardState.currentStep || 1;
+        restoreWizardState();
+        showStep(currentStep);
+      } else {
+        // Start fresh
+        showStep(1);
+      }
+      
+      updateProgress();
+      updateNavigation();
+      setupEventListeners();
+    }
+
+    // Restore wizard state
+    function restoreWizardState() {
+      // Restore step 1
+      if (wizardState.projectType) {
+        const option = document.querySelector(`[data-step="1"] .wizard-option[data-value="${wizardState.projectType}"]`);
+        if (option) option.classList.add('selected');
+      }
+
+      // Restore step 2
+      if (wizardState.projectDetail) {
+        populateStep2(wizardState.projectType);
+        const option = document.querySelector(`[data-step="2"] .wizard-option[data-value="${wizardState.projectDetail}"]`);
+        if (option) option.classList.add('selected');
+      }
+
+      // Restore step 3
+      if (wizardState.complexity) {
+        const option = document.querySelector(`[data-step="3"] .wizard-option[data-value="${wizardState.complexity}"]`);
+        if (option) option.classList.add('selected');
+      }
+
+      // Restore step 4
+      if (wizardState.budget) {
+        const option = document.querySelector(`[data-step="4"] .wizard-option[data-value="${wizardState.budget}"]`);
+        if (option) option.classList.add('selected');
+      }
+
+      // If we have all data, show results
+      if (wizardState.projectType && wizardState.complexity && wizardState.budget) {
+        if (wizardState.projectType === 'remodel' && !wizardState.projectDetail) {
+          currentStep = 2;
+        } else {
+          currentStep = 5;
+          showResults();
+        }
+      }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Option selection - use event delegation on wizard-content
+      const wizardContent = document.querySelector('.wizard-content');
+      if (wizardContent) {
+        wizardContent.addEventListener('click', (e) => {
+          const option = e.target.closest('.wizard-option');
+          if (option) {
+            const stepContent = option.closest('.wizard-step-content');
+            if (stepContent) {
+              const step = stepContent.dataset.step;
+              const value = option.dataset.value;
+              if (step && value) {
+                selectOption(step, value);
+              }
+            }
+          }
+        });
+      }
+
+      // Navigation buttons
+      const nextBtn = document.getElementById('wizard-next');
+      const backBtn = document.getElementById('wizard-back');
+      const startOverBtn = document.getElementById('wizard-start-over');
+      
+      if (nextBtn) nextBtn.addEventListener('click', nextStep);
+      if (backBtn) backBtn.addEventListener('click', prevStep);
+      if (startOverBtn) startOverBtn.addEventListener('click', startOver);
+    }
+
+    // Select option
+    function selectOption(step, value) {
+      // Remove previous selection
+      const stepContent = document.querySelector(`[data-step="${step}"]`);
+      stepContent.querySelectorAll('.wizard-option').forEach(opt => opt.classList.remove('selected'));
+      
+      // Add new selection
+      const option = stepContent.querySelector(`[data-value="${value}"]`);
+      if (option) option.classList.add('selected');
+
+      // Save to state
+      if (step === '1') {
+        wizardState.projectType = value;
+        wizardState.projectDetail = null; // Reset detail when type changes
+      } else if (step === '2') {
+        wizardState.projectDetail = value;
+      } else if (step === '3') {
+        wizardState.complexity = value;
+      } else if (step === '4') {
+        wizardState.budget = value;
+      }
+
+      wizardState.currentStep = parseInt(step);
+      saveWizardState(wizardState);
+      updateSidebar();
+
+      // Auto-advance for steps 1-4
+      if (step < 4) {
+        setTimeout(() => {
+          if (step === '1') {
+            // All project types go to step 2 for details
+            nextStep();
+          } else {
+            nextStep();
+          }
+        }, 300);
+      } else {
+        // Step 4: Generate bundle
+        generateAndShowResults();
+      }
+    }
+
+    // Icons for Step 2 options
+    const step2Icons = {
+      residential_home: '<path d="M32 8L8 24V56H24V40H40V56H56V24L32 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+      commercial_building: '<rect x="12" y="12" width="40" height="44" stroke="currentColor" stroke-width="2"/><path d="M20 20H28M36 20H44M20 32H28M36 32H44M20 44H28M36 44H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+      addition: '<path d="M16 40L32 24L48 40V56H16V40Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M32 36V48M26 42H38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+      bathroom: '<rect x="12" y="24" width="24" height="28" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="44" cy="26" r="6" stroke="currentColor" stroke-width="2"/><rect x="38" y="36" width="12" height="16" stroke="currentColor" stroke-width="2"/>',
+      kitchen: '<rect x="8" y="20" width="48" height="32" stroke="currentColor" stroke-width="2"/><circle cx="20" cy="32" r="4" fill="currentColor"/><circle cx="32" cy="32" r="4" fill="currentColor"/><circle cx="44" cy="32" r="4" fill="currentColor"/>',
+      basement: '<path d="M8 28L32 12L56 28M12 28V52H52V28" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M20 36H44M20 44H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+      whole_house: '<path d="M32 4L4 24V60H60V24L32 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><rect x="16" y="36" width="12" height="16" stroke="currentColor" stroke-width="2"/><rect x="36" y="36" width="12" height="16" stroke="currentColor" stroke-width="2"/>',
+      exterior: '<path d="M8 32L32 8L56 32V56H8V32Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><rect x="24" y="40" width="16" height="16" stroke="currentColor" stroke-width="2"/>',
+      plumbing: '<path d="M24 12V32M40 32V52" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="4" stroke="currentColor" stroke-width="2"/><path d="M24 32L40 32" stroke="currentColor" stroke-width="2"/>',
+      electrical: '<circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/><path d="M32 16L28 32H36L32 48" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+      structural: '<path d="M16 56L32 8L48 56" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M20 44H44" stroke="currentColor" stroke-width="2"/>',
+      roofing: '<path d="M8 32L32 12L56 32M12 32V52H52V32" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+      other: '<circle cx="32" cy="32" r="24" stroke="currentColor" stroke-width="2"/><path d="M32 20V44M20 32H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
+    };
+
+    // Populate step 2 based on project type
+    function populateStep2(projectType) {
+      const options = step2Options[projectType] || [];
+      const container = document.getElementById('step2-options');
+      const title = document.getElementById('step2-title');
+
+      if (projectType === 'remodel') {
+        title.textContent = 'What are you remodeling?';
+      } else if (projectType === 'new_construction') {
+        title.textContent = 'What are you building?';
+      } else if (projectType === 'repair') {
+        title.textContent = 'What needs repair?';
+      }
+
+      // Limit to 3 cards
+      const limitedOptions = options.slice(0, 3);
+      container.innerHTML = limitedOptions.map(opt => `
+        <div class="wizard-option" data-value="${opt.value}">
+          <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            ${step2Icons[opt.value] || step2Icons.other}
+          </svg>
+          <h3>${opt.label}</h3>
+          <p>${opt.desc}</p>
+        </div>
+      `).join('');
+
+      // Event listeners are handled by delegation in setupEventListeners
+    }
+
+    // Update sidebar with current selections
+    function updateSidebar() {
+      const selectionsContainer = document.getElementById('sidebar-selections');
+      const estimateContainer = document.getElementById('sidebar-estimate');
+      const itemsElement = document.getElementById('sidebar-items');
+      const totalElement = document.getElementById('sidebar-total');
+
+      // Label mappings
+      const labels = {
+        projectType: {
+          new_construction: 'New Construction',
+          remodel: 'Remodel',
+          repair: 'Repair'
+        },
+        complexity: {
+          basic: 'Basic',
+          moderate: 'Moderate',
+          complex: 'Complex'
+        },
+        budget: {
+          under_5k: 'Under $5,000',
+          '5k_15k': '$5,000 - $15,000',
+          '15k_30k': '$15,000 - $30,000'
+        }
+      };
+
+      // Build selections HTML
+      let selectionsHTML = '';
+      let hasSelections = false;
+
+      if (wizardState.projectType) {
+        hasSelections = true;
+        selectionsHTML += `
+          <div class="sidebar-selection">
+            <div class="sidebar-selection-label">Project Type</div>
+            <div class="sidebar-selection-value">${labels.projectType[wizardState.projectType] || wizardState.projectType}</div>
+          </div>
+        `;
+      }
+
+      if (wizardState.projectDetail) {
+        const detailOptions = step2Options[wizardState.projectType] || [];
+        const detailOption = detailOptions.find(opt => opt.value === wizardState.projectDetail);
+        selectionsHTML += `
+          <div class="sidebar-selection">
+            <div class="sidebar-selection-label">Details</div>
+            <div class="sidebar-selection-value">${detailOption ? detailOption.label : wizardState.projectDetail}</div>
+          </div>
+        `;
+      }
+
+      if (wizardState.complexity) {
+        selectionsHTML += `
+          <div class="sidebar-selection">
+            <div class="sidebar-selection-label">Complexity</div>
+            <div class="sidebar-selection-value">${labels.complexity[wizardState.complexity] || wizardState.complexity}</div>
+          </div>
+        `;
+      }
+
+      if (wizardState.budget) {
+        selectionsHTML += `
+          <div class="sidebar-selection">
+            <div class="sidebar-selection-label">Budget Range</div>
+            <div class="sidebar-selection-value">${labels.budget[wizardState.budget] || wizardState.budget}</div>
+          </div>
+        `;
+      }
+
+      // Update selections
+      if (hasSelections) {
+        selectionsContainer.innerHTML = selectionsHTML;
+      } else {
+        selectionsContainer.innerHTML = '<p class="sidebar-empty">Make your selections to see summary</p>';
+      }
+
+      // Show estimate if we have enough data
+      if (wizardState.complexity && wizardState.budget) {
+        estimateContainer.style.display = 'flex';
+        
+        // Simple estimation logic
+        const budgetMultipliers = {
+          under_5k: 0.5,
+          '5k_15k': 1.0,
+          '15k_30k': 1.8
+        };
+        
+        const complexityMultipliers = {
+          basic: 0.6,
+          moderate: 1.0,
+          complex: 1.5
+        };
+        
+        const baseItems = 12;
+        const basePrice = 5000;
+        
+        const budgetMult = budgetMultipliers[wizardState.budget] || 1.0;
+        const complexMult = complexityMultipliers[wizardState.complexity] || 1.0;
+        
+        const estimatedItems = Math.round(baseItems * budgetMult * complexMult);
+        const estimatedTotal = Math.round(basePrice * budgetMult * complexMult);
+        
+        itemsElement.textContent = estimatedItems;
+        totalElement.textContent = `$${estimatedTotal.toLocaleString()}`;
+      } else {
+        estimateContainer.style.display = 'none';
+      }
+    }
+
+    // Show step
+    function showStep(step) {
+      currentStep = step;
+      
+      // Hide all steps
+      document.querySelectorAll('.wizard-step-content').forEach(content => {
+        content.classList.remove('active');
+      });
+
+      // Show current step
+      const currentContent = document.querySelector(`.wizard-step-content[data-step="${step}"]`);
+      if (currentContent) {
+        currentContent.classList.add('active');
+      }
+
+      // Update progress indicators
+      document.querySelectorAll('.wizard-step').forEach((stepEl, index) => {
+        const stepNum = index + 1;
+        stepEl.classList.remove('active', 'completed');
+        if (stepNum < step) {
+          stepEl.classList.add('completed');
+        } else if (stepNum === step) {
+          stepEl.classList.add('active');
+        }
+      });
+
+      // Update progress bar
+      const progress = ((step - 1) / (totalSteps - 1)) * 100;
+      document.getElementById('progress-bar').style.width = `${progress}%`;
+
+      // Handle step 2 population
+      if (step === 2 && wizardState.projectType) {
+        populateStep2(wizardState.projectType);
+      }
+
+      updateNavigation();
+    }
+
+    // Next step
+    function nextStep() {
+      if (currentStep < totalSteps) {
+        // Validate current step
+        if (currentStep === 1 && !wizardState.projectType) return;
+        if (currentStep === 2 && !wizardState.projectDetail) return;
+        if (currentStep === 3 && !wizardState.complexity) return;
+        if (currentStep === 4 && !wizardState.budget) return;
+
+        // Advance to next step
+        if (currentStep === 1) {
+          showStep(2);
+        } else if (currentStep === 2) {
+          showStep(3);
+        } else if (currentStep === 3) {
+          showStep(4);
+        } else if (currentStep === 4) {
+          generateAndShowResults();
+        }
+      }
+    }
+
+    // Previous step
+    function prevStep() {
+      if (currentStep > 1) {
+        showStep(currentStep - 1);
+      }
+    }
+
+    // Update progress
+    function updateProgress() {
+      showStep(currentStep);
+    }
+
+    // Update navigation
+    function updateNavigation() {
+      const backBtn = document.getElementById('wizard-back');
+      const nextBtn = document.getElementById('wizard-next');
+      const startOverBtn = document.getElementById('wizard-start-over');
+      const printBtn = document.getElementById('wizard-print');
+
+      if (currentStep === 5) {
+        backBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        startOverBtn.style.display = 'inline-block';
+        if (printBtn) printBtn.style.display = 'inline-block';
+      } else {
+        backBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
+        // Hide Next button on step 1 since clicking a card auto-advances
+        nextBtn.style.display = currentStep === 1 ? 'none' : 'inline-block';
+        startOverBtn.style.display = 'none';
+        if (printBtn) printBtn.style.display = 'none';
+      }
+    }
+
+    // Generate and show results
+    async function generateAndShowResults() {
+      showStep(5);
+      
+      const bundle = await generateBundle(wizardState);
+      if (bundle) {
+        displayBundle(bundle);
+      } else {
+        document.getElementById('bundle-container').innerHTML = `
+          <p style="color: var(--color-error);">Unable to generate bundle. Please try again.</p>
+        `;
+      }
+    }
+
+    // Show results (if already generated)
+    async function showResults() {
+      if (wizardState.bundle) {
+        displayBundle(wizardState.bundle);
+      } else {
+        await generateAndShowResults();
+      }
+    }
+
+    // Display bundle
+    function displayBundle(bundle) {
+      const container = document.getElementById('bundle-container');
+      
+      // Group items by category
+      const itemsByCategory = {};
+      bundle.items.forEach(item => {
+        const category = item.category || 'Other';
+        if (!itemsByCategory[category]) {
+          itemsByCategory[category] = [];
+        }
+        itemsByCategory[category].push(item);
+      });
+
+      // Format category name
+      function formatCategoryName(cat) {
+        return cat.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      }
+
+      container.innerHTML = `
+        <div class="project-bundle" data-bundle-id="${bundle.bundleId}">
+          <div class="bundle-header">
+            <div class="bundle-badge">PROJECT KIT</div>
+            <h3 class="bundle-title">${bundle.bundleName}</h3>
+            <p class="bundle-subtitle">${bundle.itemCount} items included</p>
+          </div>
+          
+          <div class="bundle-summary">
+            <div class="bundle-total">
+              <div class="bundle-total-label">Total Price</div>
+              <div class="bundle-total-value">$${bundle.totalPrice.toFixed(2)}</div>
+            </div>
+            <button class="btn btn-cta btn-lg" id="add-bundle-btn">Add Kit to Cart</button>
+          </div>
+          
+          <div class="bundle-products">
+            <h4 class="bundle-products-title">Kit Contents</h4>
+            ${Object.keys(itemsByCategory).map(category => `
+              <div class="bundle-category-section">
+                <button class="category-toggle" data-category="${category}">
+                  <span class="category-name">${formatCategoryName(category)}</span>
+                  <span class="category-count">${itemsByCategory[category].length} items</span>
+                  <span class="toggle-icon">▼</span>
+                </button>
+                <div class="category-items" id="category-${category}" style="display: block;">
+                  <table class="products-table">
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
+                        <th>Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${itemsByCategory[category].map(item => `
+                        <tr>
+                          <td>
+                            <div class="product-info">
+                              <div class="product-name">${item.name}</div>
+                              <div class="product-reason">${item.reason}</div>
+                            </div>
+                          </td>
+                          <td class="product-sku">${item.sku}</td>
+                          <td>
+                            <div class="quantity-controls">
+                              <button class="qty-btn" data-sku="${item.sku}" data-action="decrease">-</button>
+                              <span class="qty-value">${item.quantity}</span>
+                              <button class="qty-btn" data-sku="${item.sku}" data-action="increase">+</button>
+                            </div>
+                          </td>
+                          <td class="product-unit-price">$${((item.unitPrice || item.subtotal / item.quantity)).toFixed(2)}</td>
+                          <td class="product-subtotal">$${item.subtotal.toFixed(2)}</td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="bundle-actions">
+            <a href="/pages/catalog.html" class="btn btn-outline-accent">Customize Kit in Catalog</a>
+          </div>
+        </div>
+      `;
+
+      // Add bundle to cart button
+      document.getElementById('add-bundle-btn').addEventListener('click', () => {
+        // Save order to history before adding to cart
+        saveOrderToHistory(bundle);
+        addBundleToCart(bundle);
+        window.location.href = '/pages/cart.html';
+      });
+
+      // Category toggle functionality
+      document.querySelectorAll('.category-toggle').forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          const category = toggle.dataset.category;
+          const itemsContainer = document.getElementById(`category-${category}`);
+          const toggleIcon = toggle.querySelector('.toggle-icon');
+          const isExpanded = itemsContainer.style.display === 'block';
+          itemsContainer.style.display = isExpanded ? 'none' : 'block';
+          toggleIcon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+      });
+
+      // Quantity controls
+      document.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const sku = btn.dataset.sku;
+          const action = btn.dataset.action;
+          const qtyElement = btn.parentElement.querySelector('.qty-value');
+          let qty = parseInt(qtyElement.textContent);
+          
+          if (action === 'increase') {
+            qty++;
+          } else if (action === 'decrease' && qty > 1) {
+            qty--;
+          }
+          
+          qtyElement.textContent = qty;
+          
+          // Update bundle item quantity
+          const item = bundle.items.find(i => i.sku === sku);
+          if (item) {
+            const unitPrice = item.unitPrice || (item.subtotal / item.quantity);
+            item.quantity = qty;
+            item.subtotal = unitPrice * qty;
+            
+            // Update subtotal display
+            const row = btn.closest('tr');
+            const subtotalCell = row.querySelector('.product-subtotal');
+            subtotalCell.textContent = `$${item.subtotal.toFixed(2)}`;
+            
+            // Recalculate bundle total
+            bundle.totalPrice = bundle.items.reduce((sum, i) => sum + i.subtotal, 0);
+            document.querySelector('.bundle-total-value').textContent = `$${bundle.totalPrice.toFixed(2)}`;
+            
+            // Update bundle in state
+            wizardState.bundle = bundle;
+            saveWizardState(wizardState);
+          }
+        });
+      });
+
+      // Show print button
+      const printBtn = document.getElementById('wizard-print');
+      if (printBtn) {
+        printBtn.style.display = 'inline-block';
+        printBtn.addEventListener('click', () => {
+          window.print();
+        });
+      }
+
+      // Save bundle to state
+      wizardState.bundle = bundle;
+      saveWizardState(wizardState);
+      updateSidebar();
+    }
+
+    // Save order to history
+    function saveOrderToHistory(bundle) {
+      try {
+        const orders = JSON.parse(localStorage.getItem('buildright_orders') || '[]');
+        const order = {
+          orderID: 'ORD-' + Date.now(),
+          timestamp: new Date().toISOString(),
+          wizardState: { ...wizardState },
+          products: bundle.items.map(item => ({
+            sku: item.sku,
+            name: item.name,
+            quantity: item.quantity,
+            unitPrice: item.subtotal / item.quantity,
+            subtotal: item.subtotal
+          })),
+          total: bundle.totalPrice,
+          itemCount: bundle.itemCount,
+          status: 'Completed'
+        };
+        orders.unshift(order); // Add to beginning
+        localStorage.setItem('buildright_orders', JSON.stringify(orders));
+        
+        // Update loyalty spend
+        updateLoyaltySpend(bundle.totalPrice);
+      } catch (e) {
+        console.error('Error saving order:', e);
+      }
+    }
+
+    // Update loyalty spend
+    function updateLoyaltySpend(amount) {
+      try {
+        const loyaltyData = JSON.parse(localStorage.getItem('buildright_loyalty') || '{"totalSpend": 0}');
+        loyaltyData.totalSpend = (loyaltyData.totalSpend || 0) + amount;
+        localStorage.setItem('buildright_loyalty', JSON.stringify(loyaltyData));
+      } catch (e) {
+        console.error('Error updating loyalty:', e);
+      }
+    }
+
+    // Start over
+    function startOver() {
+      saveWizardState({});
+      window.location.reload();
+    }
+
+    // Initialize on load
+    initWizard();
+  </script>
+  <script type="module" src="/scripts/app.js"></script>
+  <script type="module" src="/blocks/header/header.js"></script>
+</body>
+</html>
+

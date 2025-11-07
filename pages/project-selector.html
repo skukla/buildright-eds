@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Project Type - BuildRight Solutions</title>
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/utilities.css">
+  <link rel="stylesheet" href="/blocks/header/header.css">
+</head>
+<body>
+  <!-- Header Block -->
+  <div class="header">
+    <div>
+      <div>
+        <div class="header-brand">
+          <a href="/">BuildRight Solutions</a>
+        </div>
+        <nav class="header-nav">
+          <a href="/">Home</a>
+          <a href="/pages/catalog.html">Catalog</a>
+          <a href="/pages/account.html">Account</a>
+        </nav>
+        <div class="header-actions">
+          <a href="/pages/cart.html" class="cart-link">Cart (<span class="cart-count">0</span>)</a>
+          <a href="/pages/login.html" class="login-link">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Type Selector -->
+  <section class="section">
+    <div class="container" style="max-width: 1000px;">
+      <h1 style="text-align: center; margin-bottom: 1rem;">Select Your Project Type</h1>
+      <p style="text-align: center; margin-bottom: 3rem; color: var(--color-text-light);">Choose the type of project you're working on to see relevant products</p>
+      
+      <div class="grid grid-2" style="gap: 2rem;">
+        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('new_construction')">
+          <div class="card-header">
+            <h3>New Construction</h3>
+          </div>
+          <div class="card-body">
+            <p>Structural materials, framing lumber, foundation supplies, and materials for new building projects.</p>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+              <strong>Best for:</strong> General contractors, commercial builders, residential developers
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('remodel')">
+          <div class="card-header">
+            <h3>Remodel</h3>
+          </div>
+          <div class="card-body">
+            <p>Finishing materials, windows, doors, drywall, and renovation supplies for existing structures.</p>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+              <strong>Best for:</strong> Remodeling contractors, renovation specialists, home improvement
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('repair')">
+          <div class="card-header">
+            <h3>Repair</h3>
+          </div>
+          <div class="card-body">
+            <p>Maintenance products, smaller quantities, quick availability for repair and maintenance work.</p>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+              <strong>Best for:</strong> Maintenance teams, repair contractors, property managers
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('restoration')">
+          <div class="card-header">
+            <h3>Restoration</h3>
+          </div>
+          <div class="card-body">
+            <p>Specialty items, matching materials, historic preservation products for restoration projects.</p>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+              <strong>Best for:</strong> Historic preservation, restoration specialists, custom builders
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="/pages/catalog.html" class="btn btn-primary btn-lg">Continue to Catalog</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function selectProjectType(type) {
+      localStorage.setItem('buildright_project_type', type);
+      window.location.href = '/pages/catalog.html';
+    }
+  </script>
+  <script type="module" src="/scripts/app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,18 @@
+{
+  "name": "buildright-website",
+  "version": "1.0.0",
+  "description": "BuildRight Solutions website prototype",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "npx http-server -p 8000 -c-1"
+  },
+  "keywords": [
+    "buildright",
+    "b2b",
+    "commerce",
+    "eds"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+

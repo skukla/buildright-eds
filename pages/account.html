@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Dashboard - BuildRight Solutions</title>
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/utilities.css">
+  <link rel="stylesheet" href="/blocks/header/header.css">
+  <link rel="stylesheet" href="/blocks/tier-badge/tier-badge.css">
+</head>
+<body>
+  <!-- Header Block -->
+  <div class="header">
+    <div>
+      <div>
+        <div class="header-brand">
+          <a href="/">BuildRight Solutions</a>
+        </div>
+        <nav class="header-nav">
+          <a href="/">Home</a>
+          <a href="/pages/catalog.html">Catalog</a>
+          <a href="/pages/account.html">Account</a>
+        </nav>
+        <div class="header-actions">
+          <a href="/pages/cart.html" class="cart-link">Cart (<span class="cart-count">0</span>)</a>
+          <a href="/pages/login.html" class="login-link">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Dashboard -->
+  <section class="section">
+    <div class="container" style="max-width: 1000px;">
+      <h1 style="margin-bottom: 2rem;">Account Dashboard</h1>
+
+      <!-- Tier Badge -->
+      <div class="tier-badge" id="tier-badge" style="margin-bottom: 2rem;">
+        <div>
+          <div>
+            <span class="tier-label">Loading...</span>
+            <span class="savings-indicator"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Company Information -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <div class="card-header">
+          <h2>Company Information</h2>
+        </div>
+        <div class="card-body">
+          <div id="company-info">
+            <p><strong>Company:</strong> <span id="company-name">Loading...</span></p>
+            <p><strong>Region:</strong> <span id="company-region">Loading...</span></p>
+            <p><strong>Primary Warehouse:</strong> <span id="primary-warehouse">Loading...</span></p>
+            <p><strong>Locations:</strong> <span id="company-locations">Loading...</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-3" style="margin-bottom: 2rem;">
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Orders</h3>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--color-text-light);">View your order history and track shipments.</p>
+          </div>
+          <div class="card-footer">
+            <a href="/pages/order-history.html" class="btn btn-outline btn-sm">View Orders</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Saved Projects</h3>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--color-text-light);">Quick access to your frequently used project types.</p>
+          </div>
+          <div class="card-footer">
+            <a href="/pages/project-selector.html" class="btn btn-outline btn-sm">Select Project</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Rewards & Benefits</h3>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--color-text-light);">Track your loyalty spend and unlock exclusive perks.</p>
+          </div>
+          <div class="card-footer">
+            <a href="/pages/rewards.html" class="btn btn-outline btn-sm">View Rewards</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Account Settings</h3>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--color-text-light);">Manage your account preferences and company information.</p>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-outline btn-sm" onclick="alert('Account settings coming soon!')">Edit Settings</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="/scripts/app.js"></script>
+  <script type="module">
+    import { getCustomerContext } from '/scripts/data-mock.js';
+    import { decorateBlock } from '/scripts/utils.js';
+    
+    // Load account info
+    function loadAccountInfo() {
+      const context = getCustomerContext();
+      
+      document.getElementById('company-name').textContent = context.company || 'Not set';
+      document.getElementById('company-region').textContent = context.region || 'Not set';
+      document.getElementById('primary-warehouse').textContent = context.primary_warehouse || 'Not set';
+      document.getElementById('company-locations').textContent = context.locations?.join(', ') || 'Not set';
+    }
+
+    // Decorate tier badge
+    document.addEventListener('DOMContentLoaded', async () => {
+      const tierBadge = document.getElementById('tier-badge');
+      if (tierBadge) {
+        await decorateBlock(tierBadge, 'tier-badge');
+      }
+      loadAccountInfo();
+    });
+  </script>
+</body>
+</html>
+

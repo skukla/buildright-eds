@@ -1,0 +1,212 @@
+/* BuildRight Solutions - Base Styles & Design System */
+
+:root {
+  /* Color Palette - B2B Construction Aesthetic (Muted Blue Theme) */
+  --color-primary: #1e3a8a;        /* blue-900 - Darker, muted professional blue */
+  --color-primary-dark: #1e40af;   /* blue-800 - Darker hover states */
+  --color-primary-light: #3b82f6;  /* blue-500 - Lighter variant for accents */
+  --color-secondary: #475569;      /* slate-600 - Secondary actions, text */
+  --color-secondary-dark: #334155; /* slate-700 - Secondary hover */
+  --color-accent: #0d9488;         /* teal-600 - Accent color for informational badges and Project Builder features */
+  --color-accent-light: #14b8a6;   /* teal-500 - Lighter accent variant */
+  --color-cta: #0d9488;            /* teal-600 - High-priority CTAs only (checkout, final conversions) */
+  --color-cta-dark: #14b8a6;      /* teal-500 - CTA hover (lighter for better feedback) */
+  --color-success: #10b981;        /* green-500 - In stock, success states */
+  --color-warning: #f59e0b;        /* amber-500 - Low stock warnings */
+  --color-error: #ef4444;          /* red-500 - Out of stock, errors */
+  --color-background: #FFFFFF;     /* White background */
+  --color-surface: #F8FAFC;        /* slate-50 - Card backgrounds */
+  --color-border: #E2E8F0;         /* slate-200 - Dividers */
+  --color-text: #1E293B;           /* slate-800 - Primary text */
+  --color-text-light: #64748B;     /* slate-500 - Secondary text */
+
+  /* Typography */
+  --font-family: Arial, Helvetica, sans-serif;
+  --font-size-base: 1rem;          /* 16px */
+  --font-size-xs: 0.75rem;         /* 12px */
+  --font-size-sm: 0.875rem;        /* 14px */
+  --font-size-lg: 1.125rem;        /* 18px */
+  --line-height-base: 1.5;
+  --line-height-tight: 1.25;
+
+  /* Spacing System (4px base unit) */
+  --spacing-1: 0.25rem;   /* 4px */
+  --spacing-2: 0.5rem;    /* 8px */
+  --spacing-3: 0.75rem;   /* 12px */
+  --spacing-4: 1rem;      /* 16px */
+  --spacing-5: 1.25rem;   /* 20px */
+  --spacing-6: 1.5rem;    /* 24px */
+  --spacing-8: 2rem;      /* 32px */
+  --spacing-10: 2.5rem;   /* 40px */
+  --spacing-12: 3rem;     /* 48px */
+  --spacing-16: 4rem;     /* 64px */
+  --spacing-20: 5rem;     /* 80px */
+
+  /* Layout */
+  --container-max-width: 1280px;
+  --section-padding-vertical: 5rem;   /* 80px */
+  --section-padding-horizontal: 1.5rem; /* 24px */
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-full: 9999px;  /* Pill shape */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+}
+
+/* Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-4);
+}
+
+h1 {
+  font-size: 2.5rem; /* 40px */
+}
+
+h2 {
+  font-size: 2rem; /* 32px */
+}
+
+h3 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+}
+
+p {
+  margin-bottom: var(--spacing-4);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+/* Container */
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-horizontal);
+}
+
+/* Section */
+.section {
+  padding: var(--section-padding-vertical) var(--section-padding-horizontal);
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.text-lg {
+  font-size: var(--font-size-lg);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-warning {
+  color: var(--color-warning);
+}
+
+.text-error {
+  color: var(--color-error);
+}
+
+.text-light {
+  color: var(--color-text-light);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  :root {
+    --section-padding-vertical: 3rem; /* 48px */
+    --section-padding-horizontal: 1rem; /* 16px */
+  }
+
+  h1 {
+    font-size: 2rem; /* 32px */
+  }
+
+  h2 {
+    font-size: 1.75rem; /* 28px */
+  }
+
+  h3 {
+    font-size: 1.25rem; /* 20px */
+  }
+}
+

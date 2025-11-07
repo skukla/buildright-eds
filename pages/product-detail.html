@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail - BuildRight Solutions</title>
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/utilities.css">
+  <link rel="stylesheet" href="/blocks/header/header.css">
+  <link rel="stylesheet" href="/blocks/tier-badge/tier-badge.css">
+  <link rel="stylesheet" href="/blocks/pricing-display/pricing-display.css">
+  <link rel="stylesheet" href="/blocks/inventory-status/inventory-status.css">
+</head>
+<body>
+  <!-- Header Block -->
+  <div class="header">
+    <div>
+      <div>
+        <div class="header-brand">
+          <a href="/">BuildRight Solutions</a>
+        </div>
+        <nav class="header-nav">
+          <a href="/">Home</a>
+          <a href="/pages/catalog.html">Catalog</a>
+          <a href="/pages/account.html">Account</a>
+        </nav>
+        <div class="header-actions">
+          <a href="/pages/cart.html" class="cart-link">Cart (<span class="cart-count">0</span>)</a>
+          <a href="/pages/login.html" class="login-link">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail -->
+  <section class="section">
+    <div class="container" style="max-width: 1200px;">
+      <!-- Tier Badge -->
+      <div class="tier-badge" id="tier-badge">
+        <div>
+          <div>
+            <span class="tier-label">Loading...</span>
+            <span class="savings-indicator"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div id="product-info" style="margin: 2rem 0;">
+        <h1 id="product-name" style="margin-bottom: 0.5rem;">Loading...</h1>
+        <p id="product-sku" style="color: var(--color-text-light); margin-bottom: 1rem;">SKU: Loading...</p>
+        <p id="product-description" style="font-size: 1.125rem; line-height: 1.6; margin-bottom: 2rem;">Loading...</p>
+      </div>
+
+      <!-- Pricing Display -->
+      <div class="pricing-display" id="pricing-display" data-sku="">
+        <div>
+          <div>
+            <div class="current-price-section">
+              <span class="current-price">$0.00</span>
+              <span class="tier-indicator">Loading...</span>
+            </div>
+            <div class="volume-pricing">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                  </tr>
+                </thead>
+                <tbody class="pricing-tiers">
+                  <!-- Pricing tiers will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Status -->
+      <div class="inventory-status" id="inventory-status" data-sku="" style="margin: 2rem 0;">
+        <div>
+          <div>
+            <h3>Regional Inventory Availability</h3>
+            <div class="warehouse-list">
+              <!-- Warehouse items will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add to Cart -->
+      <div style="background: var(--color-surface); padding: 2rem; border-radius: 0.5rem; border: 1px solid var(--color-border); margin: 2rem 0;">
+        <div style="display: grid; grid-template-columns: 200px 1fr; gap: 1rem; align-items: center;">
+          <div>
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" id="quantity" class="form-input" value="1" min="1" style="width: 100%;">
+          </div>
+          <div>
+            <button id="add-to-cart-btn" class="btn btn-primary btn-lg" style="width: 100%;">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Specifications -->
+      <div style="margin: 2rem 0;">
+        <h2 style="margin-bottom: 1.5rem;">Specifications</h2>
+        <div id="product-specs" style="background: var(--color-surface); padding: 2rem; border-radius: 0.5rem; border: 1px solid var(--color-border);">
+          <!-- Specifications will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="/scripts/app.js"></script>
+  <script type="module">
+    import { getUrlParameter } from '/scripts/utils.js';
+    import { getProductBySKU } from '/scripts/data-mock.js';
+    import { decorateBlock } from '/scripts/utils.js';
+    
+    // Load product detail
+    async function loadProductDetail() {
+      const sku = getUrlParameter('sku');
+      if (!sku) {
+        window.location.href = '/pages/catalog.html';
+        return;
+      }
+
+      const product = await getProductBySKU(sku);
+      if (!product) {
+        window.location.href = '/pages/catalog.html';
+        return;
+      }
+
+      // Update product info
+      document.getElementById('product-name').textContent = product.name;
+      document.getElementById('product-sku').textContent = `SKU: ${product.sku}`;
+      document.getElementById('product-description').textContent = product.description || '';
+
+      // Update pricing display
+      const pricingDisplay = document.getElementById('pricing-display');
+      pricingDisplay.setAttribute('data-sku', sku);
+      await decorateBlock(pricingDisplay, 'pricing-display');
+
+      // Update inventory status
+      const inventoryStatus = document.getElementById('inventory-status');
+      inventoryStatus.setAttribute('data-sku', sku);
+      await decorateBlock(inventoryStatus, 'inventory-status');
+
+      // Update tier badge
+      const tierBadge = document.getElementById('tier-badge');
+      await decorateBlock(tierBadge, 'tier-badge');
+
+      // Update specifications
+      const specsContainer = document.getElementById('product-specs');
+      if (product.attributes) {
+        const table = document.createElement('table');
+        table.className = 'table';
+        const tbody = document.createElement('tbody');
+        
+        Object.entries(product.attributes).forEach(([key, value]) => {
+          const row = document.createElement('tr');
+          const keyCell = document.createElement('td');
+          keyCell.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+          keyCell.style.fontWeight = '600';
+          row.appendChild(keyCell);
+          
+          const valueCell = document.createElement('td');
+          valueCell.textContent = Array.isArray(value) ? value.join(', ') : value;
+          row.appendChild(valueCell);
+          
+          tbody.appendChild(row);
+        });
+        
+        table.appendChild(tbody);
+        specsContainer.innerHTML = '';
+        specsContainer.appendChild(table);
+      }
+
+      // Add to cart handler
+      document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+        const quantity = parseInt(document.getElementById('quantity').value) || 1;
+        window.dispatchEvent(new CustomEvent('addToCart', {
+          detail: { sku, quantity }
+        }));
+      });
+
+      // Quantity change handler
+      document.getElementById('quantity').addEventListener('change', (e) => {
+        const quantity = parseInt(e.target.value) || 1;
+        window.dispatchEvent(new CustomEvent('quantityChanged', {
+          detail: { sku, quantity }
+        }));
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProductDetail);
+  </script>
+</body>
+</html>
+

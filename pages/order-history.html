@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History - BuildRight Solutions</title>
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <style>
+    .page-header {
+      background: var(--color-surface);
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 2rem;
+    }
+
+    .page-header-content {
+      max-width: var(--container-max-width);
+      margin: 0 auto;
+      padding: 0 var(--section-padding-horizontal);
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0 0 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--color-text-light);
+      margin: 0;
+    }
+
+    .orders-container {
+      max-width: var(--container-max-width);
+      margin: 0 auto;
+      padding: 0 var(--section-padding-horizontal) 4rem;
+    }
+
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--color-background);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .orders-table thead {
+      background: var(--color-surface);
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .orders-table th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+      color: var(--color-text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .orders-table td {
+      padding: 1.25rem 1rem;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: middle;
+    }
+
+    .orders-table tbody tr:hover {
+      background: var(--color-surface);
+    }
+
+    .orders-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .order-date {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .order-id {
+      font-family: monospace;
+      font-size: var(--font-size-sm);
+      color: var(--color-primary);
+    }
+
+    .order-items {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-items-count {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .order-total {
+      font-weight: 700;
+      font-size: var(--font-size-lg);
+      color: var(--color-primary);
+    }
+
+    .order-status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .order-status.completed {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .order-status.pending {
+      background: var(--color-warning);
+      color: white;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: var(--font-size-sm);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      border: 2px dashed var(--color-border);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state-text {
+      color: var(--color-text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .order-details-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .order-details-modal.active {
+      display: flex;
+    }
+
+    .order-details-content {
+      background: var(--color-background);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      width: 100%;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .order-details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .order-details-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-text-light);
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+    }
+
+    .close-modal:hover {
+      background: var(--color-surface);
+      color: var(--color-text);
+    }
+
+    .order-details-products {
+      margin-top: 1.5rem;
+    }
+
+    .order-details-products table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .order-details-products th {
+      padding: 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+      color: var(--color-text);
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .order-details-products td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    @media (max-width: 768px) {
+      .orders-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .orders-table thead {
+        display: none;
+      }
+
+      .orders-table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+      }
+
+      .orders-table td {
+        display: block;
+        text-align: right;
+        padding: 0.5rem 0;
+        border-bottom: none;
+      }
+
+      .orders-table td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--color-text-light);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Block -->
+  <div data-block-name="header"></div>
+
+  <div class="page-header">
+    <div class="page-header-content">
+      <h1 class="page-title">Order History</h1>
+      <p class="page-subtitle">View and manage your past project orders</p>
+    </div>
+  </div>
+
+  <div class="orders-container">
+    <div id="orders-content">
+      <!-- Orders will be loaded here -->
+    </div>
+  </div>
+
+  <!-- Order Details Modal -->
+  <div class="order-details-modal" id="order-details-modal">
+    <div class="order-details-content">
+      <div class="order-details-header">
+        <h2 class="order-details-title" id="order-details-title">Order Details</h2>
+        <button class="close-modal" id="close-modal">×</button>
+      </div>
+      <div id="order-details-body">
+        <!-- Order details will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { decorateBlock } from '/scripts/utils.js';
+
+    // Load orders from localStorage
+    function loadOrders() {
+      try {
+        const orders = JSON.parse(localStorage.getItem('buildright_orders') || '[]');
+        return orders;
+      } catch (e) {
+        console.error('Error loading orders:', e);
+        return [];
+      }
+    }
+
+    // Format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+    }
+
+    // Display orders
+    function displayOrders() {
+      const orders = loadOrders();
+      const container = document.getElementById('orders-content');
+
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📦</div>
+            <h3 class="empty-state-title">No Orders Yet</h3>
+            <p class="empty-state-text">Your completed project orders will appear here.</p>
+            <a href="/pages/project-builder.html" class="btn btn-primary">Start Building a Project</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Order ID</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${orders.map(order => `
+              <tr>
+                <td data-label="Date" class="order-date">${formatDate(order.timestamp)}</td>
+                <td data-label="Order ID" class="order-id">${order.orderID}</td>
+                <td data-label="Items">
+                  <div class="order-items">
+                    <span class="order-items-count">${order.itemCount} items</span>
+                  </div>
+                </td>
+                <td data-label="Total" class="order-total">$${order.total.toFixed(2)}</td>
+                <td data-label="Status">
+                  <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
+                </td>
+                <td data-label="Actions">
+                  <div class="order-actions">
+                    <button class="btn btn-outline btn-sm view-details-btn" data-order-id="${order.orderID}">View Details</button>
+                    <button class="btn btn-primary btn-sm reorder-btn" data-order-id="${order.orderID}">Build Similar</button>
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+
+      // Add event listeners
+      document.querySelectorAll('.view-details-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const orderID = btn.dataset.orderId;
+          showOrderDetails(orderID);
+        });
+      });
+
+      document.querySelectorAll('.reorder-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const orderID = btn.dataset.orderId;
+          reorderProject(orderID);
+        });
+      });
+    }
+
+    // Show order details
+    function showOrderDetails(orderID) {
+      const orders = loadOrders();
+      const order = orders.find(o => o.orderID === orderID);
+      
+      if (!order) return;
+
+      const modal = document.getElementById('order-details-modal');
+      const title = document.getElementById('order-details-title');
+      const body = document.getElementById('order-details-body');
+
+      title.textContent = `Order ${order.orderID}`;
+      
+      body.innerHTML = `
+        <div>
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <div style="font-size: var(--font-size-sm); color: var(--color-text-light); margin-bottom: 0.25rem;">Order Date</div>
+                <div style="font-weight: 600;">${formatDate(order.timestamp)}</div>
+              </div>
+              <div>
+                <div style="font-size: var(--font-size-sm); color: var(--color-text-light); margin-bottom: 0.25rem;">Status</div>
+                <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
+              </div>
+              <div>
+                <div style="font-size: var(--font-size-sm); color: var(--color-text-light); margin-bottom: 0.25rem;">Items</div>
+                <div style="font-weight: 600;">${order.itemCount} items</div>
+              </div>
+              <div>
+                <div style="font-size: var(--font-size-sm); color: var(--color-text-light); margin-bottom: 0.25rem;">Total</div>
+                <div style="font-weight: 700; font-size: var(--font-size-lg); color: var(--color-primary);">$${order.total.toFixed(2)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-details-products">
+            <h3 style="font-size: var(--font-size-lg); font-weight: 600; margin-bottom: 1rem;">Products</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${order.products.map(product => `
+                  <tr>
+                    <td>${product.name}</td>
+                    <td style="font-family: monospace; font-size: var(--font-size-xs);">${product.sku}</td>
+                    <td>${product.quantity}</td>
+                    <td>$${product.unitPrice.toFixed(2)}</td>
+                    <td style="font-weight: 600;">$${product.subtotal.toFixed(2)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      modal.classList.add('active');
+    }
+
+    // Reorder project
+    function reorderProject(orderID) {
+      const orders = loadOrders();
+      const order = orders.find(o => o.orderID === orderID);
+      
+      if (!order || !order.wizardState) return;
+
+      // Save wizard state and redirect to project builder
+      sessionStorage.setItem('buildright_wizard_state', JSON.stringify(order.wizardState));
+      window.location.href = '/pages/project-builder.html';
+    }
+
+    // Close modal
+    document.getElementById('close-modal').addEventListener('click', () => {
+      document.getElementById('order-details-modal').classList.remove('active');
+    });
+
+    // Close modal on background click
+    document.getElementById('order-details-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'order-details-modal') {
+        e.target.classList.remove('active');
+      }
+    });
+
+    // Initialize
+    displayOrders();
+    decorateBlock(document.querySelector('[data-block-name="header"]'));
+  </script>
+  <script type="module" src="/scripts/app.js"></script>
+  <script type="module" src="/blocks/header/header.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Catalog - BuildRight Solutions</title>
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="/styles/utilities.css">
+  <link rel="stylesheet" href="/blocks/header/header.css">
+  <link rel="stylesheet" href="/blocks/project-filter/project-filter.css">
+  <link rel="stylesheet" href="/blocks/product-grid/product-grid.css">
+  <link rel="stylesheet" href="/blocks/filters-sidebar/filters-sidebar.css">
+</head>
+<body>
+  <!-- Header Block -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-top-content">
+        <div class="header-location">
+          <span class="location-label">You're Shopping</span>
+          <button class="location-selector" id="location-selector">
+            <span class="location-name">Sacramento RDC, CA</span>
+            <span class="location-icon">▼</span>
+          </button>
+        </div>
+        <div class="header-top-links">
+          <a href="/pages/order-history.html">Order History</a>
+          <a href="/pages/rewards.html">Rewards</a>
+          <a href="/pages/account.html#lists">My Lists</a>
+          <a href="/pages/account.html#help">Help</a>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="header-main-content">
+        <div class="header-brand">
+          <a href="/">BuildRight</a>
+        </div>
+        <div class="header-search">
+          <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
+          <button class="search-button" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="header-actions">
+          <a href="/pages/login.html" class="header-action-link">
+            <span class="action-label">Login</span>
+          </a>
+          <span class="action-separator">|</span>
+          <a href="/pages/login.html" class="header-action-link">
+            <span class="action-label">Create Account</span>
+          </a>
+          <a href="/pages/cart.html" class="cart-link">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-label">Cart</span>
+            <span class="cart-count">0</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="header-nav-bar">
+      <div class="header-nav-content">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="main-nav">
+          <div class="nav-item">
+            <button class="nav-link" data-category="all">All Products</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="structural">Structural Materials</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="windows">Windows & Doors</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="fasteners">Fasteners & Hardware</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="roofing">Roofing</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="framing">Framing & Drywall</button>
+          </div>
+        </nav>
+        <div class="nav-industry">
+          <button class="industry-toggle" id="industry-toggle">Shop By Industry ▼</button>
+        </div>
+      </div>
+    </div>
+    <div class="industry-menu" id="industry-menu">
+      <div class="industry-menu-content">
+        <div class="industry-column">
+          <h3>Commercial</h3>
+          <ul>
+            <li><a href="/pages/catalog.html?division=commercial">Commercial Construction</a></li>
+            <li><a href="/pages/catalog.html?division=commercial&category=structural_materials">Structural Materials</a></li>
+            <li><a href="/pages/catalog.html?division=commercial&category=windows_doors">Windows & Doors</a></li>
+          </ul>
+        </div>
+        <div class="industry-column">
+          <h3>Residential</h3>
+          <ul>
+            <li><a href="/pages/catalog.html?division=residential">Residential Construction</a></li>
+            <li><a href="/pages/catalog.html?division=residential&category=structural_materials">Framing Materials</a></li>
+            <li><a href="/pages/catalog.html?division=residential&category=windows_doors">Residential Windows</a></li>
+          </ul>
+        </div>
+        <div class="industry-column">
+          <h3>Pro</h3>
+          <ul>
+            <li><a href="/pages/catalog.html?division=pro">Trade Contractors</a></li>
+            <li><a href="/pages/catalog.html?division=pro&category=fasteners_hardware">Fasteners & Tools</a></li>
+            <li><a href="/pages/catalog.html?division=pro&category=roofing">Roofing Supplies</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breadcrumbs -->
+  <div style="background: var(--color-surface); padding: var(--spacing-3) 0; border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <nav style="font-size: var(--font-size-sm); color: var(--color-text-light);">
+          <a href="/" style="color: var(--color-primary); text-decoration: none;">Home</a>
+          <span style="margin: 0 var(--spacing-2);">/</span>
+          <span>Products</span>
+        </nav>
+        <a href="/pages/project-builder.html" class="btn btn-accent btn-sm">Build a Project Kit</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 280px 1fr; gap: 2rem;" id="catalog-layout">
+        <!-- Filters Sidebar -->
+        <aside id="filters-aside">
+          <div class="filters-sidebar">
+            <div>
+              <div>
+                <div class="filters-header">
+                  <h3>Refine Results</h3>
+                  <button class="clear-filters" id="clear-filters">Clear All</button>
+                </div>
+                
+                <div class="filter-section">
+                  <button class="filter-toggle" data-filter="category" aria-expanded="true">
+                    <span>Category</span>
+                    <span class="toggle-icon">▼</span>
+                  </button>
+                  <div class="filter-content active" id="filter-category">
+                    <div class="filter-item">
+                      <input type="checkbox" id="cat-all" name="category" value="" checked>
+                      <label for="cat-all">All Categories</label>
+                      <span class="filter-count">(20)</span>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="cat-structural" name="category" value="structural_materials">
+                      <label for="cat-structural">Structural Materials</label>
+                      <span class="filter-count">(8)</span>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="cat-windows" name="category" value="windows_doors">
+                      <label for="cat-windows">Windows & Doors</label>
+                      <span class="filter-count">(3)</span>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="cat-fasteners" name="category" value="fasteners_hardware">
+                      <label for="cat-fasteners">Fasteners & Hardware</label>
+                      <span class="filter-count">(4)</span>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="cat-roofing" name="category" value="roofing">
+                      <label for="cat-roofing">Roofing</label>
+                      <span class="filter-count">(2)</span>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="cat-framing" name="category" value="framing_drywall">
+                      <label for="cat-framing">Framing & Drywall</label>
+                      <span class="filter-count">(3)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filter-section">
+                  <button class="filter-toggle" data-filter="project" aria-expanded="true">
+                    <span>Project Type</span>
+                    <span class="toggle-icon">▼</span>
+                  </button>
+                  <div class="filter-content active" id="filter-project">
+                    <div class="filter-item">
+                      <input type="checkbox" id="proj-all" name="project" value="" checked>
+                      <label for="proj-all">All Projects</label>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="proj-new" name="project" value="new_construction">
+                      <label for="proj-new">New Construction</label>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="proj-remodel" name="project" value="remodel">
+                      <label for="proj-remodel">Remodel</label>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="proj-repair" name="project" value="repair">
+                      <label for="proj-repair">Repair</label>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="proj-restore" name="project" value="restoration">
+                      <label for="proj-restore">Restoration</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filter-section">
+                  <button class="filter-toggle" data-filter="price" aria-expanded="false">
+                    <span>Price Range</span>
+                    <span class="toggle-icon">▼</span>
+                  </button>
+                  <div class="filter-content" id="filter-price">
+                    <div class="price-inputs">
+                      <input type="number" id="price-min" placeholder="Min" min="0" step="0.01">
+                      <span>to</span>
+                      <input type="number" id="price-max" placeholder="Max" min="0" step="0.01">
+                    </div>
+                    <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 0.5rem;">Apply</button>
+                  </div>
+                </div>
+
+                <div class="filter-section">
+                  <button class="filter-toggle" data-filter="availability" aria-expanded="false">
+                    <span>Availability</span>
+                    <span class="toggle-icon">▼</span>
+                  </button>
+                  <div class="filter-content" id="filter-availability">
+                    <div class="filter-item">
+                      <input type="checkbox" id="avail-all" name="availability" value="" checked>
+                      <label for="avail-all">All Products</label>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="avail-instock" name="availability" value="in_stock">
+                      <label for="avail-instock">In Stock</label>
+                    </div>
+                    <div class="filter-item">
+                      <input type="checkbox" id="avail-lowstock" name="availability" value="low_stock">
+                      <label for="avail-lowstock">Low Stock</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <main>
+          <div class="product-grid">
+            <div>
+              <div>
+                <div class="grid-header">
+                  <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="btn btn-outline btn-sm" id="mobile-filter-toggle" style="display: none;">Filters</button>
+                    <h2 style="margin: 0;">Products</h2>
+                  </div>
+                  <div class="product-count">0 products</div>
+                </div>
+                <div class="products-container">
+                  <!-- Products will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="/scripts/app.js"></script>
+  <script type="module">
+    import { decorateBlock } from '/scripts/utils.js';
+    
+      // Decorate blocks
+      document.addEventListener('DOMContentLoaded', async () => {
+        const productGrid = document.querySelector('.product-grid');
+        const filtersSidebar = document.querySelector('.filters-sidebar');
+        
+        if (productGrid) await decorateBlock(productGrid, 'product-grid');
+        if (filtersSidebar) await decorateBlock(filtersSidebar, 'filters-sidebar');
+
+      // Mobile filter toggle
+      const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
+      const filtersAside = document.getElementById('filters-aside');
+      
+      if (mobileFilterToggle && filtersAside) {
+        const checkMobile = () => {
+          if (window.innerWidth <= 768) {
+            mobileFilterToggle.style.display = 'block';
+            filtersAside.style.display = 'none';
+          } else {
+            mobileFilterToggle.style.display = 'none';
+            filtersAside.style.display = 'block';
+          }
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
+        mobileFilterToggle.addEventListener('click', () => {
+          filtersAside.style.display = filtersAside.style.display === 'none' ? 'block' : 'none';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+

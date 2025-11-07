@@ -1,0 +1,1080 @@
+{
+  "products": [
+    {
+      "sku": "LBR-D0414F1E",
+      "name": "ToughGrip 2x4 Stud - 8ft",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "ToughGrip 2x4 Stud - 8ft. structural materials product from toughgrip.",
+      "pricing": {
+        "base": 34.48,
+        "commercial_tier1": {
+          "1-99": 33.45,
+          "100-293": 32.76,
+          "294+": 32.07
+        },
+        "commercial_tier2": {
+          "1-99": 32.76,
+          "100-293": 32.07,
+          "294+": 31.03
+        },
+        "residential_builder": {
+          "1-99": 34.48,
+          "100-293": 33.45,
+          "294+": 32.76
+        },
+        "pro_specialty": {
+          "1-99": 34.48,
+          "100-293": 33.79,
+          "294+": 33.1
+        }
+      },
+      "inventory": {
+        "warehouse_west": 319,
+        "warehouse_east": 191,
+        "warehouse_phoenix": 171,
+        "warehouse_denver": 163,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "ppe cut resistance": "a7",
+        "ppe hard hat class": "class_c"
+      }
+    },
+    {
+      "sku": "LBR-2EBB314A",
+      "name": "SafeGuard 2x6 Stud - 8ft",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "description": "SafeGuard 2x6 Stud - 8ft. structural materials product from proframe.",
+      "pricing": {
+        "base": 18.72,
+        "commercial_tier1": {
+          "1-99": 18.16,
+          "100-293": 17.78,
+          "294+": 17.41
+        },
+        "commercial_tier2": {
+          "1-99": 17.78,
+          "100-293": 17.41,
+          "294+": 16.85
+        },
+        "residential_builder": {
+          "1-99": 18.72,
+          "100-293": 18.16,
+          "294+": 17.78
+        },
+        "pro_specialty": {
+          "1-99": 18.72,
+          "100-293": 18.35,
+          "294+": 17.97
+        }
+      },
+      "inventory": {
+        "warehouse_west": 305,
+        "warehouse_east": 110,
+        "warehouse_phoenix": 200,
+        "warehouse_denver": 140,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "ppe cut resistance": "a8",
+        "lumber treatment": "pressure_treated_aca",
+        "ppe category": "hearing_protection",
+        "drywall edge type": "square",
+        "ppe niosh rating": "p100"
+      }
+    },
+    {
+      "sku": "LBR-26852468",
+      "name": "FastenPro 2x8 Joist - 10ft",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "description": "FastenPro 2x8 Joist - 10ft. structural materials product from structuremaster.",
+      "pricing": {
+        "base": 33.46,
+        "commercial_tier1": {
+          "1-99": 32.46,
+          "100-293": 31.79,
+          "294+": 31.12
+        },
+        "commercial_tier2": {
+          "1-99": 31.79,
+          "100-293": 31.12,
+          "294+": 30.11
+        },
+        "residential_builder": {
+          "1-99": 33.46,
+          "100-293": 32.46,
+          "294+": 31.79
+        },
+        "pro_specialty": {
+          "1-99": 33.46,
+          "100-293": 32.79,
+          "294+": 32.12
+        }
+      },
+      "inventory": {
+        "warehouse_west": 212,
+        "warehouse_east": 130,
+        "warehouse_phoenix": 84,
+        "warehouse_denver": 112,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "door core type": "foam_core",
+        "door material": "vinyl",
+        "drywall product type": "mold_resistant"
+      }
+    },
+    {
+      "sku": "LBR-2D637246",
+      "name": "PremiumBuild 2x10 Joist - 12ft",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "PremiumBuild 2x10 Joist - 12ft. structural materials product from premiumbuild.",
+      "pricing": {
+        "base": 49.81,
+        "commercial_tier1": {
+          "1-99": 48.32,
+          "100-293": 47.32,
+          "294+": 46.32
+        },
+        "commercial_tier2": {
+          "1-99": 47.32,
+          "100-293": 46.32,
+          "294+": 44.83
+        },
+        "residential_builder": {
+          "1-99": 49.81,
+          "100-293": 48.32,
+          "294+": 47.32
+        },
+        "pro_specialty": {
+          "1-99": 49.81,
+          "100-293": 48.81,
+          "294+": 47.82
+        }
+      },
+      "inventory": {
+        "warehouse_west": 320,
+        "warehouse_east": 129,
+        "warehouse_phoenix": 173,
+        "warehouse_denver": 143,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "fastener material": "steel",
+        "fastener drive type": "torx"
+      }
+    },
+    {
+      "sku": "LBR-96F409FB",
+      "name": "ToughGrip 2x12 Beam - 16ft",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "ToughGrip 2x12 Beam - 16ft. structural materials product from fastenpro.",
+      "pricing": {
+        "base": 35.58,
+        "commercial_tier1": {
+          "1-99": 34.51,
+          "100-293": 33.8,
+          "294+": 33.09
+        },
+        "commercial_tier2": {
+          "1-99": 33.8,
+          "100-293": 33.09,
+          "294+": 32.02
+        },
+        "residential_builder": {
+          "1-99": 35.58,
+          "100-293": 34.51,
+          "294+": 33.8
+        },
+        "pro_specialty": {
+          "1-99": 35.58,
+          "100-293": 34.87,
+          "294+": 34.16
+        }
+      },
+      "inventory": {
+        "warehouse_west": 416,
+        "warehouse_east": 194,
+        "warehouse_phoenix": 183,
+        "warehouse_denver": 200,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "drywall fire rating": "non_rated",
+        "fastener head type": "flat"
+      }
+    },
+    {
+      "sku": "LBR-9D32768F",
+      "name": "ProFrame 4x4 Post - 8ft",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "ProFrame 4x4 Post - 8ft. structural materials product from premiumbuild.",
+      "pricing": {
+        "base": 35.29,
+        "commercial_tier1": {
+          "1-99": 34.23,
+          "100-293": 33.53,
+          "294+": 32.82
+        },
+        "commercial_tier2": {
+          "1-99": 33.53,
+          "100-293": 32.82,
+          "294+": 31.76
+        },
+        "residential_builder": {
+          "1-99": 35.29,
+          "100-293": 34.23,
+          "294+": 33.53
+        },
+        "pro_specialty": {
+          "1-99": 35.29,
+          "100-293": 34.58,
+          "294+": 33.88
+        }
+      },
+      "inventory": {
+        "warehouse_west": 219,
+        "warehouse_east": 100,
+        "warehouse_phoenix": 141,
+        "warehouse_denver": 83,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "ppe nrr rating": "30",
+        "fastener drive type": "phillips",
+        "fastener subtype": "framing_nail",
+        "door core type": "hollow_core"
+      }
+    },
+    {
+      "sku": "PLY-7D58FF99",
+      "name": "ProFrame OSB Sheathing 7/16\" - 4x8",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "ProFrame OSB Sheathing 7/16\" - 4x8. structural materials product from proframe.",
+      "pricing": {
+        "base": 25.54,
+        "commercial_tier1": {
+          "1-99": 24.77,
+          "100-293": 24.26,
+          "294+": 23.75
+        },
+        "commercial_tier2": {
+          "1-99": 24.26,
+          "100-293": 23.75,
+          "294+": 22.99
+        },
+        "residential_builder": {
+          "1-99": 25.54,
+          "100-293": 24.77,
+          "294+": 24.26
+        },
+        "pro_specialty": {
+          "1-99": 25.54,
+          "100-293": 25.03,
+          "294+": 24.52
+        }
+      },
+      "inventory": {
+        "warehouse_west": 250,
+        "warehouse_east": 143,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "fastener material": "steel",
+        "fastener coating": "hot_dip_galvanized",
+        "window energy star": true,
+        "fastener drive type": "square",
+        "ppe hard hat type": "type_2"
+      }
+    },
+    {
+      "sku": "PLY-AF7C8BA7",
+      "name": "FastenPro CDX Plywood 1/2\" - 4x8",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "FastenPro CDX Plywood 1/2\" - 4x8. structural materials product from toughgrip.",
+      "pricing": {
+        "base": 89.49,
+        "commercial_tier1": {
+          "1-99": 86.81,
+          "100-293": 85.02,
+          "294+": 83.23
+        },
+        "commercial_tier2": {
+          "1-99": 85.02,
+          "100-293": 83.23,
+          "294+": 80.54
+        },
+        "residential_builder": {
+          "1-99": 89.49,
+          "100-293": 86.81,
+          "294+": 85.02
+        },
+        "pro_specialty": {
+          "1-99": 89.49,
+          "100-293": 87.7,
+          "294+": 85.91
+        }
+      },
+      "inventory": {
+        "warehouse_west": 239,
+        "warehouse_east": 139,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "fastener drive type": "phillips",
+        "ppe niosh rating": "n95",
+        "drywall fire rating": "type_x",
+        "ppe hard hat type": "type_1"
+      }
+    },
+    {
+      "sku": "PLY-3C2EC476",
+      "name": "PremiumBuild T&G Subfloor 3/4\" - 4x8",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "PremiumBuild T&G Subfloor 3/4\" - 4x8. structural materials product from fastenpro.",
+      "pricing": {
+        "base": 73.65,
+        "commercial_tier1": {
+          "1-99": 71.44,
+          "100-293": 69.97,
+          "294+": 68.49
+        },
+        "commercial_tier2": {
+          "1-99": 69.97,
+          "100-293": 68.49,
+          "294+": 66.29
+        },
+        "residential_builder": {
+          "1-99": 73.65,
+          "100-293": 71.44,
+          "294+": 69.97
+        },
+        "pro_specialty": {
+          "1-99": 73.65,
+          "100-293": 72.18,
+          "294+": 70.7
+        }
+      },
+      "inventory": {
+        "warehouse_west": 435,
+        "warehouse_east": 253,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "window material": "composite",
+        "ppe hard hat class": "class_c"
+      }
+    },
+    {
+      "sku": "PLY-2BA5387B",
+      "name": "ReliaBuild Marine Plywood 3/4\" - 4x8",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "description": "ReliaBuild Marine Plywood 3/4\" - 4x8. structural materials product from safeguard.",
+      "pricing": {
+        "base": 84.48,
+        "commercial_tier1": {
+          "1-99": 81.95,
+          "100-293": 80.26,
+          "294+": 78.57
+        },
+        "commercial_tier2": {
+          "1-99": 80.26,
+          "100-293": 78.57,
+          "294+": 76.03
+        },
+        "residential_builder": {
+          "1-99": 84.48,
+          "100-293": 81.95,
+          "294+": 80.26
+        },
+        "pro_specialty": {
+          "1-99": 84.48,
+          "100-293": 82.79,
+          "294+": 81.1
+        }
+      },
+      "inventory": {
+        "warehouse_west": 167,
+        "warehouse_east": 100,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "fastener type": "anchor",
+        "fastener drive type": "slotted",
+        "door core type": "hollow_core"
+      }
+    },
+    {
+      "sku": "PLY-4C31A6A6",
+      "name": "ReliaBuild Hardwood Plywood 1/4\" - 4x8",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "description": "ReliaBuild Hardwood Plywood 1/4\" - 4x8. structural materials product from durabuilt.",
+      "pricing": {
+        "base": 76.55,
+        "commercial_tier1": {
+          "1-99": 74.25,
+          "100-293": 72.72,
+          "294+": 71.19
+        },
+        "commercial_tier2": {
+          "1-99": 72.72,
+          "100-293": 71.19,
+          "294+": 68.9
+        },
+        "residential_builder": {
+          "1-99": 76.55,
+          "100-293": 74.25,
+          "294+": 72.72
+        },
+        "pro_specialty": {
+          "1-99": 76.55,
+          "100-293": 75.02,
+          "294+": 73.49
+        }
+      },
+      "inventory": {
+        "warehouse_west": 287,
+        "warehouse_east": 111,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "door type": "interior",
+        "fastener drive type": "torx",
+        "window glazing type": "single_pane",
+        "window operation type": "single_hung"
+      }
+    },
+    {
+      "sku": "PLY-E0240635",
+      "name": "DuraBuilt Siding Panel 3/8\" - 4x8",
+      "category": "structural_materials",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "description": "DuraBuilt Siding Panel 3/8\" - 4x8. structural materials product from durabuilt.",
+      "pricing": {
+        "base": 40.4,
+        "commercial_tier1": {
+          "1-99": 39.19,
+          "100-293": 38.38,
+          "294+": 37.57
+        },
+        "commercial_tier2": {
+          "1-99": 38.38,
+          "100-293": 37.57,
+          "294+": 36.36
+        },
+        "residential_builder": {
+          "1-99": 40.4,
+          "100-293": 39.19,
+          "294+": 38.38
+        },
+        "pro_specialty": {
+          "1-99": 40.4,
+          "100-293": 39.59,
+          "294+": 38.78
+        }
+      },
+      "inventory": {
+        "warehouse_west": 382,
+        "warehouse_east": 136,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "window material": "aluminum",
+        "door material": "wood",
+        "ppe cut resistance": "a4",
+        "fastener material": "stainless_steel_304"
+      }
+    },
+    {
+      "sku": "STUD-44C79532",
+      "name": "BuildRight Pro Metal Stud 20ga - 3.5\" x 10ft",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "BuildRight Pro Metal Stud 20ga - 3.5\" x 10ft. framing insulation product from structuremaster.",
+      "pricing": {
+        "base": 81.45,
+        "commercial_tier1": {
+          "1-99": 79.01,
+          "100-293": 77.38,
+          "294+": 75.75
+        },
+        "commercial_tier2": {
+          "1-99": 77.38,
+          "100-293": 75.75,
+          "294+": 73.31
+        },
+        "residential_builder": {
+          "1-99": 81.45,
+          "100-293": 79.01,
+          "294+": 77.38
+        },
+        "pro_specialty": {
+          "1-99": 81.45,
+          "100-293": 79.82,
+          "294+": 78.19
+        }
+      },
+      "inventory": {
+        "warehouse_west": 437,
+        "warehouse_east": 256,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "ppe category": "fall_protection",
+        "window operation type": "double_hung",
+        "door material": "composite",
+        "window material": "vinyl",
+        "ppe cut resistance": "a4"
+      }
+    },
+    {
+      "sku": "STUD-B6E3E673",
+      "name": "ReliaBuild Metal Stud 20ga - 6\" x 10ft",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "ReliaBuild Metal Stud 20ga - 6\" x 10ft. framing insulation product from durabuilt.",
+      "pricing": {
+        "base": 27.3,
+        "commercial_tier1": {
+          "1-99": 26.48,
+          "100-293": 25.94,
+          "294+": 25.39
+        },
+        "commercial_tier2": {
+          "1-99": 25.94,
+          "100-293": 25.39,
+          "294+": 24.57
+        },
+        "residential_builder": {
+          "1-99": 27.3,
+          "100-293": 26.48,
+          "294+": 25.94
+        },
+        "pro_specialty": {
+          "1-99": 27.3,
+          "100-293": 26.75,
+          "294+": 26.21
+        }
+      },
+      "inventory": {
+        "warehouse_west": 496,
+        "warehouse_east": 243,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "drywall fire rating": "type_c",
+        "window material": "composite",
+        "drywall edge type": "beveled",
+        "ppe category": "respiratory_protection",
+        "fastener drive type": "slotted"
+      }
+    },
+    {
+      "sku": "STUD-95E9D258",
+      "name": "ProFrame Metal Track 20ga - 3.5\" x 10ft",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "ProFrame Metal Track 20ga - 3.5\" x 10ft. framing insulation product from buildright_pro.",
+      "pricing": {
+        "base": 62.19,
+        "commercial_tier1": {
+          "1-99": 60.32,
+          "100-293": 59.08,
+          "294+": 57.84
+        },
+        "commercial_tier2": {
+          "1-99": 59.08,
+          "100-293": 57.84,
+          "294+": 55.97
+        },
+        "residential_builder": {
+          "1-99": 62.19,
+          "100-293": 60.32,
+          "294+": 59.08
+        },
+        "pro_specialty": {
+          "1-99": 62.19,
+          "100-293": 60.95,
+          "294+": 59.7
+        }
+      },
+      "inventory": {
+        "warehouse_west": 183,
+        "warehouse_east": 100,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "door core type": "solid_core",
+        "window glazing type": "triple_pane"
+      }
+    },
+    {
+      "sku": "STUD-984F2EC0",
+      "name": "ToughGrip Metal Track 20ga - 6\" x 10ft",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "ToughGrip Metal Track 20ga - 6\" x 10ft. framing insulation product from fastenpro.",
+      "pricing": {
+        "base": 31.04,
+        "commercial_tier1": {
+          "1-99": 30.11,
+          "100-293": 29.49,
+          "294+": 28.87
+        },
+        "commercial_tier2": {
+          "1-99": 29.49,
+          "100-293": 28.87,
+          "294+": 27.94
+        },
+        "residential_builder": {
+          "1-99": 31.04,
+          "100-293": 30.11,
+          "294+": 29.49
+        },
+        "pro_specialty": {
+          "1-99": 31.04,
+          "100-293": 30.42,
+          "294+": 29.8
+        }
+      },
+      "inventory": {
+        "warehouse_west": 378,
+        "warehouse_east": 240,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "fastener material": "stainless_steel_304",
+        "ppe niosh rating": "p100",
+        "fastener coating": "galvanized"
+      }
+    },
+    {
+      "sku": "STUD-8DEC7739",
+      "name": "PremiumBuild Steel C-Channel - 8ft",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "PremiumBuild Steel C-Channel - 8ft. framing insulation product from fastenpro.",
+      "pricing": {
+        "base": 28.81,
+        "commercial_tier1": {
+          "1-99": 27.95,
+          "100-293": 27.37,
+          "294+": 26.79
+        },
+        "commercial_tier2": {
+          "1-99": 27.37,
+          "100-293": 26.79,
+          "294+": 25.93
+        },
+        "residential_builder": {
+          "1-99": 28.81,
+          "100-293": 27.95,
+          "294+": 27.37
+        },
+        "pro_specialty": {
+          "1-99": 28.81,
+          "100-293": 28.23,
+          "294+": 27.66
+        }
+      },
+      "inventory": {
+        "warehouse_west": 498,
+        "warehouse_east": 318,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "ppe hi vis class": "class_3",
+        "window energy star": false
+      }
+    },
+    {
+      "sku": "STUD-07E7F7E4",
+      "name": "StructureMaster Hat Channel - 12ft",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "StructureMaster Hat Channel - 12ft. framing insulation product from reliabuild.",
+      "pricing": {
+        "base": 80.88,
+        "commercial_tier1": {
+          "1-99": 78.45,
+          "100-293": 76.84,
+          "294+": 75.22
+        },
+        "commercial_tier2": {
+          "1-99": 76.84,
+          "100-293": 75.22,
+          "294+": 72.79
+        },
+        "residential_builder": {
+          "1-99": 80.88,
+          "100-293": 78.45,
+          "294+": 76.84
+        },
+        "pro_specialty": {
+          "1-99": 80.88,
+          "100-293": 79.26,
+          "294+": 77.64
+        }
+      },
+      "inventory": {
+        "warehouse_west": 324,
+        "warehouse_east": 140,
+        "warehouse_phoenix": 0,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 0,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "EA",
+        "ppe size": "xxxl",
+        "door material": "vinyl",
+        "ppe cut resistance": "a3",
+        "ppe hard hat type": "type_2"
+      }
+    },
+    {
+      "sku": "DRYWALL-8F034793",
+      "name": "ToughGrip Drywall 1/2\" - 4x8",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "ToughGrip Drywall 1/2\" - 4x8. framing insulation product from reliabuild.",
+      "pricing": {
+        "base": 88.42,
+        "commercial_tier1": {
+          "1-99": 85.77,
+          "100-293": 84,
+          "294+": 82.23
+        },
+        "commercial_tier2": {
+          "1-99": 84,
+          "100-293": 82.23,
+          "294+": 79.58
+        },
+        "residential_builder": {
+          "1-99": 88.42,
+          "100-293": 85.77,
+          "294+": 84
+        },
+        "pro_specialty": {
+          "1-99": 88.42,
+          "100-293": 86.65,
+          "294+": 84.88
+        }
+      },
+      "inventory": {
+        "warehouse_west": 233,
+        "warehouse_east": 100,
+        "warehouse_phoenix": 110,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 99,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "fastener head type": "pan",
+        "ppe hard hat class": "class_c",
+        "ppe hi vis class": "class_2"
+      }
+    },
+    {
+      "sku": "DRYWALL-A8217B48",
+      "name": "PremiumBuild Drywall 5/8\" - 4x8",
+      "category": "framing_insulation",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "description": "PremiumBuild Drywall 5/8\" - 4x8. framing insulation product from proframe.",
+      "pricing": {
+        "base": 85.96,
+        "commercial_tier1": {
+          "1-99": 83.38,
+          "100-293": 81.66,
+          "294+": 79.94
+        },
+        "commercial_tier2": {
+          "1-99": 81.66,
+          "100-293": 79.94,
+          "294+": 77.36
+        },
+        "residential_builder": {
+          "1-99": 85.96,
+          "100-293": 83.38,
+          "294+": 81.66
+        },
+        "pro_specialty": {
+          "1-99": 85.96,
+          "100-293": 84.24,
+          "294+": 82.52
+        }
+      },
+      "inventory": {
+        "warehouse_west": 283,
+        "warehouse_east": 115,
+        "warehouse_phoenix": 188,
+        "warehouse_denver": 0,
+        "warehouse_atlanta": 108,
+        "dropship_premium_windows": 0
+      },
+      "attributes": {
+        "unit of measure": "SHEET",
+        "ppe hard hat type": "type_1",
+        "window operation type": "bay",
+        "fastener drive type": "slotted",
+        "drywall product type": "sound_dampening"
+      }
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat_001",
+      "name": "Tools & Equipment"
+    },
+    {
+      "id": "cat_002",
+      "name": "Building Materials"
+    },
+    {
+      "id": "cat_003",
+      "name": "Safety & Protection"
+    },
+    {
+      "id": "cat_004",
+      "name": "Power Tools"
+    },
+    {
+      "id": "cat_005",
+      "name": "Hand Tools"
+    },
+    {
+      "id": "cat_006",
+      "name": "Tool Storage"
+    },
+    {
+      "id": "cat_007",
+      "name": "Lumber"
+    },
+    {
+      "id": "cat_008",
+      "name": "Concrete & Masonry"
+    },
+    {
+      "id": "cat_009",
+      "name": "Insulation"
+    },
+    {
+      "id": "cat_010",
+      "name": "Roofing"
+    },
+    {
+      "id": "cat_011",
+      "name": "Personal Protection"
+    },
+    {
+      "id": "cat_012",
+      "name": "Site Safety"
+    },
+    {
+      "id": "cat_013",
+      "name": "Drills"
+    },
+    {
+      "id": "cat_014",
+      "name": "Saws"
+    },
+    {
+      "id": "cat_015",
+      "name": "Sanders"
+    },
+    {
+      "id": "cat_016",
+      "name": "Hammers"
+    },
+    {
+      "id": "cat_017",
+      "name": "Wrenches"
+    },
+    {
+      "id": "cat_018",
+      "name": "Screwdrivers"
+    },
+    {
+      "id": "cat_019",
+      "name": "Safety Helmets"
+    }
+  ],
+  "warehouses": [
+    {
+      "id": "warehouse_west",
+      "name": "Western RDC - Sacramento",
+      "location": "Western RDC - Sacramento",
+      "priority": 1
+    },
+    {
+      "id": "warehouse_east",
+      "name": "Eastern RDC - Charlotte",
+      "location": "Eastern RDC - Charlotte",
+      "priority": 1
+    },
+    {
+      "id": "warehouse_phoenix",
+      "name": "Phoenix Metro Warehouse",
+      "location": "Phoenix Metro Warehouse",
+      "priority": 1
+    },
+    {
+      "id": "warehouse_denver",
+      "name": "Denver Warehouse",
+      "location": "Denver Warehouse",
+      "priority": 1
+    },
+    {
+      "id": "warehouse_atlanta",
+      "name": "Atlanta Metro Warehouse",
+      "location": "Atlanta Metro Warehouse",
+      "priority": 1
+    },
+    {
+      "id": "dropship_premium_windows",
+      "name": "Drop Shipper - Premium Window Systems",
+      "location": "Drop Shipper - Premium Window Systems",
+      "priority": 1
+    }
+  ]
+}
