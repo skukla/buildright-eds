@@ -40,6 +40,7 @@
   transition: all var(--transition-fast);
   border-radius: var(--shape-border-radius-3);
   background-color: transparent;
+  display: inline-block;
 }
 
 /* Outline container when dropdown is active */
@@ -78,8 +79,11 @@
   z-index: 1001;
 }
 
-/* Add padding when dropdown is active */
+/* Add padding when dropdown is active - use absolute positioning to avoid expanding parent */
 .location-selector-wrapper:has(.location-menu.active) .location-selector {
+  position: absolute;
+  top: 0;
+  left: 0;
   padding: var(--spacing-small) var(--spacing-3);
   padding-bottom: var(--spacing-3);
 }
