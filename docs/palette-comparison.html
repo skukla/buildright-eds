@@ -39,10 +39,16 @@
 
     .comparison-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       max-width: 1800px;
       margin: 0 auto;
+    }
+
+    @media (min-width: 1400px) {
+      .comparison-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     .comparison-card {
@@ -100,7 +106,9 @@
       .comparison-grid {
         grid-template-columns: 1fr;
       }
-      
+    }
+
+    @media (max-width: 768px) {
       .card-iframe {
         min-height: 800px;
       }
@@ -110,10 +118,22 @@
 <body>
   <div class="comparison-header">
     <h1>BuildRight Color Palette Comparison</h1>
-    <p>Compare all three palette options side-by-side</p>
+    <p>Compare all four palette options side-by-side</p>
   </div>
 
   <div class="comparison-grid">
+    <!-- Option 1 -->
+    <div class="comparison-card">
+      <div class="card-header">
+        <h2 style="color: #154360;">Option 1</h2>
+        <p>Professional Blue + Safety Orange</p>
+      </div>
+      <iframe src="palette-option-1-preview.html" class="card-iframe" title="Option 1 Preview"></iframe>
+      <div class="card-footer">
+        <a href="palette-option-1-preview.html" target="_blank">Open Full Page →</a>
+      </div>
+    </div>
+
     <!-- Option 2 -->
     <div class="comparison-card">
       <div class="card-header">
