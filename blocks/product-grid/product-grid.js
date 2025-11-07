@@ -32,7 +32,7 @@ export default async function decorate(block) {
 
       const card = document.createElement('a');
       card.className = 'product-card';
-      card.href = `/pages/product-detail.html?sku=${product.sku}`;
+      card.href = `pages/product-detail.html?sku=${product.sku}`;
 
       // Product image placeholder
       const image = document.createElement('div');

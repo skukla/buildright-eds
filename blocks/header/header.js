@@ -79,7 +79,7 @@ export default function decorate(block) {
     const performSearch = () => {
       const query = searchInput.value.trim();
       if (query) {
-        window.location.href = `/pages/catalog.html?search=${encodeURIComponent(query)}`;
+        window.location.href = `pages/catalog.html?search=${encodeURIComponent(query)}`;
       }
     };
 
@@ -99,9 +99,9 @@ export default function decorate(block) {
       if (category) {
         e.preventDefault();
         if (category === 'all') {
-          window.location.href = '/pages/catalog.html';
+          window.location.href = 'pages/catalog.html';
         } else {
-          window.location.href = `/pages/catalog.html?category=${category}`;
+          window.location.href = `pages/catalog.html?category=${category}`;
         }
       }
     });
