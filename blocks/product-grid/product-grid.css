@@ -125,7 +125,7 @@
 }
 
 .product-card-sku {
-  font: var(--type-details-caption-1-font);
+  font: normal normal 400 0.75rem/1.33 var(--type-font-family-base);
   color: var(--color-text-secondary);
   margin-bottom: var(--spacing-xsmall);
   font-weight: 500;
@@ -196,7 +196,7 @@
 }
 
 .product-card-price-label {
-  font: var(--type-details-caption-1-font);
+  font: normal normal 400 0.75rem/1.33 var(--type-font-family-base);
   color: var(--color-text-secondary);
   margin-top: 0.25rem;
 }
