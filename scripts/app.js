@@ -6,7 +6,7 @@ import './cart-manager.js';
 // Get base path helper (available globally for inline scripts)
 window.getBasePath = function() {
   const pathParts = window.location.pathname.split('/').filter(p => p);
-  return pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+  return pathParts.length > 0 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
 };
 
 // Fix navigation paths for GitHub Pages subdirectory
