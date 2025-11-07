@@ -50,10 +50,27 @@
   gap: var(--spacing-xsmall);
   padding: 0;
   font: var(--type-body-2-default-font);
+  transition: all var(--transition-fast);
+  position: relative;
 }
 
 .location-selector:hover .location-name {
   border-bottom: 1px solid currentColor;
+}
+
+.location-selector[aria-expanded="true"] {
+  color: var(--color-brand-600);
+}
+
+.location-selector[aria-expanded="true"]::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: white;
+  z-index: 1001;
 }
 
 .location-name {
@@ -76,13 +93,15 @@
   position: absolute;
   top: 100%;
   left: 0;
-  margin-top: var(--spacing-xsmall);
   background-color: white;
   border: 1px solid var(--color-border);
-  border-radius: var(--shape-border-radius-3);
+  border-top: none;
+  border-radius: 0 0 var(--shape-border-radius-3) var(--shape-border-radius-3);
   box-shadow: var(--shape-shadow-3);
   z-index: 1000;
-  min-width: 280px;
+  min-width: 100%;
+  width: max-content;
+  margin-top: -1px;
 }
 
 .location-menu.active {
