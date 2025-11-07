@@ -37,6 +37,15 @@
 
 .location-selector-wrapper {
   position: relative;
+  transition: all var(--transition-fast);
+  border-radius: var(--shape-border-radius-3);
+}
+
+/* Outline container when dropdown is active */
+.location-selector-wrapper:has(.location-menu.active) {
+  background-color: white;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shape-shadow-2);
 }
 
 .location-selector {
@@ -54,6 +63,12 @@
   position: relative;
 }
 
+/* Add padding when dropdown is active */
+.location-selector-wrapper:has(.location-menu.active) .location-selector {
+  padding: var(--spacing-small) var(--spacing-3);
+  padding-bottom: var(--spacing-3);
+}
+
 .location-selector:hover .location-name {
   border-bottom: 1px solid currentColor;
 }
@@ -62,14 +77,15 @@
   color: var(--color-brand-600);
 }
 
+/* Border separator between button and dropdown */
 .location-selector[aria-expanded="true"]::after {
   content: '';
   position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: white;
+  bottom: 0;
+  left: calc(var(--spacing-3) * -1);
+  right: calc(var(--spacing-3) * -1);
+  height: 1px;
+  background-color: var(--color-border);
   z-index: 1001;
 }
 
@@ -90,18 +106,12 @@
 /* Location Dropdown Menu */
 .location-menu {
   display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
+  position: relative;
   background-color: white;
-  border: 1px solid var(--color-border);
-  border-top: none;
-  border-radius: 0 0 var(--shape-border-radius-3) var(--shape-border-radius-3);
-  box-shadow: var(--shape-shadow-3);
+  border: none;
   z-index: 1000;
   min-width: 100%;
-  width: max-content;
-  margin-top: -1px;
+  width: 100%;
 }
 
 .location-menu.active {
@@ -109,7 +119,8 @@
 }
 
 .location-menu-content {
-  padding: var(--spacing-medium);
+  padding: var(--spacing-3);
+  padding-top: var(--spacing-small);
 }
 
 .location-menu-company {
