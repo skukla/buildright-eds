@@ -11,6 +11,7 @@
   background-size: cover;
   background-position: center;
   min-height: 220px;
+  cursor: pointer;
 }
 
 .shop-by-job__card:hover {

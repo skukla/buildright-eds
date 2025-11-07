@@ -101,6 +101,7 @@
 
 .card:hover {
   box-shadow: var(--shape-shadow-2);
+  cursor: pointer;
 }
 
 .card-header {

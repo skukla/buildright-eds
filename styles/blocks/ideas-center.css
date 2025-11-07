@@ -5,6 +5,7 @@
   transition: all 0.2s;
   overflow: hidden;
   border-radius: var(--shape-border-radius-3);
+  cursor: pointer;
 }
 
 .ideas-center__card:hover {
