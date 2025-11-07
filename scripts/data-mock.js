@@ -9,14 +9,23 @@ let customerContext = {
   locations: ["Los Angeles", "Phoenix"]
 };
 
+// Get base path for GitHub Pages subdirectory support
+function getBasePath() {
+  const pathParts = window.location.pathname.split('/').filter(p => p);
+  return pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+}
+
 // Load mock data from JSON file
 async function loadMockData() {
   if (mockData) return mockData;
   
   try {
-    const response = await fetch('data/mock-products.json');
+    // Use absolute path from site root for GitHub Pages compatibility
+    const basePath = getBasePath();
+    const dataPath = `${basePath}data/mock-products.json`.replace('//', '/');
+    const response = await fetch(dataPath);
     if (!response.ok) {
-      console.error(`Failed to load mock data: ${response.status} ${response.statusText}`);
+      console.error(`Failed to load mock data: ${response.status} ${response.statusText} from ${dataPath}`);
       return null;
     }
     mockData = await response.json();
