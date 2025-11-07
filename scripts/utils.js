@@ -32,8 +32,14 @@ function debounce(func, wait) {
   };
 }
 
-// Get base URL for resolving relative paths using import.meta.url
+// Get base URL for resolving relative paths - EDS-compatible approach
 const getScriptBaseUrl = (() => {
+  // Check if running in EDS environment (Adobe Edge Delivery Services)
+  // EDS sets window.hlx.codeBasePath dynamically based on script location
+  if (window.hlx?.codeBasePath !== undefined) {
+    return window.hlx.codeBasePath;
+  }
+  // Fallback: use import.meta.url for standalone/prototype mode
   try {
     // Use import.meta.url to get the current module's URL
     const scriptUrl = new URL(import.meta.url);
@@ -42,7 +48,7 @@ const getScriptBaseUrl = (() => {
     // Go up one level to get the root directory
     return scriptUrl.origin + scriptsDir.replace(/\/scripts\/$/, '/');
   } catch (e) {
-    // Fallback: use window location
+    // Final fallback: use window location
     return window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
   }
 })();
