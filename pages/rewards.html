@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/buildright-eds/">
   <title>Rewards Hub - BuildRight Solutions</title>
-  <link rel="stylesheet" href="/styles/base.css">
-  <link rel="stylesheet" href="/styles/components.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
   <style>
     .page-header {
       background: var(--color-surface);
@@ -48,9 +49,9 @@
     .rewards-card {
       background: var(--color-background);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--shape-border-radius-4);
       padding: 2rem;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shape-shadow-1);
     }
 
     .rewards-card-header {
@@ -63,8 +64,8 @@
     .rewards-card-icon {
       width: 48px;
       height: 48px;
-      background: var(--color-accent);
-      border-radius: var(--radius-md);
+      background: var(--color-accent-500);
+      border-radius: var(--shape-border-radius-3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -72,7 +73,7 @@
     }
 
     .rewards-card-title {
-      font-size: var(--font-size-lg);
+      font-size: 1.125rem; /* Extract from --type-button-1-font */
       font-weight: 600;
       color: var(--color-text);
       margin: 0;
@@ -80,12 +81,12 @@
 
     .member-status {
       display: inline-block;
-      background: var(--color-accent);
+      background: var(--color-accent-500);
       color: white;
       padding: 0.5rem 1rem;
-      border-radius: var(--radius-sm);
+      border-radius: var(--shape-border-radius-2);
       font-weight: 600;
-      font-size: var(--font-size-sm);
+      font: var(--type-body-2-default-font);
       margin-bottom: 1rem;
     }
 
@@ -100,11 +101,11 @@
       text-align: center;
       padding: 1.5rem;
       background: var(--color-surface);
-      border-radius: var(--radius-md);
+      border-radius: var(--shape-border-radius-3);
     }
 
     .loyalty-metric-label {
-      font-size: var(--font-size-sm);
+      font: var(--type-body-2-default-font);
       color: var(--color-text-light);
       margin-bottom: 0.5rem;
     }
@@ -112,7 +113,7 @@
     .loyalty-metric-value {
       font-size: 2rem;
       font-weight: 700;
-      color: var(--color-primary);
+      color: var(--color-brand-500);
     }
 
     .progress-section {
@@ -127,7 +128,7 @@
     }
 
     .progress-title {
-      font-size: var(--font-size-lg);
+      font-size: 1.125rem; /* Extract from --type-button-1-font */
       font-weight: 600;
       color: var(--color-text);
       margin: 0;
@@ -135,7 +136,7 @@
 
     .progress-bar-container {
       background: var(--color-surface);
-      border-radius: var(--radius-md);
+      border-radius: var(--shape-border-radius-3);
       height: 24px;
       overflow: hidden;
       margin-bottom: 1rem;
@@ -143,20 +144,20 @@
 
     .progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+      background: linear-gradient(90deg, var(--color-accent-500), var(--color-accent-400));
       transition: width 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: var(--font-size-xs);
+      font: var(--type-details-caption-1-font);
       font-weight: 600;
     }
 
     .progress-labels {
       display: flex;
       justify-content: space-between;
-      font-size: var(--font-size-xs);
+      font: var(--type-details-caption-1-font);
       color: var(--color-text-light);
     }
 
@@ -165,7 +166,7 @@
     }
 
     .tier-benefits-title {
-      font-size: var(--font-size-lg);
+      font-size: 1.125rem; /* Extract from --type-button-1-font */
       font-weight: 600;
       color: var(--color-text);
       margin-bottom: 1rem;
@@ -190,7 +191,7 @@
     }
 
     .benefit-icon {
-      color: var(--color-success);
+      color: var(--color-positive-500);
       font-size: 1.25rem;
     }
 
@@ -207,7 +208,7 @@
     .perk-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--shape-border-radius-3);
       padding: 1.5rem;
       text-align: center;
     }
@@ -229,7 +230,7 @@
     }
 
     .perk-description {
-      font-size: var(--font-size-sm);
+      font: var(--type-body-2-default-font);
       color: var(--color-text-light);
       margin-bottom: 1rem;
     }
@@ -237,7 +238,7 @@
     .perk-link {
       color: var(--color-accent);
       text-decoration: none;
-      font-size: var(--font-size-sm);
+      font: var(--type-body-2-default-font);
       font-weight: 600;
     }
 
@@ -291,7 +292,7 @@
       <div class="progress-section">
         <div class="progress-header">
           <h3 class="progress-title">Your Next Perk</h3>
-          <span id="next-perk-amount" style="font-weight: 600; color: var(--color-primary);">$0 to unlock</span>
+          <span id="next-perk-amount" style="font-weight: 600; color: var(--color-brand-500);">$0 to unlock</span>
         </div>
         <div class="progress-bar-container">
           <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
@@ -420,8 +421,8 @@
     updateRewardsDisplay();
     decorateBlock(document.querySelector('[data-block-name="header"]'));
   </script>
-  <script type="module" src="/scripts/app.js"></script>
-  <script type="module" src="/blocks/header/header.js"></script>
+  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="blocks/header/header.js"></script>
 </body>
 </html>
 

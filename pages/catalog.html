@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/buildright-eds/">
   <title>Product Catalog - BuildRight Solutions</title>
-  <link rel="stylesheet" href="/styles/base.css">
-  <link rel="stylesheet" href="/styles/components.css">
-  <link rel="stylesheet" href="/styles/utilities.css">
-  <link rel="stylesheet" href="/blocks/header/header.css">
-  <link rel="stylesheet" href="/blocks/project-filter/project-filter.css">
-  <link rel="stylesheet" href="/blocks/product-grid/product-grid.css">
-  <link rel="stylesheet" href="/blocks/filters-sidebar/filters-sidebar.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/utilities.css">
+  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="blocks/project-filter/project-filter.css">
+  <link rel="stylesheet" href="blocks/product-grid/product-grid.css">
+  <link rel="stylesheet" href="blocks/filters-sidebar/filters-sidebar.css">
 </head>
 <body>
   <!-- Header Block -->
@@ -128,9 +129,9 @@
   <div style="background: var(--color-surface); padding: var(--spacing-3) 0; border-bottom: 1px solid var(--color-border);">
     <div class="container">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <nav style="font-size: var(--font-size-sm); color: var(--color-text-light);">
-          <a href="/" style="color: var(--color-primary); text-decoration: none;">Home</a>
-          <span style="margin: 0 var(--spacing-2);">/</span>
+        <nav style="font: var(--type-body-2-default-font); color: var(--color-text-secondary);">
+          <a href="/" style="color: var(--color-brand-500); text-decoration: none;">Home</a>
+          <span style="margin: 0 var(--spacing-small);">/</span>
           <span>Products</span>
         </nav>
         <a href="/pages/project-builder.html" class="btn btn-accent btn-sm">Build a Project Kit</a>
@@ -283,7 +284,7 @@
     </div>
   </section>
 
-  <script type="module" src="/scripts/app.js"></script>
+  <script type="module" src="scripts/app.js"></script>
   <script type="module">
     import { decorateBlock } from '/scripts/utils.js';
     

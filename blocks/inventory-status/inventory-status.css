@@ -1,18 +1,18 @@
 .inventory-status {
   background-color: var(--color-surface);
-  padding: var(--spacing-6);
-  border-radius: var(--radius-md);
+  padding: var(--spacing-large);
+  border-radius: var(--shape-border-radius-3);
   border: 1px solid var(--color-border);
 }
 
 .inventory-status > div > div {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
+  gap: var(--spacing-medium);
 }
 
 .inventory-status h3 {
-  margin-bottom: var(--spacing-4);
+  margin-bottom: var(--spacing-medium);
   font-size: 1.25rem;
   color: var(--color-text);
 }
@@ -30,23 +30,23 @@
   padding: var(--spacing-3);
   background-color: white;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-border-radius-3);
   transition: border-color var(--transition-fast);
 }
 
 .warehouse-item.priority {
-  border-color: var(--color-primary);
+  border-color: var(--color-brand-500);
   background-color: rgba(30, 58, 138, 0.05);
 }
 
 .warehouse-item:hover {
-  border-color: var(--color-primary);
+  border-color: var(--color-brand-500);
 }
 
 .warehouse-info {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-1);
+  gap: var(--spacing-xsmall);
 }
 
 .warehouse-name {
@@ -55,8 +55,8 @@
 }
 
 .warehouse-location {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-light);
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
 }
 
 .warehouse-status {
@@ -74,7 +74,7 @@
   .warehouse-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-2);
+    gap: var(--spacing-small);
   }
 
   .warehouse-status {

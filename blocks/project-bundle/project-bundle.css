@@ -1,20 +1,20 @@
 .project-bundle {
   background: white;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--shape-border-radius-4);
   padding: 0;
   overflow: hidden;
 }
 
 .bundle-header {
-  padding: var(--spacing-4);
+  padding: var(--spacing-medium);
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
 }
 
 .bundle-name {
-  margin: 0 0 var(--spacing-2);
-  font-size: var(--font-size-lg);
+  margin: 0 0 var(--spacing-small);
+  font-size: 1.125rem; /* Extract from --type-button-1-font */
   font-weight: 700;
   color: var(--color-text);
 }
@@ -26,18 +26,18 @@
 }
 
 .bundle-item-count {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-light);
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
 }
 
 .bundle-total-price {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-brand-500);
 }
 
 .bundle-items-container {
-  padding: var(--spacing-4);
+  padding: var(--spacing-medium);
 }
 
 .bundle-toggle {
@@ -48,11 +48,11 @@
   padding: var(--spacing-3);
   background: none;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-border-radius-3);
   cursor: pointer;
-  font-size: var(--font-size-base);
+  font: var(--type-body-1-default-font);
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-brand-500);
   transition: all var(--transition-fast);
 }
 
@@ -73,7 +73,7 @@
   margin-top: var(--spacing-4);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-2);
+  gap: var(--spacing-small);
 }
 
 .bundle-item {
@@ -82,7 +82,7 @@
   align-items: start;
   padding: var(--spacing-3);
   background: var(--color-surface);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-border-radius-3);
   border: 1px solid var(--color-border);
 }
 
@@ -92,45 +92,45 @@
 
 .bundle-item-name {
   font-weight: 600;
-  margin-bottom: var(--spacing-1);
+  margin-bottom: var(--spacing-xsmall);
   color: var(--color-text);
 }
 
 .bundle-item-sku {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-light);
-  margin-bottom: var(--spacing-1);
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xsmall);
 }
 
 .bundle-item-reason {
-  font-size: var(--font-size-sm);
-  color: var(--color-accent);
+  font: var(--type-body-2-default-font);
+  color: var(--color-accent-500);
   font-style: italic;
 }
 
 .bundle-item-quantity {
   display: flex;
   align-items: center;
-  gap: var(--spacing-2);
-  margin-top: var(--spacing-2);
+  gap: var(--spacing-small);
+  margin-top: var(--spacing-small);
 }
 
 .bundle-item-quantity input {
   width: 60px;
-  padding: var(--spacing-1) var(--spacing-2);
+  padding: var(--spacing-xsmall) var(--spacing-small);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-border-radius-2);
   text-align: center;
 }
 
 .bundle-item-pricing {
   text-align: right;
-  margin-left: var(--spacing-4);
+  margin-left: var(--spacing-medium);
 }
 
 .bundle-item-unit-price {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-light);
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
 }
 
 .bundle-item-subtotal {
@@ -140,7 +140,7 @@
 }
 
 .bundle-actions {
-  padding: var(--spacing-4);
+  padding: var(--spacing-medium);
   border-top: 1px solid var(--color-border);
   display: flex;
   gap: var(--spacing-3);
@@ -154,7 +154,7 @@
   .bundle-summary {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-2);
+    gap: var(--spacing-small);
   }
 
   .bundle-item {
@@ -163,7 +163,7 @@
 
   .bundle-item-pricing {
     margin-left: 0;
-    margin-top: var(--spacing-2);
+    margin-top: var(--spacing-small);
     text-align: left;
   }
 

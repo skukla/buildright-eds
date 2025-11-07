@@ -1,16 +1,16 @@
 .tier-badge {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: linear-gradient(135deg, var(--color-brand-500) 0%, var(--color-brand-600) 100%);
   color: white;
-  padding: var(--spacing-4) var(--spacing-6);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-radius: var(--shape-border-radius-3);
+  box-shadow: var(--shape-shadow-2);
 }
 
 .tier-badge > div > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-4);
+  gap: var(--spacing-medium);
 }
 
 .tier-label {
@@ -21,7 +21,7 @@
 }
 
 .savings-indicator {
-  font-size: var(--font-size-base);
+  font: var(--type-body-1-default-font);
   font-weight: 600;
   opacity: 0.9;
 }
@@ -46,7 +46,7 @@
   .tier-badge > div > div {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-2);
+    gap: var(--spacing-small);
   }
 }
 

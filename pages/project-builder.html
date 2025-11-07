@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/buildright-eds/">
   <title>Project Builder - BuildRight Solutions</title>
-  <link rel="stylesheet" href="/styles/base.css">
-  <link rel="stylesheet" href="/styles/components.css">
-  <link rel="stylesheet" href="/styles/utilities.css">
-  <link rel="stylesheet" href="/blocks/header/header.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/utilities.css">
+  <link rel="stylesheet" href="blocks/header/header.css">
   <style>
     .wizard-container {
       max-width: 1400px;
@@ -49,7 +50,7 @@
       top: 20px;
       left: 0;
       height: 2px;
-      background: var(--color-primary);
+      background: var(--color-brand-500);
       transition: width 0.3s ease;
       z-index: 1;
     }
@@ -72,36 +73,36 @@
       justify-content: center;
       margin: 0 auto 0.5rem;
       font-weight: 600;
-      color: var(--color-text-light);
+      color: var(--color-text-secondary);
       transition: all 0.3s ease;
     }
 
     .wizard-step.active .wizard-step-circle {
-      background: var(--color-primary);
-      border-color: var(--color-primary);
+      background: var(--color-accent-500);
+      border-color: var(--color-accent-500);
       color: white;
     }
 
     .wizard-step.completed .wizard-step-circle {
-      background: var(--color-success);
-      border-color: var(--color-success);
+      background: var(--color-brand-400);
+      border-color: var(--color-brand-400);
       color: white;
     }
 
     .wizard-step-label {
-      font-size: var(--font-size-sm);
-      color: var(--color-text-light);
+      font: var(--type-body-2-default-font);
+      color: var(--color-text-secondary);
     }
 
     .wizard-step.active .wizard-step-label {
-      color: var(--color-primary);
+      color: var(--color-accent-500);
       font-weight: 600;
     }
 
     .wizard-content {
       background: white;
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--shape-border-radius-4);
       padding: 2rem;
     }
 
@@ -122,7 +123,7 @@
 
     .wizard-option {
       border: 2px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--shape-border-radius-3);
       padding: 1.5rem;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -135,42 +136,42 @@
     }
 
     .wizard-option:hover {
-      border-color: var(--color-primary);
+      border-color: var(--color-brand-500);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shape-shadow-2);
     }
 
     .wizard-option:hover .wizard-icon {
-      color: var(--color-primary);
+      color: var(--color-brand-500);
       transform: scale(1.05);
     }
 
     .wizard-option.selected {
-      border-color: var(--color-primary);
-      background: rgba(30, 58, 138, 0.05);
+      border-color: var(--color-brand-500);
+      background: rgba(15, 91, 167, 0.05); /* --color-brand-500 with 5% opacity */
     }
 
     .wizard-option.selected .wizard-icon {
-      color: var(--color-accent);
+      color: var(--color-accent-500);
     }
 
     .wizard-icon {
       width: 56px;
       height: 56px;
-      color: var(--color-text-light);
+      color: var(--color-text-secondary);
       transition: all 0.2s ease;
     }
 
     .wizard-option h3 {
       margin: 0 0 0.5rem;
-      font-size: var(--font-size-lg);
+      font-size: 1.125rem; /* Extract from --type-button-1-font */
       color: var(--color-text);
     }
 
     .wizard-option p {
       margin: 0;
-      font-size: var(--font-size-sm);
-      color: var(--color-text-light);
+      font: var(--type-body-2-default-font);
+      color: var(--color-text-secondary);
     }
 
     .wizard-navigation {
@@ -190,7 +191,7 @@
     }
 
     .wizard-results p {
-      color: var(--color-text-light);
+      color: var(--color-text-secondary);
       margin-bottom: 2rem;
     }
 
@@ -203,14 +204,14 @@
     .sidebar-card {
       background: white;
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--shape-border-radius-4);
       padding: 1.5rem;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shape-shadow-1);
     }
 
     .sidebar-title {
       margin: 0 0 1rem;
-      font-size: var(--font-size-lg);
+      font-size: 1.125rem; /* Extract from --type-button-1-font */
       color: var(--color-text);
       padding-bottom: 1rem;
       border-bottom: 2px solid var(--color-border);
@@ -234,8 +235,8 @@
 
     .sidebar-selection-label {
       font-weight: 600;
-      color: var(--color-text-light);
-      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      font: var(--type-details-caption-1-font);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -246,7 +247,7 @@
     }
 
     .sidebar-empty {
-      color: var(--color-text-light);
+      color: var(--color-text-secondary);
       font-style: italic;
       margin: 0;
       text-align: center;
@@ -272,7 +273,7 @@
     }
 
     .sidebar-stat-label {
-      color: var(--color-text-light);
+      color: var(--color-text-secondary);
       font-weight: 500;
     }
 
@@ -290,13 +291,13 @@
     .sidebar-stat-total .sidebar-stat-label {
       color: var(--color-text);
       font-weight: 600;
-      font-size: var(--font-size-base);
+      font: var(--type-body-1-default-font);
     }
 
     .sidebar-stat-total .sidebar-stat-value {
-      color: var(--color-primary);
+      color: var(--color-brand-500);
       font-weight: 700;
-      font-size: var(--font-size-lg);
+      font-size: 1.125rem; /* Extract from --type-button-1-font */
     }
 
     .conditional-options {
@@ -342,7 +343,7 @@
     .project-bundle {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--shape-border-radius-4);
       padding: 2rem;
     }
 
@@ -355,8 +356,8 @@
       background: var(--color-accent);
       color: white;
       padding: 0.5rem 1rem;
-      border-radius: var(--radius-sm);
-      font-size: var(--font-size-xs);
+      border-radius: var(--shape-border-radius-2);
+      font: var(--type-details-caption-1-font);
       font-weight: 600;
       margin-bottom: 1rem;
     }
@@ -370,7 +371,7 @@
 
     .bundle-subtitle {
       margin: 0;
-      color: var(--color-text-light);
+      color: var(--color-text-secondary);
       font-size: var(--font-size-sm);
     }
 
@@ -380,20 +381,20 @@
       align-items: center;
       padding: 1.5rem;
       background: var(--color-background);
-      border-radius: var(--radius-md);
+      border-radius: var(--shape-border-radius-3);
       margin-bottom: 2rem;
     }
 
     .bundle-total-label {
-      font-size: var(--font-size-sm);
-      color: var(--color-text-light);
+      font: var(--type-body-2-default-font);
+      color: var(--color-text-secondary);
       margin-bottom: 0.5rem;
     }
 
     .bundle-total-value {
       font-size: 2rem;
       font-weight: 700;
-      color: var(--color-primary);
+      color: var(--color-brand-500);
     }
 
     .bundle-products {
@@ -401,7 +402,7 @@
     }
 
     .bundle-products-title {
-      font-size: var(--font-size-lg);
+      font-size: 1.125rem; /* Extract from --type-button-1-font */
       font-weight: 600;
       margin-bottom: 1rem;
       color: var(--color-text);
@@ -410,7 +411,7 @@
     .bundle-category-section {
       margin-bottom: 1.5rem;
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border-radius: var(--shape-border-radius-3);
       overflow: hidden;
     }
 
@@ -440,7 +441,7 @@
 
     .category-count {
       margin: 0 1rem;
-      color: var(--color-text-light);
+      color: var(--color-text-secondary);
       font-weight: 400;
       font-size: var(--font-size-sm);
     }
@@ -494,15 +495,15 @@
     }
 
     .product-reason {
-      font-size: var(--font-size-xs);
-      color: var(--color-accent);
+      font: var(--type-details-caption-1-font);
+      color: var(--color-accent-500);
       font-style: italic;
     }
 
     .product-sku {
       font-family: monospace;
-      font-size: var(--font-size-xs);
-      color: var(--color-text-light);
+      font: var(--type-details-caption-1-font);
+      color: var(--color-text-secondary);
     }
 
     .quantity-controls {
@@ -516,7 +517,7 @@
       height: 28px;
       border: 1px solid var(--color-border);
       background: var(--color-background);
-      border-radius: var(--radius-sm);
+      border-radius: var(--shape-border-radius-2);
       cursor: pointer;
       font-weight: 600;
       color: var(--color-text);
@@ -527,9 +528,9 @@
     }
 
     .qty-btn:hover {
-      background: var(--color-primary);
+      background: var(--color-brand-500);
       color: white;
-      border-color: var(--color-primary);
+      border-color: var(--color-brand-500);
     }
 
     .qty-value {
@@ -1367,7 +1368,7 @@
         displayBundle(bundle);
       } else {
         document.getElementById('bundle-container').innerHTML = `
-          <p style="color: var(--color-error);">Unable to generate bundle. Please try again.</p>
+          <p style="color: var(--color-negative-500);">Unable to generate bundle. Please try again.</p>
         `;
       }
     }
@@ -1593,8 +1594,8 @@
     // Initialize on load
     initWizard();
   </script>
-  <script type="module" src="/scripts/app.js"></script>
-  <script type="module" src="/blocks/header/header.js"></script>
+  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="blocks/header/header.js"></script>
 </body>
 </html>
 

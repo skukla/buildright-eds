@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/buildright-eds/">
   <title>Shopping Cart - BuildRight Solutions</title>
-  <link rel="stylesheet" href="/styles/base.css">
-  <link rel="stylesheet" href="/styles/components.css">
-  <link rel="stylesheet" href="/styles/utilities.css">
-  <link rel="stylesheet" href="/blocks/header/header.css">
-  <link rel="stylesheet" href="/blocks/cart-summary/cart-summary.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/utilities.css">
+  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="blocks/cart-summary/cart-summary.css">
 </head>
 <body>
   <!-- Header Block -->
@@ -135,7 +136,7 @@
           </div>
           <div id="empty-cart" style="display: none; text-align: center; padding: 4rem 2rem; background: var(--color-surface); border-radius: 0.5rem; border: 1px solid var(--color-border);">
             <h2 style="margin-bottom: 1rem;">Your cart is empty</h2>
-            <p style="color: var(--color-text-light); margin-bottom: 2rem;">Start adding products to your cart to see them here.</p>
+            <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">Start adding products to your cart to see them here.</p>
             <a href="/pages/catalog.html" class="btn btn-primary">Browse Catalog</a>
           </div>
         </div>
@@ -172,8 +173,8 @@
     </div>
   </section>
 
-  <link rel="stylesheet" href="/blocks/project-bundle/project-bundle.css">
-  <script type="module" src="/scripts/app.js"></script>
+  <link rel="stylesheet" href="blocks/project-bundle/project-bundle.css">
+  <script type="module" src="scripts/app.js"></script>
   <script type="module">
     import { getCart, updateCartItem, removeFromCart } from '/scripts/cart-manager.js';
     import { getProductBySKU, getPrice } from '/scripts/data-mock.js';
@@ -203,7 +204,7 @@
         if (item.type === 'bundle') {
           const bundleCard = document.createElement('div');
           bundleCard.className = 'card';
-          bundleCard.style.border = '2px solid var(--color-accent)';
+          bundleCard.style.border = '2px solid var(--color-accent-500)';
           
           let bundleItemsHtml = '';
           let isExpanded = false;
@@ -213,39 +214,39 @@
               <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                 <div style="flex: 1;">
                   <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                    <span style="background: var(--color-accent); color: white; padding: 0.25rem 0.75rem; border-radius: var(--radius-sm); font-size: var(--font-size-xs); font-weight: 600;">BUNDLE</span>
+                    <span style="background: var(--color-accent-500); color: white; padding: 0.25rem 0.75rem; border-radius: var(--shape-border-radius-2); font: var(--type-details-caption-1-font); font-weight: 600;">BUNDLE</span>
                     <h3 style="margin: 0; font-size: 1.125rem;">${item.bundleName}</h3>
                   </div>
-                  <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">${item.itemCount} items</p>
+                  <p style="color: var(--color-text-secondary); font-size: 0.875rem; margin: 0;">${item.itemCount} items</p>
                 </div>
                 <div style="text-align: right;">
-                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary); margin-bottom: 0.5rem;">
+                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-brand-500); margin-bottom: 0.5rem;">
                     $${item.totalPrice.toFixed(2)}
                   </div>
                   <button class="btn btn-outline btn-sm" onclick="removeBundle('${item.bundleId}')">Remove Bundle</button>
                 </div>
               </div>
-              <button class="bundle-toggle-cart" data-bundle-id="${item.bundleId}" style="width: 100%; padding: 0.75rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; font-weight: 600; color: var(--color-primary); display: flex; justify-content: space-between; align-items: center;">
+              <button class="bundle-toggle-cart" data-bundle-id="${item.bundleId}" style="width: 100%; padding: 0.75rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--shape-border-radius-3); cursor: pointer; font-weight: 600; color: var(--color-brand-500); display: flex; justify-content: space-between; align-items: center;">
                 <span>View Bundle Contents</span>
                 <span class="toggle-icon" style="transition: transform 0.2s;">▼</span>
               </button>
               <div class="bundle-items-cart" data-bundle-id="${item.bundleId}" style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
                 ${item.items.map(bundleItem => `
-                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--color-surface); border-radius: var(--radius-sm); margin-bottom: 0.5rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--color-surface); border-radius: var(--shape-border-radius-2); margin-bottom: 0.5rem;">
                     <div style="flex: 1;">
                       <div style="font-weight: 600; font-size: 0.875rem;">${bundleItem.name}</div>
-                      <div style="font-size: var(--font-size-xs); color: var(--color-text-light);">SKU: ${bundleItem.sku}</div>
+                      <div style="font: var(--type-details-caption-1-font); color: var(--color-text-secondary);">SKU: ${bundleItem.sku}</div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 1rem;">
                       <div>
-                        <label style="font-size: 0.75rem; color: var(--color-text-light);">Qty:</label>
+                        <label style="font-size: 0.75rem; color: var(--color-text-secondary);">Qty:</label>
                         <input type="number" min="1" value="${bundleItem.quantity}" 
                                data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
-                               class="bundle-item-qty-input" style="width: 60px; padding: 0.25rem; margin-left: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+                               class="bundle-item-qty-input" style="width: 60px; padding: 0.25rem; margin-left: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--shape-border-radius-2);">
                       </div>
                       <div style="text-align: right; min-width: 80px;">
                         <div style="font-weight: 600;">$${(bundleItem.unitPrice * bundleItem.quantity).toFixed(2)}</div>
-                        <div style="font-size: 0.75rem; color: var(--color-text-light);">$${bundleItem.unitPrice.toFixed(2)} each</div>
+                        <div style="font-size: 0.75rem; color: var(--color-text-secondary);">$${bundleItem.unitPrice.toFixed(2)} each</div>
                       </div>
                     </div>
                   </div>
@@ -295,8 +296,8 @@
           <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 1.5rem; align-items: center;">
             <div>
               <h3 style="margin-bottom: 0.5rem; font-size: 1.125rem;">${product.name}</h3>
-              <p style="color: var(--color-text-light); font-size: 0.875rem; margin-bottom: 0.5rem;">SKU: ${product.sku}</p>
-              <p style="color: var(--color-primary); font-weight: 600;">$${price.toFixed(2)} per unit</p>
+              <p style="color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">SKU: ${product.sku}</p>
+              <p style="color: var(--color-brand-500); font-weight: 600;">$${price.toFixed(2)} per unit</p>
             </div>
             <div>
               <label for="qty-${item.sku}" style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 600;">Quantity</label>
@@ -305,7 +306,7 @@
                      onchange="updateQuantity('${item.sku}', this.value)">
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 1.25rem; font-weight: 700; color: var(--color-primary); margin-bottom: 0.5rem;">
+              <div style="font-size: 1.25rem; font-weight: 700; color: var(--color-brand-500); margin-bottom: 0.5rem;">
                 $${total.toFixed(2)}
               </div>
               <button class="btn btn-outline btn-sm" onclick="removeItem('${item.sku}')">Remove</button>
