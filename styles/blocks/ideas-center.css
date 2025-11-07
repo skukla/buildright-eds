@@ -9,7 +9,7 @@
 }
 
 .ideas-center__card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: var(--color-primary);
   box-shadow: var(--shape-shadow-2);
 }

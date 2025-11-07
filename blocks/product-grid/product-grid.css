@@ -58,7 +58,7 @@
 .product-card:hover {
   box-shadow: var(--shape-shadow-2);
   border-color: var(--color-primary);
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 /* Product Image Placeholder */
