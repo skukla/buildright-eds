@@ -159,37 +159,109 @@ export default function decorate(block) {
   // Call initialization on load
   initializeLocationDisplay();
 
-  // Location selector
+  // Populate location dropdown
+  function populateLocationDropdown() {
+    const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
+    const currentCompany = context.company || 'premium_commercial';
+    const company = companyLocations[currentCompany];
+    const currentLocationId = context.location_id || company.locations[0].id;
+    
+    const companyEl = block.querySelector('#location-menu-company');
+    const listEl = block.querySelector('#location-menu-list');
+    
+    if (companyEl && listEl) {
+      companyEl.textContent = company.name;
+      listEl.innerHTML = '';
+      
+      company.locations.forEach((location) => {
+        const li = document.createElement('li');
+        li.className = 'location-menu-item';
+        if (location.id === currentLocationId) {
+          li.classList.add('active');
+        }
+        
+        const button = document.createElement('button');
+        button.className = 'location-menu-item-button';
+        button.type = 'button';
+        button.setAttribute('data-location-id', location.id);
+        
+        const locationText = document.createElement('span');
+        locationText.className = 'location-menu-item-text';
+        locationText.textContent = `${location.city}, ${location.state}`;
+        
+        const locationBadge = document.createElement('span');
+        locationBadge.className = 'location-menu-item-badge';
+        locationBadge.textContent = location.isPrimary ? 'Primary' : 'Secondary';
+        
+        button.appendChild(locationText);
+        button.appendChild(locationBadge);
+        li.appendChild(button);
+        listEl.appendChild(li);
+      });
+    }
+  }
+
+  // Location selector dropdown
   const locationSelector = block.querySelector('#location-selector');
-  if (locationSelector) {
-    locationSelector.addEventListener('click', () => {
-      // Get current company from customer context (defaults to Premium Commercial)
-      const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-      const currentCompany = context.company || 'premium_commercial';
-      const company = companyLocations[currentCompany];
-      
-      // Build options string
-      const options = company.locations.map((loc, i) => 
-        `${i + 1}. ${loc.city}, ${loc.state}${loc.isPrimary ? ' (Primary)' : ' (Secondary)'}`
-      ).join('\n');
-      
-      const selected = prompt(`${company.name}\nSelect your location:\n\n${options}`);
-      
-      if (selected) {
-        const index = parseInt(selected) - 1;
-        const location = company.locations[index];
+  const locationMenu = block.querySelector('#location-menu');
+  
+  if (locationSelector && locationMenu) {
+    // Initialize aria-expanded
+    locationSelector.setAttribute('aria-expanded', 'false');
+    
+    // Populate dropdown on load
+    populateLocationDropdown();
+    
+    // Toggle dropdown on click
+    locationSelector.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isActive = locationMenu.classList.toggle('active');
+      locationSelector.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+      // Refresh dropdown content in case company changed
+      populateLocationDropdown();
+    });
+    
+    // Handle location selection
+    locationMenu.addEventListener('click', (e) => {
+      const button = e.target.closest('.location-menu-item-button');
+      if (button) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const locationId = button.getAttribute('data-location-id');
+        const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
+        const currentCompany = context.company || 'premium_commercial';
+        const company = companyLocations[currentCompany];
+        const location = company.locations.find(loc => loc.id === locationId);
         
         if (location) {
-          // Update context with selected location
+          // Update context
           context.company = currentCompany;
           context.location_id = location.id;
           context.region = location.region;
           localStorage.setItem('buildright_customer_context', JSON.stringify(context));
           
           // Update display
-          locationSelector.querySelector('.location-name').textContent = 
-            `${company.name} - ${location.city}, ${location.state}`;
+          const locationNameEl = locationSelector.querySelector('.location-name');
+          if (locationNameEl) {
+            locationNameEl.textContent = `${company.name} - ${location.city}, ${location.state}`;
+          }
+          
+          // Close dropdown
+          locationMenu.classList.remove('active');
+          locationSelector.setAttribute('aria-expanded', 'false');
+          
+          // Refresh dropdown to update active state
+          populateLocationDropdown();
         }
+      }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!locationMenu.contains(e.target) && !locationSelector.contains(e.target)) {
+        locationMenu.classList.remove('active');
+        locationSelector.setAttribute('aria-expanded', 'false');
       }
     });
   }
