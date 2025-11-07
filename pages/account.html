@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <base href="/buildright-eds/">
+  <base href="buildright-eds/">
   <title>Account Dashboard - BuildRight Solutions</title>
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/components.css">
@@ -17,16 +17,16 @@
     <div>
       <div>
         <div class="header-brand">
-          <a href="/">BuildRight Solutions</a>
+          <a href="index.html">BuildRight Solutions</a>
         </div>
         <nav class="header-nav">
-          <a href="/">Home</a>
-          <a href="/pages/catalog.html">Catalog</a>
-          <a href="/pages/account.html">Account</a>
+          <a href="index.html">Home</a>
+          <a href="pages/catalog.html">Catalog</a>
+          <a href="pages/account.html">Account</a>
         </nav>
         <div class="header-actions">
-          <a href="/pages/cart.html" class="cart-link">Cart (<span class="cart-count">0</span>)</a>
-          <a href="/pages/login.html" class="login-link">Login</a>
+          <a href="pages/cart.html" class="cart-link">Cart (<span class="cart-count">0</span>)</a>
+          <a href="pages/login.html" class="login-link">Login</a>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
             <p style="color: var(--color-text-light);">View your order history and track shipments.</p>
           </div>
           <div class="card-footer">
-            <a href="/pages/order-history.html" class="btn btn-outline btn-sm">View Orders</a>
+            <a href="pages/order-history.html" class="btn btn-outline btn-sm">View Orders</a>
           </div>
         </div>
 
@@ -84,7 +84,7 @@
             <p style="color: var(--color-text-light);">Quick access to your frequently used project types.</p>
           </div>
           <div class="card-footer">
-            <a href="/pages/project-selector.html" class="btn btn-outline btn-sm">Select Project</a>
+            <a href="pages/project-selector.html" class="btn btn-outline btn-sm">Select Project</a>
           </div>
         </div>
 
@@ -96,7 +96,7 @@
             <p style="color: var(--color-text-light);">Track your loyalty spend and unlock exclusive perks.</p>
           </div>
           <div class="card-footer">
-            <a href="/pages/rewards.html" class="btn btn-outline btn-sm">View Rewards</a>
+            <a href="pages/rewards.html" class="btn btn-outline btn-sm">View Rewards</a>
           </div>
         </div>
 
@@ -117,8 +117,8 @@
 
   <script type="module" src="scripts/app.js"></script>
   <script type="module">
-    import { getCustomerContext } from '/scripts/data-mock.js';
-    import { decorateBlock } from '/scripts/utils.js';
+    import { getCustomerContext } from 'scripts/data-mock.js';
+    import { decorateBlock } from 'scripts/utils.js';
     
     // Load account info
     function loadAccountInfo() {

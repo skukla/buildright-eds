@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <base href="/buildright-eds/">
+  <base href="buildright-eds/">
   <title>Order History - BuildRight Solutions</title>
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/components.css">
@@ -313,7 +313,7 @@
   </div>
 
   <script type="module">
-    import { decorateBlock } from '/scripts/utils.js';
+    import { decorateBlock } from 'scripts/utils.js';
 
     // Load orders from localStorage
     function loadOrders() {
@@ -347,7 +347,7 @@
             <div class="empty-state-icon">📦</div>
             <h3 class="empty-state-title">No Orders Yet</h3>
             <p class="empty-state-text">Your completed project orders will appear here.</p>
-            <a href="/pages/project-builder.html" class="btn btn-primary">Start Building a Project</a>
+            <a href="pages/project-builder.html" class="btn btn-primary">Start Building a Project</a>
           </div>
         `;
         return;
