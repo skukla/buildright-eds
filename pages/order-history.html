@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="/buildright-eds/">
   <title>Order History - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
   <style>
     .page-header {
       background: var(--color-surface);
@@ -313,7 +313,7 @@
   </div>
 
   <script type="module">
-    import { decorateBlock } from 'scripts/utils.js';
+    import { decorateBlock } from '../scripts/utils.js';
 
     // Load orders from localStorage
     function loadOrders() {
@@ -502,8 +502,8 @@
     displayOrders();
     decorateBlock(document.querySelector('[data-block-name="header"]'));
   </script>
-  <script type="module" src="scripts/app.js"></script>
-  <script type="module" src="blocks/header/header.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
+  <script type="module" src="../blocks/header/header.js"></script>
 </body>
 </html>
 

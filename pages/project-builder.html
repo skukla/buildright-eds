@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="/buildright-eds/">
   <title>Project Builder - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
   <style>
     .wizard-container {
       max-width: 1400px;
@@ -918,8 +918,8 @@
   </div>
 
   <script type="module">
-    import { saveWizardState, getWizardState, generateBundle, addBundleToCart } from 'scripts/project-builder.js';
-    import { decorateBlock } from 'scripts/utils.js';
+    import { saveWizardState, getWizardState, generateBundle, addBundleToCart } from '../scripts/project-builder.js';
+    import { decorateBlock } from '../scripts/utils.js';
 
     // Wizard state
     let currentStep = 1;
@@ -1594,8 +1594,8 @@
     // Initialize on load
     initWizard();
   </script>
-  <script type="module" src="scripts/app.js"></script>
-  <script type="module" src="blocks/header/header.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
+  <script type="module" src="../blocks/header/header.js"></script>
 </body>
 </html>
 

@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="/buildright-eds/">
   <title>Product Detail - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
-  <link rel="stylesheet" href="blocks/tier-badge/tier-badge.css">
-  <link rel="stylesheet" href="blocks/pricing-display/pricing-display.css">
-  <link rel="stylesheet" href="blocks/inventory-status/inventory-status.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
+  <link rel="stylesheet" href="../blocks/tier-badge/tier-badge.css">
+  <link rel="stylesheet" href="../blocks/pricing-display/pricing-display.css">
+  <link rel="stylesheet" href="../blocks/inventory-status/inventory-status.css">
 </head>
 <body>
   <!-- Header Block -->
@@ -114,11 +114,11 @@
     </div>
   </section>
 
-  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
   <script type="module">
-    import { getUrlParameter } from 'scripts/utils.js';
-    import { getProductBySKU } from 'scripts/data-mock.js';
-    import { decorateBlock } from 'scripts/utils.js';
+    import { getUrlParameter } from '../scripts/utils.js';
+    import { getProductBySKU } from '../scripts/data-mock.js';
+    import { decorateBlock } from '../scripts/utils.js';
     
     // Load product detail
     async function loadProductDetail() {

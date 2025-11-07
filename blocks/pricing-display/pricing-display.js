@@ -4,7 +4,7 @@ export default async function decorate(block) {
   if (!sku) return;
 
   // Import data functions
-  const { getProductBySKU, getPrice, getCustomerContext } = await import('scripts/data-mock.js');
+  const { getProductBySKU, getPrice, getCustomerContext } = await import('../../scripts/data-mock.js');
 
   // Load product and update pricing
   async function updatePricing(quantity = 1) {

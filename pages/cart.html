@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="/buildright-eds/">
   <title>Shopping Cart - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
-  <link rel="stylesheet" href="blocks/cart-summary/cart-summary.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
+  <link rel="stylesheet" href="../blocks/cart-summary/cart-summary.css">
 </head>
 <body>
   <!-- Header Block -->
@@ -173,13 +173,13 @@
     </div>
   </section>
 
-  <link rel="stylesheet" href="blocks/project-bundle/project-bundle.css">
-  <script type="module" src="scripts/app.js"></script>
+  <link rel="stylesheet" href="../blocks/project-bundle/project-bundle.css">
+  <script type="module" src="../scripts/app.js"></script>
   <script type="module">
-    import { getCart, updateCartItem, removeFromCart } from 'scripts/cart-manager.js';
-    import { getProductBySKU, getPrice } from 'scripts/data-mock.js';
-    import { removeBundleFromCart, updateBundleItemQuantity } from 'scripts/project-builder.js';
-    import { decorateBlock } from 'scripts/utils.js';
+    import { getCart, updateCartItem, removeFromCart } from '../scripts/cart-manager.js';
+    import { getProductBySKU, getPrice } from '../scripts/data-mock.js';
+    import { removeBundleFromCart, updateBundleItemQuantity } from '../scripts/project-builder.js';
+    import { decorateBlock } from '../scripts/utils.js';
     
     // Load cart items
     async function loadCartItems() {

@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="/buildright-eds/">
   <title>BuildRight Solutions - Building Materials Distributor</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
-  <link rel="stylesheet" href="blocks/product-grid/product-grid.css">
+  <link rel="stylesheet" href="./styles/base.css">
+  <link rel="stylesheet" href="./styles/components.css">
+  <link rel="stylesheet" href="./styles/utilities.css">
+  <link rel="stylesheet" href="./blocks/header/header.css">
+  <link rel="stylesheet" href="./blocks/product-grid/product-grid.css">
 </head>
 <body>
   <!-- Header Block -->
@@ -260,9 +260,9 @@
     </div>
   </section>
 
-  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="./scripts/app.js"></script>
   <script type="module">
-    import { getProducts, getPrice, getInventoryStatus, getPrimaryWarehouse } from 'scripts/data-mock.js';
+    import { getProducts, getPrice, getInventoryStatus, getPrimaryWarehouse } from './scripts/data-mock.js';
     
     // Load featured products
     async function loadFeaturedProducts() {

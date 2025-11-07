@@ -5,7 +5,7 @@ export default async function decorate(block) {
   if (!container) return;
 
   // Import data functions
-  const { getProducts, getProductsByProjectType, getPrice, getInventoryStatus, getPrimaryWarehouse } = await import('scripts/data-mock.js');
+  const { getProducts, getProductsByProjectType, getPrice, getInventoryStatus, getPrimaryWarehouse } = await import('../../scripts/data-mock.js');
 
   // Render products
   async function renderProducts(products) {
