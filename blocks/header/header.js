@@ -5,27 +5,81 @@ export default function decorate(block) {
     // Detect base path (e.g., '/buildright-eds/' or '/')
     const pathParts = window.location.pathname.split('/').filter(p => p);
     const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+    const isInPagesDir = window.location.pathname.includes('/pages/');
+    
+    // Skip if already on root (no base path needed)
+    if (basePath === '/') return;
     
     // Fix logo link to use absolute path from site root
     const logoLink = block.querySelector('.header-brand a');
     if (logoLink) {
       const currentHref = logoLink.getAttribute('href');
-      if (currentHref && (currentHref.includes('index.html') || currentHref === '/buildright-eds/index.html')) {
-        logoLink.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+      if (currentHref) {
+        if (currentHref === 'index.html' || currentHref === '/index.html' || currentHref === '../index.html' || currentHref.includes('index.html')) {
+          logoLink.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+        }
       }
     }
     
     // Fix all navigation links in header to use absolute paths
-    const navLinks = block.querySelectorAll('a[href^="/pages/"], a[href^="pages/"], a[href^="./"]');
+    const navLinks = block.querySelectorAll('a[href]');
     navLinks.forEach(link => {
       const href = link.getAttribute('href');
-      if (href.startsWith('/pages/')) {
-        link.setAttribute('href', `${basePath}${href.substring(1)}`.replace('//', '/'));
-      } else if (href.startsWith('pages/')) {
+      
+      // Skip external links, anchors, mailto, javascript:, and data URIs
+      if (!href || 
+          href.startsWith('http://') || 
+          href.startsWith('https://') || 
+          href.startsWith('mailto:') || 
+          href.startsWith('javascript:') ||
+          href.startsWith('data:') ||
+          href.startsWith('#') ||
+          href.startsWith(basePath)) {
+        return;
+      }
+      
+      // Fix absolute paths that start with / but aren't external
+      if (href.startsWith('/') && !href.startsWith('//')) {
+        if (href.startsWith('/pages/')) {
+          link.setAttribute('href', `${basePath}${href.substring(1)}`.replace('//', '/'));
+          return;
+        }
+        if (href === '/index.html' || href === '/') {
+          link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+          return;
+        }
+      }
+      
+      // Fix pages/ links (from root pages)
+      if (href.startsWith('pages/')) {
         link.setAttribute('href', `${basePath}${href}`.replace('//', '/'));
-      } else if (href.startsWith('./')) {
+        return;
+      }
+      
+      // Fix ./ links (from pages directory)
+      if (href.startsWith('./') && isInPagesDir) {
         const filename = href.replace('./', '');
         link.setAttribute('href', `${basePath}pages/${filename}`.replace('//', '/'));
+        return;
+      }
+      
+      // Fix ../index.html links (from pages directory)
+      if (href === '../index.html' && isInPagesDir) {
+        link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+        return;
+      }
+      
+      // Fix ../ links that go to other pages (from pages directory)
+      if (href.startsWith('../') && isInPagesDir && !href.startsWith('../index.html')) {
+        const relativePath = href.replace('../', '');
+        link.setAttribute('href', `${basePath}${relativePath}`.replace('//', '/'));
+        return;
+      }
+      
+      // Fix index.html links
+      if (href === 'index.html') {
+        link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+        return;
       }
     });
   }

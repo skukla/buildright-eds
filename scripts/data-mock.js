@@ -11,8 +11,29 @@ let customerContext = {
 
 // Get base path for GitHub Pages subdirectory support
 function getBasePath() {
-  const pathParts = window.location.pathname.split('/').filter(p => p);
-  return pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+  // Use global function if available (from app.js), otherwise calculate locally
+  if (typeof window.getBasePath === 'function') {
+    try {
+      return window.getBasePath();
+    } catch (e) {
+      console.warn('Error calling window.getBasePath:', e);
+    }
+  }
+  
+  // Calculate base path from current location
+  const pathname = window.location.pathname;
+  const pathParts = pathname.split('/').filter(p => p);
+  
+  // If we're in a subdirectory (not root), return the base path
+  // Example: /buildright-eds/pages/catalog.html -> /buildright-eds/
+  // Example: /buildright-eds/index.html -> /buildright-eds/
+  // Example: /pages/catalog.html -> / (root deployment)
+  if (pathParts.length > 0 && pathParts[0] !== 'pages') {
+    return `/${pathParts[0]}/`;
+  }
+  
+  // Root deployment
+  return '/';
 }
 
 // Load mock data from JSON file
@@ -22,10 +43,37 @@ async function loadMockData() {
   try {
     // Use absolute path from site root for GitHub Pages compatibility
     const basePath = getBasePath();
-    const dataPath = `${basePath}data/mock-products.json`.replace('//', '/');
+    // Ensure data path is always absolute (starts with /) and relative to site root
+    // basePath is either '/' or '/buildright-eds/' - normalize it
+    const normalizedBasePath = basePath === '/' ? '' : basePath.replace(/\/$/, ''); // Remove trailing slash
+    const dataPath = `${normalizedBasePath}/data/mock-products.json`.replace('//', '/');
+    
+    // Debug logging (can be removed in production)
+    if (console && console.log) {
+      console.log(`[data-mock] Loading mock data:`, {
+        pathname: window.location.pathname,
+        basePath: basePath,
+        normalizedBasePath: normalizedBasePath,
+        dataPath: dataPath,
+        fullUrl: window.location.origin + dataPath
+      });
+    }
+    
     const response = await fetch(dataPath);
     if (!response.ok) {
       console.error(`Failed to load mock data: ${response.status} ${response.statusText} from ${dataPath}`);
+      // Try fallback path if basePath approach fails
+      if (basePath !== '/') {
+        const fallbackPath = '/data/mock-products.json';
+        console.log(`Trying fallback path: ${fallbackPath}`);
+        const fallbackResponse = await fetch(fallbackPath);
+        if (fallbackResponse.ok) {
+          mockData = await fallbackResponse.json();
+          if (mockData && mockData.products) {
+            return mockData;
+          }
+        }
+      }
       return null;
     }
     mockData = await response.json();
@@ -36,6 +84,22 @@ async function loadMockData() {
     return mockData;
   } catch (error) {
     console.error('Error loading mock data:', error);
+    // Try fallback path on error
+    if (getBasePath() !== '/') {
+      try {
+        const fallbackPath = '/data/mock-products.json';
+        console.log(`Trying fallback path after error: ${fallbackPath}`);
+        const fallbackResponse = await fetch(fallbackPath);
+        if (fallbackResponse.ok) {
+          mockData = await fallbackResponse.json();
+          if (mockData && mockData.products) {
+            return mockData;
+          }
+        }
+      } catch (fallbackError) {
+        console.error('Fallback path also failed:', fallbackError);
+      }
+    }
     return null;
   }
 }

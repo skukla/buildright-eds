@@ -35,8 +35,22 @@ function fixNavigationPaths() {
       return;
     }
     
+    // Fix absolute paths that start with / but aren't external
+    if (href.startsWith('/') && !href.startsWith('//')) {
+      // Convert /pages/... to basePath/pages/...
+      if (href.startsWith('/pages/')) {
+        link.setAttribute('href', `${basePath}${href.substring(1)}`.replace('//', '/'));
+        return;
+      }
+      // Convert /index.html to basePath/index.html
+      if (href === '/index.html' || href === '/') {
+        link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+        return;
+      }
+    }
+    
     // Fix index.html links
-    if (href === 'index.html' || href === '/index.html' || href === '../index.html') {
+    if (href === 'index.html' || href === '../index.html') {
       link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
       return;
     }
@@ -59,12 +73,57 @@ function fixNavigationPaths() {
       link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
       return;
     }
+    
+    // Fix ../ links that go to other pages (from pages directory)
+    if (href.startsWith('../') && isInPagesDir && !href.startsWith('../index.html')) {
+      const relativePath = href.replace('../', '');
+      // If it's a pages/ path, keep it; otherwise assume it's a root-level file
+      if (relativePath.startsWith('pages/')) {
+        link.setAttribute('href', `${basePath}${relativePath}`.replace('//', '/'));
+      } else {
+        link.setAttribute('href', `${basePath}${relativePath}`.replace('//', '/'));
+      }
+      return;
+    }
+  });
+}
+
+// Watch for dynamically added links and fix them
+function setupDynamicLinkFixer() {
+  const basePath = window.getBasePath();
+  if (basePath === '/') return;
+  
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) { // Element node
+          // Fix links in the added node
+          if (node.tagName === 'A' && node.hasAttribute('href')) {
+            const href = node.getAttribute('href');
+            if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('javascript:') && !href.startsWith('#') && !href.startsWith(basePath)) {
+              fixNavigationPaths();
+            }
+          }
+          // Fix links within the added node
+          const links = node.querySelectorAll ? node.querySelectorAll('a[href]') : [];
+          if (links.length > 0) {
+            fixNavigationPaths();
+          }
+        }
+      });
+    });
+  });
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
   });
 }
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   fixNavigationPaths();
+  setupDynamicLinkFixer();
   initializeApp();
 });
 

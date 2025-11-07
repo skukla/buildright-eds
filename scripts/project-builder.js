@@ -4,16 +4,71 @@ import { getProducts, getProductsByProjectType, getProductsByCategory, getPrice,
 
 let recommendationsData = null;
 
+// Get base path for GitHub Pages subdirectory support
+function getBasePath() {
+  // Use global function if available (from app.js), otherwise calculate locally
+  if (typeof window.getBasePath === 'function') {
+    try {
+      return window.getBasePath();
+    } catch (e) {
+      console.warn('Error calling window.getBasePath:', e);
+    }
+  }
+  
+  // Calculate base path from current location
+  const pathname = window.location.pathname;
+  const pathParts = pathname.split('/').filter(p => p);
+  
+  // If we're in a subdirectory (not root), return the base path
+  if (pathParts.length > 0 && pathParts[0] !== 'pages') {
+    return `/${pathParts[0]}/`;
+  }
+  
+  // Root deployment
+  return '/';
+}
+
 // Load recommendations data
 async function loadRecommendationsData() {
   if (recommendationsData) return recommendationsData;
   
   try {
-    const response = await fetch('data/project-recommendations.json');
+    // Use absolute path from site root for GitHub Pages compatibility
+    const basePath = getBasePath();
+    const normalizedBasePath = basePath === '/' ? '' : basePath.replace(/\/$/, ''); // Remove trailing slash
+    const dataPath = `${normalizedBasePath}/data/project-recommendations.json`.replace('//', '/');
+    
+    const response = await fetch(dataPath);
+    if (!response.ok) {
+      console.error(`Failed to load recommendations data: ${response.status} ${response.statusText} from ${dataPath}`);
+      // Try fallback path if basePath approach fails
+      if (basePath !== '/') {
+        const fallbackPath = '/data/project-recommendations.json';
+        const fallbackResponse = await fetch(fallbackPath);
+        if (fallbackResponse.ok) {
+          recommendationsData = await fallbackResponse.json();
+          return recommendationsData;
+        }
+      }
+      return null;
+    }
     recommendationsData = await response.json();
     return recommendationsData;
   } catch (error) {
     console.error('Error loading recommendations data:', error);
+    // Try fallback path on error
+    if (getBasePath() !== '/') {
+      try {
+        const fallbackPath = '/data/project-recommendations.json';
+        const fallbackResponse = await fetch(fallbackPath);
+        if (fallbackResponse.ok) {
+          recommendationsData = await fallbackResponse.json();
+          return recommendationsData;
+        }
+      } catch (fallbackError) {
+        console.error('Fallback path also failed:', fallbackError);
+      }
+    }
     return null;
   }
 }
