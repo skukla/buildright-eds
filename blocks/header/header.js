@@ -212,6 +212,17 @@ export default function decorate(block) {
     // Populate dropdown on load
     populateLocationDropdown();
     
+    // Update dropdown positioning
+    function positionDropdown() {
+      if (!locationMenu.classList.contains('active')) return;
+      
+      const rect = locationSelector.getBoundingClientRect();
+      
+      locationMenu.style.top = `${rect.bottom + window.scrollY}px`;
+      locationMenu.style.left = `${rect.left + window.scrollX}px`;
+      locationMenu.style.minWidth = `${rect.width}px`;
+    }
+    
     // Toggle dropdown on click
     locationSelector.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -219,6 +230,10 @@ export default function decorate(block) {
       locationSelector.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       // Refresh dropdown content in case company changed
       populateLocationDropdown();
+      // Position dropdown after toggle
+      if (isActive) {
+        positionDropdown();
+      }
     });
     
     // Handle location selection
@@ -262,6 +277,20 @@ export default function decorate(block) {
       if (!locationMenu.contains(e.target) && !locationSelector.contains(e.target)) {
         locationMenu.classList.remove('active');
         locationSelector.setAttribute('aria-expanded', 'false');
+      }
+    });
+    
+    // Update position on scroll
+    window.addEventListener('scroll', () => {
+      if (locationMenu.classList.contains('active')) {
+        positionDropdown();
+      }
+    }, { passive: true });
+    
+    // Update position on resize
+    window.addEventListener('resize', () => {
+      if (locationMenu.classList.contains('active')) {
+        positionDropdown();
       }
     });
   }

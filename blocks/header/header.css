@@ -37,32 +37,24 @@
 
 .location-selector-wrapper {
   position: relative;
-  transition: all var(--transition-fast);
-  border-radius: var(--shape-border-radius-3);
-  background-color: transparent;
   display: inline-block;
   z-index: 1;
 }
 
-/* Outline container when dropdown is active */
-.location-selector-wrapper:has(.location-menu.active) {
-  background-color: white;
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shape-shadow-2);
-  z-index: 200;
-}
-
-/* Extend wrapper height to cover dropdown area when active */
+/* Visual styling via pseudo-element (doesn't affect layout) */
 .location-selector-wrapper:has(.location-menu.active)::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: calc(var(--spacing-small) * -1);
+  left: calc(var(--spacing-3) * -1);
+  right: calc(var(--spacing-3) * -1);
   bottom: 0;
   background-color: white;
-  border-radius: var(--shape-border-radius-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3) var(--shape-border-radius-3) 0 0;
+  box-shadow: var(--shape-shadow-2);
   z-index: -1;
+  pointer-events: none;
 }
 
 .location-selector {
@@ -81,11 +73,8 @@
   z-index: 1;
 }
 
-/* Add padding when dropdown is active - use absolute positioning to avoid expanding parent */
+/* Add padding when dropdown is active for visual card effect */
 .location-selector-wrapper:has(.location-menu.active) .location-selector {
-  position: absolute;
-  top: 0;
-  left: 0;
   padding: var(--spacing-small) var(--spacing-3);
   padding-bottom: var(--spacing-3);
 }
@@ -99,7 +88,7 @@
 }
 
 /* Border separator between button and dropdown */
-.location-selector[aria-expanded="true"]::after {
+.location-selector-wrapper:has(.location-menu.active) .location-selector::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -107,7 +96,7 @@
   right: calc(var(--spacing-3) * -1);
   height: 1px;
   background-color: var(--color-border);
-  z-index: 1001;
+  z-index: 1;
 }
 
 .location-name {
@@ -127,14 +116,14 @@
 /* Location Dropdown Menu */
 .location-menu {
   display: none;
-  position: absolute;
-  top: 100%;
-  left: -1px;
-  right: -1px;
+  position: fixed;
   background-color: white;
-  border: none;
-  z-index: 1;
+  border: 1px solid var(--color-border);
+  border-top: none;
+  box-shadow: var(--shape-shadow-2);
+  z-index: 10000;
   border-radius: 0 0 var(--shape-border-radius-3) var(--shape-border-radius-3);
+  /* Position set via JavaScript */
 }
 
 .location-menu.active {
