@@ -32,10 +32,26 @@ function debounce(func, wait) {
   };
 }
 
+// Get base URL for resolving relative paths using import.meta.url
+const getScriptBaseUrl = (() => {
+  try {
+    // Use import.meta.url to get the current module's URL
+    const scriptUrl = new URL(import.meta.url);
+    // Get the directory containing this script (scripts/)
+    const scriptsDir = scriptUrl.pathname.replace(/\/[^/]*$/, '/');
+    // Go up one level to get the root directory
+    return scriptUrl.origin + scriptsDir.replace(/\/scripts\/$/, '/');
+  } catch (e) {
+    // Fallback: use window location
+    return window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
+  }
+})();
+
 // Load block HTML
 async function loadBlockHTML(blockName) {
   try {
-    const response = await fetch(`../blocks/${blockName}/${blockName}.html`);
+    const blockPath = `${getScriptBaseUrl}blocks/${blockName}/${blockName}.html`;
+    const response = await fetch(blockPath);
     if (!response.ok) return null;
     return await response.text();
   } catch (error) {
@@ -48,14 +64,15 @@ async function loadBlockHTML(blockName) {
 function loadBlockCSS(blockName) {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = `../blocks/${blockName}/${blockName}.css`;
+  link.href = `${getScriptBaseUrl}blocks/${blockName}/${blockName}.css`;
   document.head.appendChild(link);
 }
 
 // Load block JS
 async function loadBlockJS(blockName) {
   try {
-    const module = await import(`../blocks/${blockName}/${blockName}.js`);
+    const blockPath = `${getScriptBaseUrl}blocks/${blockName}/${blockName}.js`;
+    const module = await import(blockPath);
     return module.default;
   } catch (error) {
     console.error(`Error loading block JS ${blockName}:`, error);
