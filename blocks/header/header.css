@@ -52,8 +52,8 @@
   font: var(--type-body-2-default-font);
 }
 
-.location-selector:hover {
-  text-decoration: underline;
+.location-selector:hover .location-name {
+  border-bottom: 1px solid currentColor;
 }
 
 .location-name {
