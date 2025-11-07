@@ -4,7 +4,7 @@ export default async function decorate(block) {
   if (!sku) return;
 
   // Import data functions
-  const { getProductBySKU, getInventory, getInventoryStatus, getWarehouses, getPrimaryWarehouse } = await import('/scripts/data-mock.js');
+  const { getProductBySKU, getInventory, getInventoryStatus, getWarehouses, getPrimaryWarehouse } = await import('scripts/data-mock.js');
 
   // Load product and update inventory
   async function updateInventory() {

@@ -1,7 +1,7 @@
 // Tier badge block decoration
 export default async function decorate(block) {
   // Import data functions
-  const { getCustomerContext } = await import('/scripts/data-mock.js');
+  const { getCustomerContext } = await import('scripts/data-mock.js');
 
   // Update tier badge
   function updateTierBadge() {

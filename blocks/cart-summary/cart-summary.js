@@ -1,7 +1,7 @@
 // Cart summary block decoration
 export default async function decorate(block) {
   // Import data functions
-  const { getProductBySKU, getPrice } = await import('/scripts/data-mock.js');
+  const { getProductBySKU, getPrice } = await import('scripts/data-mock.js');
 
   // Update cart summary
   async function updateCartSummary() {
