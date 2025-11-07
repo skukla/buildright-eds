@@ -41,7 +41,7 @@
   z-index: 1;
 }
 
-/* Visual styling via pseudo-element (doesn't affect layout) */
+/* Visual styling via pseudo-element for border/shadow (doesn't affect layout) */
 .location-selector-wrapper:has(.location-menu.active)::before {
   content: '';
   position: absolute;
@@ -49,7 +49,6 @@
   left: calc(var(--spacing-3) * -1);
   right: calc(var(--spacing-3) * -1);
   bottom: 0;
-  background-color: white;
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-3) var(--shape-border-radius-3) 0 0;
   box-shadow: var(--shape-shadow-2);
@@ -68,23 +67,30 @@
   gap: var(--spacing-xsmall);
   padding: 0;
   font: var(--type-body-2-default-font);
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), padding var(--transition-fast);
   position: relative;
   z-index: 1;
 }
 
-/* Add padding when dropdown is active for visual card effect */
-.location-selector-wrapper:has(.location-menu.active) .location-selector {
+/* Hover state - white background matching content below */
+.location-selector:hover {
+  background-color: white;
+  padding: var(--spacing-small) var(--spacing-3);
+  border-radius: var(--shape-border-radius-3) var(--shape-border-radius-3) 0 0;
+}
+
+/* Remove underline, use background instead */
+.location-selector:hover .location-name {
+  border-bottom: none;
+}
+
+/* Active/clicked state - maintain white background */
+.location-selector[aria-expanded="true"] {
+  background-color: white;
+  color: var(--color-brand-600);
   padding: var(--spacing-small) var(--spacing-3);
   padding-bottom: var(--spacing-3);
-}
-
-.location-selector:hover .location-name {
-  border-bottom: 1px solid currentColor;
-}
-
-.location-selector[aria-expanded="true"] {
-  color: var(--color-brand-600);
+  border-radius: var(--shape-border-radius-3) var(--shape-border-radius-3) 0 0;
 }
 
 /* Border separator between button and dropdown */
