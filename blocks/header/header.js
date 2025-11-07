@@ -1,5 +1,38 @@
 // Header block decoration
 export default function decorate(block) {
+  // Fix navigation paths for GitHub Pages subdirectory
+  function fixNavigationPaths() {
+    // Detect base path (e.g., '/buildright-eds/' or '/')
+    const pathParts = window.location.pathname.split('/').filter(p => p);
+    const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+    
+    // Fix logo link to use absolute path from site root
+    const logoLink = block.querySelector('.header-brand a');
+    if (logoLink) {
+      const currentHref = logoLink.getAttribute('href');
+      if (currentHref && (currentHref.includes('index.html') || currentHref === '/buildright-eds/index.html')) {
+        logoLink.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+      }
+    }
+    
+    // Fix all navigation links in header to use absolute paths
+    const navLinks = block.querySelectorAll('a[href^="/pages/"], a[href^="pages/"], a[href^="./"]');
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href.startsWith('/pages/')) {
+        link.setAttribute('href', `${basePath}${href.substring(1)}`.replace('//', '/'));
+      } else if (href.startsWith('pages/')) {
+        link.setAttribute('href', `${basePath}${href}`.replace('//', '/'));
+      } else if (href.startsWith('./')) {
+        const filename = href.replace('./', '');
+        link.setAttribute('href', `${basePath}pages/${filename}`.replace('//', '/'));
+      }
+    });
+  }
+  
+  // Fix paths on load
+  fixNavigationPaths();
+  
   // Update cart count from localStorage
   function updateCartCount() {
     const cartCountEl = block.querySelector('.cart-count');
