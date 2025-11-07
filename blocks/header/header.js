@@ -107,27 +107,88 @@ export default function decorate(block) {
   // Listen for cart updates
   window.addEventListener('cartUpdated', updateCartCount);
 
+  // Define company locations (not warehouses)
+  const companyLocations = {
+    'premium_commercial': {
+      name: 'Premium Commercial Builders',
+      locations: [
+        { id: 'los_angeles', city: 'Los Angeles', state: 'CA', isPrimary: true, region: 'western' },
+        { id: 'phoenix', city: 'Phoenix', state: 'AZ', isPrimary: false, region: 'western' }
+      ]
+    },
+    'coastal_residential': {
+      name: 'Coastal Residential Builders',
+      locations: [
+        { id: 'dallas', city: 'Dallas', state: 'TX', isPrimary: true, region: 'central' },
+        { id: 'denver', city: 'Denver', state: 'CO', isPrimary: false, region: 'central' }
+      ]
+    },
+    'elite_trade': {
+      name: 'Elite Trade Contractors',
+      locations: [
+        { id: 'charlotte', city: 'Charlotte', state: 'NC', isPrimary: true, region: 'eastern' },
+        { id: 'atlanta', city: 'Atlanta', state: 'GA', isPrimary: false, region: 'eastern' }
+      ]
+    }
+  };
+
+  // Initialize location display from customer context
+  function initializeLocationDisplay() {
+    const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
+    const currentCompany = context.company || 'premium_commercial';
+    const currentLocationId = context.location_id || 'los_angeles';
+    
+    const company = companyLocations[currentCompany];
+    const location = company.locations.find(loc => loc.id === currentLocationId) || company.locations[0];
+    
+    // Set display
+    const locationNameEl = block.querySelector('.location-name');
+    if (locationNameEl) {
+      locationNameEl.textContent = `${company.name} - ${location.city}, ${location.state}`;
+    }
+    
+    // Ensure context is saved
+    if (!context.company || !context.location_id) {
+      context.company = currentCompany;
+      context.location_id = location.id;
+      context.region = location.region;
+      localStorage.setItem('buildright_customer_context', JSON.stringify(context));
+    }
+  }
+
+  // Call initialization on load
+  initializeLocationDisplay();
+
   // Location selector
   const locationSelector = block.querySelector('#location-selector');
   if (locationSelector) {
     locationSelector.addEventListener('click', () => {
-      // In a real implementation, this would show a location picker
-      const warehouses = [
-        { name: 'Sacramento RDC', location: 'Sacramento, CA' },
-        { name: 'Charlotte RDC', location: 'Charlotte, NC' },
-        { name: 'Phoenix Metro Warehouse', location: 'Phoenix, AZ' },
-        { name: 'Denver Warehouse', location: 'Denver, CO' },
-        { name: 'Atlanta Metro Warehouse', location: 'Atlanta, GA' }
-      ];
+      // Get current company from customer context (defaults to Premium Commercial)
+      const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
+      const currentCompany = context.company || 'premium_commercial';
+      const company = companyLocations[currentCompany];
       
-      const selected = prompt('Select warehouse:\n' + warehouses.map((w, i) => `${i + 1}. ${w.name}, ${w.location}`).join('\n'));
+      // Build options string
+      const options = company.locations.map((loc, i) => 
+        `${i + 1}. ${loc.city}, ${loc.state}${loc.isPrimary ? ' (Primary)' : ' (Secondary)'}`
+      ).join('\n');
+      
+      const selected = prompt(`${company.name}\nSelect your location:\n\n${options}`);
+      
       if (selected) {
         const index = parseInt(selected) - 1;
-        if (warehouses[index]) {
-          const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-          context.primary_warehouse = warehouses[index].name.toLowerCase().replace(/\s+/g, '_');
+        const location = company.locations[index];
+        
+        if (location) {
+          // Update context with selected location
+          context.company = currentCompany;
+          context.location_id = location.id;
+          context.region = location.region;
           localStorage.setItem('buildright_customer_context', JSON.stringify(context));
-          locationSelector.querySelector('.location-name').textContent = `${warehouses[index].name}, ${warehouses[index].location.split(',')[1]}`;
+          
+          // Update display
+          locationSelector.querySelector('.location-name').textContent = 
+            `${company.name} - ${location.city}, ${location.state}`;
         }
       }
     });

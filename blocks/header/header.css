@@ -51,6 +51,13 @@
   text-decoration: underline;
 }
 
+.location-name {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .location-icon {
   font-size: 0.75rem;
   margin-left: 0.25rem;
