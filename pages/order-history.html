@@ -82,7 +82,7 @@
     }
 
     .order-id {
-      font-family: monospace;
+      font: normal normal 400 0.75rem/1.33 var(--type-font-family-base);
       font: var(--type-body-2-default-font);
       color: var(--color-brand-500);
     }
@@ -458,7 +458,7 @@
                 ${order.products.map(product => `
                   <tr>
                     <td>${product.name}</td>
-                    <td style="font-family: monospace; font: var(--type-details-caption-1-font);">${product.sku}</td>
+                    <td style="font: normal normal 400 0.75rem/1.33 var(--type-font-family-base);">${product.sku}</td>
                     <td>${product.quantity}</td>
                     <td>$${product.unitPrice.toFixed(2)}</td>
                     <td style="font-weight: 600;">$${product.subtotal.toFixed(2)}</td>
