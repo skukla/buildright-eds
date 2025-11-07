@@ -105,6 +105,10 @@ export default function decorate(block) {
     });
   }
 
+  // Get base path for navigation
+  const pathParts = window.location.pathname.split('/').filter(p => p);
+  const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+  
   // Search functionality
   const searchInput = block.querySelector('#header-search-input');
   const searchButton = block.querySelector('.search-button');
@@ -112,8 +116,8 @@ export default function decorate(block) {
     const performSearch = () => {
       const query = searchInput.value.trim();
       if (query) {
-        // Use absolute path for consistency
-        window.location.href = `/pages/catalog.html?search=${encodeURIComponent(query)}`;
+        // Use absolute path with base path
+        window.location.href = `${basePath}pages/catalog.html?search=${encodeURIComponent(query)}`.replace('//', '/');
       }
     };
 
@@ -133,9 +137,9 @@ export default function decorate(block) {
       if (category) {
         e.preventDefault();
         if (category === 'all') {
-          window.location.href = '/pages/catalog.html';
+          window.location.href = `${basePath}pages/catalog.html`.replace('//', '/');
         } else {
-          window.location.href = `/pages/catalog.html?category=${category}`;
+          window.location.href = `${basePath}pages/catalog.html?category=${category}`.replace('//', '/');
         }
       }
     });

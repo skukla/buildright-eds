@@ -118,7 +118,9 @@
         localStorage.setItem('buildright_logged_in', 'true');
         
         // Redirect to account page
-        window.location.href = './account.html';
+        const pathParts = window.location.pathname.split('/').filter(p => p);
+        const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+        window.location.href = `${basePath}pages/account.html`.replace('//', '/');
       } else {
         alert('Please select a company');
       }

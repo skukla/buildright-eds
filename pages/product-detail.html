@@ -123,13 +123,17 @@
     async function loadProductDetail() {
       const sku = getUrlParameter('sku');
       if (!sku) {
-        window.location.href = './catalog.html';
+        const pathParts = window.location.pathname.split('/').filter(p => p);
+        const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+        window.location.href = `${basePath}pages/catalog.html`.replace('//', '/');
         return;
       }
 
       const product = await getProductBySKU(sku);
       if (!product) {
-        window.location.href = './catalog.html';
+        const pathParts = window.location.pathname.split('/').filter(p => p);
+        const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+        window.location.href = `${basePath}pages/catalog.html`.replace('//', '/');
         return;
       }
 

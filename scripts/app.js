@@ -3,42 +3,61 @@
 import { decorateBlock } from './utils.js';
 import './cart-manager.js';
 
+// Get base path helper (available globally for inline scripts)
+window.getBasePath = function() {
+  const pathParts = window.location.pathname.split('/').filter(p => p);
+  return pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+};
+
 // Fix navigation paths for GitHub Pages subdirectory
 function fixNavigationPaths() {
   // Detect base path (e.g., '/buildright-eds/' or '/')
-  const pathParts = window.location.pathname.split('/').filter(p => p);
+  const basePath = window.getBasePath();
   const isInPagesDir = window.location.pathname.includes('/pages/');
-  const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
   
-  // Fix logo/home links - use absolute paths from site root
-  const logoLinks = document.querySelectorAll('.header-brand a');
-  logoLinks.forEach(link => {
+  // Skip if already on root (no base path needed)
+  if (basePath === '/') return;
+  
+  // Fix ALL internal navigation links (not external URLs, anchors, or mailto)
+  const allLinks = document.querySelectorAll('a[href]');
+  allLinks.forEach(link => {
     const href = link.getAttribute('href');
-    // Convert to absolute path from site root
+    
+    // Skip external links, anchors, mailto, javascript:, and data URIs
+    if (!href || 
+        href.startsWith('http://') || 
+        href.startsWith('https://') || 
+        href.startsWith('mailto:') || 
+        href.startsWith('javascript:') ||
+        href.startsWith('data:') ||
+        href.startsWith('#') ||
+        href.startsWith(basePath)) {
+      return;
+    }
+    
+    // Fix index.html links
     if (href === 'index.html' || href === '/index.html' || href === '../index.html') {
       link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+      return;
     }
-  });
-  
-  // Fix breadcrumb home links
-  const breadcrumbHomeLinks = document.querySelectorAll('nav a[href*="index.html"]');
-  breadcrumbHomeLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === 'index.html' || href === '/index.html' || href === '../index.html') {
-      link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
-    }
-  });
-  
-  // Fix navigation links to use absolute paths
-  const navLinks = document.querySelectorAll('a[href^="pages/"], a[href^="./"]');
-  navLinks.forEach(link => {
-    const href = link.getAttribute('href');
+    
+    // Fix pages/ links (from root pages)
     if (href.startsWith('pages/')) {
       link.setAttribute('href', `${basePath}${href}`.replace('//', '/'));
-    } else if (href.startsWith('./') && isInPagesDir) {
-      // Convert ./filename.html to /basePath/pages/filename.html
+      return;
+    }
+    
+    // Fix ./ links (from pages directory)
+    if (href.startsWith('./') && isInPagesDir) {
       const filename = href.replace('./', '');
       link.setAttribute('href', `${basePath}pages/${filename}`.replace('//', '/'));
+      return;
+    }
+    
+    // Fix ../index.html links (from pages directory)
+    if (href === '../index.html' && isInPagesDir) {
+      link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
+      return;
     }
   });
 }

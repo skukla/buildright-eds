@@ -482,7 +482,9 @@
 
       // Save wizard state and redirect to project builder
       sessionStorage.setItem('buildright_wizard_state', JSON.stringify(order.wizardState));
-      window.location.href = './project-builder.html';
+      const pathParts = window.location.pathname.split('/').filter(p => p);
+      const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+      window.location.href = `${basePath}pages/project-builder.html`.replace('//', '/');
     }
 
     // Close modal

@@ -122,7 +122,10 @@ export default function decorate(block) {
       const params = new URLSearchParams();
       if (bundle.projectType) params.set('projectType', bundle.projectType);
       if (bundle.projectDetail) params.set('projectDetail', bundle.projectDetail);
-      window.location.href = `pages/catalog.html?${params.toString()}`;
+      // Get base path for navigation
+      const pathParts = window.location.pathname.split('/').filter(p => p);
+      const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
+      window.location.href = `${basePath}pages/catalog.html?${params.toString()}`.replace('//', '/');
     });
   }
 }
