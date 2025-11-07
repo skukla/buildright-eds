@@ -122,245 +122,167 @@
   </div>
 
   <!-- Hero Banner -->
+  <!-- 
+    Recommended Adobe Stock images:
+    - Search: "construction warehouse interior building materials"
+    - Search: "professional contractor building supplies"
+    - Search: "modern construction materials warehouse"
+    - Image should be high-resolution (1920x1080 minimum), professional, well-lit
+  -->
   <section class="hero-banner" style="
-    background: linear-gradient(135deg, #0f5ba7 0%, #083d6f 100%);
-    color: white;
-    padding: 5rem 0;
-    position: relative;
+    background: var(--color-background);
+    padding: 0;
     overflow: hidden;
   ">
-    <!-- Background Pattern -->
-    <div style="
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      opacity: 0.05;
-      background-image: 
-        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);
-    "></div>
-    
-    <div class="container" style="position: relative; z-index: 1;">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
-        <!-- Left Column - Main Message -->
-        <div style="max-width: 600px;">
-          <div style="
-            display: inline-block;
-            background: rgba(249, 115, 22, 0.2);
-            border: 1px solid rgba(249, 115, 22, 0.4);
-            color: #fdba74;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-          ">
-            🏗️ Trusted by 10,000+ Construction Professionals
-          </div>
-          
-          <h1 style="
+    <div class="hero-container" style="
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 600px;
+      max-width: 100%;
+    ">
+      <!-- Left: Large Hero Image -->
+      <div class="hero-image" style="
+        background-image: url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 600px;
+      "></div>
+      
+      <!-- Right: Content -->
+      <div class="hero-content" style="
+        padding: 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 600px;
+        margin: 0 auto;
+      ">
+        <h1 style="
+          color: var(--color-text);
+          font-size: 2.75rem;
+          font-weight: 700;
+          line-height: 1.2;
+          margin: 0 0 1.5rem 0;
+          font-family: var(--type-font-family-display);
+        ">
+          Your Trusted Partner in Building Materials
+        </h1>
+        
+        <p style="
+          color: var(--color-text-secondary);
+          font-size: 1.125rem;
+          line-height: 1.6;
+          margin: 0 0 2.5rem 0;
+        ">
+          Professional-grade supplies with transparent pricing, real-time inventory, and expert support for contractors and builders.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="hero-cta" style="
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 3rem;
+          flex-wrap: wrap;
+        ">
+          <a href="pages/project-builder.html" class="btn btn-cta btn-lg" style="
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            background: var(--color-accent-500);
             color: white;
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin: 0 0 1.5rem 0;
-            letter-spacing: -0.02em;
-          ">
-            Build Better,<br>Build Faster
-          </h1>
-          
-          <p style="
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.25rem;
-            line-height: 1.6;
-            margin-bottom: 2.5rem;
-          ">
-            Premium building materials with transparent pricing, real-time inventory, and expert support. Get your project started in minutes with our intelligent Project Builder.
-          </p>
-          
-          <!-- CTA Buttons -->
-          <div style="display: flex; gap: 1rem; margin-bottom: 3rem;">
-            <a href="pages/project-builder.html" class="btn btn-cta btn-lg" style="
-              padding: 1rem 2rem;
-              font-size: 1.125rem;
-              background: #f97316;
-              border: none;
-              box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
-            ">
-              Start New Project →
-            </a>
-            <a href="pages/catalog.html" class="btn btn-lg" style="
-              padding: 1rem 2rem;
-              font-size: 1.125rem;
-              background: rgba(255, 255, 255, 0.1);
-              border: 2px solid rgba(255, 255, 255, 0.3);
-              color: white;
-              backdrop-filter: blur(10px);
-            ">
-              Browse Catalog
-            </a>
-          </div>
-          
-          <!-- Key Features -->
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-            <div>
-              <div style="
-                font-size: 2rem;
-                font-weight: 800;
-                color: #fdba74;
-                margin-bottom: 0.25rem;
-              ">50K+</div>
-              <div style="
-                font-size: 0.875rem;
-                color: rgba(255, 255, 255, 0.7);
-              ">Products in Stock</div>
-            </div>
-            <div>
-              <div style="
-                font-size: 2rem;
-                font-weight: 800;
-                color: #fdba74;
-                margin-bottom: 0.25rem;
-              ">24/7</div>
-              <div style="
-                font-size: 0.875rem;
-                color: rgba(255, 255, 255, 0.7);
-              ">Order Tracking</div>
-            </div>
-            <div>
-              <div style="
-                font-size: 2rem;
-                font-weight: 800;
-                color: #fdba74;
-                margin-bottom: 0.25rem;
-              ">Same Day</div>
-              <div style="
-                font-size: 0.875rem;
-                color: rgba(255, 255, 255, 0.7);
-              ">Delivery Available</div>
-            </div>
-          </div>
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+          " onmouseover="this.style.backgroundColor='var(--color-accent-600)'" onmouseout="this.style.backgroundColor='var(--color-accent-500)'">
+            Start Project Builder
+          </a>
+          <a href="pages/catalog.html" class="btn btn-lg" style="
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            background: transparent;
+            color: var(--color-brand-500);
+            border: 2px solid var(--color-brand-500);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+          " onmouseover="this.style.backgroundColor='var(--color-brand-500)'; this.style.color='white'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--color-brand-500)'">
+            Browse Catalog
+          </a>
         </div>
         
-        <!-- Right Column - Value Props Cards -->
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-          <!-- Card 1 -->
-          <div style="
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: transform 0.3s ease;
-          " onmouseover="this.style.transform='translateX(10px)'" onmouseout="this.style.transform='translateX(0)'">
+        <!-- Trust Indicators -->
+        <div class="hero-stats" style="
+          display: flex;
+          gap: 2rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--color-border);
+        ">
+          <div>
             <div style="
-              width: 48px;
-              height: 48px;
-              background: rgba(249, 115, 22, 0.2);
-              border-radius: 0.75rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
               font-size: 1.5rem;
-              margin-bottom: 1rem;
-            ">💡</div>
-            <h3 style="
-              color: white;
-              font-size: 1.25rem;
               font-weight: 700;
-              margin: 0 0 0.5rem 0;
-            ">Smart Project Builder</h3>
-            <p style="
-              color: rgba(255, 255, 255, 0.8);
-              font-size: 0.95rem;
-              margin: 0;
-              line-height: 1.5;
-            ">AI-powered recommendations tailored to your project type, complexity, and budget</p>
+              color: var(--color-brand-500);
+              margin-bottom: 0.25rem;
+            ">50K+</div>
+            <div style="
+              font-size: 0.875rem;
+              color: var(--color-text-secondary);
+            ">Products</div>
           </div>
-          
-          <!-- Card 2 -->
-          <div style="
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: transform 0.3s ease;
-          " onmouseover="this.style.transform='translateX(10px)'" onmouseout="this.style.transform='translateX(0)'">
+          <div>
             <div style="
-              width: 48px;
-              height: 48px;
-              background: rgba(249, 115, 22, 0.2);
-              border-radius: 0.75rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
               font-size: 1.5rem;
-              margin-bottom: 1rem;
-            ">📊</div>
-            <h3 style="
-              color: white;
-              font-size: 1.25rem;
               font-weight: 700;
-              margin: 0 0 0.5rem 0;
-            ">Transparent Pricing</h3>
-            <p style="
-              color: rgba(255, 255, 255, 0.8);
-              font-size: 0.95rem;
-              margin: 0;
-              line-height: 1.5;
-            ">Tier-based pricing with volume discounts. See your exact cost before you order</p>
+              color: var(--color-brand-500);
+              margin-bottom: 0.25rem;
+            ">Same-Day</div>
+            <div style="
+              font-size: 0.875rem;
+              color: var(--color-text-secondary);
+            ">Delivery</div>
           </div>
-          
-          <!-- Card 3 -->
-          <div style="
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: transform 0.3s ease;
-          " onmouseover="this.style.transform='translateX(10px)'" onmouseout="this.style.transform='translateX(0)'">
+          <div>
             <div style="
-              width: 48px;
-              height: 48px;
-              background: rgba(249, 115, 22, 0.2);
-              border-radius: 0.75rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
               font-size: 1.5rem;
-              margin-bottom: 1rem;
-            ">🚚</div>
-            <h3 style="
-              color: white;
-              font-size: 1.25rem;
               font-weight: 700;
-              margin: 0 0 0.5rem 0;
-            ">Real-Time Inventory</h3>
-            <p style="
-              color: rgba(255, 255, 255, 0.8);
-              font-size: 0.95rem;
-              margin: 0;
-              line-height: 1.5;
-            ">Check live stock at your nearest warehouse. No surprises, no delays</p>
+              color: var(--color-brand-500);
+              margin-bottom: 0.25rem;
+            ">24/7</div>
+            <div style="
+              font-size: 0.875rem;
+              color: var(--color-text-secondary);
+            ">Support</div>
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- Bottom wave decoration -->
-    <div style="
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: white;
-      clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
-    "></div>
   </section>
+  
+  <!-- Responsive styles for mobile -->
+  <style>
+    @media (max-width: 768px) {
+      .hero-container {
+        grid-template-columns: 1fr !important;
+      }
+      .hero-image {
+        min-height: 400px !important;
+      }
+      .hero-content {
+        padding: 2rem !important;
+      }
+      .hero-content h1 {
+        font-size: 2rem !important;
+      }
+      .hero-stats {
+        flex-direction: column;
+        gap: 1.5rem !important;
+      }
+    }
+  </style>
 
   <!-- Featured Products - Main Content -->
   <section class="section" style="padding-top: 2rem; padding-bottom: 3rem;">
