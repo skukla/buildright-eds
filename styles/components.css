@@ -96,11 +96,13 @@
   border-radius: var(--shape-border-radius-3);
   padding: var(--spacing-large);
   box-shadow: var(--shape-shadow-1);
-  transition: box-shadow var(--transition-base);
+  transition: all var(--transition-base);
 }
 
 .card:hover {
   box-shadow: var(--shape-shadow-2);
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
   cursor: pointer;
 }
 
