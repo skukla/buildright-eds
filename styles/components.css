@@ -11,10 +11,10 @@
   border-radius: var(--shape-border-radius-3);
   cursor: pointer;
   text-decoration: none;
-  transition: background-color var(--transition-base),
-              color var(--transition-base),
-              box-shadow var(--transition-base),
-              border-color var(--transition-base);
+  transition: background-color 100ms ease-in-out,
+              color 100ms ease-in-out,
+              box-shadow 100ms ease-in-out,
+              border-color 100ms ease-in-out;
 }
 
 .btn-primary {
@@ -45,7 +45,7 @@
 }
 
 .btn-accent:hover {
-  background-color: var(--color-accent-400);
+  background-color: var(--color-accent-600);
   color: white;
   box-shadow: var(--shape-shadow-2);
 }
@@ -286,5 +286,32 @@
 .status.out-of-stock {
   background-color: rgba(220, 38, 38, 0.1);
   color: var(--color-negative-500);
+}
+
+/* Featured Category Icons */
+.featured-category-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 91, 167, 0.1); /* --color-brand-500 with 10% opacity */
+  border-radius: 50%;
+  transition: background-color var(--transition-base), transform var(--transition-base);
+  padding: 0;
+}
+
+.featured-category-icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  object-position: center center;
+  transition: transform var(--transition-base);
+}
+
+/* Hover state for category cards */
+.featured-category-card:hover .featured-category-icon {
+  background: rgba(15, 91, 167, 0.15); /* Slightly darker on hover */
 }
 
