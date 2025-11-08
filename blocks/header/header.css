@@ -44,7 +44,8 @@
 
 .location-selector {
   background: none;
-  border: none;
+  border: 1px solid transparent; /* Reserve border space to prevent layout shift on hover */
+  border-bottom: none; /* No bottom border - prevents flash when dropdown closes */
   color: var(--color-brand-500);
   font-weight: 600;
   cursor: pointer;
@@ -53,16 +54,24 @@
   gap: var(--spacing-xsmall);
   padding: var(--spacing-small) var(--spacing-medium); /* Proportional to text size (8px x 16px) */
   font: var(--type-body-2-default-font);
-  transition: all 0.15s ease;
+  text-decoration: none !important; /* Prevent underline flash on hover */
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, border-radius 0.15s ease, transform 0.15s ease; /* Specific transitions, exclude text-decoration */
   position: relative;
   z-index: 10001;
   border-radius: 2px; /* Minimal rounding - industrial/sharp */
 }
 
 /* Hover state - raised button, stays grey, slightly rounder corners */
+.location-selector:hover,
+.location-selector:focus,
+.location-selector:active {
+  text-decoration: none !important; /* Prevent underline flash in all states */
+}
+
 .location-selector:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08);
   border-radius: 4px; /* Slightly rounder on hover */
+  /* No borders on hover - only shadow for raised effect */
 }
 
 /* Active/clicked state - white background, connects seamlessly to dropdown */
@@ -73,11 +82,19 @@
   border-radius: 4px 4px 0 0; /* Match hover rounding, no bottom radius - seamless connection */
   border: 1px solid var(--color-border); /* Match dropdown border */
   border-bottom: none; /* No bottom border - seamless connection */
-  padding: calc(var(--spacing-small) - 1px) calc(var(--spacing-medium) - 1px) var(--spacing-small) calc(var(--spacing-medium) - 1px); /* Reduce top/left/right padding for border, bottom unchanged (no border) */
+  padding: var(--spacing-small) var(--spacing-medium); /* Same padding as default - border already accounted for */
 }
 
 .location-name {
   white-space: nowrap;
+  text-decoration: none !important; /* Prevent underline flash */
+  display: inline-block; /* Prevent underline from appearing */
+}
+
+.location-selector:hover .location-name,
+.location-selector:focus .location-name,
+.location-selector:active .location-name {
+  text-decoration: none !important; /* Ensure no underline on child elements */
 }
 
 .location-icon {
@@ -97,7 +114,7 @@
   background-color: white;
   border: 1px solid var(--color-border);
   border-top: none; /* No top border - connects to button */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08); /* Stronger shadow for better separation */
   border-radius: 0 0 4px 4px; /* Match button rounding - seamless connection */
   z-index: 10000;
   max-height: 400px;
@@ -115,14 +132,11 @@
   background-color: white; /* Ensure content is visible against unified container */
 }
 
-.location-menu-company {
-  display: none; /* Hide company header - button already shows it, prevents flicker */
-}
 
 .location-menu-list {
   list-style: none;
   padding: 0;
-  margin: 0; /* No top margin needed since company header is hidden */
+  margin: 0;
 }
 
 .location-menu-item {

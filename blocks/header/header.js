@@ -166,11 +166,9 @@ export default function decorate(block) {
     const company = companyLocations[currentCompany];
     const currentLocationId = context.location_id || company.locations[0].id;
     
-    const companyEl = block.querySelector('#location-menu-company');
     const listEl = block.querySelector('#location-menu-list');
     
-    if (companyEl && listEl) {
-      companyEl.textContent = company.name;
+    if (listEl) {
       listEl.innerHTML = '';
       
       company.locations.forEach((location) => {
