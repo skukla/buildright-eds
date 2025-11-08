@@ -1,16 +1,18 @@
-/* Hero banner block styles */
+/* Hero banner block styles - Base styles shared by all variants */
 .hero-banner {
-  background: var(--color-background);
   padding: 0;
   overflow: hidden;
+  position: relative;
 }
 
 .hero-banner__container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
+  grid-template-columns: 1fr 1fr;  /* 50/50 split for better content breathing room */
+  gap: var(--spacing-xxlarge);
   min-height: 600px;
-  max-width: 100%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-horizontal);
 }
 
 .hero-banner__image {
@@ -21,41 +23,66 @@
 }
 
 .hero-banner__content {
-  padding: 4rem;
+  padding: var(--spacing-20) 0; /* 5rem vertical, no horizontal padding (container handles it) */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 600px;  /* Increased from 550px for better breathing room */
+  margin: 0;
+}
+
+.hero-banner__overline {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-medium);
 }
 
 .hero-banner__title {
-  color: var(--color-text);
   font-size: 2.75rem;
   font-weight: 700;
   line-height: 1.2;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 var(--spacing-xlarge) 0; /* 2rem - Better spacing using design tokens */
   font-family: var(--type-font-family-display);
 }
 
 .hero-banner__subtitle {
-  color: var(--color-text-secondary);
   font-size: 1.125rem;
   line-height: 1.6;
-  margin: 0 0 2.5rem 0;
+  margin: 0 0 var(--spacing-xlarge) 0; /* 2rem - Improved spacing */
+}
+
+.hero-banner__features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  margin-bottom: var(--spacing-xlarge);  /* 2rem - Improved spacing */
+}
+
+.hero-banner__feature {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: 1rem;
+}
+
+.hero-banner__feature svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .hero-banner__cta {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 3rem;
+  gap: var(--spacing-medium); /* 1rem - Consistent gap */
   flex-wrap: wrap;
 }
 
 .hero-banner__stats {
   display: flex;
-  gap: 2rem;
-  padding-top: 2rem;
+  gap: var(--spacing-xlarge); /* 2rem - More space between stats */
+  padding-top: var(--spacing-xlarge); /* 2rem - Consistent padding */
   border-top: 1px solid var(--color-border);
 }
 
@@ -63,7 +90,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-brand-500);
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--spacing-xsmall); /* 0.25rem - Small consistent gap */
 }
 
 .hero-banner__stat-label {
@@ -71,23 +98,142 @@
   color: var(--color-text-secondary);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .hero-banner__container {
-    grid-template-columns: 1fr;
-  }
-  .hero-banner__image {
-    min-height: 400px;
-  }
-  .hero-banner__content {
-    padding: 2rem;
-  }
-  .hero-banner__title {
-    font-size: 2rem;
-  }
-  .hero-banner__stats {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
+/* ============================================
+   DARK HERO VARIANT
+   ============================================ */
+.hero-banner--dark {
+  background: linear-gradient(135deg, var(--color-secondary-700) 0%, #0f172a 100%);  /* Subtle gradient from dark slate to darker */
+  margin-bottom: 0; /* No margin needed - dark creates natural separation */
 }
 
+.hero-banner--dark .hero-banner__image {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);  /* Subtle shadow to separate from dark background */
+}
+
+.hero-banner--dark .hero-banner__overline {
+  color: var(--color-text-disabled);  /* Design system: slate-400 */
+}
+
+.hero-banner--dark .hero-banner__title {
+  color: var(--color-text-inverse);  /* Design system: white text on dark */
+}
+
+.hero-banner--dark .hero-banner__subtitle {
+  color: var(--color-secondary-300);  /* Lighter gray for better contrast on dark background */
+}
+
+.hero-banner--dark .hero-banner__feature {
+  color: var(--color-secondary-300);  /* Lighter gray for better readability on dark background */
+}
+
+.hero-banner--dark .hero-banner__feature svg {
+  color: var(--color-text-inverse);  /* White checkmarks for better contrast on dark */
+}
+
+/* Button styles for dark hero background */
+.hero-banner--dark .hero-banner__cta .btn-cta {
+  background-color: var(--color-accent-500);  /* Orange - already good contrast */
+  color: var(--color-text-inverse);
+}
+
+.hero-banner--dark .hero-banner__cta .btn-cta:hover {
+  background-color: var(--color-accent-600);
+  color: var(--color-text-inverse);
+}
+
+.hero-banner--dark .hero-banner__cta .btn-outline {
+  background-color: transparent;
+  border-color: var(--color-text-inverse);  /* White border for visibility on dark */
+  color: var(--color-text-inverse);  /* White text for visibility on dark */
+  transition: background-color 100ms ease-in-out,
+              color 100ms ease-in-out,
+              box-shadow 100ms ease-in-out,
+              border-color 100ms ease-in-out;  /* Faster animation */
+}
+
+.hero-banner--dark .hero-banner__cta .btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.1);  /* Subtle white overlay on hover */
+  border-color: var(--color-text-inverse);
+  color: var(--color-text-inverse);
+}
+
+/* ============================================
+   LIGHT HERO VARIANT
+   ============================================ */
+.hero-banner--light {
+  background: var(--color-background);  /* Pure white background */
+  margin-bottom: 0; /* No separation - flows directly into next section */
+}
+
+.hero-banner--light .hero-banner__image {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow for light background */
+}
+
+.hero-banner--light .hero-banner__overline {
+  color: var(--color-text-secondary);  /* Secondary text color */
+}
+
+.hero-banner--light .hero-banner__title {
+  color: var(--color-text);  /* Primary text color */
+}
+
+.hero-banner--light .hero-banner__subtitle {
+  color: var(--color-text-secondary);  /* Secondary text color */
+}
+
+.hero-banner--light .hero-banner__feature {
+  color: var(--color-text);  /* Primary text color */
+}
+
+.hero-banner--light .hero-banner__feature svg {
+  color: var(--color-positive-500);  /* Green checkmarks for light background */
+}
+
+/* Button styles for light hero background */
+.hero-banner--light .hero-banner__cta .btn-outline {
+  transition: background-color 100ms ease-in-out,
+              color 100ms ease-in-out,
+              box-shadow 100ms ease-in-out,
+              border-color 100ms ease-in-out;  /* Faster animation */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-banner--dark {
+    margin-bottom: var(--spacing-xlarge); /* 2rem - Reduced on mobile */
+  }
+  
+  .hero-banner--light {
+    margin-bottom: 0; /* No separation on mobile either */
+  }
+  
+  .hero-banner__container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xlarge);
+  }
+  
+  /* On mobile, image comes first, then content */
+  .hero-banner__image {
+    min-height: 400px;
+    order: 1;
+  }
+  
+  .hero-banner__content {
+    padding: var(--spacing-xlarge) 0; /* 2rem vertical, container handles horizontal */
+    order: 2;
+    max-width: 100%;
+  }
+  
+  .hero-banner__title {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-large); /* 1.5rem - Adjusted for mobile */
+  }
+  
+  .hero-banner__subtitle {
+    margin-bottom: var(--spacing-xlarge); /* 2rem - Adjusted for mobile */
+  }
+  
+  .hero-banner__features {
+    margin-bottom: var(--spacing-xlarge); /* 2rem - Adjusted for mobile */
+  }
+}
