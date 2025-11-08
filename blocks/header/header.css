@@ -459,6 +459,20 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.industry-toggle-icon {
+  font-size: 0.75rem;
+  display: inline-block;
+  transition: transform var(--transition-fast);
+  transform-origin: center;
+}
+
+.industry-toggle[aria-expanded="true"] .industry-toggle-icon {
+  transform: rotate(180deg);
 }
 
 .industry-toggle:hover {

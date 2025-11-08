@@ -298,15 +298,27 @@ export default function decorate(block) {
   const industryToggle = block.querySelector('#industry-toggle');
   const industryMenu = block.querySelector('#industry-menu');
   if (industryToggle && industryMenu) {
+    if (!industryToggle.querySelector('.industry-toggle-icon')) {
+      const label = industryToggle.textContent.replace(/▼/g, '').trim();
+      industryToggle.textContent = label;
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'industry-toggle-icon';
+      iconSpan.textContent = '▼';
+      industryToggle.appendChild(iconSpan);
+    }
+
+    industryToggle.setAttribute('aria-expanded', 'false');
     industryToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      industryMenu.classList.toggle('active');
+      const isActive = industryMenu.classList.toggle('active');
+      industryToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
     });
 
     // Close when clicking outside
     document.addEventListener('click', (e) => {
       if (!industryMenu.contains(e.target) && !industryToggle.contains(e.target)) {
         industryMenu.classList.remove('active');
+        industryToggle.setAttribute('aria-expanded', 'false');
       }
     });
   }
