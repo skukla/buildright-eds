@@ -15,9 +15,6 @@ function fixNavigationPaths() {
   const basePath = window.getBasePath();
   const isInPagesDir = window.location.pathname.includes('/pages/');
   
-  // Skip if already on root (no base path needed)
-  if (basePath === '/') return;
-  
   // Fix ALL internal navigation links (not external URLs, anchors, or mailto)
   const allLinks = document.querySelectorAll('a[href]');
   allLinks.forEach(link => {
@@ -31,7 +28,7 @@ function fixNavigationPaths() {
         href.startsWith('javascript:') ||
         href.startsWith('data:') ||
         href.startsWith('#') ||
-        href.startsWith(basePath)) {
+        (basePath !== '/' && href.startsWith(basePath))) {
       return;
     }
     
@@ -55,7 +52,7 @@ function fixNavigationPaths() {
       return;
     }
     
-    // Fix pages/ links (from root pages)
+    // Fix pages/ links (from root pages) - convert to absolute path
     if (href.startsWith('pages/')) {
       link.setAttribute('href', `${basePath}${href}`.replace('//', '/'));
       return;
