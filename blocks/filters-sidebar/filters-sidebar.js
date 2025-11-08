@@ -14,11 +14,11 @@ export default function decorate(block) {
       }
     });
     
-    // Set initial state
-    toggle.setAttribute('aria-expanded', 'true');
+    // Set initial state based on HTML attribute
     const filterId = toggle.getAttribute('data-filter');
     const content = block.querySelector(`#filter-${filterId}`);
-    if (content) {
+    const isInitiallyExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    if (content && isInitiallyExpanded) {
       content.classList.add('active');
     }
   });

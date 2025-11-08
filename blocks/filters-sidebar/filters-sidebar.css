@@ -1,12 +1,15 @@
+#filters-aside {
+  align-self: start;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 205px;
+}
+
 .filters-sidebar {
   background-color: white;
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-3);
   padding: var(--spacing-medium);
-  position: sticky;
-  top: 120px;
-  max-height: calc(100vh - 140px);
-  overflow-y: auto;
 }
 
 .filters-sidebar > div > div {
