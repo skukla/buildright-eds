@@ -218,25 +218,10 @@ export default function decorate(block) {
       
       const rect = locationSelector.getBoundingClientRect();
       
-      // Position dropdown to overlay button - text stays in same position
-      locationMenu.style.top = `${rect.top + window.scrollY}px`;
-      locationMenu.style.left = `${rect.left + window.scrollX}px`;
-      locationMenu.style.minWidth = `${rect.width}px`;
-      
-      // Wait for dropdown to render to get its height
-      requestAnimationFrame(() => {
-        const dropdownRect = locationMenu.getBoundingClientRect();
-        
-        // Position unified container via CSS custom properties
-        const wrapper = locationSelector.closest('.location-selector-wrapper');
-        // Total height is just the dropdown height since it overlays the button
-        const totalHeight = dropdownRect.height;
-        
-        wrapper.style.setProperty('--container-top', `${rect.top + window.scrollY}px`);
-        wrapper.style.setProperty('--container-left', `${rect.left + window.scrollX}px`);
-        wrapper.style.setProperty('--container-width', `${Math.max(rect.width, dropdownRect.width)}px`);
-        wrapper.style.setProperty('--container-height', `${totalHeight}px`);
-      });
+      // Position dropdown below button - no gap, seamless connection
+      locationMenu.style.top = `${rect.bottom}px`;
+      locationMenu.style.left = `${rect.left}px`;
+      locationMenu.style.width = `${rect.width}px`; /* Exact width, not min-width */
     }
     
     // Toggle dropdown on click
