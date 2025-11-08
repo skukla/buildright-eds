@@ -64,6 +64,7 @@
   --color-text: #1E293B;           /* slate-800 - Primary text */
   --color-text-secondary: #64748B;  /* slate-500 - Secondary text */
   --color-text-disabled: #94A3B8;  /* slate-400 - Disabled text */
+  --color-text-inverse: #FFFFFF;   /* White text on dark backgrounds */
 
   /* ============================================
      TYPOGRAPHY (Adobe Commerce Storefront Convention)
@@ -299,6 +300,25 @@ a:hover {
   h3 {
     font-size: 1.25rem; /* 20px */
   }
+}
+
+/* Dark section styling with gradient */
+.section-dark {
+  background: linear-gradient(180deg, var(--color-brand-600) 0%, var(--color-secondary-700) 100%);
+  color: var(--color-text-inverse);
+}
+
+.section-dark h1,
+.section-dark h2,
+.section-dark h3,
+.section-dark h4,
+.section-dark h5,
+.section-dark h6 {
+  color: var(--color-text-inverse);
+}
+
+.section-dark p {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Accessibility: Respect user motion preferences */

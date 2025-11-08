@@ -1,7 +1,8 @@
 /* Ideas Center block */
 .ideas-center__card {
   padding: 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
   transition: all 0.2s;
   overflow: hidden;
   border-radius: var(--shape-border-radius-3);
@@ -10,8 +11,9 @@
 
 .ideas-center__card:hover {
   transform: translateY(-2px);
-  border-color: var(--color-primary);
-  box-shadow: var(--shape-shadow-2);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .ideas-center__image {
@@ -27,21 +29,26 @@
 
 .ideas-center__heading {
   margin: 0 0 0.5rem;
-  color: var(--color-text);
+  color: var(--color-text-inverse);
   font-size: 1rem;
   font-weight: 600;
 }
 
 .ideas-center__text {
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.875rem;
   margin: 0 0 1rem;
 }
 
 .ideas-center__link {
-  color: var(--color-primary);
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 600;
   font-size: 0.875rem;
   text-decoration: none;
+}
+
+.ideas-center__link:hover {
+  color: var(--color-text-inverse);
+  text-decoration: underline;
 }
 
