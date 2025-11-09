@@ -73,7 +73,7 @@
   
   --type-font-family-base: Arial, Helvetica, sans-serif;
   --type-font-family-display: Arial, Helvetica, sans-serif;
-  --type-font-family-details: 'Courier New', monospace;
+  --type-font-family-details: Arial, Helvetica, sans-serif;
 
   /* Display (Hero titles, banners) */
   --type-display-1-font: normal normal 700 2.5rem/1.25 var(--type-font-family-display);  /* 40px - Hero title */
