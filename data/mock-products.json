@@ -44,7 +44,8 @@
         "unit of measure": "EA",
         "ppe cut resistance": "a7",
         "ppe hard hat class": "class_c"
-      }
+      },
+      "image_url": "images/products/lumber-stud.svg"
     },
     {
       "sku": "LBR-2EBB314A",
@@ -94,7 +95,8 @@
         "ppe category": "hearing_protection",
         "drywall edge type": "square",
         "ppe niosh rating": "p100"
-      }
+      },
+      "image_url": "images/products/lumber-stud.svg"
     },
     {
       "sku": "LBR-26852468",
@@ -142,7 +144,8 @@
         "door core type": "foam_core",
         "door material": "vinyl",
         "drywall product type": "mold_resistant"
-      }
+      },
+      "image_url": "images/products/lumber-joist.svg"
     },
     {
       "sku": "LBR-2D637246",
@@ -188,7 +191,8 @@
         "unit of measure": "EA",
         "fastener material": "steel",
         "fastener drive type": "torx"
-      }
+      },
+      "image_url": "images/products/lumber-joist.svg"
     },
     {
       "sku": "LBR-96F409FB",
@@ -234,7 +238,8 @@
         "unit of measure": "EA",
         "drywall fire rating": "non_rated",
         "fastener head type": "flat"
-      }
+      },
+      "image_url": "images/products/lumber-joist.svg"
     },
     {
       "sku": "LBR-9D32768F",
@@ -282,7 +287,8 @@
         "fastener drive type": "phillips",
         "fastener subtype": "framing_nail",
         "door core type": "hollow_core"
-      }
+      },
+      "image_url": "images/products/lumber-stud.svg"
     },
     {
       "sku": "PLY-7D58FF99",
@@ -331,7 +337,8 @@
         "window energy star": true,
         "fastener drive type": "square",
         "ppe hard hat type": "type_2"
-      }
+      },
+      "image_url": "images/products/plywood.svg"
     },
     {
       "sku": "PLY-AF7C8BA7",
@@ -379,7 +386,8 @@
         "ppe niosh rating": "n95",
         "drywall fire rating": "type_x",
         "ppe hard hat type": "type_1"
-      }
+      },
+      "image_url": "images/products/plywood.svg"
     },
     {
       "sku": "PLY-3C2EC476",
@@ -425,7 +433,8 @@
         "unit of measure": "SHEET",
         "window material": "composite",
         "ppe hard hat class": "class_c"
-      }
+      },
+      "image_url": "images/products/plywood.svg"
     },
     {
       "sku": "PLY-2BA5387B",
@@ -473,7 +482,8 @@
         "fastener type": "anchor",
         "fastener drive type": "slotted",
         "door core type": "hollow_core"
-      }
+      },
+      "image_url": "images/products/plywood.svg"
     },
     {
       "sku": "PLY-4C31A6A6",
@@ -522,7 +532,8 @@
         "fastener drive type": "torx",
         "window glazing type": "single_pane",
         "window operation type": "single_hung"
-      }
+      },
+      "image_url": "images/products/plywood.svg"
     },
     {
       "sku": "PLY-E0240635",
@@ -570,7 +581,8 @@
         "door material": "wood",
         "ppe cut resistance": "a4",
         "fastener material": "stainless_steel_304"
-      }
+      },
+      "image_url": "images/products/plywood.svg"
     },
     {
       "sku": "STUD-44C79532",
@@ -620,7 +632,8 @@
         "door material": "composite",
         "window material": "vinyl",
         "ppe cut resistance": "a4"
-      }
+      },
+      "image_url": "images/products/metal-stud.svg"
     },
     {
       "sku": "STUD-B6E3E673",
@@ -670,7 +683,8 @@
         "drywall edge type": "beveled",
         "ppe category": "respiratory_protection",
         "fastener drive type": "slotted"
-      }
+      },
+      "image_url": "images/products/metal-stud.svg"
     },
     {
       "sku": "STUD-95E9D258",
@@ -717,7 +731,8 @@
         "unit of measure": "EA",
         "door core type": "solid_core",
         "window glazing type": "triple_pane"
-      }
+      },
+      "image_url": "images/products/metal-stud.svg"
     },
     {
       "sku": "STUD-984F2EC0",
@@ -765,7 +780,8 @@
         "fastener material": "stainless_steel_304",
         "ppe niosh rating": "p100",
         "fastener coating": "galvanized"
-      }
+      },
+      "image_url": "images/products/metal-stud.svg"
     },
     {
       "sku": "STUD-8DEC7739",
@@ -812,7 +828,8 @@
         "unit of measure": "EA",
         "ppe hi vis class": "class_3",
         "window energy star": false
-      }
+      },
+      "image_url": "images/products/metal-stud.svg"
     },
     {
       "sku": "STUD-07E7F7E4",
@@ -861,7 +878,8 @@
         "door material": "vinyl",
         "ppe cut resistance": "a3",
         "ppe hard hat type": "type_2"
-      }
+      },
+      "image_url": "images/products/metal-stud.svg"
     },
     {
       "sku": "DRYWALL-8F034793",
@@ -909,7 +927,8 @@
         "fastener head type": "pan",
         "ppe hard hat class": "class_c",
         "ppe hi vis class": "class_2"
-      }
+      },
+      "image_url": "images/products/drywall.svg"
     },
     {
       "sku": "DRYWALL-A8217B48",
@@ -958,7 +977,8 @@
         "window operation type": "bay",
         "fastener drive type": "slotted",
         "drywall product type": "sound_dampening"
-      }
+      },
+      "image_url": "images/products/drywall.svg"
     }
   ],
   "categories": [
