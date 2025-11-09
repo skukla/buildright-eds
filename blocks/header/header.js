@@ -1,91 +1,6 @@
 // Header block decoration
 export default function decorate(block) {
-  // Fix navigation paths for GitHub Pages subdirectory
-  function fixNavigationPaths() {
-    // Detect base path (e.g., '/buildright-eds/' or '/')
-    const pathParts = window.location.pathname.split('/').filter(p => p);
-    const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
-    const isInPagesDir = window.location.pathname.includes('/pages/');
-    
-    // Skip if already on root (no base path needed)
-    if (basePath === '/') return;
-    
-    // Fix logo link to use absolute path from site root
-    const logoLink = block.querySelector('.header-brand a');
-    if (logoLink) {
-      const currentHref = logoLink.getAttribute('href');
-      if (currentHref) {
-        if (currentHref === 'index.html' || currentHref === '/index.html' || currentHref === '../index.html' || currentHref.includes('index.html')) {
-          logoLink.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
-        }
-      }
-    }
-    
-    // Fix all navigation links in header to use absolute paths
-    const navLinks = block.querySelectorAll('a[href]');
-    navLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      
-      // Skip external links, anchors, mailto, javascript:, and data URIs
-      if (!href || 
-          href.startsWith('http://') || 
-          href.startsWith('https://') || 
-          href.startsWith('mailto:') || 
-          href.startsWith('javascript:') ||
-          href.startsWith('data:') ||
-          href.startsWith('#') ||
-          href.startsWith(basePath)) {
-        return;
-      }
-      
-      // Fix absolute paths that start with / but aren't external
-      if (href.startsWith('/') && !href.startsWith('//')) {
-        if (href.startsWith('/pages/')) {
-          link.setAttribute('href', `${basePath}${href.substring(1)}`.replace('//', '/'));
-          return;
-        }
-        if (href === '/index.html' || href === '/') {
-          link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
-          return;
-        }
-      }
-      
-      // Fix pages/ links (from root pages)
-      if (href.startsWith('pages/')) {
-        link.setAttribute('href', `${basePath}${href}`.replace('//', '/'));
-        return;
-      }
-      
-      // Fix ./ links (from pages directory)
-      if (href.startsWith('./') && isInPagesDir) {
-        const filename = href.replace('./', '');
-        link.setAttribute('href', `${basePath}pages/${filename}`.replace('//', '/'));
-        return;
-      }
-      
-      // Fix ../index.html links (from pages directory)
-      if (href === '../index.html' && isInPagesDir) {
-        link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
-        return;
-      }
-      
-      // Fix ../ links that go to other pages (from pages directory)
-      if (href.startsWith('../') && isInPagesDir && !href.startsWith('../index.html')) {
-        const relativePath = href.replace('../', '');
-        link.setAttribute('href', `${basePath}${relativePath}`.replace('//', '/'));
-        return;
-      }
-      
-      // Fix index.html links
-      if (href === 'index.html') {
-        link.setAttribute('href', `${basePath}index.html`.replace('//', '/'));
-        return;
-      }
-    });
-  }
-  
-  // Fix paths on load
-  fixNavigationPaths();
+  // URLs are now handled by base tag - no path fixing needed
   
   // Update cart count from localStorage
   function updateCartCount() {
@@ -332,10 +247,6 @@ export default function decorate(block) {
     });
   }
 
-  // Get base path for navigation
-  const pathParts = window.location.pathname.split('/').filter(p => p);
-  const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
-  
   // Search functionality
   const searchInput = block.querySelector('#header-search-input');
   const searchButton = block.querySelector('.search-button');
@@ -343,8 +254,8 @@ export default function decorate(block) {
     const performSearch = () => {
       const query = searchInput.value.trim();
       if (query) {
-        // Use absolute path with base path
-        window.location.href = `${basePath}pages/catalog.html?search=${encodeURIComponent(query)}`.replace('//', '/');
+        // Use relative path - base tag handles GitHub Pages subdirectory
+        window.location.href = `pages/catalog.html?search=${encodeURIComponent(query)}`;
       }
     };
 
@@ -364,9 +275,9 @@ export default function decorate(block) {
       if (category) {
         e.preventDefault();
         if (category === 'all') {
-          window.location.href = `${basePath}pages/catalog.html`.replace('//', '/');
+          window.location.href = 'pages/catalog.html';
         } else {
-          window.location.href = `${basePath}pages/catalog.html?category=${category}`.replace('//', '/');
+          window.location.href = `pages/catalog.html?category=${category}`;
         }
       }
     });

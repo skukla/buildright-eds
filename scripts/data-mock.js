@@ -9,71 +9,16 @@ let customerContext = {
   locations: ["Los Angeles", "Phoenix"]
 };
 
-// Get base path for GitHub Pages subdirectory support
-function getBasePath() {
-  // Use global function if available (from app.js), otherwise calculate locally
-  if (typeof window.getBasePath === 'function') {
-    try {
-      return window.getBasePath();
-    } catch (e) {
-      console.warn('Error calling window.getBasePath:', e);
-    }
-  }
-  
-  // Calculate base path from current location
-  const pathname = window.location.pathname;
-  const pathParts = pathname.split('/').filter(p => p);
-  
-  // If we're in a subdirectory (not root), return the base path
-  // Example: /buildright-eds/pages/catalog.html -> /buildright-eds/
-  // Example: /buildright-eds/index.html -> /buildright-eds/
-  // Example: /pages/catalog.html -> / (root deployment)
-  if (pathParts.length > 0 && pathParts[0] !== 'pages') {
-    return `/${pathParts[0]}/`;
-  }
-  
-  // Root deployment
-  return '/';
-}
-
 // Load mock data from JSON file
 async function loadMockData() {
   if (mockData) return mockData;
   
   try {
-    // Use absolute path from site root for GitHub Pages compatibility
-    const basePath = getBasePath();
-    // Ensure data path is always absolute (starts with /) and relative to site root
-    // basePath is either '/' or '/buildright-eds/' - normalize it
-    const normalizedBasePath = basePath === '/' ? '' : basePath.replace(/\/$/, ''); // Remove trailing slash
-    const dataPath = `${normalizedBasePath}/data/mock-products.json`.replace('//', '/');
-    
-    // Debug logging (can be removed in production)
-    if (console && console.log) {
-      console.log(`[data-mock] Loading mock data:`, {
-        pathname: window.location.pathname,
-        basePath: basePath,
-        normalizedBasePath: normalizedBasePath,
-        dataPath: dataPath,
-        fullUrl: window.location.origin + dataPath
-      });
-    }
-    
+    // Use relative path - base tag handles GitHub Pages subdirectory
+    const dataPath = 'data/mock-products.json';
     const response = await fetch(dataPath);
     if (!response.ok) {
       console.error(`Failed to load mock data: ${response.status} ${response.statusText} from ${dataPath}`);
-      // Try fallback path if basePath approach fails
-      if (basePath !== '/') {
-        const fallbackPath = '/data/mock-products.json';
-        console.log(`Trying fallback path: ${fallbackPath}`);
-        const fallbackResponse = await fetch(fallbackPath);
-        if (fallbackResponse.ok) {
-          mockData = await fallbackResponse.json();
-          if (mockData && mockData.products) {
-            return mockData;
-          }
-        }
-      }
       return null;
     }
     mockData = await response.json();
@@ -84,22 +29,6 @@ async function loadMockData() {
     return mockData;
   } catch (error) {
     console.error('Error loading mock data:', error);
-    // Try fallback path on error
-    if (getBasePath() !== '/') {
-      try {
-        const fallbackPath = '/data/mock-products.json';
-        console.log(`Trying fallback path after error: ${fallbackPath}`);
-        const fallbackResponse = await fetch(fallbackPath);
-        if (fallbackResponse.ok) {
-          mockData = await fallbackResponse.json();
-          if (mockData && mockData.products) {
-            return mockData;
-          }
-        }
-      } catch (fallbackError) {
-        console.error('Fallback path also failed:', fallbackError);
-      }
-    }
     return null;
   }
 }
@@ -215,6 +144,74 @@ function getPrimaryWarehouse() {
   return context.primary_warehouse || 'warehouse_west';
 }
 
+// Get product image URL from Unsplash based on product category and name
+function getProductImageUrl(product) {
+  if (!product) return null;
+  
+  // First, check if product has image_url directly in the data
+  if (product.image_url) {
+    return product.image_url;
+  }
+  
+  // Fallback to category/name-based mapping
+  const category = product.category || '';
+  const name = (product.name || '').toLowerCase();
+  const sku = (product.sku || '').toLowerCase();
+  
+  // Structural materials - lumber, studs, joists, beams
+  if (category === 'structural_materials') {
+    // Studs (2x4, 2x6) - Stack of wooden boards/planks
+    if (name.includes('stud') || name.includes('2x4') || name.includes('2x6')) {
+      return 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop&auto=format';
+    }
+    // Joists (2x8, 2x10) - Wood framing/construction
+    if (name.includes('joist') || name.includes('2x8') || name.includes('2x10')) {
+      return 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80&fit=crop&auto=format';
+    }
+    // Beams (2x12, larger) - Wooden beams
+    if (name.includes('beam') || name.includes('2x12')) {
+      return 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?w=800&q=80&fit=crop&auto=format';
+    }
+    // Default structural materials - stack of wooden boards
+    return 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop&auto=format';
+  }
+  
+  // Windows & Doors
+  if (category === 'windows_doors') {
+    // Windows - modern window
+    if (name.includes('window')) {
+      return 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+    }
+    // Doors - door installation
+    if (name.includes('door')) {
+      return 'https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+    }
+    // Default windows/doors image
+    return 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+  }
+  
+  // Fasteners & Hardware
+  if (category === 'fasteners_hardware') {
+    // Construction fasteners hardware
+    return 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+  }
+  
+  // Roofing
+  if (category === 'roofing') {
+    // Roofing construction shingles
+    return 'https://images.unsplash.com/photo-1518736346281-76873166a64a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+  }
+  
+  // Framing & Drywall
+  if (category === 'framing_drywall' || category === 'framing_insulation') {
+    // Wood framing at construction site
+    return 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80&fit=crop&auto=format';
+  }
+  
+  // Default construction materials image - stack of wooden planks
+  return 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop&auto=format';
+}
+
 // ES6 exports
 export {
   loadMockData,
@@ -229,7 +226,8 @@ export {
   getPrice,
   getInventory,
   getInventoryStatus,
-  getPrimaryWarehouse
+  getPrimaryWarehouse,
+  getProductImageUrl
 };
 
 // CommonJS exports (for compatibility)
@@ -247,7 +245,8 @@ if (typeof module !== 'undefined' && module.exports) {
     getPrice,
     getInventory,
     getInventoryStatus,
-    getPrimaryWarehouse
+    getPrimaryWarehouse,
+    getProductImageUrl
   };
 }
 

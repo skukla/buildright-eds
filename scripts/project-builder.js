@@ -4,71 +4,22 @@ import { getProducts, getProductsByProjectType, getProductsByCategory, getPrice,
 
 let recommendationsData = null;
 
-// Get base path for GitHub Pages subdirectory support
-function getBasePath() {
-  // Use global function if available (from app.js), otherwise calculate locally
-  if (typeof window.getBasePath === 'function') {
-    try {
-      return window.getBasePath();
-    } catch (e) {
-      console.warn('Error calling window.getBasePath:', e);
-    }
-  }
-  
-  // Calculate base path from current location
-  const pathname = window.location.pathname;
-  const pathParts = pathname.split('/').filter(p => p);
-  
-  // If we're in a subdirectory (not root), return the base path
-  if (pathParts.length > 0 && pathParts[0] !== 'pages') {
-    return `/${pathParts[0]}/`;
-  }
-  
-  // Root deployment
-  return '/';
-}
-
 // Load recommendations data
 async function loadRecommendationsData() {
   if (recommendationsData) return recommendationsData;
   
   try {
-    // Use absolute path from site root for GitHub Pages compatibility
-    const basePath = getBasePath();
-    const normalizedBasePath = basePath === '/' ? '' : basePath.replace(/\/$/, ''); // Remove trailing slash
-    const dataPath = `${normalizedBasePath}/data/project-recommendations.json`.replace('//', '/');
-    
+    // Use relative path - base tag handles GitHub Pages subdirectory
+    const dataPath = 'data/project-recommendations.json';
     const response = await fetch(dataPath);
     if (!response.ok) {
       console.error(`Failed to load recommendations data: ${response.status} ${response.statusText} from ${dataPath}`);
-      // Try fallback path if basePath approach fails
-      if (basePath !== '/') {
-        const fallbackPath = '/data/project-recommendations.json';
-        const fallbackResponse = await fetch(fallbackPath);
-        if (fallbackResponse.ok) {
-          recommendationsData = await fallbackResponse.json();
-          return recommendationsData;
-        }
-      }
       return null;
     }
     recommendationsData = await response.json();
     return recommendationsData;
   } catch (error) {
     console.error('Error loading recommendations data:', error);
-    // Try fallback path on error
-    if (getBasePath() !== '/') {
-      try {
-        const fallbackPath = '/data/project-recommendations.json';
-        const fallbackResponse = await fetch(fallbackPath);
-        if (fallbackResponse.ok) {
-          recommendationsData = await fallbackResponse.json();
-          return recommendationsData;
-        }
-      } catch (fallbackError) {
-        console.error('Fallback path also failed:', fallbackError);
-      }
-    }
     return null;
   }
 }
@@ -103,7 +54,10 @@ export async function generateBundle(wizardState) {
   const recData = await loadRecommendationsData();
   if (!recData) return null;
 
-  // Get all products
+  // Get products from mock data
+  console.log('[Project Builder] Using mock data');
+  
+  // Get all products from mock data
   let products = await getProducts();
   
   // Filter by project type
@@ -111,21 +65,52 @@ export async function generateBundle(wizardState) {
     products = await getProductsByProjectType(projectType);
   }
 
-  // Determine categories based on project type and detail
-  let targetCategories = [];
-  if (projectDetail && recData.roomCategories[projectDetail]) {
-    targetCategories = recData.roomCategories[projectDetail];
-  } else if (recData.projectTypeCategories[projectType]) {
-    targetCategories = [
-      ...recData.projectTypeCategories[projectType].primary,
-      ...recData.projectTypeCategories[projectType].secondary
-    ];
-  }
+    // Determine categories based on project type and detail
+    let targetCategories = [];
+    if (projectDetail && recData.roomCategories[projectDetail]) {
+      targetCategories = recData.roomCategories[projectDetail];
+    } else if (recData.projectTypeCategories[projectType]) {
+      targetCategories = [
+        ...recData.projectTypeCategories[projectType].primary,
+        ...recData.projectTypeCategories[projectType].secondary
+      ];
+    }
 
-  // Filter products by categories
-  if (targetCategories.length > 0) {
-    products = products.filter(p => targetCategories.includes(p.category));
-  }
+    // Filter products by categories
+    if (targetCategories.length > 0) {
+      products = products.filter(p => targetCategories.includes(p.category));
+    }
+
+    // Additional client-side filtering for complexity and budget
+    
+    // Filter by quality tier (complexity) if available in mock data
+    if (complexity) {
+      products = products.filter(p => {
+        // Mock data may not have quality_tier, so we'll use a simple heuristic
+        return true; // Keep all products when using mock data
+      });
+    }
+
+    // Filter by price tier (budget) if available in mock data
+    if (budget) {
+      products = products.filter(p => {
+        // Mock data may not have price_tier, so we'll filter by actual price
+        // In real ACO data, this would be filtered by the AC-Policy-Budget-Range header
+        const price = getPrice(p, 1);
+        const budgetRanges = {
+          under_5k: [0, 5000],
+          '5k_15k': [5000, 15000],
+          '15k_30k': [15000, 30000],
+          '30k_50k': [30000, 50000],
+          '50k_plus': [50000, Infinity]
+        };
+        const range = budgetRanges[budget];
+        if (range) {
+          return price >= range[0] && price < range[1];
+        }
+        return true;
+      });
+    }
 
   // Get budget constraints
   const budgetConfig = recData.budgetRanges[budget] || recData.budgetRanges['5k_15k'];
@@ -137,29 +122,43 @@ export async function generateBundle(wizardState) {
     budgetConfig.maxItems
   );
 
-  // Select products (prioritize preferred categories)
-  const selectedProducts = [];
-  const preferredCategories = budgetConfig.preferredCategories || [];
+  // Select products using category prioritization
+  let finalProducts;
   
-  // First, add products from preferred categories
-  for (const category of preferredCategories) {
-    if (selectedProducts.length >= maxItems) break;
-    const categoryProducts = products.filter(p => p.category === category);
-    const count = Math.ceil(maxItems * 0.3); // 30% from each preferred category
-    selectedProducts.push(...categoryProducts.slice(0, count));
-  }
+  if (products && products.length > 0) {
+    // Apply category prioritization for mock data
+    const preferredCategories = budgetConfig.preferredCategories || [];
+    
+    if (preferredCategories.length > 0) {
+      // Prioritize preferred categories
+      const selectedProducts = [];
+      
+      // First, add products from preferred categories
+      for (const category of preferredCategories) {
+        if (selectedProducts.length >= maxItems) break;
+        const categoryProducts = products.filter(p => p.category === category);
+        const count = Math.ceil(maxItems * 0.3); // 30% from each preferred category
+        selectedProducts.push(...categoryProducts.slice(0, count));
+      }
 
-  // Fill remaining slots with other products
-  const remaining = maxItems - selectedProducts.length;
-  if (remaining > 0) {
-    const otherProducts = products.filter(p => 
-      !selectedProducts.find(sp => sp.sku === p.sku)
-    );
-    selectedProducts.push(...otherProducts.slice(0, remaining));
-  }
+      // Fill remaining slots with other products
+      const remaining = maxItems - selectedProducts.length;
+      if (remaining > 0) {
+        const otherProducts = products.filter(p => 
+          !selectedProducts.find(sp => sp.sku === p.sku)
+        );
+        selectedProducts.push(...otherProducts.slice(0, remaining));
+      }
 
-  // Limit to maxItems
-  const finalProducts = selectedProducts.slice(0, maxItems);
+      finalProducts = selectedProducts.slice(0, maxItems);
+    } else {
+      // No preferred categories, just take first maxItems
+      finalProducts = products.slice(0, maxItems);
+    }
+  } else {
+    // No products available
+    finalProducts = [];
+  }
 
   // Generate bundle items with quantities
   const bundleItems = [];
@@ -171,8 +170,27 @@ export async function generateBundle(wizardState) {
     const baseQuantity = complexity === 'basic' ? 10 : complexity === 'moderate' ? 20 : 30;
     const quantity = Math.ceil(baseQuantity * complexityConfig.quantityMultiplier);
     
-    const price = getPrice(product, quantity);
-    const status = getInventoryStatus(product, primaryWarehouse);
+    // Get price - handle both ACO format (with price property) and mock format
+    let unitPrice, price;
+    if (product.price !== undefined) {
+      // ACO format: product.price is already the unit price
+      unitPrice = product.price;
+      price = unitPrice * quantity;
+    } else {
+      // Mock format: use getPrice helper
+      price = getPrice(product, quantity);
+      unitPrice = price / quantity;
+    }
+    
+    // Get inventory status - handle both ACO format and mock format
+    let status;
+    if (product.inventory?.available !== undefined) {
+      // ACO format
+      status = product.inventory.available ? 'in_stock' : 'out_of_stock';
+    } else {
+      // Mock format: use getInventoryStatus helper
+      status = getInventoryStatus(product, primaryWarehouse);
+    }
     
     // Get reason for inclusion
     let reason = 'Recommended for your project';
@@ -187,7 +205,7 @@ export async function generateBundle(wizardState) {
       name: product.name,
       category: product.category,
       quantity: quantity,
-      unitPrice: price / quantity,
+      unitPrice: unitPrice,
       subtotal: price,
       reason: reason,
       inventoryStatus: status
