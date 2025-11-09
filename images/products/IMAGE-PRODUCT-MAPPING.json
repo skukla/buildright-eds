@@ -1,0 +1,177 @@
+{
+  "mapping": [
+    {
+      "oldFilename": "generated-image.png",
+      "newFilename": "LBR-D0414F1E.png",
+      "sku": "LBR-D0414F1E",
+      "productName": "ToughGrip 2x4 Stud - 8ft",
+      "category": "structural_materials",
+      "imageType": "dimensional_lumber"
+    },
+    {
+      "oldFilename": "generated-image (1).png",
+      "newFilename": "LBR-2EBB314A.png",
+      "sku": "LBR-2EBB314A",
+      "productName": "SafeGuard 2x6 Stud - 8ft",
+      "category": "structural_materials",
+      "imageType": "dimensional_lumber"
+    },
+    {
+      "oldFilename": "generated-image (2).png",
+      "newFilename": "LBR-26852468.png",
+      "sku": "LBR-26852468",
+      "productName": "FastenPro 2x8 Joist - 10ft",
+      "category": "structural_materials",
+      "imageType": "dimensional_lumber"
+    },
+    {
+      "oldFilename": "generated-image (3).png",
+      "newFilename": "LBR-2D637246.png",
+      "sku": "LBR-2D637246",
+      "productName": "PremiumBuild 2x10 Joist - 12ft",
+      "category": "structural_materials",
+      "imageType": "dimensional_lumber"
+    },
+    {
+      "oldFilename": "generated-image (5).png",
+      "newFilename": "LBR-96F409FB.png",
+      "sku": "LBR-96F409FB",
+      "productName": "ToughGrip 2x12 Beam - 16ft",
+      "category": "structural_materials",
+      "imageType": "dimensional_lumber"
+    },
+    {
+      "oldFilename": "generated-image (6).png",
+      "newFilename": "LBR-9D32768F.png",
+      "sku": "LBR-9D32768F",
+      "productName": "ProFrame 4x4 Post - 8ft",
+      "category": "structural_materials",
+      "imageType": "dimensional_lumber"
+    },
+    {
+      "oldFilename": "generated-image (7).png",
+      "newFilename": "PLY-7D58FF99.png",
+      "sku": "PLY-7D58FF99",
+      "productName": "ProFrame OSB Sheathing 7/16\" - 4x8",
+      "category": "structural_materials",
+      "imageType": "sheet_goods"
+    },
+    {
+      "oldFilename": "generated-image (8).png",
+      "newFilename": "PLY-AF7C8BA7.png",
+      "sku": "PLY-AF7C8BA7",
+      "productName": "FastenPro CDX Plywood 1/2\" - 4x8",
+      "category": "structural_materials",
+      "imageType": "sheet_goods"
+    },
+    {
+      "oldFilename": "generated-image (9).png",
+      "newFilename": "PLY-3C2EC476.png",
+      "sku": "PLY-3C2EC476",
+      "productName": "PremiumBuild T&G Subfloor 3/4\" - 4x8",
+      "category": "structural_materials",
+      "imageType": "sheet_goods"
+    },
+    {
+      "oldFilename": "generated-image (10).png",
+      "newFilename": "PLY-2BA5387B.png",
+      "sku": "PLY-2BA5387B",
+      "productName": "ReliaBuild Marine Plywood 3/4\" - 4x8",
+      "category": "structural_materials",
+      "imageType": "sheet_goods"
+    },
+    {
+      "oldFilename": "generated-image (11).png",
+      "newFilename": "STUD-44C79532.png",
+      "sku": "STUD-44C79532",
+      "productName": "BuildRight Pro Metal Stud 20ga - 3.5\" x 10ft",
+      "category": "framing_insulation",
+      "imageType": "metal_framing"
+    },
+    {
+      "oldFilename": "generated-image (13).png",
+      "newFilename": "DRYWALL-8F034793.png",
+      "sku": "DRYWALL-8F034793",
+      "productName": "ToughGrip Drywall 1/2\" - 4x8",
+      "category": "framing_insulation",
+      "imageType": "drywall"
+    },
+    {
+      "oldFilename": "generated-image (14).png",
+      "newFilename": "INSUL-DE9C78C2.png",
+      "sku": "INSUL-DE9C78C2",
+      "productName": "InsulPro Fiberglass Batt R-13",
+      "category": "framing_insulation",
+      "imageType": "insulation"
+    },
+    {
+      "oldFilename": "generated-image (15).png",
+      "newFilename": "STUD-95E9D258.png",
+      "sku": "STUD-95E9D258",
+      "productName": "ProFrame Metal Track 20ga - 3.5\" x 10ft",
+      "category": "framing_insulation",
+      "imageType": "metal_framing"
+    },
+    {
+      "oldFilename": "generated-image (16).png",
+      "newFilename": "WINDOW-8039584D.png",
+      "sku": "WINDOW-8039584D",
+      "productName": "ToughGrip Single Hung Window - 36\"x48\"",
+      "category": "windows_doors",
+      "imageType": "window"
+    },
+    {
+      "oldFilename": "generated-image (17).png",
+      "newFilename": "DOOR-AF7D27F6.png",
+      "sku": "DOOR-AF7D27F6",
+      "productName": "PremiumBuild Steel Entry Door - 36\"x80\"",
+      "category": "windows_doors",
+      "imageType": "door"
+    },
+    {
+      "oldFilename": "generated-image (18).png",
+      "newFilename": "SAFE-54709A01.png",
+      "sku": "SAFE-54709A01",
+      "productName": "ToughGrip Hard Hat - Type 1 Class E",
+      "category": "safety_equipment",
+      "imageType": "ppe"
+    },
+    {
+      "oldFilename": "generated-image (19).png",
+      "newFilename": "SAFE-325D0586.png",
+      "sku": "SAFE-325D0586",
+      "productName": "SafeGuard Safety Glasses - ANSI Z87.1",
+      "category": "safety_equipment",
+      "imageType": "ppe"
+    },
+    {
+      "oldFilename": "generated-image (20).png",
+      "newFilename": "SAFE-AC3312B9.png",
+      "sku": "SAFE-AC3312B9",
+      "productName": "ReliaBuild Work Gloves - Heavy Duty",
+      "category": "safety_equipment",
+      "imageType": "ppe"
+    }
+  ],
+  "summary": {
+    "totalImages": 19,
+    "totalProducts": 70,
+    "productsWithImages": 19,
+    "productsWithoutImages": 51,
+    "coveragePercentage": 27.14,
+    "categories": {
+      "structural_materials": 10,
+      "framing_insulation": 4,
+      "windows_doors": 2,
+      "safety_equipment": 3,
+      "fasteners_hardware": 0
+    }
+  },
+  "metadata": {
+    "renamedDate": "2025-11-08",
+    "imagePath": "buildright-eds/images/products/",
+    "productDataPath": "buildright-aco/data/buildright/products.json",
+    "namingConvention": "SKU-based (e.g., LBR-D0414F1E.png)"
+  }
+}
+
