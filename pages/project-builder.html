@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../scripts/base-url.js"></script>
   <title>Project Builder - BuildRight Solutions</title>
   <link rel="stylesheet" href="../styles/base.css">
   <link rel="stylesheet" href="../styles/components.css">
@@ -31,14 +32,20 @@
       justify-content: space-between;
       margin-bottom: 3rem;
       position: relative;
+      background: var(--color-surface);
+      padding: var(--spacing-large) var(--spacing-medium);
+      border-radius: var(--shape-border-radius-4);
+      border: 1px solid var(--color-border);
+      border-top: 4px solid var(--color-accent-500);
+      box-shadow: var(--shape-shadow-1);
     }
 
     .wizard-progress::before {
       content: '';
       position: absolute;
-      top: 20px;
-      left: 0;
-      right: 0;
+      top: calc(var(--spacing-large) + 20px);
+      left: var(--line-start, 0);
+      width: calc(var(--line-end, 100%) - var(--line-start, 0));
       height: 2px;
       background: var(--color-border);
       z-index: 0;
@@ -46,12 +53,18 @@
 
     .wizard-progress-bar {
       position: absolute;
-      top: 20px;
+      top: calc(var(--spacing-large) + 20px);
       left: 0;
       height: 2px;
       background: var(--color-brand-500);
-      transition: width 0.3s ease;
+      transition: none;
       z-index: 1;
+      opacity: 0;
+    }
+    
+    .wizard-progress-bar.initialized {
+      transition: width 0.3s ease, left 0.3s ease;
+      opacity: 1;
     }
 
     .wizard-step {
@@ -59,6 +72,9 @@
       z-index: 2;
       text-align: center;
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .wizard-step-circle {
@@ -70,10 +86,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 0.5rem;
+      margin: 0 auto;
       font-weight: 600;
       color: var(--color-text-secondary);
       transition: all 0.3s ease;
+      position: relative;
+      z-index: 3;
     }
 
     .wizard-step.active .wizard-step-circle {
@@ -86,11 +104,30 @@
       background: var(--color-brand-400);
       border-color: var(--color-brand-400);
       color: white;
+      cursor: pointer;
+    }
+
+    .wizard-step.completed:hover .wizard-step-circle {
+      background: var(--color-brand-500);
+      border-color: var(--color-brand-500);
+      transform: scale(1.1);
+      box-shadow: var(--shape-shadow-2);
+    }
+
+    .wizard-step.future {
+      opacity: 0.5;
+    }
+
+    .wizard-step.future .wizard-step-circle {
+      cursor: not-allowed;
     }
 
     .wizard-step-label {
       font: var(--type-body-2-default-font);
       color: var(--color-text-secondary);
+      margin-top: 0.75rem;
+      margin-bottom: 0;
+      line-height: 1.4;
     }
 
     .wizard-step.active .wizard-step-label {
@@ -98,11 +135,16 @@
       font-weight: 600;
     }
 
+    .wizard-step.completed .wizard-step-label {
+      cursor: pointer;
+    }
+
     .wizard-content {
-      background: white;
+      background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--shape-border-radius-4);
       padding: 2rem;
+      box-shadow: var(--shape-shadow-2);
     }
 
     .wizard-step-content {
@@ -136,6 +178,7 @@
 
     .wizard-option:hover {
       border-color: var(--color-brand-500);
+      background: rgba(15, 91, 167, 0.02); /* --color-brand-500 with 2% opacity */
       transform: translateY(-2px);
       box-shadow: var(--shape-shadow-2);
     }
@@ -147,7 +190,9 @@
 
     .wizard-option.selected {
       border-color: var(--color-brand-500);
-      background: rgba(15, 91, 167, 0.05); /* --color-brand-500 with 5% opacity */
+      border-width: 3px;
+      background: rgba(15, 91, 167, 0.08); /* --color-brand-500 with 8% opacity */
+      box-shadow: var(--shape-shadow-1);
     }
 
     .wizard-option.selected .wizard-icon {
@@ -201,11 +246,12 @@
     }
 
     .sidebar-card {
-      background: white;
+      background: var(--color-surface-hover);
       border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-accent-500);
       border-radius: var(--shape-border-radius-4);
       padding: 1.5rem;
-      box-shadow: var(--shape-shadow-1);
+      box-shadow: var(--shape-shadow-2);
     }
 
     .sidebar-title {
@@ -293,10 +339,381 @@
       font: var(--type-body-1-default-font);
     }
 
-    .sidebar-stat-total .sidebar-stat-value {
+      .sidebar-stat-total .sidebar-stat-value {
       color: var(--color-brand-500);
       font-weight: 700;
       font-size: 1.125rem; /* Extract from --type-button-1-font */
+    }
+
+    .sidebar-actions {
+      margin-top: 1rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--shape-border-radius-4);
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shape-shadow-3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: var(--color-text);
+    }
+
+    .saved-projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .saved-project-item {
+      border: 1px solid var(--color-border);
+      border-radius: var(--shape-border-radius-3);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .saved-project-item:hover {
+      border-color: var(--color-brand-500);
+      box-shadow: var(--shape-shadow-1);
+    }
+
+    .saved-project-info {
+      flex: 1;
+    }
+
+    .saved-project-name {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--color-text);
+    }
+
+    .saved-project-meta {
+      font: var(--type-details-caption-1-font);
+      color: var(--color-text-secondary);
+    }
+
+    .saved-project-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+      min-width: auto;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--color-text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Toast Notification Styles */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: var(--shape-border-radius-3);
+      padding: 1rem 1.5rem;
+      box-shadow: var(--shape-shadow-3);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 300px;
+      max-width: 500px;
+      animation: slideIn 0.3s ease;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--color-positive-500);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--color-negative-500);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--color-brand-500);
+    }
+
+    .toast-icon {
+      font-size: 1.5rem;
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--color-text);
+    }
+
+    .toast-message {
+      font: var(--type-body-2-default-font);
+      color: var(--color-text-secondary);
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Error Message Styles */
+    .error-message {
+      background: var(--color-negative-100);
+      border: 1px solid var(--color-negative-500);
+      border-radius: var(--shape-border-radius-3);
+      padding: 1rem;
+      margin-top: 1rem;
+      color: var(--color-negative-700);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .error-message-icon {
+      font-size: 1.25rem;
+    }
+
+    .form-input:invalid {
+      border-color: var(--color-negative-500);
+    }
+
+    .form-input:focus:invalid {
+      outline-color: var(--color-negative-500);
+    }
+
+    /* Section Header Styles */
+    .wizard-step-content h2 {
+      background: var(--color-surface);
+      padding: var(--spacing-medium) var(--spacing-large);
+      margin: calc(-2rem - 1px) calc(-2rem - 1px) 0;
+      border-bottom: 2px solid var(--color-border);
+      border-left: 4px solid var(--color-accent-500);
+      border-radius: var(--shape-border-radius-4) var(--shape-border-radius-4) 0 0;
+      font: var(--type-headline-2-font);
+      color: var(--color-text);
+    }
+    
+    .wizard-step-content h2 + .step-sub-progress {
+      margin-top: var(--spacing-large);
+    }
+    
+    .wizard-step-content h2 + p {
+      margin-top: var(--spacing-large);
+    }
+
+    /* Sub-Step Indicator Styles */
+    .step-sub-progress {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: var(--spacing-large) 0;
+      padding: 0 var(--spacing-large);
+    }
+
+    .step-sub-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-border);
+      transition: all 0.2s ease;
+    }
+
+    .step-sub-dot.active {
+      background: var(--color-accent-500);
+      transform: scale(1.3);
+    }
+
+    .step-sub-dot.completed {
+      background: var(--color-brand-400);
+    }
+
+    /* Measurement Form Styles */
+    .measurement-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--color-text);
+      font: var(--type-body-1-default-font);
+    }
+
+    .form-group .form-input {
+      padding: 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--shape-border-radius-3);
+      font: var(--type-body-1-default-font);
+      width: 100%;
+    }
+
+    .form-group .form-input:focus {
+      outline: 2px solid var(--color-brand-500);
+      outline-offset: 2px;
+      border-color: var(--color-brand-500);
+    }
+
+    .form-hint {
+      font: var(--type-details-caption-1-font);
+      color: var(--color-text-secondary);
+    }
+
+    /* Visualization Styles */
+    .visualization-container {
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--shape-border-radius-4);
+      padding: 1.5rem;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .visualization-container svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .visualization-calculations {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--shape-border-radius-3);
+    }
+
+    .calculation-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .calculation-item:last-child {
+      border-bottom: none;
+      font-weight: 600;
+      color: var(--color-brand-500);
+    }
+
+    .calculation-label {
+      color: var(--color-text-secondary);
+    }
+
+    .calculation-value {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    @media (max-width: 767px) {
+      .wizard-step-content[data-step="2.5"] > div {
+        grid-template-columns: 1fr;
+      }
     }
 
     .conditional-options {
@@ -414,6 +831,10 @@
       overflow: hidden;
     }
 
+    .bundle-category-section.excluded {
+      opacity: 0.5;
+    }
+
     .category-toggle {
       width: 100%;
       padding: 1rem 1.5rem;
@@ -433,6 +854,19 @@
       background: var(--color-surface);
     }
 
+    .category-toggle.excluded {
+      background: var(--color-background);
+      opacity: 0.6;
+    }
+
+    .category-checkbox {
+      width: 20px;
+      height: 20px;
+      margin-right: 1rem;
+      cursor: pointer;
+      accent-color: var(--color-brand-500);
+    }
+
     .category-name {
       flex: 1;
       text-align: left;
@@ -445,14 +879,82 @@
       font-size: var(--font-size-sm);
     }
 
+    .category-price {
+      margin-right: 1rem;
+      font-weight: 600;
+      color: var(--color-brand-500);
+    }
+
     .toggle-icon {
       transition: transform 0.2s;
       font-size: var(--font-size-sm);
+      display: none; /* Hide expand/collapse icon */
     }
 
     .category-items {
       padding: 1rem;
       background: var(--color-surface);
+    }
+
+    .category-items.excluded {
+      display: none !important;
+    }
+
+    /* Component Toggles Section */
+    .component-toggles {
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--shape-border-radius-3);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .component-toggles-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+    }
+
+    .component-toggle-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .component-toggle-item:last-child {
+      border-bottom: none;
+      padding-top: 0.75rem;
+      margin-top: 0.5rem;
+      border-top: 2px solid var(--color-border);
+      font-weight: 600;
+    }
+
+    .component-toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .component-toggle-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--color-brand-500);
+    }
+
+    .component-toggle-price {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .component-toggle-item:last-child .component-toggle-price {
+      color: var(--color-brand-500);
+      font-size: 1.125rem;
     }
 
     .products-table {
@@ -499,9 +1001,47 @@
       font-style: italic;
     }
 
+    .why-item-tooltip {
+      cursor: help;
+      margin-left: 0.25rem;
+      color: var(--color-brand-500);
+      font-weight: 600;
+    }
+
     .product-sku {
       font: normal normal 400 0.75rem/1.33 var(--type-font-family-base);
       color: var(--color-text-secondary);
+    }
+
+    .product-thumbnail {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: var(--shape-border-radius-2);
+      border: 1px solid var(--color-border);
+    }
+
+    .stock-status {
+      font: var(--type-details-caption-1-font);
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--shape-border-radius-2);
+      display: inline-block;
+    }
+
+    .stock-status.stock-in {
+      background: var(--color-positive-100);
+      color: var(--color-positive-700);
+    }
+
+    .stock-status.stock-low {
+      background: var(--color-warning-100);
+      color: var(--color-warning-700);
+    }
+
+    .stock-status.stock-out {
+      background: var(--color-negative-100);
+      color: var(--color-negative-700);
     }
 
     .quantity-controls {
@@ -550,15 +1090,223 @@
       border-top: 1px solid var(--color-border);
     }
 
+    /* Tooltip Styles */
+    .tooltip-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-brand-100);
+      color: var(--color-brand-600);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: help;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      transition: all 0.2s ease;
+    }
+
+    .tooltip-icon:hover {
+      background: var(--color-brand-500);
+      color: white;
+    }
+
+    .tooltip-content {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-bottom: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--color-text);
+      color: white;
+      border-radius: var(--shape-border-radius-3);
+      font: var(--type-body-2-default-font);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 1000;
+      box-shadow: var(--shape-shadow-3);
+    }
+
+    .tooltip-content::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--color-text);
+    }
+
+    .tooltip-wrapper:hover .tooltip-content {
+      opacity: 1;
+    }
+
+    /* Project Tips Styles */
+    .project-tips {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .project-tips-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .project-tips-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .project-tips-list li {
+      padding: 0.5rem 0;
+      font: var(--type-body-2-default-font);
+      color: var(--color-text-secondary);
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .project-tips-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--color-brand-500);
+      font-weight: 600;
+    }
+
+    /* Resource Links Styles */
+    .resource-links {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .resource-links-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .resource-links-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .resource-links-list li {
+      padding: 0.5rem 0;
+    }
+
+    .resource-link {
+      color: var(--color-brand-500);
+      text-decoration: none;
+      font: var(--type-body-2-default-font);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s ease;
+    }
+
+    .resource-link:hover {
+      color: var(--color-brand-600);
+      text-decoration: underline;
+    }
+
+    .resource-link::after {
+      content: '→';
+      font-size: 0.875rem;
+    }
+
+    /* Quote Actions Styles */
+    .quote-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-border);
+      flex-wrap: wrap;
+    }
+
+    .quote-action-btn {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    /* Project Notes Styles */
+    .project-notes {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .project-notes-label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--color-text);
+      display: block;
+    }
+
+    .project-notes-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--shape-border-radius-3);
+      font: var(--type-body-1-default-font);
+      resize: vertical;
+    }
+
+    .project-notes-textarea:focus {
+      outline: 2px solid var(--color-brand-500);
+      outline-offset: 2px;
+      border-color: var(--color-brand-500);
+    }
+
+    .project-notes-hint {
+      font: var(--type-details-caption-1-font);
+      color: var(--color-text-secondary);
+      margin-top: 0.5rem;
+    }
+
     /* Print Styles */
     @media print {
+      @page {
+        margin: 1in;
+      }
+
+      /* Hide navigation and interactive elements */
       .wizard-progress,
       .wizard-navigation,
       .header,
       .industry-menu,
       .wizard-sidebar,
       .bundle-actions,
-      .category-toggle {
+      .category-toggle,
+      .quote-actions,
+      .project-notes,
+      .resource-links,
+      .qty-btn,
+      .component-toggles {
         display: none !important;
       }
 
@@ -598,6 +1346,63 @@
 
       .bundle-summary {
         page-break-inside: avoid;
+      }
+
+      /* Print header */
+      .print-header {
+        display: block !important;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #000;
+      }
+
+      .print-header-logo {
+        font-size: 24pt;
+        font-weight: 700;
+        color: #0f5ba7;
+        margin-bottom: 0.5rem;
+      }
+
+      .print-header-title {
+        font-size: 18pt;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .print-header-details {
+        font-size: 10pt;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
+
+      .print-header-date {
+        font-size: 10pt;
+        color: #666;
+      }
+
+      /* Show project notes in print if available */
+      .print-notes {
+        display: block !important;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 10pt;
+      }
+
+      .print-notes-label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Ensure all category items are visible in print */
+      .bundle-category-section.excluded {
+        opacity: 1 !important;
+      }
+
+      .category-items.excluded {
+        display: block !important;
       }
     }
   </style>
@@ -740,16 +1545,21 @@
         <div class="wizard-step-circle">2</div>
         <div class="wizard-step-label">Details</div>
       </div>
-      <div class="wizard-step" data-step="3">
+      <div class="wizard-step" data-step="3" id="step-indicator-3">
         <div class="wizard-step-circle">3</div>
         <div class="wizard-step-label">Complexity</div>
       </div>
-      <div class="wizard-step" data-step="4">
+      <div class="wizard-step" data-step="4" id="step-indicator-4">
         <div class="wizard-step-circle">4</div>
         <div class="wizard-step-label">Budget</div>
       </div>
-      <div class="wizard-step" data-step="5">
+      <div class="wizard-step" data-step="5" id="step-indicator-5">
         <div class="wizard-step-circle">5</div>
+        <div class="wizard-step-label">Results</div>
+      </div>
+      <!-- Dynamic 6th step for when measurements is shown -->
+      <div class="wizard-step" data-step="6" id="step-indicator-6" style="display: none;">
+        <div class="wizard-step-circle">6</div>
         <div class="wizard-step-label">Results</div>
       </div>
     </div>
@@ -761,7 +1571,13 @@
         <div class="wizard-content">
       <!-- Step 1: Project Type -->
       <div class="wizard-step-content active" data-step="1">
-        <h2>What type of project are you working on?</h2>
+        <h2>
+          What type of project are you working on?
+          <span class="tooltip-wrapper">
+            <span class="tooltip-icon">?</span>
+            <span class="tooltip-content">Select the category that best matches your project</span>
+          </span>
+        </h2>
         <div class="wizard-options">
           <div class="wizard-option" data-value="new_construction">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -796,14 +1612,101 @@
       <!-- Step 2: Project Details (Conditional) -->
       <div class="wizard-step-content" data-step="2">
         <h2 id="step2-title">Tell us more about your project</h2>
+        <div class="step-sub-progress" id="step2-sub-progress" style="display: none;">
+          <!-- Sub-step dots will be populated dynamically -->
+        </div>
         <div class="wizard-options" id="step2-options">
           <!-- Options will be populated by JavaScript based on Step 1 -->
         </div>
       </div>
 
+      <!-- Step 2.5: Project Measurements (Conditional - only for visualization projects) -->
+      <!-- Note: This step appears as "Step 3" in the UI when shown, with subsequent steps renumbered -->
+      <div class="wizard-step-content" data-step="2.5" id="step-measurements" style="display: none;">
+        <h2>Enter Project Measurements</h2>
+        <div class="step-sub-progress" id="step2-5-sub-progress">
+          <div class="step-sub-dot" data-field="length"></div>
+          <div class="step-sub-dot" data-field="width"></div>
+          <div class="step-sub-dot" data-field="height"></div>
+          <div class="step-sub-dot" data-field="doors"></div>
+          <div class="step-sub-dot" data-field="windows"></div>
+        </div>
+        <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">Provide dimensions for accurate material calculations. You can skip this step for a quick estimate.</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+          <!-- Measurement Inputs -->
+          <div>
+            <div class="measurement-form">
+              <div class="form-group">
+                <label for="measurement-length">Length (ft)</label>
+                <input type="number" id="measurement-length" class="form-input" min="4" max="50" value="10" step="0.5">
+                <span class="form-hint">4-50 feet</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="measurement-width">Width (ft)</label>
+                <input type="number" id="measurement-width" class="form-input" min="4" max="50" value="10" step="0.5">
+                <span class="form-hint">4-50 feet</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="measurement-height">Height (ft)</label>
+                <input type="number" id="measurement-height" class="form-input" min="7" max="12" value="8" step="0.5">
+                <span class="form-hint">7-12 feet</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="measurement-doors">Number of Doors</label>
+                <select id="measurement-doors" class="form-input">
+                  <option value="0">0</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="measurement-windows">Number of Windows</label>
+                <select id="measurement-windows" class="form-input">
+                  <option value="0">0</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                </select>
+              </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+              <button class="btn btn-outline" id="skip-measurements-btn">Skip This Step</button>
+              <button class="btn btn-cta" id="continue-measurements-btn">Continue</button>
+            </div>
+          </div>
+          
+          <!-- Visualization Preview -->
+          <div>
+            <div class="visualization-container" id="visualization-container">
+              <!-- SVG visualization will be rendered here -->
+            </div>
+            <div class="visualization-calculations" id="visualization-calculations">
+              <!-- Material calculations will be shown here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Step 3: Complexity -->
       <div class="wizard-step-content" data-step="3">
-        <h2>How complex is this project?</h2>
+        <h2>
+          How complex is this project?
+          <span class="tooltip-wrapper">
+            <span class="tooltip-icon">?</span>
+            <span class="tooltip-content">Complexity affects material quality and project timeline</span>
+          </span>
+        </h2>
         <div class="wizard-options">
           <div class="wizard-option" data-value="basic">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -840,7 +1743,13 @@
 
       <!-- Step 4: Budget -->
       <div class="wizard-step-content" data-step="4">
-        <h2>What's your budget range?</h2>
+        <h2>
+          What's your budget range?
+          <span class="tooltip-wrapper">
+            <span class="tooltip-icon">?</span>
+            <span class="tooltip-content">Material costs only. Labor and permits not included.</span>
+          </span>
+        </h2>
         <div class="wizard-options">
           <div class="wizard-option" data-value="under_5k">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -888,8 +1797,7 @@
     <!-- Navigation -->
     <div class="wizard-navigation">
       <button class="btn btn-outline" id="wizard-back" style="display: none;">← Back</button>
-      <button class="btn btn-primary" id="wizard-next" style="display: none;">Next →</button>
-      <button class="btn btn-secondary" id="wizard-start-over" style="display: none;">Start Over</button>
+      <button class="btn btn-outline" id="wizard-start-over" style="display: none;">Start Over</button>
       <button class="btn btn-outline" id="wizard-print" style="display: none;">🖨 Print Summary</button>
     </div>
       </div>
@@ -917,6 +1825,13 @@
                 <span class="sidebar-stat-value" id="sidebar-total">$--</span>
               </div>
             </div>
+
+            <!-- Project Tips -->
+            <div class="project-tips" id="sidebar-tips" style="display: none;">
+              <div class="project-tips-title">💡 Project Tips</div>
+              <ul class="project-tips-list" id="project-tips-list"></ul>
+            </div>
+
           </div>
         </div>
       </div>
@@ -925,14 +1840,19 @@
     <!-- End Wizard Layout -->
   </div>
 
+
   <script type="module">
     import { saveWizardState, getWizardState, generateBundle, addBundleToCart } from '../scripts/project-builder.js';
     import { decorateBlock } from '../scripts/utils.js';
+    import { shouldShowVisualization, createVisualization, getVisualizationType, calculateFramingMaterials } from '../scripts/project-visualizer.js';
+    import { getProjectTips, getResourceLinks } from '../scripts/educational-content.js';
+    import { getProductImageUrl, getInventory, getInventoryStatus, getPrimaryWarehouse } from '../scripts/data-mock.js';
 
     // Wizard state
     let currentStep = 1;
-    const totalSteps = 5;
+    const totalSteps = 5; // Will be adjusted dynamically if measurements step is shown
     const wizardState = getWizardState() || {};
+    let measurementsStepShown = false;
 
     // Step 2 options based on project type
     const step2Options = {
@@ -1022,6 +1942,11 @@
         populateStep2(wizardState.projectType);
         const option = document.querySelector(`[data-step="2"] .wizard-option[data-value="${wizardState.projectDetail}"]`);
         if (option) option.classList.add('selected');
+        
+        // Check if measurements step should be shown
+        if (shouldShowVisualization(wizardState.projectType, wizardState.projectDetail)) {
+          measurementsStepShown = true;
+        }
       }
 
       // Restore step 3
@@ -1051,30 +1976,66 @@
     function setupEventListeners() {
       // Option selection - use event delegation on wizard-content
       const wizardContent = document.querySelector('.wizard-content');
-      if (wizardContent) {
-        wizardContent.addEventListener('click', (e) => {
-          const option = e.target.closest('.wizard-option');
-          if (option) {
-            const stepContent = option.closest('.wizard-step-content');
-            if (stepContent) {
-              const step = stepContent.dataset.step;
-              const value = option.dataset.value;
-              if (step && value) {
-                selectOption(step, value);
-              }
+      if (!wizardContent) {
+        console.error('Wizard content element not found');
+        return;
+      }
+      
+      // Add click listener with event delegation
+      wizardContent.addEventListener('click', (e) => {
+        const option = e.target.closest('.wizard-option');
+        if (option) {
+          const stepContent = option.closest('.wizard-step-content');
+          if (stepContent) {
+            const step = stepContent.dataset.step;
+            const value = option.dataset.value;
+            if (step && value) {
+              console.log('Option clicked:', step, value);
+              selectOption(step, value);
+            } else {
+              console.warn('Missing step or value:', { step, value, option, stepContent });
+            }
+          } else {
+            console.warn('Could not find step-content parent for option', option);
+          }
+        }
+      });
+      
+      // Also add direct listeners to options as fallback
+      document.querySelectorAll('.wizard-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const stepContent = this.closest('.wizard-step-content');
+          if (stepContent) {
+            const step = stepContent.dataset.step;
+            const value = this.dataset.value;
+            if (step && value) {
+              console.log('Direct option click:', step, value);
+              selectOption(step, value);
             }
           }
         });
-      }
+      });
 
       // Navigation buttons
-      const nextBtn = document.getElementById('wizard-next');
       const backBtn = document.getElementById('wizard-back');
       const startOverBtn = document.getElementById('wizard-start-over');
       
-      if (nextBtn) nextBtn.addEventListener('click', nextStep);
       if (backBtn) backBtn.addEventListener('click', prevStep);
       if (startOverBtn) startOverBtn.addEventListener('click', startOver);
+
+      // Make step circles clickable for navigation
+      document.querySelectorAll('.wizard-step').forEach(stepEl => {
+        const stepNumber = stepEl.dataset.step;
+        if (stepNumber) {
+          stepEl.addEventListener('click', () => {
+            const stepNum = parseFloat(stepNumber);
+            if (stepEl.classList.contains('completed') || stepEl.classList.contains('active')) {
+              goToStep(stepNum);
+            }
+          });
+        }
+      });
     }
 
     // Select option
@@ -1091,8 +2052,10 @@
       if (step === '1') {
         wizardState.projectType = value;
         wizardState.projectDetail = null; // Reset detail when type changes
+        wizardState.measurements = null; // Reset measurements when type changes
       } else if (step === '2') {
         wizardState.projectDetail = value;
+        wizardState.measurements = null; // Reset measurements when detail changes
       } else if (step === '3') {
         wizardState.complexity = value;
       } else if (step === '4') {
@@ -1103,17 +2066,24 @@
       saveWizardState(wizardState);
       updateSidebar();
 
-      // Auto-advance for steps 1-4
-      if (step < 4) {
-        setTimeout(() => {
-          if (step === '1') {
-            // All project types go to step 2 for details
-            nextStep();
-          } else {
-            nextStep();
-          }
-        }, 300);
-      } else {
+      // Auto-advance logic
+      if (step === '1') {
+        setTimeout(() => nextStep(), 300);
+      } else if (step === '2') {
+        // Check if we should show measurements step
+        if (shouldShowVisualization(wizardState.projectType, value)) {
+          measurementsStepShown = true;
+          setTimeout(() => showStep(2.5), 300);
+        } else {
+          measurementsStepShown = false;
+          setTimeout(() => nextStep(), 300);
+        }
+      } else if (step === '2.5') {
+        // After measurements, go to complexity (step 3)
+        setTimeout(() => nextStep(), 300);
+      } else if (step === '3') {
+        setTimeout(() => nextStep(), 300);
+      } else if (step === '4') {
         // Step 4: Generate bundle
         generateAndShowResults();
       }
@@ -1272,6 +2242,58 @@
       } else {
         estimateContainer.style.display = 'none';
       }
+
+      // Update project tips
+      const tipsContainer = document.getElementById('sidebar-tips');
+      const tipsList = document.getElementById('project-tips-list');
+      if (wizardState.projectType && wizardState.projectDetail && wizardState.complexity) {
+        const tips = getProjectTips(wizardState.projectType, wizardState.projectDetail, wizardState.complexity);
+        if (tips && tips.length > 0) {
+          tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
+          tipsContainer.style.display = 'block';
+        } else {
+          tipsContainer.style.display = 'none';
+        }
+      } else {
+        tipsContainer.style.display = 'none';
+      }
+      
+    }
+
+    // Go to step (for clickable navigation)
+    function goToStep(stepNum) {
+      // Only allow navigation to completed or active steps
+      const stepEl = document.querySelector(`.wizard-step[data-step="${stepNum}"]`);
+      if (!stepEl) return;
+      
+      // Check if step is completed or active
+      if (!stepEl.classList.contains('completed') && !stepEl.classList.contains('active')) {
+        return; // Don't allow navigation to future steps
+      }
+      
+      // Handle special case for measurements step (2.5)
+      if (stepNum === 3 && measurementsStepShown) {
+        showStep(2.5);
+      } else if (stepNum === 4 && measurementsStepShown) {
+        showStep(3);
+      } else if (stepNum === 5 && measurementsStepShown) {
+        showStep(4);
+      } else if (stepNum === 6 && measurementsStepShown) {
+        showStep(5);
+      } else {
+        // Map display step numbers to actual step numbers
+        if (stepNum === 1) {
+          showStep(1);
+        } else if (stepNum === 2) {
+          showStep(2);
+        } else if (stepNum === 3 && !measurementsStepShown) {
+          showStep(3);
+        } else if (stepNum === 4 && !measurementsStepShown) {
+          showStep(4);
+        } else if (stepNum === 5 && !measurementsStepShown) {
+          showStep(5);
+        }
+      }
     }
 
     // Show step
@@ -1281,32 +2303,247 @@
       // Hide all steps
       document.querySelectorAll('.wizard-step-content').forEach(content => {
         content.classList.remove('active');
+        content.style.display = 'none';
       });
 
       // Show current step
       const currentContent = document.querySelector(`.wizard-step-content[data-step="${step}"]`);
       if (currentContent) {
         currentContent.classList.add('active');
+        currentContent.style.display = 'block';
       }
 
-      // Update progress indicators
+      // Update progress indicators (handle conditional measurements step)
+      const stepNum = typeof step === 'number' ? step : parseFloat(step);
+      
+      // Calculate display step number (measurements step shows as step 3)
+      let displayStep = stepNum;
+      if (stepNum === 2.5) {
+        displayStep = 3;
+      } else if (measurementsStepShown && stepNum > 2.5) {
+        // If measurements step was shown, shift steps 3, 4, 5 to 4, 5, 6
+        displayStep = stepNum + 0.5; // 3 becomes 4, 4 becomes 5, 5 becomes 6
+      }
+      
       document.querySelectorAll('.wizard-step').forEach((stepEl, index) => {
-        const stepNum = index + 1;
+        const stepIndex = index + 1;
         stepEl.classList.remove('active', 'completed');
-        if (stepNum < step) {
-          stepEl.classList.add('completed');
-        } else if (stepNum === step) {
-          stepEl.classList.add('active');
+        
+        // Update step labels dynamically
+        const stepCircle = stepEl.querySelector('.wizard-step-circle');
+        const stepLabel = stepEl.querySelector('.wizard-step-label');
+        
+        // Show/hide 6th step indicator based on whether measurements step is shown
+        const step6Indicator = document.getElementById('step-indicator-6');
+        if (step6Indicator) {
+          step6Indicator.style.display = measurementsStepShown ? 'flex' : 'none';
+        }
+        
+        if (measurementsStepShown) {
+          // When measurements step is shown, renumber steps: 1, 2, 3(Measurements), 4(Complexity), 5(Budget), 6(Results)
+          if (stepIndex === 1) {
+            if (stepCircle) stepCircle.textContent = '1';
+            if (stepLabel) stepLabel.textContent = 'Project Type';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 2) {
+            if (stepCircle) stepCircle.textContent = '2';
+            if (stepLabel) stepLabel.textContent = 'Details';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 3) {
+            if (stepCircle) stepCircle.textContent = '3';
+            if (stepLabel) stepLabel.textContent = 'Measurements';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 4) {
+            if (stepCircle) stepCircle.textContent = '4';
+            if (stepLabel) stepLabel.textContent = 'Complexity';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 5) {
+            if (stepCircle) stepCircle.textContent = '5';
+            if (stepLabel) stepLabel.textContent = 'Budget';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 6) {
+            if (stepCircle) stepCircle.textContent = '6';
+            if (stepLabel) stepLabel.textContent = 'Results';
+            stepEl.style.display = 'flex';
+          }
+        } else {
+          // When measurements step is NOT shown, use original numbering: 1, 2, 3(Complexity), 4(Budget), 5(Results)
+          if (stepIndex === 1) {
+            if (stepCircle) stepCircle.textContent = '1';
+            if (stepLabel) stepLabel.textContent = 'Project Type';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 2) {
+            if (stepCircle) stepCircle.textContent = '2';
+            if (stepLabel) stepLabel.textContent = 'Details';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 3) {
+            if (stepCircle) stepCircle.textContent = '3';
+            if (stepLabel) stepLabel.textContent = 'Complexity';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 4) {
+            if (stepCircle) stepCircle.textContent = '4';
+            if (stepLabel) stepLabel.textContent = 'Budget';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 5) {
+            if (stepCircle) stepCircle.textContent = '5';
+            if (stepLabel) stepLabel.textContent = 'Results';
+            stepEl.style.display = 'flex';
+          } else if (stepIndex === 6) {
+            stepEl.style.display = 'none';
+          }
+        }
+        
+        // Set active/completed/future states based on display step
+        stepEl.classList.remove('future');
+        if (stepNum === 2.5) {
+          // Measurements step (shows as step 3)
+          if (stepIndex <= 2) {
+            stepEl.classList.add('completed');
+          } else if (stepIndex === 3) {
+            stepEl.classList.add('active');
+          } else {
+            stepEl.classList.add('future');
+          }
+        } else if (stepNum === 5 && measurementsStepShown) {
+          // Results step when measurements shown (shows as step 6)
+          if (stepIndex <= 5) {
+            stepEl.classList.add('completed');
+          } else if (stepIndex === 6) {
+            stepEl.classList.add('active');
+          } else {
+            stepEl.classList.add('future');
+          }
+        } else {
+          // Regular step progression
+          if (measurementsStepShown) {
+            // With measurements: 1, 2, 3(measurements), 4(complexity), 5(budget), 6(results)
+            if (stepNum === 3) {
+              // Complexity step (shows as step 4)
+              if (stepIndex <= 3) stepEl.classList.add('completed');
+              else if (stepIndex === 4) stepEl.classList.add('active');
+              else stepEl.classList.add('future');
+            } else if (stepNum === 4) {
+              // Budget step (shows as step 5)
+              if (stepIndex <= 4) stepEl.classList.add('completed');
+              else if (stepIndex === 5) stepEl.classList.add('active');
+              else stepEl.classList.add('future');
+            } else {
+              // Steps 1 and 2
+              if (stepIndex < stepNum) {
+                stepEl.classList.add('completed');
+              } else if (stepIndex === stepNum) {
+                stepEl.classList.add('active');
+              } else {
+                stepEl.classList.add('future');
+              }
+            }
+          } else {
+            // Without measurements: 1, 2, 3(complexity), 4(budget), 5(results)
+            if (stepIndex < stepNum) {
+              stepEl.classList.add('completed');
+            } else if (stepIndex === stepNum) {
+              stepEl.classList.add('active');
+            } else {
+              stepEl.classList.add('future');
+            }
+          }
         }
       });
 
-      // Update progress bar
-      const progress = ((step - 1) / (totalSteps - 1)) * 100;
-      document.getElementById('progress-bar').style.width = `${progress}%`;
+      // Update progress bar - align with step circle centers
+      let progressSteps = totalSteps;
+      let progressStep = stepNum;
+      
+      if (measurementsStepShown) {
+        progressSteps = 6; // 1, 2, 3(measurements), 4(complexity), 5(budget), 6(results)
+        if (stepNum === 2.5) {
+          progressStep = 3; // Measurements shows as step 3
+        } else if (stepNum > 2.5) {
+          progressStep = stepNum + 0.5; // Shift: 3→4, 4→5, 5→6
+        }
+      }
+      
+      const progressBar = document.getElementById('progress-bar');
+      if (progressBar) {
+        // Use requestAnimationFrame to ensure layout is complete
+        requestAnimationFrame(() => {
+          const container = progressBar.parentElement;
+          if (container) {
+            // Get all visible step circles
+            const stepElements = Array.from(container.querySelectorAll('.wizard-step')).filter(step => {
+              const style = window.getComputedStyle(step);
+              return style.display !== 'none' && step.style.display !== 'none';
+            });
+            
+            if (stepElements.length > 0) {
+              // Get the first and last step circle center positions
+              const firstStep = stepElements[0];
+              const lastStep = stepElements[stepElements.length - 1];
+              const firstCircle = firstStep.querySelector('.wizard-step-circle');
+              const lastCircle = lastStep.querySelector('.wizard-step-circle');
+              
+              // Calculate which step index we're on (1-based)
+              const currentStepIndex = Math.min(progressStep, stepElements.length);
+              const targetStep = stepElements[currentStepIndex - 1];
+              const targetCircle = targetStep ? targetStep.querySelector('.wizard-step-circle') : null;
+              
+              if (firstCircle && lastCircle && targetCircle) {
+                // Get positions relative to container
+                const containerRect = container.getBoundingClientRect();
+                const firstCircleRect = firstCircle.getBoundingClientRect();
+                const lastCircleRect = lastCircle.getBoundingClientRect();
+                const targetCircleRect = targetCircle.getBoundingClientRect();
+                
+                // Calculate center positions relative to container
+                const firstCenter = firstCircleRect.left - containerRect.left + (firstCircleRect.width / 2);
+                const lastCenter = lastCircleRect.left - containerRect.left + (lastCircleRect.width / 2);
+                const targetCenter = targetCircleRect.left - containerRect.left + (targetCircleRect.width / 2);
+                
+                // Update background line to span from first to last circle center
+                const backgroundLine = container.querySelector('.wizard-progress::before');
+                if (container.style) {
+                  // Set CSS custom properties for the background line
+                  container.style.setProperty('--line-start', `${firstCenter}px`);
+                  container.style.setProperty('--line-end', `${lastCenter}px`);
+                }
+                
+                // Set progress bar to start at first circle center and extend to target circle center
+                progressBar.style.left = `${firstCenter}px`;
+                progressBar.style.width = `${Math.max(0, targetCenter - firstCenter)}px`;
+                
+                // Enable transitions after initial positioning
+                requestAnimationFrame(() => {
+                  progressBar.classList.add('initialized');
+                });
+              }
+            } else {
+              // Fallback: use percentage calculation
+              const progress = ((progressStep - 1) / (progressSteps - 1)) * 100;
+              const containerWidth = container.offsetWidth;
+              const paddingLeft = parseFloat(getComputedStyle(container).paddingLeft);
+              const paddingRight = parseFloat(getComputedStyle(container).paddingRight);
+              const availableWidth = containerWidth - paddingLeft - paddingRight;
+              const progressWidth = (availableWidth * progress) / 100;
+              progressBar.style.left = `${paddingLeft}px`;
+              progressBar.style.width = `${progressWidth}px`;
+              
+              // Enable transitions after initial positioning
+              requestAnimationFrame(() => {
+                progressBar.classList.add('initialized');
+              });
+            }
+          }
+        });
+      }
 
       // Handle step 2 population
       if (step === 2 && wizardState.projectType) {
         populateStep2(wizardState.projectType);
+      }
+
+      // Handle measurements step
+      if (step === 2.5) {
+        initializeMeasurementsStep();
       }
 
       updateNavigation();
@@ -1314,30 +2551,240 @@
 
     // Next step
     function nextStep() {
-      if (currentStep < totalSteps) {
-        // Validate current step
-        if (currentStep === 1 && !wizardState.projectType) return;
-        if (currentStep === 2 && !wizardState.projectDetail) return;
-        if (currentStep === 3 && !wizardState.complexity) return;
-        if (currentStep === 4 && !wizardState.budget) return;
+      // Validate current step
+      if (currentStep === 1 && !wizardState.projectType) return;
+      if (currentStep === 2 && !wizardState.projectDetail) return;
+      if (currentStep === 2.5 && !wizardState.measurements) {
+        // Allow skipping measurements
+        wizardState.measurements = getDefaultMeasurements();
+        saveWizardState(wizardState);
+      }
+      if (currentStep === 3 && !wizardState.complexity) return;
+      if (currentStep === 4 && !wizardState.budget) return;
 
-        // Advance to next step
-        if (currentStep === 1) {
-          showStep(2);
-        } else if (currentStep === 2) {
+      // Advance to next step
+      if (currentStep === 1) {
+        showStep(2);
+      } else if (currentStep === 2) {
+        // Check if measurements step should be shown
+        if (shouldShowVisualization(wizardState.projectType, wizardState.projectDetail)) {
+          measurementsStepShown = true;
+          showStep(2.5);
+        } else {
+          measurementsStepShown = false;
           showStep(3);
-        } else if (currentStep === 3) {
-          showStep(4);
-        } else if (currentStep === 4) {
-          generateAndShowResults();
         }
+      } else if (currentStep === 2.5) {
+        showStep(3);
+      } else if (currentStep === 3) {
+        showStep(4);
+      } else if (currentStep === 4) {
+        generateAndShowResults();
       }
     }
 
     // Previous step
     function prevStep() {
       if (currentStep > 1) {
-        showStep(currentStep - 1);
+        if (currentStep === 3 && measurementsStepShown) {
+          showStep(2.5);
+        } else if (currentStep === 2.5) {
+          showStep(2);
+        } else {
+          showStep(currentStep - 1);
+        }
+      }
+    }
+
+    // Get default measurements
+    function getDefaultMeasurements() {
+      return {
+        length: 10,
+        width: 10,
+        height: 8,
+        doors: 1,
+        windows: 1
+      };
+    }
+
+    // Update measurement sub-step indicators
+    function updateMeasurementSubSteps(measurements) {
+      const subProgress = document.getElementById('step2-5-sub-progress');
+      if (!subProgress) return;
+      
+      const fields = ['length', 'width', 'height', 'doors', 'windows'];
+      let activeIndex = -1;
+      
+      // Find the first incomplete field
+      fields.forEach((field, index) => {
+        const dot = subProgress.querySelector(`[data-field="${field}"]`);
+        if (!dot) return;
+        
+        const value = measurements[field];
+        const hasValue = value !== null && value !== undefined && value !== '';
+        
+        dot.classList.remove('active', 'completed');
+        
+        if (hasValue) {
+          dot.classList.add('completed');
+        } else if (activeIndex === -1) {
+          activeIndex = index;
+          dot.classList.add('active');
+        }
+      });
+      
+      // If all fields are completed, mark the last one as active
+      if (activeIndex === -1 && fields.length > 0) {
+        const lastDot = subProgress.querySelector(`[data-field="${fields[fields.length - 1]}"]`);
+        if (lastDot) {
+          lastDot.classList.remove('completed');
+          lastDot.classList.add('active');
+        }
+      }
+    }
+
+    // Initialize measurements step
+    function initializeMeasurementsStep() {
+      // Restore measurements if they exist, otherwise use defaults
+      const measurements = wizardState.measurements || getDefaultMeasurements();
+      
+      // Set input values
+      document.getElementById('measurement-length').value = measurements.length;
+      document.getElementById('measurement-width').value = measurements.width;
+      document.getElementById('measurement-height').value = measurements.height;
+      document.getElementById('measurement-doors').value = measurements.doors;
+      document.getElementById('measurement-windows').value = measurements.windows;
+      
+      // Update sub-step indicators
+      updateMeasurementSubSteps(measurements);
+      
+      // Update visualization
+      updateVisualization(measurements);
+      
+      // Setup event listeners
+      setupMeasurementListeners();
+    }
+
+    // Setup measurement input listeners
+    function setupMeasurementListeners() {
+      const inputs = ['measurement-length', 'measurement-width', 'measurement-height', 'measurement-doors', 'measurement-windows'];
+      
+      inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.addEventListener('input', () => {
+            const measurements = {
+              length: parseFloat(document.getElementById('measurement-length').value) || 10,
+              width: parseFloat(document.getElementById('measurement-width').value) || 10,
+              height: parseFloat(document.getElementById('measurement-height').value) || 8,
+              doors: parseInt(document.getElementById('measurement-doors').value) || 0,
+              windows: parseInt(document.getElementById('measurement-windows').value) || 0
+            };
+            
+            // Validate ranges
+            measurements.length = Math.max(4, Math.min(50, measurements.length));
+            measurements.width = Math.max(4, Math.min(50, measurements.width));
+            measurements.height = Math.max(7, Math.min(12, measurements.height));
+            measurements.doors = Math.max(0, Math.min(4, measurements.doors));
+            measurements.windows = Math.max(0, Math.min(6, measurements.windows));
+            
+            // Save to state
+            wizardState.measurements = measurements;
+            saveWizardState(wizardState);
+            
+            // Update sub-step indicators
+            updateMeasurementSubSteps(measurements);
+            
+            // Update visualization
+            updateVisualization(measurements);
+          });
+        }
+      });
+      
+      // Skip button
+      const skipBtn = document.getElementById('skip-measurements-btn');
+      if (skipBtn) {
+        skipBtn.addEventListener('click', () => {
+          wizardState.measurements = getDefaultMeasurements();
+          saveWizardState(wizardState);
+          nextStep();
+        });
+      }
+      
+      // Continue button
+      const continueBtn = document.getElementById('continue-measurements-btn');
+      if (continueBtn) {
+        continueBtn.addEventListener('click', () => {
+          nextStep();
+        });
+      }
+    }
+
+    // Update visualization
+    function updateVisualization(measurements) {
+      const container = document.getElementById('visualization-container');
+      const calculationsContainer = document.getElementById('visualization-calculations');
+      
+      if (!container || !wizardState.projectType || !wizardState.projectDetail) return;
+      
+      const vizType = getVisualizationType(wizardState.projectType, wizardState.projectDetail);
+      if (!vizType) return;
+      
+      // Generate visualization SVG
+      const svg = createVisualization(wizardState.projectType, wizardState.projectDetail, measurements);
+      if (svg) {
+        container.innerHTML = svg;
+      }
+      
+      // Calculate and display materials
+      if (vizType === 'room_with_framing') {
+        const framing = calculateFramingMaterials(
+          measurements.length,
+          measurements.width,
+          measurements.height,
+          measurements.doors,
+          measurements.windows
+        );
+        
+        const floorArea = measurements.length * measurements.width;
+        const wallArea = 2 * (measurements.length + measurements.width) * measurements.height;
+        
+        calculationsContainer.innerHTML = `
+          <div class="calculation-item">
+            <span class="calculation-label">Floor Area:</span>
+            <span class="calculation-value">${floorArea.toFixed(1)} sq ft</span>
+          </div>
+          <div class="calculation-item">
+            <span class="calculation-label">Wall Area:</span>
+            <span class="calculation-value">${wallArea.toFixed(1)} sq ft</span>
+          </div>
+          <div class="calculation-item">
+            <span class="calculation-label">Studs Needed:</span>
+            <span class="calculation-value">${framing.studs} @ 16" O.C.</span>
+          </div>
+          <div class="calculation-item">
+            <span class="calculation-label">Plate Linear Feet:</span>
+            <span class="calculation-value">${framing.plates.toFixed(1)} LF</span>
+          </div>
+          <div class="calculation-item">
+            <span class="calculation-label">Drywall Sheets:</span>
+            <span class="calculation-value">${framing.drywall} sheets (4x8)</span>
+          </div>
+        `;
+      } else {
+        const floorArea = measurements.length * measurements.width;
+        const wallArea = 2 * (measurements.length + measurements.width) * measurements.height;
+        
+        calculationsContainer.innerHTML = `
+          <div class="calculation-item">
+            <span class="calculation-label">Floor Area:</span>
+            <span class="calculation-value">${floorArea.toFixed(1)} sq ft</span>
+          </div>
+          <div class="calculation-item">
+            <span class="calculation-label">Wall Area:</span>
+            <span class="calculation-value">${wallArea.toFixed(1)} sq ft</span>
+          </div>
+        `;
       }
     }
 
@@ -1349,19 +2796,15 @@
     // Update navigation
     function updateNavigation() {
       const backBtn = document.getElementById('wizard-back');
-      const nextBtn = document.getElementById('wizard-next');
       const startOverBtn = document.getElementById('wizard-start-over');
       const printBtn = document.getElementById('wizard-print');
 
       if (currentStep === 5) {
         backBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
         startOverBtn.style.display = 'inline-block';
         if (printBtn) printBtn.style.display = 'inline-block';
       } else {
         backBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
-        // Hide Next button on step 1 since clicking a card auto-advances
-        nextBtn.style.display = currentStep === 1 ? 'none' : 'inline-block';
         startOverBtn.style.display = 'none';
         if (printBtn) printBtn.style.display = 'none';
       }
@@ -1371,13 +2814,38 @@
     async function generateAndShowResults() {
       showStep(5);
       
-      const bundle = await generateBundle(wizardState);
-      if (bundle) {
-        displayBundle(bundle);
-      } else {
-        document.getElementById('bundle-container').innerHTML = `
-          <p style="color: var(--color-negative-500);">Unable to generate bundle. Please try again.</p>
+      // Show loading state
+      const container = document.getElementById('bundle-container');
+      container.innerHTML = `
+        <div style="text-align: center; padding: 3rem;">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
+          <p>Generating your project kit...</p>
+        </div>
+      `;
+      
+      try {
+        const bundle = await generateBundle(wizardState);
+        if (bundle) {
+          displayBundle(bundle);
+          showToast('success', 'Project kit generated successfully!', 'Your customized bundle is ready.');
+        } else {
+          throw new Error('Failed to generate bundle');
+        }
+      } catch (error) {
+        console.error('Error generating bundle:', error);
+        container.innerHTML = `
+          <div class="error-message">
+            <span class="error-message-icon">⚠️</span>
+            <div>
+              <div style="font-weight: 600; margin-bottom: 0.25rem;">Unable to generate bundle</div>
+              <div style="font-size: 0.875rem;">${error.message || 'Please check your selections and try again.'}</div>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 1.5rem;">
+            <button class="btn btn-primary" onclick="prevStep()">← Go Back</button>
+          </div>
         `;
+        showToast('error', 'Generation Failed', 'Unable to create your project kit. Please try again.');
       }
     }
 
@@ -1409,8 +2877,84 @@
         return cat.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       }
 
+      // Category mapping for component toggles
+      const categoryMapping = {
+        'structural_materials': 'Primary Materials',
+        'framing_drywall': 'Primary Materials',
+        'windows_doors': 'Primary Materials',
+        'fasteners_hardware': 'Fasteners & Hardware',
+        'roofing': 'Finishing Materials'
+      };
+
+      // Group categories into component groups
+      const componentGroups = {
+        'Primary Materials': ['structural_materials', 'framing_drywall', 'windows_doors'],
+        'Fasteners & Hardware': ['fasteners_hardware'],
+        'Tools & Accessories': [], // Empty for now
+        'Finishing Materials': ['roofing']
+      };
+
+      // Calculate prices per component group
+      const componentPrices = {};
+      Object.keys(componentGroups).forEach(group => {
+        componentPrices[group] = 0;
+        componentGroups[group].forEach(cat => {
+          if (itemsByCategory[cat]) {
+            itemsByCategory[cat].forEach(item => {
+              componentPrices[group] += item.subtotal;
+            });
+          }
+        });
+      });
+
+      // Default included groups (Primary Materials + Fasteners ON, others OFF)
+      const includedGroups = new Set(['Primary Materials', 'Fasteners & Hardware']);
+
+      // Build print header
+      const labels = {
+        projectType: {
+          new_construction: 'New Construction',
+          remodel: 'Remodel',
+          repair: 'Repair'
+        },
+        complexity: {
+          basic: 'Basic',
+          moderate: 'Moderate',
+          complex: 'Complex'
+        }
+      };
+
+      const projectTypeLabel = labels.projectType[wizardState.projectType] || wizardState.projectType;
+      const detailOptions = step2Options[wizardState.projectType] || [];
+      const detailOption = detailOptions.find(opt => opt.value === wizardState.projectDetail);
+      const projectDetailLabel = detailOption ? detailOption.label : wizardState.projectDetail;
+      const complexityLabel = labels.complexity[wizardState.complexity] || wizardState.complexity;
+      const generatedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      
+      const printHeaderHTML = `
+        <div class="print-header" style="display: none;">
+          <div class="print-header-logo">BuildRight Solutions</div>
+          <div class="print-header-title">Project Materials Quote</div>
+          <div class="print-header-details">
+            Project: ${projectDetailLabel} ${projectTypeLabel} (${complexityLabel})
+          </div>
+          <div class="print-header-date">Generated on ${generatedDate}</div>
+        </div>
+      `;
+
+      // Build print notes if available
+      const notes = sessionStorage.getItem('buildright_project_notes');
+      const printNotesHTML = notes && notes.trim() ? `
+        <div class="print-notes" style="display: none;">
+          <div class="print-notes-label">Project Notes:</div>
+          <div>${notes.replace(/\n/g, '<br>')}</div>
+        </div>
+      ` : '';
+
       container.innerHTML = `
         <div class="project-bundle" data-bundle-id="${bundle.bundleId}">
+          ${printHeaderHTML}
+          ${printNotesHTML}
           <div class="bundle-header">
             <div class="bundle-badge">PROJECT KIT</div>
             <h3 class="bundle-title">${bundle.bundleName}</h3>
@@ -1420,41 +2964,85 @@
           <div class="bundle-summary">
             <div class="bundle-total">
               <div class="bundle-total-label">Total Price</div>
-              <div class="bundle-total-value">$${bundle.totalPrice.toFixed(2)}</div>
+              <div class="bundle-total-value" id="bundle-total-value">$${bundle.totalPrice.toFixed(2)}</div>
             </div>
             <button class="btn btn-cta btn-lg" id="add-bundle-btn">Add Kit to Cart</button>
           </div>
           
+          <!-- Component Toggles -->
+          <div class="component-toggles">
+            <h4 class="component-toggles-title">Customize Your Kit</h4>
+            ${Object.keys(componentGroups).map(group => {
+              const isIncluded = includedGroups.has(group);
+              const price = componentPrices[group];
+              if (price === 0 && group !== 'Tools & Accessories') return ''; // Skip empty groups
+              return `
+                <div class="component-toggle-item">
+                  <label class="component-toggle-label">
+                    <input type="checkbox" class="component-toggle-checkbox" data-group="${group}" ${isIncluded ? 'checked' : ''}>
+                    <span>${group}</span>
+                  </label>
+                  <span class="component-toggle-price">$${price.toFixed(2)}</span>
+                </div>
+              `;
+            }).join('')}
+            <div class="component-toggle-item">
+              <span class="component-toggle-label">Total:</span>
+              <span class="component-toggle-price" id="component-total-price">$${bundle.totalPrice.toFixed(2)}</span>
+            </div>
+          </div>
+          
           <div class="bundle-products">
             <h4 class="bundle-products-title">Kit Contents</h4>
-            ${Object.keys(itemsByCategory).map(category => `
-              <div class="bundle-category-section">
-                <button class="category-toggle" data-category="${category}">
+            ${Object.keys(itemsByCategory).map(category => {
+              const groupName = categoryMapping[category] || 'Other';
+              const isIncluded = includedGroups.has(groupName);
+              return `
+              <div class="bundle-category-section ${isIncluded ? '' : 'excluded'}" data-category="${category}" data-group="${groupName}">
+                <div class="category-toggle ${isIncluded ? '' : 'excluded'}">
                   <span class="category-name">${formatCategoryName(category)}</span>
                   <span class="category-count">${itemsByCategory[category].length} items</span>
-                  <span class="toggle-icon">▼</span>
-                </button>
-                <div class="category-items" id="category-${category}" style="display: block;">
+                  <span class="category-price">$${itemsByCategory[category].reduce((sum, item) => sum + item.subtotal, 0).toFixed(2)}</span>
+                </div>
+                <div class="category-items ${isIncluded ? '' : 'excluded'}" id="category-${category}" style="display: ${isIncluded ? 'block' : 'none'};">
                   <table class="products-table">
                     <thead>
                       <tr>
+                        <th>Image</th>
                         <th>Product</th>
                         <th>SKU</th>
+                        <th>Stock</th>
                         <th>Qty</th>
                         <th>Unit Price</th>
                         <th>Subtotal</th>
                       </tr>
                     </thead>
                     <tbody>
-                      ${itemsByCategory[category].map(item => `
+                      ${itemsByCategory[category].map(item => {
+                        const imageUrl = getProductImageUrl(item.sku);
+                        const inventoryStatus = getInventoryStatus({ sku: item.sku }, getPrimaryWarehouse());
+                        const stockStatus = inventoryStatus === 'in_stock' ? '✓ In Stock' : 
+                                          inventoryStatus === 'low_stock' ? '⚠ Low Stock' : '✗ Out of Stock';
+                        const stockClass = inventoryStatus === 'in_stock' ? 'stock-in' : 
+                                         inventoryStatus === 'low_stock' ? 'stock-low' : 'stock-out';
+                        return `
                         <tr>
+                          <td>
+                            <img src="${imageUrl}" alt="${item.name}" class="product-thumbnail" onerror="this.style.display='none'">
+                          </td>
                           <td>
                             <div class="product-info">
                               <div class="product-name">${item.name}</div>
-                              <div class="product-reason">${item.reason}</div>
+                              <div class="product-reason">
+                                ${item.reason}
+                                <span class="why-item-tooltip" title="${item.reason}">(?)</span>
+                              </div>
                             </div>
                           </td>
                           <td class="product-sku">${item.sku}</td>
+                          <td>
+                            <span class="stock-status ${stockClass}">${stockStatus}</span>
+                          </td>
                           <td>
                             <div class="quantity-controls">
                               <button class="qty-btn" data-sku="${item.sku}" data-action="decrease">-</button>
@@ -1465,16 +3053,34 @@
                           <td class="product-unit-price">$${((item.unitPrice || item.subtotal / item.quantity)).toFixed(2)}</td>
                           <td class="product-subtotal">$${item.subtotal.toFixed(2)}</td>
                         </tr>
-                      `).join('')}
+                      `;
+                      }).join('')}
                     </tbody>
                   </table>
                 </div>
               </div>
-            `).join('')}
+            `;
+            }).join('')}
           </div>
           
           <div class="bundle-actions">
             <a href="./catalog.html" class="btn btn-outline-accent">Customize Kit in Catalog</a>
+          </div>
+
+          <!-- Resource Links -->
+          <div class="resource-links" id="resource-links-section"></div>
+
+          <!-- Quote Actions -->
+          <div class="quote-actions">
+            <button class="btn btn-outline quote-action-btn" id="copy-materials-btn">📋 Copy Materials List</button>
+            <button class="btn btn-outline quote-action-btn" id="email-quote-btn">✉️ Email Quote</button>
+          </div>
+
+          <!-- Project Notes -->
+          <div class="project-notes">
+            <label for="project-notes-textarea" class="project-notes-label">Project Notes (Optional)</label>
+            <textarea id="project-notes-textarea" class="project-notes-textarea" placeholder="Add contractor notes, special instructions, or reminders..."></textarea>
+            <div class="project-notes-hint">Notes are saved locally and included in printed quotes</div>
           </div>
         </div>
       `;
@@ -1484,22 +3090,71 @@
         // Save order to history before adding to cart
         saveOrderToHistory(bundle);
         addBundleToCart(bundle);
-        const pathParts = window.location.pathname.split('/').filter(p => p);
-        const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
-        window.location.href = `${basePath}pages/cart.html`.replace('//', '/');
+        window.location.href = 'pages/cart.html';
       });
 
-      // Category toggle functionality
-      document.querySelectorAll('.category-toggle').forEach(toggle => {
-        toggle.addEventListener('click', () => {
-          const category = toggle.dataset.category;
-          const itemsContainer = document.getElementById(`category-${category}`);
-          const toggleIcon = toggle.querySelector('.toggle-icon');
-          const isExpanded = itemsContainer.style.display === 'block';
-          itemsContainer.style.display = isExpanded ? 'none' : 'block';
-          toggleIcon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+      // Component toggle functionality (include/exclude categories)
+      const componentCheckboxes = document.querySelectorAll('.component-toggle-checkbox');
+      componentCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          const group = checkbox.dataset.group;
+          const isChecked = checkbox.checked;
+          
+          // Update included groups
+          if (isChecked) {
+            includedGroups.add(group);
+          } else {
+            includedGroups.delete(group);
+          }
+          
+          // Update UI and recalculate total
+          updateComponentToggles();
         });
       });
+
+      // Function to update component toggles and recalculate total
+      function updateComponentToggles() {
+        let newTotal = 0;
+        
+        // Update category sections visibility
+        document.querySelectorAll('.bundle-category-section').forEach(section => {
+          const group = section.dataset.group;
+          const isIncluded = includedGroups.has(group);
+          
+          if (isIncluded) {
+            section.classList.remove('excluded');
+            const itemsContainer = section.querySelector('.category-items');
+            if (itemsContainer) itemsContainer.style.display = 'block';
+            const toggle = section.querySelector('.category-toggle');
+            if (toggle) toggle.classList.remove('excluded');
+          } else {
+            section.classList.add('excluded');
+            const itemsContainer = section.querySelector('.category-items');
+            if (itemsContainer) itemsContainer.style.display = 'none';
+            const toggle = section.querySelector('.category-toggle');
+            if (toggle) toggle.classList.add('excluded');
+          }
+          
+          // Calculate total from included items
+          if (isIncluded) {
+            const category = section.dataset.category;
+            if (itemsByCategory[category]) {
+              itemsByCategory[category].forEach(item => {
+                newTotal += item.subtotal;
+              });
+            }
+          }
+        });
+        
+        // Update total displays
+        document.getElementById('bundle-total-value').textContent = `$${newTotal.toFixed(2)}`;
+        document.getElementById('component-total-price').textContent = `$${newTotal.toFixed(2)}`;
+        
+        // Update bundle total in state
+        bundle.totalPrice = newTotal;
+        wizardState.bundle = bundle;
+        saveWizardState(wizardState);
+      }
 
       // Quantity controls
       document.querySelectorAll('.qty-btn').forEach(btn => {
@@ -1549,6 +3204,51 @@
         });
       }
 
+      // Populate resource links
+      const resourceLinksSection = document.getElementById('resource-links-section');
+      if (resourceLinksSection && wizardState.projectType && wizardState.projectDetail) {
+        const links = getResourceLinks(wizardState.projectType, wizardState.projectDetail);
+        if (links && links.length > 0) {
+          resourceLinksSection.innerHTML = `
+            <div class="resource-links-title">📚 Related Resources</div>
+            <ul class="resource-links-list">
+              ${links.map(link => `<li><a href="${link.url}" class="resource-link">${link.text}</a></li>`).join('')}
+            </ul>
+          `;
+        }
+      }
+
+      // Copy materials list button
+      const copyBtn = document.getElementById('copy-materials-btn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          copyMaterialsList(bundle, wizardState);
+        });
+      }
+
+      // Email quote button
+      const emailBtn = document.getElementById('email-quote-btn');
+      if (emailBtn) {
+        emailBtn.addEventListener('click', () => {
+          emailQuote(bundle, wizardState);
+        });
+      }
+
+      // Project notes handling
+      const notesTextarea = document.getElementById('project-notes-textarea');
+      if (notesTextarea) {
+        // Load saved notes
+        const savedNotes = sessionStorage.getItem('buildright_project_notes');
+        if (savedNotes) {
+          notesTextarea.value = savedNotes;
+        }
+
+        // Save notes on input
+        notesTextarea.addEventListener('input', () => {
+          sessionStorage.setItem('buildright_project_notes', notesTextarea.value);
+        });
+      }
+
       // Save bundle to state
       wizardState.bundle = bundle;
       saveWizardState(wizardState);
@@ -1595,14 +3295,179 @@
       }
     }
 
+    // Format materials list for copy/email
+    function formatMaterialsList(bundle, wizardState) {
+      const labels = {
+        projectType: {
+          new_construction: 'New Construction',
+          remodel: 'Remodel',
+          repair: 'Repair'
+        },
+        complexity: {
+          basic: 'Basic',
+          moderate: 'Moderate',
+          complex: 'Complex'
+        }
+      };
+
+      const projectTypeLabel = labels.projectType[wizardState.projectType] || wizardState.projectType;
+      const detailOptions = step2Options[wizardState.projectType] || [];
+      const detailOption = detailOptions.find(opt => opt.value === wizardState.projectDetail);
+      const projectDetailLabel = detailOption ? detailOption.label : wizardState.projectDetail;
+      const complexityLabel = labels.complexity[wizardState.complexity] || wizardState.complexity;
+      
+      const projectName = `${projectDetailLabel} ${projectTypeLabel} (${complexityLabel})`;
+      const generatedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      
+      // Group items by category
+      const categoryMapping = {
+        'Lumber & Framing': 'Primary Materials',
+        'Drywall & Panels': 'Primary Materials',
+        'Windows & Doors': 'Primary Materials',
+        'Fasteners & Hardware': 'Fasteners & Hardware',
+        'Tools & Accessories': 'Tools & Accessories',
+        'Finishing Materials': 'Finishing Materials',
+        'Insulation': 'Finishing Materials',
+        'Paint & Coatings': 'Finishing Materials'
+      };
+
+      const itemsByGroup = {};
+      bundle.items.forEach(item => {
+        const group = categoryMapping[item.category] || 'Other';
+        if (!itemsByGroup[group]) {
+          itemsByGroup[group] = [];
+        }
+        itemsByGroup[group].push(item);
+      });
+
+      let text = `BUILDRIGHT MATERIALS LIST\n`;
+      text += `Project: ${projectName}\n`;
+      text += `Generated: ${generatedDate}\n\n`;
+
+      // Add project notes if available
+      const notes = sessionStorage.getItem('buildright_project_notes');
+      if (notes && notes.trim()) {
+        text += `NOTES:\n${notes}\n\n`;
+      }
+
+      // Add items by group
+      Object.keys(itemsByGroup).forEach(group => {
+        text += `${group.toUpperCase()}\n`;
+        itemsByGroup[group].forEach(item => {
+          const unitPrice = item.unitPrice || (item.subtotal / item.quantity);
+          text += `- ${item.name} (${item.sku}) x${item.quantity} @ $${unitPrice.toFixed(2)} = $${item.subtotal.toFixed(2)}\n`;
+        });
+        text += `\n`;
+      });
+
+      text += `TOTAL: $${bundle.totalPrice.toFixed(2)}\n`;
+      
+      return text;
+    }
+
+    // Copy materials list to clipboard
+    async function copyMaterialsList(bundle, wizardState) {
+      try {
+        const text = formatMaterialsList(bundle, wizardState);
+        await navigator.clipboard.writeText(text);
+        showToast('success', 'Copied!', 'Materials list copied to clipboard');
+      } catch (err) {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = formatMaterialsList(bundle, wizardState);
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast('success', 'Copied!', 'Materials list copied to clipboard');
+        } catch (e) {
+          showToast('error', 'Error', 'Failed to copy materials list');
+        }
+        document.body.removeChild(textarea);
+      }
+    }
+
+    // Email quote
+    function emailQuote(bundle, wizardState) {
+      const labels = {
+        projectType: {
+          new_construction: 'New Construction',
+          remodel: 'Remodel',
+          repair: 'Repair'
+        },
+        complexity: {
+          basic: 'Basic',
+          moderate: 'Moderate',
+          complex: 'Complex'
+        }
+      };
+
+      const projectTypeLabel = labels.projectType[wizardState.projectType] || wizardState.projectType;
+      const detailOptions = step2Options[wizardState.projectType] || [];
+      const detailOption = detailOptions.find(opt => opt.value === wizardState.projectDetail);
+      const projectDetailLabel = detailOption ? detailOption.label : wizardState.projectDetail;
+      
+      const subject = encodeURIComponent(`BuildRight Quote - ${projectDetailLabel} ${projectTypeLabel}`);
+      const body = encodeURIComponent(formatMaterialsList(bundle, wizardState));
+      
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
     // Start over
     function startOver() {
       saveWizardState({});
       window.location.reload();
     }
 
-    // Initialize on load
-    initWizard();
+    // Show toast notification (kept for error handling)
+    function showToast(type, title, message) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icons = {
+        success: '✅',
+        error: '❌',
+        info: 'ℹ️'
+      };
+      
+      toast.innerHTML = `
+        <span class="toast-icon">${icons[type] || icons.info}</span>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.style.animation = 'slideIn 0.3s ease reverse';
+          setTimeout(() => toast.remove(), 300);
+        }
+      }, 5000);
+    }
+
+    // Recalculate progress bar on window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (currentStep) {
+          updateProgress();
+        }
+      }, 150);
+    });
+
+    // Initialize on load - ensure DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initWizard);
+    } else {
+      // DOM is already loaded
+      initWizard();
+    }
   </script>
   <script type="module" src="../scripts/app.js"></script>
   <script type="module" src="../blocks/header/header.js"></script>
