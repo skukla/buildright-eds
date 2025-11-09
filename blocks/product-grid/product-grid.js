@@ -5,7 +5,7 @@ export default async function decorate(block) {
   if (!container) return;
 
   // Import data functions
-  const { getProducts, getProductsByProjectType, getPrice, getInventoryStatus, getPrimaryWarehouse } = await import('../../scripts/data-mock.js');
+  const { getProducts, getProductsByProjectType, getPrice, getInventoryStatus, getPrimaryWarehouse, getProductImageUrl } = await import('../../scripts/data-mock.js');
 
   // Render products
   async function renderProducts(products) {
@@ -29,14 +29,21 @@ export default async function decorate(block) {
       const price = getPrice(product, 1);
       const status = getInventoryStatus(product, primaryWarehouse);
       const inventory = product.inventory[primaryWarehouse] || 0;
+      const imageUrl = getProductImageUrl(product);
 
       const card = document.createElement('a');
       card.className = 'product-card';
       card.href = `pages/product-detail.html?sku=${product.sku}`;
 
-      // Product image placeholder
+      // Product image with background
       const image = document.createElement('div');
       image.className = 'product-card-image';
+      if (imageUrl) {
+        image.style.backgroundImage = `url('${imageUrl}')`;
+        image.style.backgroundSize = 'cover';
+        image.style.backgroundPosition = 'center';
+        image.style.backgroundRepeat = 'no-repeat';
+      }
       card.appendChild(image);
 
       const header = document.createElement('div');
