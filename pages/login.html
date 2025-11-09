@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../scripts/base-url.js"></script>
   <title>Login - BuildRight Solutions</title>
   <link rel="stylesheet" href="../styles/base.css">
   <link rel="stylesheet" href="../styles/components.css">
@@ -218,9 +219,7 @@
         localStorage.setItem('buildright_logged_in', 'true');
         
         // Redirect to account page
-        const pathParts = window.location.pathname.split('/').filter(p => p);
-        const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
-        window.location.href = `${basePath}pages/account.html`.replace('//', '/');
+        window.location.href = 'pages/account.html';
       } else {
         alert('Please select a company');
       }

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../scripts/base-url.js"></script>
   <title>Order History - BuildRight Solutions</title>
   <link rel="stylesheet" href="../styles/base.css">
   <link rel="stylesheet" href="../styles/components.css">
@@ -601,9 +602,7 @@
 
       // Save wizard state and redirect to project builder
       sessionStorage.setItem('buildright_wizard_state', JSON.stringify(order.wizardState));
-      const pathParts = window.location.pathname.split('/').filter(p => p);
-      const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
-      window.location.href = `${basePath}pages/project-builder.html`.replace('//', '/');
+      window.location.href = 'pages/project-builder.html';
     }
 
     // Close modal

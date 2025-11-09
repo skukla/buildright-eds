@@ -195,9 +195,7 @@
   <script>
     function selectProjectType(type) {
       localStorage.setItem('buildright_project_type', type);
-      const pathParts = window.location.pathname.split('/').filter(p => p);
-      const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
-      window.location.href = `${basePath}pages/catalog.html`.replace('//', '/');
+      window.location.href = 'pages/catalog.html';
     }
   </script>
   <script type="module" src="../scripts/app.js"></script>
