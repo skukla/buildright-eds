@@ -13,6 +13,7 @@
     "eds"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+  }
 }
-

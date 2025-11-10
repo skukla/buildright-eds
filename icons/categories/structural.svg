@@ -1,7 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0f5ba7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Lumber/Wood planks icon -->
-  <rect x="2" y="4" width="20" height="3" rx="0.5"/>
-  <rect x="2" y="10" width="20" height="3" rx="0.5"/>
-  <rect x="2" y="16" width="20" height="3" rx="0.5"/>
+  <!-- Top board -->
+  <path d="M2 5h20v4H2z" />
+  <path d="M22 5l1.5 0.5v3L22 9" />
+  
+  <!-- Middle board -->
+  <path d="M2 10h20v4H2z" />
+  <path d="M22 10l1.5 0.5v3L22 14" />
+  
+  <!-- Bottom board -->
+  <path d="M2 15h20v4H2z" />
+  <path d="M22 15l1.5 0.5v3L22 19" />
 </svg>
-
