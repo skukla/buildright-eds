@@ -77,7 +77,9 @@ function loadBlockCSS(blockName) {
 // Load block JS
 async function loadBlockJS(blockName) {
   try {
-    const blockPath = `${getScriptBaseUrl}blocks/${blockName}/${blockName}.js`;
+    // Use relative path from scripts/ directory
+    // From scripts/utils.js -> blocks/product-grid/product-grid.js
+    const blockPath = `../blocks/${blockName}/${blockName}.js`;
     const module = await import(blockPath);
     return module.default;
   } catch (error) {
