@@ -133,9 +133,11 @@ export default async function decorate(block) {
       const redirectPath = sessionStorage.getItem('spa_redirect_path');
       const currentPath = redirectPath || window.location.pathname;
       
-      // Clear the redirect path so it doesn't interfere with subsequent navigation
+      // If we were redirected, restore the clean URL in the browser
       if (redirectPath) {
         sessionStorage.removeItem('spa_redirect_path');
+        // Use History API to restore the clean URL without reloading
+        window.history.replaceState({}, '', redirectPath);
       }
       
       const catalogInfo = parseCatalogPath(currentPath);
