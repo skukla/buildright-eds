@@ -34,37 +34,39 @@
           </div>
         </div>
         <div class="header-top-links">
-          <a href="./order-history.html">Order History</a>
-          <a href="./rewards.html">Rewards</a>
-          <a href="./account.html#lists">My Lists</a>
-          <a href="./account.html#help">Help</a>
+          <a href="/pages/order-history.html">Order History</a>
+          <a href="/pages/account.html#lists">My Lists</a>
+          <a href="/pages/account.html#help">Help</a>
         </div>
       </div>
     </div>
     <div class="header-main">
       <div class="header-main-content">
         <div class="header-brand">
-          <a href="../index.html">BuildRight</a>
+          <a href="/index.html">BuildRight</a>
         </div>
         <div class="header-search">
           <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
           <button class="search-button" aria-label="Search">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
           </button>
         </div>
         <div class="header-actions">
-          <a href="./login.html" class="header-action-link">
+          <a href="/pages/login.html" class="header-action-link">
             <span class="action-label">Login</span>
           </a>
           <span class="action-separator">|</span>
-          <a href="./login.html" class="header-action-link">
+          <a href="/pages/login.html" class="header-action-link">
             <span class="action-label">Create Account</span>
           </a>
-          <a href="./cart.html" class="cart-link">
-            <span class="cart-icon">🛒</span>
+          <a href="/pages/cart.html" class="cart-link">
+            <span class="cart-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+              </svg>
+            </span>
             <span class="cart-label">Cart</span>
             <span class="cart-count">0</span>
           </a>
@@ -80,22 +82,25 @@
         </button>
         <nav class="main-nav">
           <div class="nav-item">
-            <button class="nav-link" data-category="all">All Products</button>
+            <a href="/catalog" class="nav-link" data-category="all">All Products</a>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="structural">Structural Materials</button>
+            <a href="/project-builder" class="nav-link nav-link-cta">Project Builder</a>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="windows">Windows & Doors</button>
+            <button class="nav-link" data-category="structural_materials">Structural Materials</button>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="fasteners">Fasteners & Hardware</button>
+            <button class="nav-link" data-category="windows_doors">Windows & Doors</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="fasteners_hardware">Fasteners & Hardware</button>
           </div>
           <div class="nav-item">
             <button class="nav-link" data-category="roofing">Roofing</button>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="framing">Framing & Drywall</button>
+            <button class="nav-link" data-category="framing_drywall">Framing & Drywall</button>
           </div>
         </nav>
         <div class="nav-industry">
@@ -108,25 +113,25 @@
         <div class="industry-column">
           <h3>Commercial</h3>
           <ul>
-            <li><a href="./catalog.html?division=commercial">Commercial Construction</a></li>
-            <li><a href="./catalog.html?division=commercial&category=structural_materials">Structural Materials</a></li>
-            <li><a href="./catalog.html?division=commercial&category=windows_doors">Windows & Doors</a></li>
+            <li><a href="/catalog/commercial">Commercial Construction</a></li>
+            <li><a href="/catalog/structural-materials">Structural Materials</a></li>
+            <li><a href="/catalog/windows-doors">Windows & Doors</a></li>
           </ul>
         </div>
         <div class="industry-column">
           <h3>Residential</h3>
           <ul>
-            <li><a href="./catalog.html?division=residential">Residential Construction</a></li>
-            <li><a href="./catalog.html?division=residential&category=structural_materials">Framing Materials</a></li>
-            <li><a href="./catalog.html?division=residential&category=windows_doors">Residential Windows</a></li>
+            <li><a href="/catalog/residential">Residential Construction</a></li>
+            <li><a href="/catalog/structural-materials">Framing Materials</a></li>
+            <li><a href="/catalog/windows-doors">Residential Windows</a></li>
           </ul>
         </div>
         <div class="industry-column">
           <h3>Pro</h3>
           <ul>
-            <li><a href="./catalog.html?division=pro">Trade Contractors</a></li>
-            <li><a href="./catalog.html?division=pro&category=fasteners_hardware">Fasteners & Tools</a></li>
-            <li><a href="./catalog.html?division=pro&category=roofing">Roofing Supplies</a></li>
+            <li><a href="/catalog/pro">Trade Contractors</a></li>
+            <li><a href="/catalog/fasteners-hardware">Fasteners & Tools</a></li>
+            <li><a href="/catalog/roofing">Roofing Supplies</a></li>
           </ul>
         </div>
       </div>
@@ -147,7 +152,7 @@
           <div id="empty-cart" style="display: none; text-align: center; padding: 4rem 2rem; background: var(--color-surface); border-radius: 0.5rem; border: 1px solid var(--color-border);">
             <h2 style="margin-bottom: 1rem;">Your cart is empty</h2>
             <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">Start adding products to your cart to see them here.</p>
-            <a href="./catalog.html" class="btn btn-primary">Browse Catalog</a>
+            <a href="/catalog" class="btn btn-primary">Browse Catalog</a>
           </div>
         </div>
 

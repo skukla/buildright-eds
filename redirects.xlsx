@@ -1,0 +1,25 @@
+# AEM Edge Delivery Services Redirects Configuration
+# This file defines URL redirects for the BuildRight demo
+# Format: source → destination
+
+# Old query param URLs to new path-based URLs
+
+# Catalog - Category redirects
+/pages/catalog.html?category=structural → /catalog/structural-materials
+/pages/catalog.html?category=windows → /catalog/windows-doors
+/pages/catalog.html?category=fasteners → /catalog/fasteners-hardware
+/pages/catalog.html?category=roofing → /catalog/roofing
+/pages/catalog.html?category=framing → /catalog/framing-drywall
+/pages/catalog.html → /catalog
+
+# Catalog - Division redirects
+/pages/catalog.html?division=commercial → /catalog/commercial
+/pages/catalog.html?division=residential → /catalog/residential
+/pages/catalog.html?division=pro → /catalog/pro
+
+# Project Builder redirects
+/pages/project-builder.html?projectType=new_construction → /project-builder/new-construction
+/pages/project-builder.html?projectType=remodel → /project-builder/remodel
+/pages/project-builder.html?projectType=repair → /project-builder/repair
+/pages/project-builder.html → /project-builder
+

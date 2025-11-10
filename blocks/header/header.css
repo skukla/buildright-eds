@@ -371,7 +371,7 @@
 
 .header-nav-content {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--section-padding-horizontal);
@@ -398,6 +398,7 @@
   display: flex;
   gap: 0;
   flex: 1;
+  align-items: stretch;
 }
 
 .nav-item {
@@ -418,11 +419,12 @@
   text-align: left;
   width: 100%;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
   font-family: inherit;
   line-height: 1.5;
-  vertical-align: baseline;
   box-sizing: border-box;
+  height: 100%;
 }
 
 .nav-link:hover {
@@ -446,8 +448,21 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Project Builder CTA styling - higher specificity to override */
+.nav-item a.nav-link.nav-link-cta {
+  color: var(--color-accent-400);  /* Lighter orange for better readability on blue */
+  font-weight: 700;
+}
+
+.nav-item a.nav-link.nav-link-cta:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-accent-300);  /* Even lighter on hover */
+}
+
 .nav-industry {
   margin-left: auto;
+  display: flex;
+  align-items: stretch;
 }
 
 .industry-toggle {
@@ -462,6 +477,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-small);
+  height: 100%;
 }
 
 .industry-toggle-icon {

@@ -42,14 +42,74 @@ buildright-website/
 ├── scripts/
 │   ├── app.js                   # Main application logic
 │   ├── data-mock.js             # Mock data manager
-│   ├── project-builder.js       # Project Builder wizard and bundle generation
+│   ├── project-builder.js        # Project Builder wizard and bundle generation
 │   ├── cart-manager.js          # Shopping cart functionality
 │   ├── pricing-calculator.js    # Tier-based pricing calculations
+│   ├── icons.js                 # Lucide icon utility module
 │   └── utils.js                 # Utility functions
+├── icons/
+│   ├── categories/              # Category-specific icons (64x64)
+│   └── lucide/                  # Lucide icons library (24x24)
 └── data/
     ├── mock-products.json       # Sample product data with pricing and inventory
     └── project-recommendations.json  # Product-to-project mapping rules
 ```
+
+## Icons
+
+This project uses [Lucide](https://lucide.dev/) for all iconography. Lucide provides a comprehensive set of over 1,500 free open-source SVG icons designed for UI development.
+
+### Icon Usage
+
+All icons use Lucide's clean, consistent design system with stroke-based rendering.
+
+Icons are stored in `icons/lucide/` and can be used directly in HTML or via the icon utility module.
+
+### Icon Utility Module
+
+The `scripts/icons.js` module provides helper functions for loading Lucide icons:
+
+```javascript
+import { getIcon, insertIcon, createIconElement } from './scripts/icons.js';
+
+// Get icon SVG content as string
+const svgContent = await getIcon('chevron-down');
+
+// Insert icon into an element
+await insertIcon('.my-element', 'shopping-cart');
+
+// Create an icon element
+const iconElement = await createIconElement('home', 'my-icon-class');
+```
+
+### Available Icons
+
+Common icons used throughout the project:
+- `chevron-down` - Dropdown indicators
+- `shopping-cart` - Shopping cart icon
+- `hard-hat` - New construction safety equipment
+- `paint-roller` - Interior painting/remodeling work
+- `user` - Basic complexity (single builder - DIY-friendly)
+- `users` - Moderate complexity (small team - some professional help)
+- `construction` - Complex projects (construction site - professional required)
+- `home` - Home/residential icons
+- `building-2` - Commercial building icon with multiple floors
+- `layout-grid` - Grid/catalog icon (4 squares)
+- `brick-wall` - Structural materials icon
+- `door-open` - Windows & doors icon
+
+### Icon Locations
+
+- **Category Icons**: `icons/categories/*.svg` - Category-specific icons (64x64, styled with brand color #0f5ba7)
+- **Lucide Library**: `icons/lucide/` - Lucide icons (24x24)
+- **Inline Usage**: Icons can be embedded directly in HTML templates
+
+### Adding New Icons
+
+1. Find the desired icon at [lucide.dev](https://lucide.dev/icons/)
+2. Copy the icon from `node_modules/lucide-static/icons/` to `icons/lucide/`
+3. Use the icon utility module or embed directly in HTML
+4. For category icons, maintain the 64x64 size and brand color (`#0f5ba7`)
 
 ## Design System
 

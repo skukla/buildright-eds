@@ -1,5 +1,10 @@
 // Header block decoration
+import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyRedirect } from '../../scripts/url-router.js';
+
 export default function decorate(block) {
+  // Check for legacy URLs and redirect if needed
+  handleLegacyRedirect();
+  
   // URLs are now handled by base tag - no path fixing needed
   
   // Update cart count from localStorage
@@ -215,10 +220,15 @@ export default function decorate(block) {
   if (industryToggle && industryMenu) {
     if (!industryToggle.querySelector('.industry-toggle-icon')) {
       const label = industryToggle.textContent.replace(/▼/g, '').trim();
-      industryToggle.textContent = label;
+      // Remove any existing SVG icons and text content
+      const existingIcon = industryToggle.querySelector('.industry-toggle-icon');
+      if (existingIcon) {
+        existingIcon.remove();
+      }
+      industryToggle.innerHTML = label;
       const iconSpan = document.createElement('span');
       iconSpan.className = 'industry-toggle-icon';
-      iconSpan.textContent = '▼';
+      iconSpan.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
       industryToggle.appendChild(iconSpan);
     }
 
@@ -254,8 +264,8 @@ export default function decorate(block) {
     const performSearch = () => {
       const query = searchInput.value.trim();
       if (query) {
-        // Use relative path - base tag handles GitHub Pages subdirectory
-        window.location.href = `pages/catalog.html?search=${encodeURIComponent(query)}`;
+        // Use path-based URL for search (query param is acceptable for search)
+        window.location.href = `/catalog?search=${encodeURIComponent(query)}`;
       }
     };
 
@@ -274,21 +284,15 @@ export default function decorate(block) {
       const category = link.getAttribute('data-category');
       if (category) {
         e.preventDefault();
-        if (category === 'all') {
-          window.location.href = 'pages/catalog.html';
-        } else {
-          window.location.href = `pages/catalog.html?category=${category}`;
-        }
+        // Use path-based URL routing
+        const catalogUrl = getCatalogUrl(category);
+        window.location.href = catalogUrl;
       }
     });
   });
 
   // Set active nav link based on current page
   const currentPath = window.location.pathname;
-  const currentCategory = new URLSearchParams(window.location.search).get('category');
-  navLinks.forEach(link => {
-    const linkCategory = link.getAttribute('data-category');
-    const linkHref = link.getAttribute('href');
     
     // Normalize paths for comparison
     const normalizePath = (path) => {
@@ -298,29 +302,50 @@ export default function decorate(block) {
     };
     
     const normalizedCurrentPath = normalizePath(currentPath);
+  const isOnCatalog = normalizedCurrentPath.includes('catalog');
+  const isOnProjectBuilder = normalizedCurrentPath.includes('project-builder');
+  
+  // Parse current page to get active category
+  let currentCategory = null;
+  if (isOnCatalog) {
+    const catalogInfo = parseCatalogPath(currentPath);
+    if (catalogInfo.type === 'category') {
+      currentCategory = catalogInfo.value;
+    } else if (catalogInfo.type === 'division') {
+      currentCategory = catalogInfo.value;
+    }
+  }
+  
+  navLinks.forEach(link => {
+    const linkCategory = link.getAttribute('data-category');
+    const linkHref = link.getAttribute('href');
     const normalizedLinkHref = normalizePath(linkHref);
+    let isActive = false;
     
-    // Check if link matches current page by href (must be exact match)
-    const isActiveByHref = linkHref && (
-      normalizedCurrentPath === normalizedLinkHref ||
-      normalizedCurrentPath === normalizedLinkHref.replace(/^pages\//, '') ||
-      normalizedCurrentPath.endsWith('/' + normalizedLinkHref) ||
-      normalizedCurrentPath.endsWith('/' + normalizedLinkHref.replace(/^pages\//, ''))
-    );
+    // Determine if this link should be active (mutually exclusive logic)
+    if (isOnProjectBuilder) {
+      // On project builder page - only highlight Project Builder link
+      const isProjectBuilderLink = linkHref && normalizedLinkHref.includes('project-builder');
+      isActive = isProjectBuilderLink;
+    } else if (isOnCatalog) {
+      // On catalog page - highlight based on category
+      if (currentCategory) {
+        // Specific category selected - only highlight that category button
+        isActive = linkCategory === currentCategory;
+      } else {
+        // No category (showing all products) - only highlight "All Products"
+        isActive = linkCategory === 'all';
+      }
+    }
     
-    // Check if link matches by category (only on catalog page)
-    const isActiveByCategory = currentPath.includes('catalog') && (
-      linkCategory === currentCategory || 
-      (linkCategory === 'all' && !currentCategory)
-    );
-    
-    // Only highlight if we're actually on the catalog page (not homepage)
-    if (isActiveByHref && currentPath.includes('catalog')) {
+    // Apply active styling
+    if (isActive) {
       link.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
       link.setAttribute('aria-current', 'page');
-    } else if (isActiveByCategory) {
-      link.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-      link.setAttribute('aria-current', 'page');
+    } else {
+      // Remove active styling
+      link.style.backgroundColor = '';
+      link.removeAttribute('aria-current');
     }
   });
 }

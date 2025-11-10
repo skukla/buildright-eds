@@ -14,8 +14,8 @@ async function loadMockData() {
   if (mockData) return mockData;
   
   try {
-    // Use relative path - base tag handles GitHub Pages subdirectory
-    const dataPath = 'data/mock-products.json';
+    // Use absolute path to work with path-based routing
+    const dataPath = '/data/mock-products.json';
     const response = await fetch(dataPath);
     if (!response.ok) {
       console.error(`Failed to load mock data: ${response.status} ${response.statusText} from ${dataPath}`);

@@ -1,0 +1,50 @@
+# Apache configuration for path-based routing
+# This file handles clean URLs and redirects for the BuildRight demo
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect old query param URLs to new path-based URLs
+    # Category redirects
+    RewriteCond %{QUERY_STRING} ^category=structural($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/structural-materials? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^category=windows($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/windows-doors? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^category=fasteners($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/fasteners-hardware? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^category=roofing($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/roofing? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^category=framing($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/framing-drywall? [R=301,L]
+    
+    # Division redirects
+    RewriteCond %{QUERY_STRING} ^division=commercial($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/commercial? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^division=residential($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/residential? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^division=pro($|&)
+    RewriteRule ^pages/catalog\.html$ /catalog/pro? [R=301,L]
+    
+    # Generic catalog redirect (no params)
+    RewriteRule ^pages/catalog\.html$ /catalog? [R=301,L]
+    
+    # Project builder redirect
+    RewriteRule ^pages/project-builder\.html$ /project-builder? [R=301,L]
+
+    # Route path-based URLs to actual HTML files
+    # Catalog routes
+    RewriteRule ^catalog$ /pages/catalog.html [L]
+    RewriteRule ^catalog/(.+)$ /pages/catalog.html [L]
+    
+    # Project builder routes
+    RewriteRule ^project-builder$ /pages/project-builder.html [L]
+    RewriteRule ^project-builder/(.+)$ /pages/project-builder.html [L]
+</IfModule>
+

@@ -117,15 +117,10 @@ export default function decorate(block) {
   const customizeBtn = block.querySelector('.bundle-customize-btn');
   if (customizeBtn) {
     customizeBtn.addEventListener('click', () => {
-      // Store bundle in sessionStorage and redirect to catalog with filters
+      // Store bundle in sessionStorage and redirect to catalog
       sessionStorage.setItem('buildright_bundle_customize', JSON.stringify(bundle));
-      const params = new URLSearchParams();
-      if (bundle.projectType) params.set('projectType', bundle.projectType);
-      if (bundle.projectDetail) params.set('projectDetail', bundle.projectDetail);
-      // Get base path for navigation
-      const pathParts = window.location.pathname.split('/').filter(p => p);
-      const basePath = pathParts.length > 1 && pathParts[0] !== 'pages' ? `/${pathParts[0]}/` : '/';
-      window.location.href = `${basePath}pages/catalog.html?${params.toString()}`.replace('//', '/');
+      // Navigate to catalog with path-based routing
+      window.location.href = '/catalog';
     });
   }
 }

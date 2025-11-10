@@ -7,11 +7,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Paths to source data
-const productsPath = path.join(__dirname, '../../data/buildright/products.json');
-const pricesPath = path.join(__dirname, '../../data/buildright/prices.json');
-const inventoryPath = path.join(__dirname, '../../data/buildright/inventory.json');
-const categoriesPath = path.join(__dirname, '../../data/buildright/categories.json');
-const sourcesPath = path.join(__dirname, '../../data/buildright/sources.json');
+const productsPath = path.join(__dirname, '../../buildright-aco/data/buildright/products.json');
+const pricesPath = path.join(__dirname, '../../buildright-aco/data/buildright/prices.json');
+const inventoryPath = path.join(__dirname, '../../buildright-aco/data/buildright/inventory.json');
+const categoriesPath = path.join(__dirname, '../../buildright-aco/data/buildright/categories.json');
+const sourcesPath = path.join(__dirname, '../../buildright-aco/data/buildright/sources.json');
 
 // Read source data
 const products = JSON.parse(fs.readFileSync(productsPath, 'utf8'));
@@ -49,11 +49,27 @@ function getInventoryForSKU(sku) {
 const mockProducts = [];
 const processedSKUs = new Set();
 
-// Process first 20 simple products
-products
-  .filter(p => p.type === 'simple' && !processedSKUs.has(p.sku))
-  .slice(0, 20)
-  .forEach(product => {
+// Define target categories and how many products per category
+const targetCategories = [
+  'structural_materials',
+  'framing_drywall', 
+  'windows_doors',
+  'fasteners_hardware',
+  'roofing'
+];
+
+// Get 4 products from each category (20 total)
+targetCategories.forEach(targetCategory => {
+  const categoryProducts = products
+    .filter(p => {
+      const category = getAttribute(p, 'product_category');
+      return p.type === 'simple' && 
+             !processedSKUs.has(p.sku) && 
+             category === targetCategory;
+    })
+    .slice(0, 4);
+  
+  categoryProducts.forEach(product => {
     processedSKUs.add(product.sku);
     
     const projectTypes = getAttribute(product, 'project_types') || [];
@@ -107,6 +123,14 @@ products
     // Create description
     const description = `${product.name}. ${category.replace(/_/g, ' ')} product${brand !== 'BuildRight' ? ` from ${brand}` : ''}.`;
     
+    // Determine image based on category
+    let imageUrl = 'images/products/default.svg';
+    if (category.includes('structural')) imageUrl = 'images/products/lumber-stud.svg';
+    else if (category.includes('framing') || category.includes('drywall')) imageUrl = 'images/products/drywall.svg';
+    else if (category.includes('windows')) imageUrl = 'images/products/window.svg';
+    else if (category.includes('fasteners')) imageUrl = 'images/products/fastener.svg';
+    else if (category.includes('roofing')) imageUrl = 'images/products/default.svg';
+    
     mockProducts.push({
       sku: product.sku,
       name: product.name,
@@ -122,9 +146,11 @@ products
         warehouse_atlanta: invMap.warehouse_atlanta || 0,
         dropship_premium_windows: invMap.dropship_premium_windows || 0
       },
-      attributes: attributes
+      attributes: attributes,
+      image_url: imageUrl
     });
   });
+});
 
 // Build categories list
 const mockCategories = categories.map(cat => ({

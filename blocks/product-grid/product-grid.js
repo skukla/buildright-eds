@@ -1,11 +1,13 @@
 // Product grid block decoration
+import { parseCatalogPath } from '../../scripts/url-router.js';
+
 export default async function decorate(block) {
   const container = block.querySelector('.products-container');
   const countEl = block.querySelector('.product-count');
   if (!container) return;
 
   // Import data functions
-  const { getProducts, getProductsByProjectType, getPrice, getInventoryStatus, getPrimaryWarehouse, getProductImageUrl } = await import('../../scripts/data-mock.js');
+  const { getProducts, getProductsByProjectType, getProductsByCategory, getPrice, getInventoryStatus, getPrimaryWarehouse, getProductImageUrl } = await import('../../scripts/data-mock.js');
 
   // Render products
   async function renderProducts(products) {
@@ -126,13 +128,28 @@ export default async function decorate(block) {
   // Load and filter products
   async function loadProducts() {
     try {
-      const projectType = localStorage.getItem('buildright_project_type') || '';
+      // Check if we're on the catalog page and parse the path
+      const currentPath = window.location.pathname;
+      const catalogInfo = parseCatalogPath(currentPath);
+      
       let products;
 
+      // Filter by category from path if on catalog page
+      if (catalogInfo.type === 'category') {
+        console.log(`Loading products for category: ${catalogInfo.value}`);
+        products = await getProductsByCategory(catalogInfo.value);
+      } else if (catalogInfo.type === 'division') {
+        console.log(`Loading products for division: ${catalogInfo.value}`);
+        // For now, divisions show all products (could be enhanced later)
+        products = await getProducts();
+      } else {
+        // Check for project type from localStorage as fallback
+        const projectType = localStorage.getItem('buildright_project_type') || '';
       if (projectType) {
         products = await getProductsByProjectType(projectType);
       } else {
         products = await getProducts();
+        }
       }
 
       if (!products || products.length === 0) {

@@ -28,6 +28,13 @@ const server = http.createServer((req, res) => {
     filePath = '/index.html';
   }
 
+  // Handle path-based routing for catalog and project-builder
+  if (filePath.startsWith('/catalog')) {
+    filePath = '/pages/catalog.html';
+  } else if (filePath.startsWith('/project-builder')) {
+    filePath = '/pages/project-builder.html';
+  }
+
   // Construct full file path
   const fullPath = path.join(BASE_DIR, filePath);
 

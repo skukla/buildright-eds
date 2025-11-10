@@ -1425,17 +1425,16 @@
           </div>
         </div>
         <div class="header-top-links">
-          <a href="./order-history.html">Order History</a>
-          <a href="./rewards.html">Rewards</a>
-          <a href="./account.html#lists">My Lists</a>
-          <a href="./account.html#help">Help</a>
+          <a href="/pages/order-history.html">Order History</a>
+          <a href="/pages/account.html#lists">My Lists</a>
+          <a href="/pages/account.html#help">Help</a>
         </div>
       </div>
     </div>
     <div class="header-main">
       <div class="header-main-content">
         <div class="header-brand">
-          <a href="../index.html">BuildRight</a>
+          <a href="/index.html">BuildRight</a>
         </div>
         <div class="header-search">
           <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
@@ -1447,14 +1446,14 @@
           </button>
         </div>
         <div class="header-actions">
-          <a href="./login.html" class="header-action-link">
+          <a href="/pages/login.html" class="header-action-link">
             <span class="action-label">Login</span>
           </a>
           <span class="action-separator">|</span>
-          <a href="./login.html" class="header-action-link">
+          <a href="/pages/login.html" class="header-action-link">
             <span class="action-label">Create Account</span>
           </a>
-          <a href="./cart.html" class="cart-link">
+          <a href="/pages/cart.html" class="cart-link">
             <span class="cart-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="21" r="1"/>
@@ -1477,22 +1476,25 @@
         </button>
         <nav class="main-nav">
           <div class="nav-item">
-            <a href="pages/catalog.html" class="nav-link">All Products</a>
+            <a href="/catalog" class="nav-link" data-category="all">All Products</a>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="structural">Structural Materials</button>
+            <a href="/project-builder" class="nav-link nav-link-cta">Project Builder</a>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="windows">Windows & Doors</button>
+            <button class="nav-link" data-category="structural_materials">Structural Materials</button>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="fasteners">Fasteners & Hardware</button>
+            <button class="nav-link" data-category="windows_doors">Windows & Doors</button>
+          </div>
+          <div class="nav-item">
+            <button class="nav-link" data-category="fasteners_hardware">Fasteners & Hardware</button>
           </div>
           <div class="nav-item">
             <button class="nav-link" data-category="roofing">Roofing</button>
           </div>
           <div class="nav-item">
-            <button class="nav-link" data-category="framing">Framing & Drywall</button>
+            <button class="nav-link" data-category="framing_drywall">Framing & Drywall</button>
           </div>
         </nav>
         <div class="nav-industry">
@@ -1505,25 +1507,25 @@
         <div class="industry-column">
           <h3>Commercial</h3>
           <ul>
-            <li><a href="./catalog.html?division=commercial">Commercial Construction</a></li>
-            <li><a href="./catalog.html?division=commercial&category=structural_materials">Structural Materials</a></li>
-            <li><a href="./catalog.html?division=commercial&category=windows_doors">Windows & Doors</a></li>
+            <li><a href="/catalog/commercial">Commercial Construction</a></li>
+            <li><a href="/catalog/structural-materials">Structural Materials</a></li>
+            <li><a href="/catalog/windows-doors">Windows & Doors</a></li>
           </ul>
         </div>
         <div class="industry-column">
           <h3>Residential</h3>
           <ul>
-            <li><a href="./catalog.html?division=residential">Residential Construction</a></li>
-            <li><a href="./catalog.html?division=residential&category=structural_materials">Framing Materials</a></li>
-            <li><a href="./catalog.html?division=residential&category=windows_doors">Residential Windows</a></li>
+            <li><a href="/catalog/residential">Residential Construction</a></li>
+            <li><a href="/catalog/structural-materials">Framing Materials</a></li>
+            <li><a href="/catalog/windows-doors">Residential Windows</a></li>
           </ul>
         </div>
         <div class="industry-column">
           <h3>Pro</h3>
           <ul>
-            <li><a href="./catalog.html?division=pro">Trade Contractors</a></li>
-            <li><a href="./catalog.html?division=pro&category=fasteners_hardware">Fasteners & Tools</a></li>
-            <li><a href="./catalog.html?division=pro&category=roofing">Roofing Supplies</a></li>
+            <li><a href="/catalog/pro">Trade Contractors</a></li>
+            <li><a href="/catalog/fasteners-hardware">Fasteners & Tools</a></li>
+            <li><a href="/catalog/roofing">Roofing Supplies</a></li>
           </ul>
         </div>
       </div>
@@ -1759,7 +1761,7 @@
     // Wizard state
     let currentStep = 1;
     const totalSteps = 4;
-    const wizardState = getWizardState() || {};
+    let wizardState = getWizardState() || {};
 
     // Step 2 options based on project type
     const step2Options = {
@@ -1787,11 +1789,17 @@
     };
 
     // Initialize wizard
-    function initWizard() {
-      // Check for URL parameters first (from Shop By Job links)
+    async function initWizard() {
+      // Import URL router for path parsing
+      const { parseProjectBuilderPath } = await import('../scripts/url-router.js');
+      
+      // Check for path-based parameters first (from Shop By Job links)
+      const pathInfo = parseProjectBuilderPath(window.location.pathname);
+      const projectType = pathInfo.projectType;
+      const projectDetail = pathInfo.projectDetail;
+      
+      // Check URL query params for backward compatibility
       const urlParams = new URLSearchParams(window.location.search);
-      const projectType = urlParams.get('projectType');
-      const projectDetail = urlParams.get('projectDetail');
       const complexity = urlParams.get('complexity');
       const budget = urlParams.get('budget');
       
@@ -2643,7 +2651,7 @@
           </div>
           
           <div class="bundle-actions">
-            <a href="./catalog.html" class="btn btn-outline-accent">Customize Kit in Catalog</a>
+            <a href="/catalog" class="btn btn-outline-accent">Customize Kit in Catalog</a>
           </div>
 
           <!-- Resource Links -->
@@ -2669,7 +2677,7 @@
         // Save order to history before adding to cart
         saveOrderToHistory(bundle);
         addBundleToCart(bundle);
-        window.location.href = 'pages/cart.html';
+        window.location.href = '/pages/cart.html';
       });
 
       // Component toggle functionality (include/exclude categories)
