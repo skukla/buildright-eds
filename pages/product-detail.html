@@ -230,13 +230,13 @@
     async function loadProductDetail() {
       const sku = getUrlParameter('sku');
       if (!sku) {
-        window.location.href = '/pages/catalog.html';
+        window.location.href = 'catalog.html';
         return;
       }
 
       const product = await getProductBySKU(sku);
       if (!product) {
-        window.location.href = '/pages/catalog.html';
+        window.location.href = 'catalog.html';
         return;
       }
 

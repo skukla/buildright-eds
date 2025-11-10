@@ -114,29 +114,25 @@ export function parseProjectBuilderPath(pathname) {
 
 /**
  * Generate a catalog URL from category code
- * @param {string} categoryCode - Internal category code (e.g., 'structural')
- * @returns {string} - Path-based URL (e.g., '/catalog/structural-materials' or '/buildright-eds/catalog/structural-materials')
+ * @param {string} categoryCode - Internal category code (e.g., 'structural_materials')
+ * @returns {string} - Relative URL to catalog page (e.g., 'pages/catalog.html' or 'pages/catalog.html?category=structural_materials')
  */
 export function getCatalogUrl(categoryCode) {
-  const basePath = getBasePath();
-  const basePrefix = basePath === '/' ? '' : basePath.replace(/\/$/, '');
+  // Determine if we're in /pages/ directory or root
+  const isInPagesDir = window.location.pathname.includes('/pages/');
+  const catalogPath = isInPagesDir ? 'catalog.html' : 'pages/catalog.html';
   
   if (!categoryCode || categoryCode === 'all') {
-    return `${basePrefix}/catalog`;
+    return catalogPath;
   }
   
   // Check if it's a division
   if (DIVISION_SLUGS.includes(categoryCode)) {
-    return `${basePrefix}/catalog/${categoryCode}`;
+    return `${catalogPath}?industry=${categoryCode}`;
   }
   
-  // Convert code to slug
-  const slug = CODE_TO_SLUG[categoryCode];
-  if (slug) {
-    return `${basePrefix}/catalog/${slug}`;
-  }
-  
-  return `${basePrefix}/catalog`;
+  // It's a category - use category query param
+  return `${catalogPath}?category=${categoryCode}`;
 }
 
 /**
@@ -173,30 +169,28 @@ export function checkLegacyUrl() {
   const pathname = url.pathname;
   const params = url.searchParams;
   
-  // Check catalog with category param
-  if (pathname.includes('catalog.html')) {
-    const category = params.get('category');
-    const division = params.get('division');
-    
-    if (category) {
-      return getCatalogUrl(category);
-    }
-    if (division) {
-      return `/catalog/${division}`;
-    }
-    // No params = all products
-    return '/catalog';
-  }
+  // Catalog URLs are now direct file paths, so no redirect needed
+  // (catalog.html already handles query params correctly)
   
-  // Check project builder
+  // Check project builder - still support query param redirects
   if (pathname.includes('project-builder.html')) {
     const projectType = params.get('projectType');
     const projectDetail = params.get('projectDetail');
     
     if (projectType) {
-      return getProjectBuilderUrl(projectType, projectDetail);
+      // Determine path based on current location
+      const isInPagesDir = pathname.includes('/pages/');
+      const builderPath = isInPagesDir ? 'project-builder.html' : 'pages/project-builder.html';
+      let redirectUrl = builderPath;
+      
+      if (projectDetail) {
+        redirectUrl += `?projectType=${projectType}&projectDetail=${projectDetail}`;
+      } else {
+        redirectUrl += `?projectType=${projectType}`;
+      }
+      
+      return redirectUrl;
     }
-    return '/project-builder';
   }
   
   return null;
