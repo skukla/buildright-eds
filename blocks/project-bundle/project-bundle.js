@@ -119,8 +119,10 @@ export default function decorate(block) {
     customizeBtn.addEventListener('click', () => {
       // Store bundle in sessionStorage and redirect to catalog
       sessionStorage.setItem('buildright_bundle_customize', JSON.stringify(bundle));
-      // Navigate to catalog with path-based routing
-      window.location.href = '/catalog';
+      // Navigate to catalog
+      const isInPagesDir = window.location.pathname.includes('/pages/');
+      const catalogPath = isInPagesDir ? 'catalog.html' : 'pages/catalog.html';
+      window.location.href = catalogPath;
     });
   }
 }
