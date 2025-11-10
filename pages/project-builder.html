@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="scripts/base-url.js"></script>
   <script>
     // Set base tag immediately before any resources load
     (function() {
@@ -17,10 +16,10 @@
     })();
   </script>
   <title>Project Builder - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
   <style>
     /* Location selector - ensure consistent height */
     .location-selector {
@@ -2309,48 +2308,74 @@
 
     // Setup event listeners
     function setupEventListeners() {
-      // Option selection - use event delegation on wizard-content
-      const wizardContent = document.querySelector('.wizard-content');
-      if (!wizardContent) {
-        console.error('Wizard content element not found');
-        return;
-      }
-      
-      // Add click listener with event delegation
-      wizardContent.addEventListener('click', (e) => {
-        const option = e.target.closest('.wizard-option, .wizard-option-photo');
-        if (option) {
-          const stepContent = option.closest('.wizard-step-content');
-          if (stepContent) {
-            const step = stepContent.dataset.step;
-            const value = option.dataset.value;
-            if (step && value) {
-              console.log('Option clicked:', step, value);
-              selectOption(step, value);
-            } else {
-              console.warn('Missing step or value:', { step, value, option, stepContent });
-            }
-          } else {
-            console.warn('Could not find step-content parent for option', option);
-          }
-        }
-      });
-      
-      // Also add direct listeners to options as fallback
-      document.querySelectorAll('.wizard-option, .wizard-option-photo').forEach(option => {
-        option.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const stepContent = this.closest('.wizard-step-content');
-          if (stepContent) {
-            const step = stepContent.dataset.step;
-            const value = this.dataset.value;
-            if (step && value) {
-              console.log('Direct option click:', step, value);
-              selectOption(step, value);
-            }
+      // Listen to radio button changes for all wizard steps
+      // Step 1: Project Type
+      document.querySelectorAll('input[name="project-type"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          if (this.checked) {
+            selectOption('1', this.value);
+            // Auto-advance to step 2
+            setTimeout(() => {
+              document.getElementById('wizard-step-2').checked = true;
+            }, 300);
           }
         });
       });
+
+      // Step 2: Project Detail
+      document.querySelectorAll('input[name="project-detail"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          if (this.checked) {
+            selectOption('2', this.value);
+            // Auto-advance to step 3
+            setTimeout(() => {
+              document.getElementById('wizard-step-3').checked = true;
+            }, 300);
+          }
+        });
+      });
+
+      // Step 3: Complexity
+      document.querySelectorAll('input[name="complexity"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          if (this.checked) {
+            selectOption('3', this.value);
+            // Auto-advance to step 4
+            setTimeout(() => {
+              document.getElementById('wizard-step-4').checked = true;
+            }, 300);
+          }
+        });
+      });
+
+      // Step 4: Budget
+      document.querySelectorAll('input[name="budget"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          if (this.checked) {
+            selectOption('4', this.value);
+            // Auto-advance to step 5 and generate bundle
+            setTimeout(() => {
+              document.getElementById('wizard-step-5').checked = true;
+              generateAndShowResults();
+            }, 300);
+          }
+        });
+      });
+      
+      // Option selection - use event delegation on wizard-content (for click handling)
+      const wizardContent = document.querySelector('.wizard-content');
+      if (wizardContent) {
+        wizardContent.addEventListener('click', (e) => {
+          const option = e.target.closest('.wizard-option, .wizard-option-photo');
+          if (option) {
+            const radio = option.querySelector('input[type="radio"]');
+            if (radio && !radio.checked) {
+              radio.checked = true;
+              radio.dispatchEvent(new Event('change'));
+            }
+          }
+        });
+      }
 
       // Navigation buttons
       const backBtn = document.getElementById('wizard-back');
@@ -3451,8 +3476,8 @@
       initWizard();
     }
   </script>
-  <script type="module" src="scripts/app.js"></script>
-  <script type="module" src="blocks/header/header.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
+  <script type="module" src="../blocks/header/header.js"></script>
 </body>
 </html>
 
