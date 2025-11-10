@@ -118,9 +118,8 @@ export function parseProjectBuilderPath(pathname) {
  * @returns {string} - Relative URL to catalog page (e.g., 'pages/catalog.html' or 'pages/catalog.html?category=structural_materials')
  */
 export function getCatalogUrl(categoryCode) {
-  // Determine if we're in /pages/ directory or root
-  const isInPagesDir = window.location.pathname.includes('/pages/');
-  const catalogPath = isInPagesDir ? 'catalog.html' : 'pages/catalog.html';
+  // With base tag, always use pages/catalog.html
+  const catalogPath = 'pages/catalog.html';
   
   if (!categoryCode || categoryCode === 'all') {
     return catalogPath;

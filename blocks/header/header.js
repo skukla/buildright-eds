@@ -270,11 +270,8 @@ export default function decorate(block) {
     const performSearch = () => {
       const query = searchInput.value.trim();
       if (query) {
-        // Use path-based URL for search (query param is acceptable for search)
-        // Determine catalog path based on current location
-        const isInPagesDir = window.location.pathname.includes('/pages/');
-        const catalogPath = isInPagesDir ? 'catalog.html' : 'pages/catalog.html';
-        window.location.href = `${catalogPath}?search=${encodeURIComponent(query)}`;
+        // With base tag, always use pages/catalog.html
+        window.location.href = `pages/catalog.html?search=${encodeURIComponent(query)}`;
       }
     };
 
