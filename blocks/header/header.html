@@ -99,58 +99,6 @@
             <button class="nav-link" data-category="framing_drywall">Framing & Drywall</button>
           </div>
         </nav>
-        <!-- Inline script to set active state immediately, preventing layout shift -->
-        <script>
-          (function() {
-            // Check if we were redirected via 404 (sessionStorage will have the original path)
-            const redirectPath = sessionStorage.getItem('spa_redirect_path');
-            const currentPath = redirectPath || window.location.pathname;
-            const normalizePath = (path) => path ? path.replace(/^\/+|\/+$/g, '').toLowerCase() : '';
-            const normalizedCurrentPath = normalizePath(currentPath);
-            const isOnCatalog = normalizedCurrentPath.includes('catalog');
-            const isOnProjectBuilder = normalizedCurrentPath.includes('project-builder');
-            
-            // Determine active category from path
-            let currentCategory = null;
-            if (isOnCatalog) {
-              const pathParts = normalizedCurrentPath.split('/');
-              if (pathParts.length > 1) {
-                const categorySlug = pathParts[1];
-                const categoryMap = {
-                  'structural-materials': 'structural_materials',
-                  'windows-doors': 'windows_doors',
-                  'fasteners-hardware': 'fasteners_hardware',
-                  'roofing': 'roofing',
-                  'framing-drywall': 'framing_drywall'
-                };
-                currentCategory = categoryMap[categorySlug] || null;
-              }
-            }
-            
-            // Apply active state to matching nav link
-            document.querySelectorAll('.nav-link').forEach(link => {
-              const linkCategory = link.getAttribute('data-category');
-              const linkHref = link.getAttribute('href');
-              const normalizedLinkHref = normalizePath(linkHref);
-              let isActive = false;
-              
-              if (isOnProjectBuilder) {
-                isActive = linkHref && normalizedLinkHref.includes('project-builder');
-              } else if (isOnCatalog) {
-                if (currentCategory) {
-                  isActive = linkCategory === currentCategory;
-                } else {
-                  isActive = linkCategory === 'all';
-                }
-              }
-              
-              if (isActive) {
-                link.classList.add('active');
-                link.setAttribute('aria-current', 'page');
-              }
-            });
-          })();
-        </script>
       <div class="nav-industry">
           <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
             Shop By Industry

@@ -4,7 +4,9 @@
   "description": "BuildRight Solutions website prototype",
   "scripts": {
     "start": "node server.js",
-    "serve": "npx http-server -p 8000 -c-1"
+    "serve": "npx http-server -p 8000 -c-1",
+    "build": "node scripts/build.js",
+    "prebuild": "echo 'Injecting blocks...'"
   },
   "keywords": [
     "buildright",
@@ -15,5 +17,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "glob": "^10.4.5"
   }
 }
