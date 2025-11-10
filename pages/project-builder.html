@@ -164,12 +164,87 @@
       box-shadow: var(--shape-shadow-2);
     }
 
+    /* Step navigation using radio buttons - CSS only */
+    .wizard-form {
+      position: relative;
+    }
+
+    /* Hide radio buttons visually but keep them accessible */
+    .wizard-form input[type="radio"][name="wizard-step"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
+    }
+
     .wizard-step-content {
       display: none;
     }
 
-    .wizard-step-content.active {
+    /* Show step content based on checked radio */
+    #wizard-step-1:checked ~ .wizard-layout .wizard-step-content[data-step="1"],
+    #wizard-step-2:checked ~ .wizard-layout .wizard-step-content[data-step="2"],
+    #wizard-step-3:checked ~ .wizard-layout .wizard-step-content[data-step="3"],
+    #wizard-step-4:checked ~ .wizard-layout .wizard-step-content[data-step="4"],
+    #wizard-step-5:checked ~ .wizard-layout .wizard-step-content[data-step="5"] {
       display: block;
+    }
+
+    /* Update progress indicators based on checked step */
+    #wizard-step-1:checked ~ .wizard-progress .wizard-step[data-step="1"],
+    #wizard-step-2:checked ~ .wizard-progress .wizard-step[data-step="2"],
+    #wizard-step-3:checked ~ .wizard-progress .wizard-step[data-step="3"],
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="4"],
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="5"] {
+      opacity: 1;
+    }
+
+    #wizard-step-1:checked ~ .wizard-progress .wizard-step[data-step="1"] .wizard-step-circle,
+    #wizard-step-2:checked ~ .wizard-progress .wizard-step[data-step="2"] .wizard-step-circle,
+    #wizard-step-3:checked ~ .wizard-progress .wizard-step[data-step="3"] .wizard-step-circle,
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="4"] .wizard-step-circle,
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="5"] .wizard-step-circle {
+      background: var(--color-accent-500);
+      border-color: var(--color-accent-500);
+      color: white;
+    }
+
+    /* Mark previous steps as completed */
+    #wizard-step-2:checked ~ .wizard-progress .wizard-step[data-step="1"],
+    #wizard-step-3:checked ~ .wizard-progress .wizard-step[data-step="1"],
+    #wizard-step-3:checked ~ .wizard-progress .wizard-step[data-step="2"],
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="1"],
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="2"],
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="3"],
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="1"],
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="2"],
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="3"],
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="4"] {
+      opacity: 1;
+    }
+
+    #wizard-step-2:checked ~ .wizard-progress .wizard-step[data-step="1"] .wizard-step-circle,
+    #wizard-step-3:checked ~ .wizard-progress .wizard-step[data-step="1"] .wizard-step-circle,
+    #wizard-step-3:checked ~ .wizard-progress .wizard-step[data-step="2"] .wizard-step-circle,
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="1"] .wizard-step-circle,
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="2"] .wizard-step-circle,
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step="3"] .wizard-step-circle,
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="1"] .wizard-step-circle,
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="2"] .wizard-step-circle,
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="3"] .wizard-step-circle,
+    #wizard-step-5:checked ~ .wizard-progress .wizard-step[data-step="4"] .wizard-step-circle {
+      background: var(--color-brand-400);
+      border-color: var(--color-brand-400);
+      color: white;
+    }
+
+    /* Hide future steps */
+    #wizard-step-1:checked ~ .wizard-progress .wizard-step[data-step]:not([data-step="1"]),
+    #wizard-step-2:checked ~ .wizard-progress .wizard-step[data-step]:not([data-step="1"]):not([data-step="2"]),
+    #wizard-step-3:checked ~ .wizard-progress .wizard-step[data-step]:not([data-step="1"]):not([data-step="2"]):not([data-step="3"]),
+    #wizard-step-4:checked ~ .wizard-progress .wizard-step[data-step]:not([data-step="1"]):not([data-step="2"]):not([data-step="3"]):not([data-step="4"]) {
+      opacity: 0.5;
     }
 
     .wizard-options {
@@ -177,6 +252,15 @@
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
       margin-top: 2rem;
+    }
+
+    /* Hide radio inputs visually but keep accessible */
+    .wizard-option-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
     }
 
     .wizard-option {
@@ -191,6 +275,7 @@
       flex-direction: column;
       align-items: center;
       gap: 1rem;
+      position: relative;
     }
 
     .wizard-option:hover {
@@ -205,15 +290,18 @@
       transform: scale(1.05);
     }
 
-    .wizard-option.selected {
+    /* Selected state using :checked pseudo-class */
+    .wizard-option-input:checked + .wizard-icon,
+    .wizard-option-input:checked ~ .wizard-icon,
+    .wizard-option:has(.wizard-option-input:checked) .wizard-icon {
+      color: var(--color-accent-500);
+    }
+
+    .wizard-option:has(.wizard-option-input:checked) {
       border-color: var(--color-brand-500);
       border-width: 3px;
       background: rgba(15, 91, 167, 0.08); /* --color-brand-500 with 8% opacity */
       box-shadow: var(--shape-shadow-1);
-    }
-
-    .wizard-option.selected .wizard-icon {
-      color: var(--color-accent-500);
     }
 
     .wizard-icon {
@@ -256,12 +344,13 @@
       border-color: var(--color-brand-500);
     }
 
-    .wizard-option-photo.selected {
+    /* Selected state using :checked */
+    .wizard-option-photo:has(.wizard-option-input:checked) {
       border-color: var(--color-brand-500);
       box-shadow: 0 8px 20px rgba(15, 91, 167, 0.3);
     }
 
-    .wizard-option-photo.selected::after {
+    .wizard-option-photo:has(.wizard-option-input:checked)::after {
       content: '✓';
       position: absolute;
       top: 1rem;
@@ -726,6 +815,73 @@
 
     .conditional-options.active {
       display: grid;
+    }
+
+    /* Step 2 Variants - Show/hide based on Step 1 selection using :has() */
+    .step2-variant {
+      display: none;
+    }
+
+    /* Show new_construction variant when new_construction is selected in Step 1 */
+    #wizard-step-2:checked ~ .wizard-layout .wizard-step-content[data-step="1"]:has(input[name="project-type"][value="new_construction"]:checked) ~ .wizard-step-content[data-step="2"] .step2-variant[data-variant="new_construction"],
+    .wizard-step-content[data-step="1"]:has(input[name="project-type"][value="new_construction"]:checked) ~ .wizard-step-content[data-step="2"] .step2-variant[data-variant="new_construction"] {
+      display: block;
+    }
+
+    /* Show remodel variant when remodel is selected in Step 1 */
+    .wizard-step-content[data-step="1"]:has(input[name="project-type"][value="remodel"]:checked) ~ .wizard-step-content[data-step="2"] .step2-variant[data-variant="remodel"] {
+      display: block;
+    }
+
+    /* Show repair variant when repair is selected in Step 1 */
+    .wizard-step-content[data-step="1"]:has(input[name="project-type"][value="repair"]:checked) ~ .wizard-step-content[data-step="2"] .step2-variant[data-variant="repair"] {
+      display: block;
+    }
+
+    /* Navigation buttons - Show/hide based on step */
+    .wizard-navigation {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .wizard-navigation label,
+    .wizard-navigation button {
+      display: none;
+      cursor: pointer;
+    }
+
+    .wizard-navigation label.btn {
+      /* Labels styled as buttons */
+      text-align: center;
+    }
+
+    /* Show Back button on steps 2-5 - each step shows its specific back button */
+    #wizard-step-2:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-back-step2 {
+      display: inline-block;
+    }
+    #wizard-step-3:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-back-step3 {
+      display: inline-block;
+    }
+    #wizard-step-4:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-back-step4 {
+      display: inline-block;
+    }
+    #wizard-step-5:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-back-step5 {
+      display: inline-block;
+    }
+
+    /* Show Start Over button on steps 2-5 */
+    #wizard-step-2:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-start-over,
+    #wizard-step-3:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-start-over,
+    #wizard-step-4:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-start-over,
+    #wizard-step-5:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-start-over {
+      display: inline-block;
+    }
+
+    /* Show Print button only on step 5 */
+    #wizard-step-5:checked ~ .wizard-layout ~ .wizard-navigation .wizard-nav-print {
+      display: inline-block;
     }
 
     /* Responsive Layout */
@@ -1719,6 +1875,14 @@
   <!-- Wizard Container -->
   <section class="section" style="padding-top: 2rem;">
   <div class="wizard-container">
+    <form class="wizard-form" id="wizard-form">
+      <!-- Hidden radio buttons for step navigation -->
+      <input type="radio" name="wizard-step" id="wizard-step-1" value="1" checked>
+      <input type="radio" name="wizard-step" id="wizard-step-2" value="2">
+      <input type="radio" name="wizard-step" id="wizard-step-3" value="3">
+      <input type="radio" name="wizard-step" id="wizard-step-4" value="4">
+      <input type="radio" name="wizard-step" id="wizard-step-5" value="5">
+
     <h1 style="text-align: center; margin-bottom: 1rem;">Build Your Project</h1>
     <p style="text-align: center; color: var(--color-text-light); margin-bottom: 2rem;">Answer a few questions to get a customized kit of materials for your project</p>
 
@@ -1753,7 +1917,7 @@
       <div class="wizard-main">
         <div class="wizard-content">
       <!-- Step 1: Project Type -->
-      <div class="wizard-step-content active" data-step="1">
+      <div class="wizard-step-content" data-step="1">
         <h2>
           What type of project are you working on?
           <span class="tooltip-wrapper">
@@ -1762,35 +1926,210 @@
           </span>
         </h2>
         <div class="wizard-options-photo">
-          <div class="wizard-option-photo" data-value="new_construction" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80')">
+          <label class="wizard-option-photo" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80')">
+            <input type="radio" name="project-type" value="new_construction" class="wizard-option-input">
             <div class="wizard-photo-overlay">
               <h3>New Construction</h3>
               <p>Building from the ground up</p>
             </div>
-          </div>
-          <div class="wizard-option-photo" data-value="remodel" style="background-image: url('https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=800&q=80')">
+          </label>
+          <label class="wizard-option-photo" style="background-image: url('https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=800&q=80')">
+            <input type="radio" name="project-type" value="remodel" class="wizard-option-input">
             <div class="wizard-photo-overlay">
               <h3>Remodel</h3>
               <p>Renovating existing space</p>
             </div>
-          </div>
-          <div class="wizard-option-photo" data-value="repair" style="background-image: url('https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=800&q=80')">
+          </label>
+          <label class="wizard-option-photo" style="background-image: url('https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=800&q=80')">
+            <input type="radio" name="project-type" value="repair" class="wizard-option-input">
             <div class="wizard-photo-overlay">
               <h3>Repair</h3>
               <p>Fixing or maintaining</p>
             </div>
-          </div>
+          </label>
         </div>
       </div>
 
-      <!-- Step 2: Project Details (Conditional) -->
+      <!-- Step 2: Project Details (Pre-rendered, CSS-controlled) -->
       <div class="wizard-step-content" data-step="2">
-        <h2 id="step2-title">Tell us more about your project</h2>
-        <div class="step-sub-progress" id="step2-sub-progress" style="display: none;">
-          <!-- Sub-step dots will be populated dynamically -->
+        <h2>Tell us more about your project</h2>
+        
+        <!-- New Construction Options -->
+        <div class="step2-variant" data-variant="new_construction">
+          <div class="wizard-options">
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="residential_home" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="20" width="40" height="32" stroke="currentColor" stroke-width="2"/>
+                <rect x="20" y="28" width="8" height="8" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="36" y="28" width="8" height="8" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="32" y1="20" x2="32" y2="12" stroke="currentColor" stroke-width="2"/>
+                <line x1="24" y1="12" x2="40" y2="12" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h3>Residential Home</h3>
+              <p>Single-family or multi-family home</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="commercial_building" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="24" width="48" height="28" stroke="currentColor" stroke-width="2"/>
+                <line x1="20" y1="24" x2="20" y2="16" stroke="currentColor" stroke-width="2"/>
+                <line x1="32" y1="24" x2="32" y2="12" stroke="currentColor" stroke-width="2"/>
+                <line x1="44" y1="24" x2="44" y2="16" stroke="currentColor" stroke-width="2"/>
+                <rect x="16" y="32" width="8" height="8" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="40" y="32" width="8" height="8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <h3>Commercial Building</h3>
+              <p>Office, retail, or commercial space</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="addition" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="20" width="24" height="32" stroke="currentColor" stroke-width="2"/>
+                <rect x="28" y="20" width="24" height="20" stroke="currentColor" stroke-width="2" stroke-dasharray="2,2"/>
+                <line x1="28" y1="20" x2="28" y2="12" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h3>Addition</h3>
+              <p>Adding to existing structure</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="other" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
+                <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <h3>Other</h3>
+              <p>Other new construction</p>
+            </label>
+          </div>
         </div>
-        <div class="wizard-options" id="step2-options">
-          <!-- Options will be populated by JavaScript based on Step 1 -->
+
+        <!-- Remodel Options -->
+        <div class="step2-variant" data-variant="remodel">
+          <div class="wizard-options">
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="bathroom" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="16" width="40" height="36" stroke="currentColor" stroke-width="2"/>
+                <circle cx="32" cy="28" r="4" fill="currentColor"/>
+                <rect x="20" y="36" width="24" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <h3>Bathroom</h3>
+              <p>Bathroom renovation</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="kitchen" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="16" width="40" height="36" stroke="currentColor" stroke-width="2"/>
+                <rect x="18" y="22" width="12" height="12" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="34" y="22" width="12" height="12" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="24" y1="28" x2="24" y2="34" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="40" y1="28" x2="40" y2="34" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <h3>Kitchen</h3>
+              <p>Kitchen renovation</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="basement" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="28" width="40" height="24" stroke="currentColor" stroke-width="2"/>
+                <line x1="12" y1="28" x2="12" y2="20" stroke="currentColor" stroke-width="2"/>
+                <line x1="52" y1="28" x2="52" y2="20" stroke="currentColor" stroke-width="2"/>
+                <line x1="12" y1="20" x2="52" y2="20" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h3>Basement</h3>
+              <p>Basement finishing</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="whole_house" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="20" width="40" height="32" stroke="currentColor" stroke-width="2"/>
+                <line x1="32" y1="20" x2="32" y2="12" stroke="currentColor" stroke-width="2"/>
+                <line x1="24" y1="12" x2="40" y2="12" stroke="currentColor" stroke-width="2"/>
+                <rect x="20" y="28" width="8" height="8" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="36" y="28" width="8" height="8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <h3>Whole House</h3>
+              <p>Complete home remodel</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="exterior" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="20" width="40" height="32" stroke="currentColor" stroke-width="2"/>
+                <line x1="32" y1="20" x2="32" y2="12" stroke="currentColor" stroke-width="2"/>
+                <line x1="24" y1="12" x2="40" y2="12" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 20 L12 20 L12 52 L52 52 L52 20 L56 20" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+              <h3>Exterior</h3>
+              <p>Exterior renovation</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="other" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
+                <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <h3>Other</h3>
+              <p>Other remodeling</p>
+            </label>
+          </div>
+        </div>
+
+        <!-- Repair Options -->
+        <div class="step2-variant" data-variant="repair">
+          <div class="wizard-options">
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="plumbing" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 12 L32 20 M32 44 L32 52" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M20 20 Q20 28 28 28 Q36 28 36 36 Q36 44 28 44" stroke="currentColor" stroke-width="2" fill="none"/>
+                <circle cx="32" cy="12" r="3" fill="currentColor"/>
+                <circle cx="32" cy="52" r="3" fill="currentColor"/>
+              </svg>
+              <h3>Plumbing</h3>
+              <p>Plumbing repairs</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="electrical" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 12 L32 28 M32 36 L32 52 M24 20 L40 20 M24 44 L40 44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="32" cy="32" r="6" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h3>Electrical</h3>
+              <p>Electrical repairs</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="structural" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="16" y="20" width="32" height="24" stroke="currentColor" stroke-width="2"/>
+                <line x1="16" y1="32" x2="48" y2="32" stroke="currentColor" stroke-width="2"/>
+                <line x1="32" y1="20" x2="32" y2="44" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 24 L24 20 L28 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h3>Structural</h3>
+              <p>Structural repairs</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="roofing" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 28 L32 16 L52 28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 28 L12 44 L52 44 L52 28" stroke="currentColor" stroke-width="2"/>
+                <line x1="20" y1="36" x2="24" y2="36" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="40" y1="36" x2="44" y2="36" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <h3>Roofing</h3>
+              <p>Roof repairs</p>
+            </label>
+            <label class="wizard-option">
+              <input type="radio" name="project-detail" value="other" class="wizard-option-input">
+              <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
+                <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <h3>Other</h3>
+              <p>Other repairs</p>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -1804,15 +2143,17 @@
           </span>
         </h2>
         <div class="wizard-options">
-          <div class="wizard-option" data-value="basic">
+          <label class="wizard-option">
+            <input type="radio" name="complexity" value="basic" class="wizard-option-input">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
               <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
             <h3>Basic</h3>
             <p>DIY-friendly, standard materials</p>
-          </div>
-          <div class="wizard-option" data-value="moderate">
+          </label>
+          <label class="wizard-option">
+            <input type="radio" name="complexity" value="moderate" class="wizard-option-input">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
               <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -1821,8 +2162,9 @@
             </svg>
             <h3>Moderate</h3>
             <p>Some professional help, mid-range materials</p>
-          </div>
-          <div class="wizard-option" data-value="complex">
+          </label>
+          <label class="wizard-option">
+            <input type="radio" name="complexity" value="complex" class="wizard-option-input">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
               <path d="M32 22V32L38 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -1833,7 +2175,7 @@
             </svg>
             <h3>Complex</h3>
             <p>Professional required, premium materials</p>
-          </div>
+          </label>
         </div>
       </div>
 
@@ -1847,7 +2189,8 @@
           </span>
         </h2>
         <div class="wizard-options">
-          <div class="wizard-option" data-value="under_5k">
+          <label class="wizard-option">
+            <input type="radio" name="budget" value="under_5k" class="wizard-option-input">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="12" y="48" width="8" height="8" fill="currentColor"/>
               <rect x="28" y="40" width="8" height="16" fill="currentColor"/>
@@ -1855,8 +2198,9 @@
             </svg>
             <h3>Under $5,000</h3>
             <p>Small projects</p>
-          </div>
-          <div class="wizard-option" data-value="5k_15k">
+          </label>
+          <label class="wizard-option">
+            <input type="radio" name="budget" value="5k_15k" class="wizard-option-input">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="12" y="48" width="8" height="8" fill="currentColor"/>
               <rect x="28" y="40" width="8" height="16" fill="currentColor"/>
@@ -1864,8 +2208,9 @@
             </svg>
             <h3>$5,000 - $15,000</h3>
             <p>Medium projects</p>
-          </div>
-          <div class="wizard-option" data-value="15k_30k">
+          </label>
+          <label class="wizard-option">
+            <input type="radio" name="budget" value="15k_30k" class="wizard-option-input">
             <svg class="wizard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="8" y="48" width="8" height="8" fill="currentColor"/>
               <rect x="20" y="40" width="8" height="16" fill="currentColor"/>
@@ -1874,7 +2219,7 @@
             </svg>
             <h3>$15,000 - $30,000</h3>
             <p>Large projects</p>
-          </div>
+          </label>
         </div>
       </div>
 
@@ -1892,9 +2237,17 @@
 
     <!-- Navigation -->
     <div class="wizard-navigation">
-      <button class="btn btn-outline" id="wizard-back" style="display: none;">← Back</button>
-      <button class="btn btn-outline" id="wizard-start-over" style="display: none;">Start Over</button>
-      <button class="btn btn-outline" id="wizard-print" style="display: none;">🖨 Print Summary</button>
+      <!-- Back buttons - one for each step pointing to previous step -->
+      <label for="wizard-step-1" class="btn btn-outline wizard-nav-back wizard-nav-back-step2">← Back</label>
+      <label for="wizard-step-2" class="btn btn-outline wizard-nav-back wizard-nav-back-step3">← Back</label>
+      <label for="wizard-step-3" class="btn btn-outline wizard-nav-back wizard-nav-back-step4">← Back</label>
+      <label for="wizard-step-4" class="btn btn-outline wizard-nav-back wizard-nav-back-step5">← Back</label>
+      
+      <!-- Start Over button - always goes to step 1 -->
+      <label for="wizard-step-1" class="btn btn-outline wizard-nav-start-over">Start Over</label>
+      
+      <!-- Print button -->
+      <button class="btn btn-outline wizard-nav-print" onclick="window.print()">🖨 Print Summary</button>
     </div>
       </div>
       <!-- End Wizard Main -->
@@ -1949,28 +2302,28 @@
     const totalSteps = 4;
     let wizardState = getWizardState() || {};
 
-    // Step 2 options based on project type
+    // Step 2 options mapping (for reference in JS, but HTML is pre-rendered)
     const step2Options = {
       new_construction: [
-        { value: 'residential_home', label: 'Residential Home', desc: 'Single-family or multi-family home' },
-        { value: 'commercial_building', label: 'Commercial Building', desc: 'Office, retail, or commercial space' },
-        { value: 'addition', label: 'Addition', desc: 'Adding to existing structure' },
-        { value: 'other', label: 'Other', desc: 'Other new construction' }
+        { value: 'residential_home', label: 'Residential Home' },
+        { value: 'commercial_building', label: 'Commercial Building' },
+        { value: 'addition', label: 'Addition' },
+        { value: 'other', label: 'Other' }
       ],
       remodel: [
-        { value: 'bathroom', label: 'Bathroom', desc: 'Bathroom renovation' },
-        { value: 'kitchen', label: 'Kitchen', desc: 'Kitchen renovation' },
-        { value: 'basement', label: 'Basement', desc: 'Basement finishing' },
-        { value: 'whole_house', label: 'Whole House', desc: 'Complete home remodel' },
-        { value: 'exterior', label: 'Exterior', desc: 'Exterior renovation' },
-        { value: 'other', label: 'Other', desc: 'Other remodeling' }
+        { value: 'bathroom', label: 'Bathroom' },
+        { value: 'kitchen', label: 'Kitchen' },
+        { value: 'basement', label: 'Basement' },
+        { value: 'whole_house', label: 'Whole House' },
+        { value: 'exterior', label: 'Exterior' },
+        { value: 'other', label: 'Other' }
       ],
       repair: [
-        { value: 'plumbing', label: 'Plumbing', desc: 'Plumbing repairs' },
-        { value: 'electrical', label: 'Electrical', desc: 'Electrical repairs' },
-        { value: 'structural', label: 'Structural', desc: 'Structural repairs' },
-        { value: 'roofing', label: 'Roofing', desc: 'Roof repairs' },
-        { value: 'other', label: 'Other', desc: 'Other repairs' }
+        { value: 'plumbing', label: 'Plumbing' },
+        { value: 'electrical', label: 'Electrical' },
+        { value: 'structural', label: 'Structural' },
+        { value: 'roofing', label: 'Roofing' },
+        { value: 'other', label: 'Other' }
       ]
     };
 
@@ -2001,20 +2354,30 @@
         saveWizardState(wizardState);
         // Auto-advance through pre-filled steps
         if (projectType) {
-          currentStep = 1;
+          // Check the appropriate step radio buttons based on URL params
+          document.getElementById('wizard-step-1').checked = true;
+          const projectTypeRadio = document.querySelector(`input[name="project-type"][value="${projectType}"]`);
+          if (projectTypeRadio) projectTypeRadio.checked = true;
+          
           if (projectDetail) {
-            populateStep2(projectType);
-            currentStep = 2;
+            document.getElementById('wizard-step-2').checked = true;
+            const detailRadio = document.querySelector(`input[name="project-detail"][value="${projectDetail}"]`);
+            if (detailRadio) detailRadio.checked = true;
+            
             if (complexity) {
-              currentStep = 3;
+              document.getElementById('wizard-step-3').checked = true;
+              const complexityRadio = document.querySelector(`input[name="complexity"][value="${complexity}"]`);
+              if (complexityRadio) complexityRadio.checked = true;
+              
               if (budget) {
-                currentStep = 4;
+                document.getElementById('wizard-step-4').checked = true;
+                const budgetRadio = document.querySelector(`input[name="budget"][value="${budget}"]`);
+                if (budgetRadio) budgetRadio.checked = true;
               }
             }
           }
         }
         restoreWizardState();
-        showStep(currentStep);
       } else if (wizardState.projectType) {
         // Load saved state if no URL params
         currentStep = wizardState.currentStep || 1;
@@ -2038,11 +2401,10 @@
         if (option) option.classList.add('selected');
       }
 
-      // Restore step 2
+      // Restore step 2 - Step 2 is pre-rendered, just check the radio
       if (wizardState.projectDetail) {
-        populateStep2(wizardState.projectType);
-        const option = document.querySelector(`[data-step="2"] [data-value="${wizardState.projectDetail}"]`);
-        if (option) option.classList.add('selected');
+        const detailRadio = document.querySelector(`input[name="project-detail"][value="${wizardState.projectDetail}"]`);
+        if (detailRadio) detailRadio.checked = true;
       }
 
       // Restore step 3
@@ -2191,37 +2553,8 @@
       other: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80'
     };
 
-    // Populate step 2 based on project type
-    function populateStep2(projectType) {
-      const options = step2Options[projectType] || [];
-      const container = document.getElementById('step2-options');
-      const title = document.getElementById('step2-title');
-
-      if (projectType === 'remodel') {
-        title.textContent = 'What are you remodeling?';
-      } else if (projectType === 'new_construction') {
-        title.textContent = 'What are you building?';
-      } else if (projectType === 'repair') {
-        title.textContent = 'What needs repair?';
-      }
-
-      // Limit to 3 cards
-      const limitedOptions = options.slice(0, 3);
-      
-      // Add class to container for photo-based layout
-      container.className = 'wizard-options-photo';
-      
-      container.innerHTML = limitedOptions.map(opt => `
-        <div class="wizard-option-photo" data-value="${opt.value}" style="background-image: url('${step2Photos[opt.value] || step2Photos.other}')">
-          <div class="wizard-photo-overlay">
-            <h3>${opt.label}</h3>
-            <p>${opt.desc}</p>
-          </div>
-        </div>
-      `).join('');
-
-      // Event listeners are handled by delegation in setupEventListeners
-    }
+    // Step 2 is now pre-rendered in HTML and controlled by CSS
+    // No need for populateStep2 function anymore
 
     // Update sidebar with current selections
     function updateSidebar() {
