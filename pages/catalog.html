@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="../scripts/base-url.js"></script>
+  <script>
+    // Set base tag immediately before any resources load
+    (function() {
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.startsWith('/buildright-eds/');
+      const basePath = isGitHubPages ? '/buildright-eds/' : '/';
+      const baseTag = document.createElement('base');
+      baseTag.href = window.location.origin + basePath;
+      document.head.insertBefore(baseTag, document.head.firstChild);
+      window.BASE_PATH = basePath;
+    })();
+  </script>
+  <script src="scripts/base-url.js"></script>
   <!-- Load critical data synchronously to prevent layout shift -->
   <script>
     // Pre-load cart count to prevent shift
@@ -20,13 +32,13 @@
     window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
   </script>
   <title>Product Catalog - BuildRight Solutions</title>
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/utilities.css">
-  <link rel="stylesheet" href="../blocks/header/header.css">
-  <link rel="stylesheet" href="../blocks/project-filter/project-filter.css">
-  <link rel="stylesheet" href="../blocks/product-grid/product-grid.css">
-  <link rel="stylesheet" href="../blocks/filters-sidebar/filters-sidebar.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/utilities.css">
+  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="blocks/project-filter/project-filter.css">
+  <link rel="stylesheet" href="blocks/product-grid/product-grid.css">
+  <link rel="stylesheet" href="blocks/filters-sidebar/filters-sidebar.css">
   <!-- Critical CSS for active nav state to prevent layout shift -->
   <style>
     .nav-link.active, .nav-link[aria-current="page"] {
@@ -115,7 +127,7 @@
     <div class="header-main">
       <div class="header-main-content">
         <div class="header-brand">
-          <a href="../index.html">BuildRight</a>
+          <a href="index.html">BuildRight</a>
         </div>
         <div class="header-search">
           <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
@@ -214,7 +226,7 @@
   <div style="background: var(--color-surface); padding: var(--spacing-small) 0; border-bottom: 1px solid var(--color-border);">
     <div class="container">
       <nav style="font: var(--type-body-2-default-font); color: var(--color-text-secondary);">
-        <a href="../index.html" style="color: var(--color-brand-500); text-decoration: none;">Home</a>
+        <a href="index.html" style="color: var(--color-brand-500); text-decoration: none;">Home</a>
         <span style="margin: 0 var(--spacing-small);">/</span>
         <span>Products</span>
       </nav>
@@ -366,7 +378,7 @@
     </div>
   </section>
 
-  <script type="module" src="../scripts/app.js"></script>
+  <script type="module" src="scripts/app.js"></script>
   <script type="module">
     import { decorateBlock } from '../scripts/utils.js';
     

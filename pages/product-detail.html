@@ -3,15 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="../scripts/base-url.js"></script>
+  <script src="scripts/base-url.js"></script>
+  <script>
+    // Set base tag immediately before any resources load
+    (function() {
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.startsWith('/buildright-eds/');
+      const basePath = isGitHubPages ? '/buildright-eds/' : '/';
+      const baseTag = document.createElement('base');
+      baseTag.href = window.location.origin + basePath;
+      document.head.insertBefore(baseTag, document.head.firstChild);
+      window.BASE_PATH = basePath;
+    })();
+  </script>
   <title>Product Detail - BuildRight Solutions</title>
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/utilities.css">
-  <link rel="stylesheet" href="../blocks/header/header.css">
-  <link rel="stylesheet" href="../blocks/tier-badge/tier-badge.css">
-  <link rel="stylesheet" href="../blocks/pricing-display/pricing-display.css">
-  <link rel="stylesheet" href="../blocks/inventory-status/inventory-status.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/utilities.css">
+  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="blocks/tier-badge/tier-badge.css">
+  <link rel="stylesheet" href="blocks/pricing-display/pricing-display.css">
+  <link rel="stylesheet" href="blocks/inventory-status/inventory-status.css">
 </head>
 <body>
   <!-- Header Block -->
@@ -45,7 +57,7 @@
     <div class="header-main">
       <div class="header-main-content">
         <div class="header-brand">
-          <a href="../index.html">BuildRight</a>
+          <a href="index.html">BuildRight</a>
         </div>
         <div class="header-search">
           <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
@@ -220,7 +232,7 @@
     </div>
   </section>
 
-  <script type="module" src="../scripts/app.js"></script>
+  <script type="module" src="scripts/app.js"></script>
   <script type="module">
     import { getUrlParameter } from '../scripts/utils.js';
     import { getProductBySKU } from '../scripts/data-mock.js';
