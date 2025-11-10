@@ -13,6 +13,14 @@
       baseTag.href = window.location.origin + basePath;
       document.head.insertBefore(baseTag, document.head.firstChild);
       window.BASE_PATH = basePath;
+      
+      // Restore clean URL if we were redirected via 404
+      const redirectPath = sessionStorage.getItem('spa_redirect_path');
+      if (redirectPath) {
+        // Use History API to restore the clean URL immediately
+        window.history.replaceState({}, '', redirectPath);
+        // Don't remove from sessionStorage yet - other scripts need it
+      }
     })();
   </script>
   <script src="scripts/base-url.js"></script>
