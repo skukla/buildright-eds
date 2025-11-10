@@ -610,10 +610,13 @@
   // Update navigation
   // Note: Navigation visibility is primarily controlled by CSS via :checked pseudo-class
   // This function is kept for any additional JavaScript-based navigation logic if needed
+  // Version: 2025-01-27 - Fixed null reference error
   function updateNavigation() {
     // Navigation is handled by CSS, so this function is intentionally a no-op
     // CSS controls button visibility via :checked pseudo-class on wizard-step radio buttons
-    // No JavaScript manipulation needed
+    // No JavaScript manipulation needed - all navigation buttons are controlled by CSS
+    // Previous implementation tried to access non-existent elements with IDs wizard-back, wizard-start-over, wizard-print
+    // These elements don't exist - navigation uses classes and CSS :checked selectors instead
     return;
   }
 
