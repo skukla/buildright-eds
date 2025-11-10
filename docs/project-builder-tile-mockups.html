@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Builder Tile Mockups</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f5f5f5;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #0f5ba7;
+      margin-bottom: 0.5rem;
+    }
+
+    .intro {
+      color: #666;
+      margin-bottom: 3rem;
+      font-size: 1.125rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .section-header {
+      border-bottom: 3px solid #0f5ba7;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      color: #0f5ba7;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    /* Current Style - Icons */
+    .tile-current {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+      text-align: center;
+    }
+
+    .tile-current:hover {
+      border-color: #0f5ba7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15, 91, 167, 0.15);
+    }
+
+    .tile-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1rem;
+      color: #0f5ba7;
+    }
+
+    .tile-current h3 {
+      font-size: 1.125rem;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+    }
+
+    .tile-current p {
+      font-size: 0.875rem;
+      color: #666;
+      margin: 0;
+    }
+
+    /* Photo Style - Option A (Full Background) */
+    .tile-photo-bg {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      height: 240px;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .tile-photo-bg:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      border-color: #0f5ba7;
+    }
+
+    .tile-photo-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tile-photo-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+      padding: 2rem 1.5rem 1.5rem;
+      color: white;
+    }
+
+    .tile-photo-bg h3 {
+      font-size: 1.25rem;
+      color: white;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .tile-photo-bg p {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.95);
+      margin: 0;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* Photo Style - Option B (Card with Photo Top) */
+    .tile-photo-card {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    .tile-photo-card:hover {
+      border-color: #0f5ba7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15, 91, 167, 0.15);
+    }
+
+    .tile-photo-header {
+      height: 160px;
+      overflow: hidden;
+    }
+
+    .tile-photo-header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tile-photo-body {
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .tile-photo-card h3 {
+      font-size: 1.125rem;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+    }
+
+    .tile-photo-card p {
+      font-size: 0.875rem;
+      color: #666;
+      margin: 0;
+    }
+
+    /* Photo Style - Option C (Small Photo + Icon Hybrid) */
+    .tile-hybrid {
+      position: relative;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+      overflow: hidden;
+    }
+
+    .tile-hybrid::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    .tile-hybrid[data-bg="construction"]::before {
+      background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400');
+    }
+
+    .tile-hybrid:hover {
+      border-color: #0f5ba7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15, 91, 167, 0.15);
+    }
+
+    .tile-hybrid-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .tile-hybrid-icon {
+      width: 48px;
+      height: 48px;
+      color: #0f5ba7;
+      flex-shrink: 0;
+    }
+
+    .tile-hybrid-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .tile-hybrid h3 {
+      font-size: 1.125rem;
+      color: #1a1a1a;
+      margin-bottom: 0.25rem;
+    }
+
+    .tile-hybrid p {
+      font-size: 0.875rem;
+      color: #666;
+      margin: 0;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .comparison-box {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .comparison-title {
+      font-weight: 600;
+      color: #0f5ba7;
+      margin-bottom: 1rem;
+      font-size: 1.125rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .badge-current {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-recommended {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+
+    .badge-optional {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .pros-cons {
+      margin-top: 1rem;
+    }
+
+    .pros-cons h4 {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pros-cons ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .pros-cons li {
+      padding: 0.25rem 0;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .pros-cons li::before {
+      content: '✓';
+      color: #388e3c;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .pros-cons.cons li::before {
+      content: '✗';
+      color: #d32f2f;
+    }
+
+    @media (max-width: 768px) {
+      .comparison {
+        grid-template-columns: 1fr;
+      }
+      
+      .tile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Placeholder images */
+    .placeholder-img {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Project Builder Tile Mockups</h1>
+    <p class="intro">
+      Compare different visual approaches for the project builder wizard tiles. 
+      These mockups show how photos vs. icons impact user engagement and clarity.
+    </p>
+
+    <!-- Current State -->
+    <div class="section">
+      <div class="section-header">
+        <span class="badge badge-current">Current Design</span>
+        <h2 class="section-title">Option 1: Icons + Text (Current)</h2>
+        <p class="section-desc">Clean, professional approach using custom SVG icons with text descriptions.</p>
+      </div>
+
+      <div class="tile-grid">
+        <div class="tile-current">
+          <svg class="tile-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 8L8 24V56H24V40H40V56H56V24L32 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M24 28H32M40 28H48" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>New Construction</h3>
+          <p>Building from the ground up</p>
+        </div>
+
+        <div class="tile-current">
+          <svg class="tile-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 20L56 28L32 52L8 28L16 20" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M24 12L32 4L40 12M32 4V24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="44" r="3" fill="currentColor"/>
+            <circle cx="44" cy="44" r="3" fill="currentColor"/>
+          </svg>
+          <h3>Remodel</h3>
+          <p>Renovating existing space</p>
+        </div>
+
+        <div class="tile-current">
+          <svg class="tile-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M38 12L52 26L42 36L28 22L38 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28 22L12 38V52H26L42 36" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M18 52L12 46" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>Repair</h3>
+          <p>Fixing or maintaining</p>
+        </div>
+      </div>
+
+      <div class="pros-cons">
+        <h4>Strengths</h4>
+        <ul>
+          <li>Clean, professional appearance</li>
+          <li>Fast loading (no images)</li>
+          <li>Scalable and accessible</li>
+          <li>Works well for abstract concepts</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Option A: Full Background Photos -->
+    <div class="section">
+      <div class="section-header">
+        <span class="badge badge-recommended">Recommended</span>
+        <h2 class="section-title">Option 2A: Full Background Photos with Overlay</h2>
+        <p class="section-desc">High-impact photo tiles with gradient overlay for text readability. Most emotionally engaging.</p>
+      </div>
+
+      <div class="tile-grid">
+        <div class="tile-photo-bg">
+          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80" alt="Construction site">
+          <div class="tile-photo-overlay">
+            <h3>New Construction</h3>
+            <p>Building from the ground up</p>
+          </div>
+        </div>
+
+        <div class="tile-photo-bg">
+          <img src="https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=800&q=80" alt="Home renovation">
+          <div class="tile-photo-overlay">
+            <h3>Remodel</h3>
+            <p>Renovating existing space</p>
+          </div>
+        </div>
+
+        <div class="tile-photo-bg">
+          <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80" alt="Home repair">
+          <div class="tile-photo-overlay">
+            <h3>Repair</h3>
+            <p>Fixing or maintaining</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pros-cons">
+        <h4>Strengths</h4>
+        <ul>
+          <li>Most visually engaging and emotional</li>
+          <li>Immediately recognizable project types</li>
+          <li>Helps users visualize their own projects</li>
+          <li>Creates strong first impression</li>
+          <li>Differentiates options clearly</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Option B: Card with Photo Top -->
+    <div class="section">
+      <div class="section-header">
+        <span class="badge badge-optional">Alternative</span>
+        <h2 class="section-title">Option 2B: Card Style with Photo Header</h2>
+        <p class="section-desc">More structured approach with photo on top, text below. Clean separation between visual and text.</p>
+      </div>
+
+      <div class="tile-grid">
+        <div class="tile-photo-card">
+          <div class="tile-photo-header">
+            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80" alt="Construction site">
+          </div>
+          <div class="tile-photo-body">
+            <h3>New Construction</h3>
+            <p>Building from the ground up</p>
+          </div>
+        </div>
+
+        <div class="tile-photo-card">
+          <div class="tile-photo-header">
+            <img src="https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=800&q=80" alt="Home renovation">
+          </div>
+          <div class="tile-photo-body">
+            <h3>Remodel</h3>
+            <p>Renovating existing space</p>
+          </div>
+        </div>
+
+        <div class="tile-photo-card">
+          <div class="tile-photo-header">
+            <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80" alt="Home repair">
+          </div>
+          <div class="tile-photo-body">
+            <h3>Repair</h3>
+            <p>Fixing or maintaining</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pros-cons">
+        <h4>Strengths</h4>
+        <ul>
+          <li>Clear separation between image and text</li>
+          <li>Better text readability (no overlay needed)</li>
+          <li>Familiar card pattern</li>
+          <li>Easier to maintain consistency</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Option C: Hybrid Icon + Background -->
+    <div class="section">
+      <div class="section-header">
+        <span class="badge badge-optional">Alternative</span>
+        <h2 class="section-title">Option 2C: Hybrid - Icon + Subtle Photo Background</h2>
+        <p class="section-desc">Combines icon clarity with subtle photo context. Horizontal layout with background image.</p>
+      </div>
+
+      <div class="tile-grid">
+        <div class="tile-hybrid" data-bg="construction">
+          <div class="tile-hybrid-content">
+            <svg class="tile-hybrid-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 8L8 24V56H24V40H40V56H56V24L32 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M24 28H32M40 28H48" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div class="tile-hybrid-text">
+              <h3>New Construction</h3>
+              <p>Building from the ground up</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tile-hybrid">
+          <div class="tile-hybrid-content">
+            <svg class="tile-hybrid-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M48 20L56 28L32 52L8 28L16 20" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M24 12L32 4L40 12M32 4V24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="20" cy="44" r="3" fill="currentColor"/>
+              <circle cx="44" cy="44" r="3" fill="currentColor"/>
+            </svg>
+            <div class="tile-hybrid-text">
+              <h3>Remodel</h3>
+              <p>Renovating existing space</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tile-hybrid">
+          <div class="tile-hybrid-content">
+            <svg class="tile-hybrid-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M38 12L52 26L42 36L28 22L38 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M28 22L12 38V52H26L42 36" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M18 52L12 46" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div class="tile-hybrid-text">
+              <h3>Repair</h3>
+              <p>Fixing or maintaining</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pros-cons">
+        <h4>Strengths</h4>
+        <ul>
+          <li>Maintains icon clarity while adding context</li>
+          <li>Professional appearance</li>
+          <li>Good compromise between approaches</li>
+          <li>Better performance than full photos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Comparison Grid -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">📊 Approach Comparison</h2>
+        <p class="section-desc">How each approach works for different wizard steps.</p>
+      </div>
+
+      <div class="comparison">
+        <div class="comparison-box">
+          <div class="comparison-title">✅ Best for Steps 1 & 2 (Project Selection)</div>
+          <strong>Recommended: Option 2A - Full Background Photos</strong>
+          <div class="pros-cons">
+            <ul>
+              <li>Concrete project types</li>
+              <li>Need emotional engagement</li>
+              <li>Helps visualization</li>
+              <li>Creates strong first impression</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="comparison-box">
+          <div class="comparison-title">✅ Best for Steps 3 & 4 (Complexity/Budget)</div>
+          <strong>Recommended: Keep Icons (Current)</strong>
+          <div class="pros-cons">
+            <ul>
+              <li>Abstract concepts</li>
+              <li>No real-world photo equivalent</li>
+              <li>Icons communicate well</li>
+              <li>Maintains clean design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">💡 Implementation Recommendation</h2>
+      </div>
+      
+      <h3 style="margin-bottom: 1rem; color: #0f5ba7;">Hybrid Strategy</h3>
+      <p style="margin-bottom: 1rem;">Use different approaches based on the nature of each step:</p>
+      
+      <ul style="margin-left: 1.5rem; margin-bottom: 2rem; line-height: 1.8;">
+        <li><strong>Step 1 (Project Type)</strong>: Use full background photos (Option 2A)</li>
+        <li><strong>Step 2 (Project Details)</strong>: Use full background photos (Option 2A)</li>
+        <li><strong>Step 3 (Complexity)</strong>: Keep current icons</li>
+        <li><strong>Step 4 (Budget)</strong>: Keep current icons</li>
+      </ul>
+
+      <h3 style="margin-bottom: 1rem; color: #0f5ba7;">Photo Requirements</h3>
+      <ul style="margin-left: 1.5rem; line-height: 1.8;">
+        <li><strong>Dimensions:</strong> 800x600px minimum (4:3 ratio)</li>
+        <li><strong>Format:</strong> WebP with JPEG fallback</li>
+        <li><strong>Quality:</strong> High-res, professional construction photos</li>
+        <li><strong>Subject:</strong> Real projects, well-lit, clear focal point</li>
+        <li><strong>Quantity needed:</strong> ~15-20 photos (3 for Step 1, 12+ for Step 2 variations)</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
+
