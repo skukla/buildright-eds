@@ -214,12 +214,10 @@
         });
       }
 
-      // Navigation buttons
-      const backBtn = document.getElementById('wizard-back');
-      const startOverBtn = document.getElementById('wizard-start-over');
-      
-      if (backBtn) backBtn.addEventListener('click', prevStep);
-      if (startOverBtn) startOverBtn.addEventListener('click', startOver);
+      // Navigation buttons - handled by CSS and label 'for' attributes in HTML
+      // Back buttons are labels that automatically check the previous step radio
+      // Start Over button is a label that checks wizard-step-1 radio
+      // No JavaScript event listeners needed for navigation buttons
 
       // Make step circles clickable for navigation
       document.querySelectorAll('.wizard-step').forEach(stepEl => {
@@ -583,8 +581,13 @@
   }
 
   // Update navigation
+  // Note: Navigation visibility is primarily controlled by CSS via :checked pseudo-class
+  // This function is kept for any additional JavaScript-based navigation logic if needed
   function updateNavigation() {
     try {
+      // Navigation is handled by CSS, so this function can be a no-op
+      // If we need to add IDs to HTML elements later, we can uncomment this:
+      /*
       const backBtn = document.getElementById('wizard-back');
       const startOverBtn = document.getElementById('wizard-start-over');
       const printBtn = document.getElementById('wizard-print');
@@ -600,6 +603,7 @@
         startOverBtn.style.display = 'none';
         if (printBtn) printBtn.style.display = 'none';
       }
+      */
     } catch (error) {
       handleError(error, 'updateNavigation');
     }
@@ -1070,11 +1074,13 @@
         });
       });
 
-      // Print button
-      const printBtn = document.getElementById('wizard-print');
+      // Print button - visibility is controlled by CSS, just ensure click handler is set
+      const printBtn = document.querySelector('.wizard-nav-print');
       if (printBtn) {
-        printBtn.style.display = 'inline-block';
-        printBtn.addEventListener('click', () => {
+        // Remove existing onclick handler if present and add event listener
+        printBtn.onclick = null; // Clear inline onclick
+        printBtn.addEventListener('click', (e) => {
+          e.preventDefault();
           window.print();
         });
       }
