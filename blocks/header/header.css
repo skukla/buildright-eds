@@ -448,6 +448,12 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Active state for current page navigation link */
+.nav-link.active,
+.nav-link[aria-current="page"] {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 /* Project Builder CTA styling - higher specificity to override */
 .nav-item a.nav-link.nav-link-cta {
   color: var(--color-accent-400);  /* Lighter orange for better readability on blue */

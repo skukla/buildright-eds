@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./scripts/base-url.js"></script>
+  <!-- Load critical data synchronously to prevent layout shift -->
+  <script>
+    window.__INITIAL_CART_COUNT__ = (() => {
+      try {
+        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+        return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+      } catch (e) {
+        return 0;
+      }
+    })();
+    window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
+  </script>
   <title>BuildRight Solutions - Building Materials Distributor</title>
   <link rel="stylesheet" href="./styles/base.css">
   <link rel="stylesheet" href="./styles/components.css">
@@ -14,6 +26,50 @@
   <link rel="stylesheet" href="./styles/blocks/footer.css">
   <link rel="stylesheet" href="./blocks/header/header.css">
   <link rel="stylesheet" href="./blocks/product-grid/product-grid.css">
+  <!-- Critical CSS for active nav state and comprehensive CLS prevention -->
+  <style>
+    .nav-link.active, .nav-link[aria-current="page"] {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Comprehensive CLS prevention - reserve space for all dynamic content */
+    
+    /* Location selector - prevent dropdown menu shift */
+    .location-selector {
+      min-height: 40px;
+      min-width: 280px;
+    }
+    
+    .location-menu {
+      position: absolute;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+    
+    .location-menu.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Cart count - always show, even if 0 */
+    .cart-count {
+      min-width: 20px;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    /* Product grid */
+    .products-container {
+      min-height: 300px;
+    }
+    
+    /* Prevent flash of unstyled content */
+    [data-loading="true"] {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
   <!-- Header Block -->

@@ -4,6 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="../scripts/base-url.js"></script>
+  <!-- Load critical data synchronously to prevent layout shift -->
+  <script>
+    // Pre-load cart count to prevent shift
+    window.__INITIAL_CART_COUNT__ = (() => {
+      try {
+        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+        return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+      } catch (e) {
+        return 0;
+      }
+    })();
+    
+    // Pre-load selected location to prevent shift
+    window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
+  </script>
   <title>Product Catalog - BuildRight Solutions</title>
   <link rel="stylesheet" href="../styles/base.css">
   <link rel="stylesheet" href="../styles/components.css">
@@ -12,6 +27,61 @@
   <link rel="stylesheet" href="../blocks/project-filter/project-filter.css">
   <link rel="stylesheet" href="../blocks/product-grid/product-grid.css">
   <link rel="stylesheet" href="../blocks/filters-sidebar/filters-sidebar.css">
+  <!-- Critical CSS for active nav state to prevent layout shift -->
+  <style>
+    .nav-link.active, .nav-link[aria-current="page"] {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Comprehensive CLS prevention - reserve space for all dynamic content */
+    
+    /* Location selector - prevent dropdown menu shift */
+    .location-selector {
+      min-height: 40px;
+      min-width: 280px;
+    }
+    
+    .location-menu {
+      /* Position absolutely so it doesn't affect layout */
+      position: absolute;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+    
+    .location-menu.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Cart count - always show, even if 0 */
+    .cart-count {
+      min-width: 20px;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    /* Product grid and filters */
+    .products-container {
+      min-height: 400px;
+    }
+    
+    .product-count {
+      min-height: 24px;
+      display: block;
+    }
+    
+    /* Filter sidebar - prevent collapse */
+    .filters-sidebar {
+      min-height: 300px;
+    }
+    
+    /* Prevent flash of unstyled content */
+    [data-loading="true"] {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
   <!-- Header Block -->
@@ -141,7 +211,7 @@
   </div>
 
   <!-- Breadcrumbs -->
-  <div style="background: var(--color-surface); padding: var(--spacing-3) 0; border-bottom: 1px solid var(--color-border);">
+  <div style="background: var(--color-surface); padding: var(--spacing-small) 0; border-bottom: 1px solid var(--color-border);">
     <div class="container">
       <nav style="font: var(--type-body-2-default-font); color: var(--color-text-secondary);">
         <a href="/index.html" style="color: var(--color-brand-500); text-decoration: none;">Home</a>

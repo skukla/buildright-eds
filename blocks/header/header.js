@@ -21,8 +21,14 @@ export default function decorate(block) {
     }
   }
 
-  // Update cart count on load
-  updateCartCount();
+  // Use pre-loaded cart count if available (prevents layout shift)
+  const cartCountEl = block.querySelector('.cart-count');
+  if (cartCountEl && typeof window.__INITIAL_CART_COUNT__ !== 'undefined') {
+    cartCountEl.textContent = window.__INITIAL_CART_COUNT__;
+  } else {
+    // Fallback to loading from localStorage
+    updateCartCount();
+  }
 
   // Listen for cart updates
   window.addEventListener('cartUpdated', updateCartCount);
@@ -338,13 +344,13 @@ export default function decorate(block) {
       }
     }
     
-    // Apply active styling
+    // Apply active class (CSS handles the styling)
     if (isActive) {
-      link.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+      link.classList.add('active');
       link.setAttribute('aria-current', 'page');
     } else {
       // Remove active styling
-      link.style.backgroundColor = '';
+      link.classList.remove('active');
       link.removeAttribute('aria-current');
     }
   });
