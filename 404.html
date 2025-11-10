@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <title>Redirecting...</title>
   <script>
-    // Simple 404 redirect for GitHub Pages
+    // Simple 404 redirect for GitHub Pages that preserves the original path
     (function() {
-      const path = window.location.pathname;
+      const fullPath = window.location.pathname;
+      
+      // Store the original path so the page can read it
+      sessionStorage.setItem('spa_redirect_path', fullPath);
       
       // Remove base path if present (e.g., /buildright-eds/)
-      const cleanPath = path.replace(/^\/buildright-eds\//, '/');
+      const cleanPath = fullPath.replace(/^\/buildright-eds\//, '/');
       
       // Route to the correct HTML file
       let targetFile = '';
@@ -25,7 +28,7 @@
         targetFile = 'index.html';
       }
       
-      // Redirect with the full path preserved
+      // Redirect to the HTML file (catalog.html will read the path from sessionStorage)
       const newUrl = window.location.origin + '/buildright-eds/' + targetFile + window.location.search + window.location.hash;
       window.location.replace(newUrl);
     })();

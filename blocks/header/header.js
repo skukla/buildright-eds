@@ -298,7 +298,9 @@ export default function decorate(block) {
   });
 
   // Set active nav link based on current page
-  const currentPath = window.location.pathname;
+  // Check if we were redirected via 404 (sessionStorage will have the original path)
+  const redirectPath = sessionStorage.getItem('spa_redirect_path');
+  const currentPath = redirectPath || window.location.pathname;
     
     // Normalize paths for comparison
     const normalizePath = (path) => {

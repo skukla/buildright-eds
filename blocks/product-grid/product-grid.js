@@ -129,7 +129,15 @@ export default async function decorate(block) {
   async function loadProducts() {
     try {
       // Check if we're on the catalog page and parse the path
-      const currentPath = window.location.pathname;
+      // First check if we were redirected via 404 (sessionStorage will have the original path)
+      const redirectPath = sessionStorage.getItem('spa_redirect_path');
+      const currentPath = redirectPath || window.location.pathname;
+      
+      // Clear the redirect path so it doesn't interfere with subsequent navigation
+      if (redirectPath) {
+        sessionStorage.removeItem('spa_redirect_path');
+      }
+      
       const catalogInfo = parseCatalogPath(currentPath);
       
       let products;

@@ -96,7 +96,9 @@
         <!-- Inline script to set active state immediately, preventing layout shift -->
         <script>
           (function() {
-            const currentPath = window.location.pathname;
+            // Check if we were redirected via 404 (sessionStorage will have the original path)
+            const redirectPath = sessionStorage.getItem('spa_redirect_path');
+            const currentPath = redirectPath || window.location.pathname;
             const normalizePath = (path) => path ? path.replace(/^\/+|\/+$/g, '').toLowerCase() : '';
             const normalizedCurrentPath = normalizePath(currentPath);
             const isOnCatalog = normalizedCurrentPath.includes('catalog');
@@ -158,25 +160,25 @@
         <div class="industry-column">
           <h3>Commercial</h3>
           <ul>
-            <li><a href="pages/catalog.html?industry=commercial">Commercial Construction</a></li>
-            <li><a href="pages/catalog.html?category=structural_materials">Structural Materials</a></li>
-            <li><a href="pages/catalog.html?category=windows_doors">Windows & Doors</a></li>
+            <li><a href="catalog/commercial">Commercial Construction</a></li>
+            <li><a href="catalog/structural-materials">Structural Materials</a></li>
+            <li><a href="catalog/windows-doors">Windows & Doors</a></li>
           </ul>
         </div>
         <div class="industry-column">
           <h3>Residential</h3>
           <ul>
-            <li><a href="pages/catalog.html?industry=residential">Residential Construction</a></li>
-            <li><a href="pages/catalog.html?category=structural_materials">Framing Materials</a></li>
-            <li><a href="pages/catalog.html?category=windows_doors">Residential Windows</a></li>
+            <li><a href="catalog/residential">Residential Construction</a></li>
+            <li><a href="catalog/structural-materials">Framing Materials</a></li>
+            <li><a href="catalog/windows-doors">Residential Windows</a></li>
           </ul>
         </div>
         <div class="industry-column">
           <h3>Pro</h3>
           <ul>
-            <li><a href="pages/catalog.html?industry=pro">Trade Contractors</a></li>
-            <li><a href="pages/catalog.html?category=fasteners_hardware">Fasteners & Tools</a></li>
-            <li><a href="pages/catalog.html?category=roofing">Roofing Supplies</a></li>
+            <li><a href="catalog/pro">Trade Contractors</a></li>
+            <li><a href="catalog/fasteners-hardware">Fasteners & Tools</a></li>
+            <li><a href="catalog/roofing">Roofing Supplies</a></li>
           </ul>
         </div>
     </div>
