@@ -119,8 +119,8 @@ export default function decorate(block) {
     customizeBtn.addEventListener('click', () => {
       // Store bundle in sessionStorage and redirect to catalog
       sessionStorage.setItem('buildright_bundle_customize', JSON.stringify(bundle));
-      // Navigate to catalog (with base tag, always use pages/catalog.html)
-      window.location.href = 'pages/catalog.html';
+      // Navigate to catalog using clean URL
+      window.location.href = 'catalog';
     });
   }
 }

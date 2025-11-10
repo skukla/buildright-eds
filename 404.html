@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    // Simple 404 redirect for GitHub Pages
+    (function() {
+      const path = window.location.pathname;
+      
+      // Remove base path if present (e.g., /buildright-eds/)
+      const cleanPath = path.replace(/^\/buildright-eds\//, '/');
+      
+      // Route to the correct HTML file
+      let targetFile = '';
+      
+      if (cleanPath.startsWith('/catalog')) {
+        // Any /catalog/* path goes to catalog.html
+        targetFile = 'pages/catalog.html';
+      } else if (cleanPath.startsWith('/project-builder')) {
+        // Any /project-builder/* path goes to project-builder.html
+        targetFile = 'pages/project-builder.html';
+      } else {
+        // Default to home
+        targetFile = 'index.html';
+      }
+      
+      // Redirect with the full path preserved
+      const newUrl = window.location.origin + '/buildright-eds/' + targetFile + window.location.search + window.location.hash;
+      window.location.replace(newUrl);
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
+

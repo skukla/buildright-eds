@@ -42,15 +42,21 @@ function stripBasePath(pathname) {
 
 /**
  * Parse a catalog path and extract category/division
+ * Handles clean URLs like /catalog/structural-materials
  * @param {string} pathname - e.g., "/catalog/structural-materials" or "/buildright-eds/catalog/structural-materials"
  * @returns {Object} - { type: 'category'|'division'|'all', value: string|null }
  */
 export function parseCatalogPath(pathname) {
-  // Strip base path if present
+  // Strip base path if present (e.g., /buildright-eds/)
   let path = stripBasePath(pathname);
   
-  // Normalize path
+  // Normalize path - remove leading/trailing slashes
   path = path.replace(/^\/+|\/+$/g, '').toLowerCase();
+  
+  // Remove pages/ prefix if present (when we're on the actual file)
+  // e.g., "pages/catalog.html" -> "catalog"
+  path = path.replace(/^pages\//, '').replace(/\.html$/, '');
+  
   const segments = path.split('/').filter(Boolean);
   
   // Root catalog = all products
@@ -58,13 +64,23 @@ export function parseCatalogPath(pathname) {
     return { type: 'all', value: null };
   }
   
-  // /catalog/something
+  // /catalog/something (e.g., /catalog/structural-materials)
   if (segments[0] === 'catalog' && segments.length === 2) {
     const slug = segments[1];
+    
+    // Convert kebab-case to internal format
+    // e.g., "structural-materials" -> "structural_materials"
+    const internalSlug = slug.replace(/-/g, '_');
     
     // Check if it's a category
     if (CATEGORY_MAP[slug]) {
       return { type: 'category', value: CATEGORY_MAP[slug] };
+    }
+    
+    // Try as underscore format directly
+    const categoryValues = Object.values(CATEGORY_MAP);
+    if (categoryValues.includes(internalSlug)) {
+      return { type: 'category', value: internalSlug };
     }
     
     // Check if it's a division
@@ -113,25 +129,21 @@ export function parseProjectBuilderPath(pathname) {
 }
 
 /**
- * Generate a catalog URL from category code
+ * Generate a clean catalog URL from category code
  * @param {string} categoryCode - Internal category code (e.g., 'structural_materials')
- * @returns {string} - Relative URL to catalog page (e.g., 'pages/catalog.html' or 'pages/catalog.html?category=structural_materials')
+ * @returns {string} - Clean URL path (e.g., 'catalog' or 'catalog/structural-materials')
  */
 export function getCatalogUrl(categoryCode) {
-  // With base tag, always use pages/catalog.html
-  const catalogPath = 'pages/catalog.html';
-  
   if (!categoryCode || categoryCode === 'all') {
-    return catalogPath;
+    return 'catalog';
   }
   
-  // Check if it's a division
-  if (DIVISION_SLUGS.includes(categoryCode)) {
-    return `${catalogPath}?industry=${categoryCode}`;
-  }
+  // Convert internal format to URL slug
+  // e.g., 'structural_materials' -> 'structural-materials'
+  const slug = categoryCode.replace(/_/g, '-');
   
-  // It's a category - use category query param
-  return `${catalogPath}?category=${categoryCode}`;
+  // Return clean path
+  return `catalog/${slug}`;
 }
 
 /**

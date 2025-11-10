@@ -270,8 +270,8 @@ export default function decorate(block) {
     const performSearch = () => {
       const query = searchInput.value.trim();
       if (query) {
-        // With base tag, always use pages/catalog.html
-        window.location.href = `pages/catalog.html?search=${encodeURIComponent(query)}`;
+        // Use clean URL with search param
+        window.location.href = `catalog?search=${encodeURIComponent(query)}`;
       }
     };
 

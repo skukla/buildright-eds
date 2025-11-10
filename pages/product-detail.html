@@ -96,7 +96,7 @@
         </button>
         <nav class="main-nav">
           <div class="nav-item">
-            <a href="pages/catalog.html" class="nav-link" data-category="all">All Products</a>
+            <a href="catalog" class="nav-link" data-category="all">All Products</a>
           </div>
           <div class="nav-item">
             <a href="pages/project-builder.html" class="nav-link nav-link-cta">Project Builder</a>
@@ -145,7 +145,7 @@
           <ul>
             <li><a href="pages/catalog.html?category=pro">Trade Contractors</a></li>
             <li><a href="pages/catalog.html?category=fasteners-hardware">Fasteners & Tools</a></li>
-            <li><a href="pages/catalog.html?category=roofing">Roofing Supplies</a></li>
+            <li><a href="catalog/roofing">Roofing Supplies</a></li>
           </ul>
         </div>
       </div>
@@ -242,13 +242,13 @@
     async function loadProductDetail() {
       const sku = getUrlParameter('sku');
       if (!sku) {
-        window.location.href = 'pages/catalog.html';
+        window.location.href = 'catalog';
         return;
       }
 
       const product = await getProductBySKU(sku);
       if (!product) {
-        window.location.href = 'pages/catalog.html';
+        window.location.href = 'catalog';
         return;
       }
 
