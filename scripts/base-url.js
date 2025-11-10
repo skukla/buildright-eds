@@ -70,7 +70,10 @@
     }
     
     // Navigate to the correct location
-    const newUrl = window.location.origin + basePath.substring(1) + targetPath.substring(1);
+    // Ensure proper slash between origin and path
+    const basePathClean = basePath === '/' ? '' : basePath.replace(/\/$/, '');
+    const targetPathClean = targetPath.startsWith('/') ? targetPath : '/' + targetPath;
+    const newUrl = window.location.origin + basePathClean + targetPathClean;
     window.location.replace(newUrl);
   }
 })();
