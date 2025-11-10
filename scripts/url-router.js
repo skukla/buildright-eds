@@ -21,13 +21,36 @@ const CODE_TO_SLUG = Object.fromEntries(
 const DIVISION_SLUGS = ['commercial', 'residential', 'pro'];
 
 /**
+ * Get base path from window.BASE_PATH or default to '/'
+ */
+function getBasePath() {
+  return window.BASE_PATH || '/';
+}
+
+/**
+ * Strip base path from pathname
+ * @param {string} pathname - Full pathname
+ * @returns {string} - Pathname without base path
+ */
+function stripBasePath(pathname) {
+  const basePath = getBasePath();
+  if (basePath !== '/' && pathname.startsWith(basePath)) {
+    return pathname.substring(basePath.length);
+  }
+  return pathname;
+}
+
+/**
  * Parse a catalog path and extract category/division
- * @param {string} pathname - e.g., "/catalog/structural-materials"
+ * @param {string} pathname - e.g., "/catalog/structural-materials" or "/buildright-eds/catalog/structural-materials"
  * @returns {Object} - { type: 'category'|'division'|'all', value: string|null }
  */
 export function parseCatalogPath(pathname) {
+  // Strip base path if present
+  let path = stripBasePath(pathname);
+  
   // Normalize path
-  const path = pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+  path = path.replace(/^\/+|\/+$/g, '').toLowerCase();
   const segments = path.split('/').filter(Boolean);
   
   // Root catalog = all products
@@ -55,11 +78,14 @@ export function parseCatalogPath(pathname) {
 
 /**
  * Parse a project builder path
- * @param {string} pathname - e.g., "/project-builder/remodel/bathroom"
+ * @param {string} pathname - e.g., "/project-builder/remodel/bathroom" or "/buildright-eds/project-builder/remodel/bathroom"
  * @returns {Object} - { projectType: string|null, projectDetail: string|null }
  */
 export function parseProjectBuilderPath(pathname) {
-  const path = pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+  // Strip base path if present
+  let path = stripBasePath(pathname);
+  
+  path = path.replace(/^\/+|\/+$/g, '').toLowerCase();
   const segments = path.split('/').filter(Boolean);
   
   // /project-builder = home
@@ -89,36 +115,42 @@ export function parseProjectBuilderPath(pathname) {
 /**
  * Generate a catalog URL from category code
  * @param {string} categoryCode - Internal category code (e.g., 'structural')
- * @returns {string} - Path-based URL (e.g., '/catalog/structural-materials')
+ * @returns {string} - Path-based URL (e.g., '/catalog/structural-materials' or '/buildright-eds/catalog/structural-materials')
  */
 export function getCatalogUrl(categoryCode) {
+  const basePath = getBasePath();
+  const basePrefix = basePath === '/' ? '' : basePath.replace(/\/$/, '');
+  
   if (!categoryCode || categoryCode === 'all') {
-    return '/catalog';
+    return `${basePrefix}/catalog`;
   }
   
   // Check if it's a division
   if (DIVISION_SLUGS.includes(categoryCode)) {
-    return `/catalog/${categoryCode}`;
+    return `${basePrefix}/catalog/${categoryCode}`;
   }
   
   // Convert code to slug
   const slug = CODE_TO_SLUG[categoryCode];
   if (slug) {
-    return `/catalog/${slug}`;
+    return `${basePrefix}/catalog/${slug}`;
   }
   
-  return '/catalog';
+  return `${basePrefix}/catalog`;
 }
 
 /**
  * Generate a project builder URL
  * @param {string} projectType - Project type (e.g., 'new_construction')
  * @param {string} projectDetail - Optional project detail (e.g., 'bathroom')
- * @returns {string} - Path-based URL
+ * @returns {string} - Path-based URL with base path
  */
 export function getProjectBuilderUrl(projectType, projectDetail) {
+  const basePath = getBasePath();
+  const basePrefix = basePath === '/' ? '' : basePath.replace(/\/$/, '');
+  
   if (!projectType) {
-    return '/project-builder';
+    return `${basePrefix}/project-builder`;
   }
   
   // Convert snake_case to kebab-case
@@ -126,10 +158,10 @@ export function getProjectBuilderUrl(projectType, projectDetail) {
   
   if (projectDetail) {
     const detailSlug = projectDetail.replace(/_/g, '-');
-    return `/project-builder/${typeSlug}/${detailSlug}`;
+    return `${basePrefix}/project-builder/${typeSlug}/${detailSlug}`;
   }
   
-  return `/project-builder/${typeSlug}`;
+  return `${basePrefix}/project-builder/${typeSlug}`;
 }
 
 /**
