@@ -149,10 +149,17 @@
   // Restore wizard state
   function restoreWizardState() {
     try {
-      // Restore step 1
+      // Restore step 1 - find by radio input value
       if (wizardState.projectType) {
-        const option = document.querySelector(`[data-step="1"] [data-value="${wizardState.projectType}"]`);
-        if (option) option.classList.add('selected');
+        const step1Content = document.querySelector(`[data-step="1"]`);
+        if (step1Content) {
+          const radioInput = step1Content.querySelector(`input[type="radio"][value="${wizardState.projectType}"]`);
+          if (radioInput) {
+            radioInput.checked = true;
+            const option = radioInput.closest('.wizard-option, .wizard-option-photo');
+            if (option) option.classList.add('selected');
+          }
+        }
       }
 
       // Restore step 2 - Step 2 is pre-rendered, just check the radio
@@ -161,16 +168,30 @@
         if (detailRadio) detailRadio.checked = true;
       }
 
-      // Restore step 3
+      // Restore step 3 - find by radio input value
       if (wizardState.complexity) {
-        const option = document.querySelector(`[data-step="3"] .wizard-option[data-value="${wizardState.complexity}"]`);
-        if (option) option.classList.add('selected');
+        const step3Content = document.querySelector(`[data-step="3"]`);
+        if (step3Content) {
+          const radioInput = step3Content.querySelector(`input[type="radio"][value="${wizardState.complexity}"]`);
+          if (radioInput) {
+            radioInput.checked = true;
+            const option = radioInput.closest('.wizard-option, .wizard-option-photo');
+            if (option) option.classList.add('selected');
+          }
+        }
       }
 
-      // Restore step 4
+      // Restore step 4 - find by radio input value
       if (wizardState.budget) {
-        const option = document.querySelector(`[data-step="4"] .wizard-option[data-value="${wizardState.budget}"]`);
-        if (option) option.classList.add('selected');
+        const step4Content = document.querySelector(`[data-step="4"]`);
+        if (step4Content) {
+          const radioInput = step4Content.querySelector(`input[type="radio"][value="${wizardState.budget}"]`);
+          if (radioInput) {
+            radioInput.checked = true;
+            const option = radioInput.closest('.wizard-option, .wizard-option-photo');
+            if (option) option.classList.add('selected');
+          }
+        }
       }
 
       // If we have all data, show results
@@ -270,9 +291,15 @@
       // Remove previous selection
       stepContent.querySelectorAll('.wizard-option, .wizard-option-photo').forEach(opt => opt.classList.remove('selected'));
       
-      // Add new selection
-      const option = stepContent.querySelector(`[data-value="${value}"]`);
-      if (option) option.classList.add('selected');
+      // Add new selection - find the label/option that contains a radio with matching value
+      const radioInput = stepContent.querySelector(`input[type="radio"][value="${value}"]`);
+      if (radioInput) {
+        // Find the parent label (wizard-option or wizard-option-photo)
+        const option = radioInput.closest('.wizard-option, .wizard-option-photo');
+        if (option) {
+          option.classList.add('selected');
+        }
+      }
 
       // Save to state
       const stateKey = STEP_STATE_MAP[step];
@@ -584,29 +611,10 @@
   // Note: Navigation visibility is primarily controlled by CSS via :checked pseudo-class
   // This function is kept for any additional JavaScript-based navigation logic if needed
   function updateNavigation() {
-    try {
-      // Navigation is handled by CSS, so this function can be a no-op
-      // If we need to add IDs to HTML elements later, we can uncomment this:
-      /*
-      const backBtn = document.getElementById('wizard-back');
-      const startOverBtn = document.getElementById('wizard-start-over');
-      const printBtn = document.getElementById('wizard-print');
-
-      if (!backBtn || !startOverBtn) return;
-
-      if (currentStep === 5) {
-        backBtn.style.display = 'none';
-        startOverBtn.style.display = 'inline-block';
-        if (printBtn) printBtn.style.display = 'inline-block';
-      } else {
-        backBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
-        startOverBtn.style.display = 'none';
-        if (printBtn) printBtn.style.display = 'none';
-      }
-      */
-    } catch (error) {
-      handleError(error, 'updateNavigation');
-    }
+    // Navigation is handled by CSS, so this function is intentionally a no-op
+    // CSS controls button visibility via :checked pseudo-class on wizard-step radio buttons
+    // No JavaScript manipulation needed
+    return;
   }
 
   // Generate and show results
