@@ -16,10 +16,10 @@
     })();
   </script>
   <title>Project Builder - BuildRight Solutions</title>
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/utilities.css">
-  <link rel="stylesheet" href="../blocks/header/header.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/utilities.css">
+  <link rel="stylesheet" href="blocks/header/header.css">
   <style>
     /* Location selector - ensure consistent height */
     .location-selector {
@@ -2168,15 +2168,21 @@
 
 
   <script type="module">
-    import { saveWizardState, getWizardState, generateBundle, addBundleToCart } from '../scripts/project-builder.js';
-    import { decorateBlock } from '../scripts/utils.js';
-    import { getProjectTips, getResourceLinks } from '../scripts/educational-content.js';
-    import { getProductImageUrl, getInventory, getInventoryStatus, getPrimaryWarehouse } from '../scripts/data-mock.js';
+    // ES6 module imports - wrap in async IIFE to use dynamic imports with base path
+    (async function() {
+      // Determine base path for imports
+      const scriptBase = window.BASE_PATH || (window.location.pathname.includes('/buildright-eds/') ? '/buildright-eds/' : '/');
+      
+      // Use dynamic imports with the correct base path
+      const { saveWizardState, getWizardState, generateBundle, addBundleToCart } = await import(`${scriptBase}scripts/project-builder.js`);
+      const { decorateBlock } = await import(`${scriptBase}scripts/utils.js`);
+      const { getProjectTips, getResourceLinks } = await import(`${scriptBase}scripts/educational-content.js`);
+      const { getProductImageUrl, getInventory, getInventoryStatus, getPrimaryWarehouse } = await import(`${scriptBase}scripts/data-mock.js`);
 
-    // Wizard state
-    let currentStep = 1;
-    const totalSteps = 4;
-    let wizardState = getWizardState() || {};
+      // Wizard state
+      let currentStep = 1;
+      const totalSteps = 4;
+      let wizardState = getWizardState() || {};
 
     // Step 2 options mapping (for reference in JS, but HTML is pre-rendered)
     const step2Options = {
@@ -2206,7 +2212,8 @@
     // Initialize wizard
     async function initWizard() {
       // Import URL router for path parsing
-      const { parseProjectBuilderPath } = await import('../scripts/url-router.js');
+      const scriptBase = window.BASE_PATH || (window.location.pathname.includes('/buildright-eds/') ? '/buildright-eds/' : '/');
+      const { parseProjectBuilderPath } = await import(`${scriptBase}scripts/url-router.js`);
       
       // Check for path-based parameters first (from Shop By Job links)
       const pathInfo = parseProjectBuilderPath(window.location.pathname);
@@ -3479,9 +3486,10 @@
       // DOM is already loaded
       initWizard();
     }
+    })(); // Close async IIFE
   </script>
-  <script type="module" src="../scripts/app.js"></script>
-  <script type="module" src="../blocks/header/header.js"></script>
+  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="blocks/header/header.js"></script>
 </body>
 </html>
 
