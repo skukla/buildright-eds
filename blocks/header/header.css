@@ -454,13 +454,6 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* CSS-only navigation highlighting using body classes */
-/* Set by early inline script in each HTML file */
-body.page-catalog .nav-link[data-category="all"],
-body.page-project-builder .nav-link[href*="project-builder"] {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
 /* Category-specific highlighting */
 body[data-category="structural_materials"] .nav-link[data-category="structural_materials"],
 body[data-category="windows_doors"] .nav-link[data-category="windows_doors"],
