@@ -143,7 +143,7 @@ function createKitSidebar() {
     exitBtn.addEventListener('click', () => {
       // Exit kit mode immediately - user can resume via the resume banner
       // Only remove kit_mode_resume_choice - keep wizard state so user can resume
-      // The wizard state will be cleared if they choose "Start New Project" or "Exit Kit Mode" from the resume banner
+      // The wizard state will be cleared if they choose "Start New Project" or "Shop Normally" from the resume banner
         sessionStorage.removeItem('kit_mode_resume_choice');
         window.location.reload();
     });
