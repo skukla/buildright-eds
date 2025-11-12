@@ -9,8 +9,9 @@ async function loadRecommendationsData() {
   if (recommendationsData) return recommendationsData;
   
   try {
-    // Use absolute path to work with path-based routing
-    const dataPath = '/data/project-recommendations.json';
+    // Use base path to work with GitHub Pages and path-based routing
+    const basePath = window.BASE_PATH || '/';
+    const dataPath = `${basePath}data/project-recommendations.json`;
     const response = await fetch(dataPath);
     if (!response.ok) {
       console.error(`Failed to load recommendations data: ${response.status} ${response.statusText} from ${dataPath}`);
