@@ -67,9 +67,9 @@ export async function initKitSidebar() {
       kitSidebarElement.classList.add('kit-sidebar-expanded');
       kitSidebarElement.classList.remove('kit-sidebar-collapsed');
       if (content) content.style.display = 'block';
-      if (toggle) {
+    if (toggle) {
         toggle.setAttribute('aria-expanded', 'true');
-        toggle.classList.remove('collapsed');
+      toggle.classList.remove('collapsed');
       }
     } else {
       kitSidebarElement.classList.add('kit-sidebar-collapsed');
@@ -123,7 +123,7 @@ function createKitSidebar() {
         <p class="kit-sidebar-empty-description">Add items from the catalog to get started</p>
       </div>
       <div class="kit-sidebar-actions-bottom">
-        <a href="pages/project-builder.html?continue=true" class="btn btn-primary btn-sm" id="kit-sidebar-view-full">View Full Kit</a>
+        <a href="pages/project-builder.html?continue=true" class="btn btn-primary btn-sm" id="kit-sidebar-view-full">Add All to Cart</a>
         <button class="kit-sidebar-exit-btn" id="kit-sidebar-exit-btn">
           Exit Kit Mode
         </button>
@@ -144,8 +144,8 @@ function createKitSidebar() {
       // Exit kit mode immediately - user can resume via the resume banner
       // Only remove kit_mode_resume_choice - keep wizard state so user can resume
       // The wizard state will be cleared if they choose "Abandon Kit" from the resume banner
-      sessionStorage.removeItem('kit_mode_resume_choice');
-      window.location.reload();
+        sessionStorage.removeItem('kit_mode_resume_choice');
+        window.location.reload();
     });
   }
 }
@@ -185,9 +185,9 @@ export async function updateKitSidebar() {
         kitSidebarElement.classList.add('kit-sidebar-expanded');
         kitSidebarElement.classList.remove('kit-sidebar-collapsed');
         if (content) content.style.display = 'block';
-        if (toggle) {
+      if (toggle) {
           toggle.setAttribute('aria-expanded', 'true');
-          toggle.classList.remove('collapsed');
+        toggle.classList.remove('collapsed');
         }
       } else {
         kitSidebarElement.classList.add('kit-sidebar-collapsed');
@@ -217,10 +217,10 @@ export async function updateKitSidebar() {
   const itemsEl = kitSidebarElement.querySelector('#kit-sidebar-items');
   const emptyStateEl = kitSidebarElement.querySelector('#kit-sidebar-empty-state');
   
-  // When there are items, ensure button says "View Full Kit"
+  // When there are items, ensure button says "Add All to Cart" (matches project builder step 5)
   const viewFullBtn = kitSidebarElement.querySelector('#kit-sidebar-view-full');
   if (viewFullBtn) {
-    viewFullBtn.textContent = 'View Full Kit';
+    viewFullBtn.textContent = 'Add All to Cart';
     viewFullBtn.href = 'pages/project-builder.html?continue=true';
   }
 
