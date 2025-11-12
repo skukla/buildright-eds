@@ -191,84 +191,146 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
     });
   }
 
-  // Quantity controls
+  // Quantity button controls
   document.querySelectorAll('.simple-qty-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault(); // Prevent form submission or default button behavior
-      e.stopPropagation(); // Prevent event bubbling
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const sku = btn.dataset.sku;
       const action = btn.dataset.action;
-      
-      // Find item in bundle
-      const item = bundle.items.find(i => i.sku === sku);
-      if (!item) return;
+      const qtyInput = btn.parentElement.querySelector('.simple-qty-input');
+      if (!qtyInput) return;
 
-      // Update quantity
+      let qty = parseInt(qtyInput.value) || 1;
       if (action === 'increase') {
-        item.quantity += 1;
-      } else if (action === 'decrease' && item.quantity > 1) {
-        item.quantity -= 1;
-      }
-
-      // Recalculate subtotal
-      item.subtotal = item.quantity * (item.unitPrice || 0);
-      
-      // Update state
-      updateCustomItemQuantity(sku, item.quantity);
-      
-      // Recalculate bundle totals
-      bundle.totalPrice = bundle.items.reduce((sum, i) => sum + i.subtotal, 0);
-      
-      // Update UI
-      const qtyDisplay = btn.parentElement.querySelector('.simple-qty-value');
-      if (qtyDisplay) {
-        qtyDisplay.textContent = item.quantity;
+        qty++;
+      } else if (action === 'decrease' && qty > 1) {
+        qty--;
       }
       
-      // Update subtotal display
-      const row = btn.closest('.simple-list-row');
-      if (row) {
-        const subtotalEl = row.querySelector('.simple-list-col-total');
-        if (subtotalEl) {
-          subtotalEl.textContent = `$${item.subtotal.toFixed(2)}`;
-        }
+      // Update input value immediately
+      qtyInput.value = qty;
+      
+      // Update the originalValue stored on the input element for the blur handler
+      // This prevents the blur handler from resetting the value
+      if (qtyInput.dataset.originalValue !== undefined) {
+        qtyInput.dataset.originalValue = qty.toString();
       }
       
-      // Update header totals
-      const subtitleEl = document.querySelector('.simple-list-subtitle');
-      if (subtitleEl) {
-        subtitleEl.textContent = `${bundle.items.length} items`;
-      }
-      
-      const totalEl = document.querySelector('.simple-list-total');
-      if (totalEl) {
-        totalEl.textContent = `$${bundle.totalPrice.toFixed(2)}`;
-      }
-
-      const wizardState = getWizardState() || {};
-      // Preserve currentStep to prevent navigation reset
-      // Use getCurrentStep() to get the actual current step from wizard-core
-      const currentStep = getCurrentStep();
-      wizardState.bundle = bundle;
-      wizardState.currentStep = currentStep; // Explicitly preserve current step
-      saveWizardState(wizardState);
-      
-      // Ensure step 5 radio button stays checked to prevent CSS-based navigation reset
-      const step5Radio = document.getElementById('wizard-step-5');
-      if (step5Radio && currentStep === 5) {
-        step5Radio.checked = true;
-      }
-      
-      // Prevent scrolling to top
-      // Store scroll position before any potential DOM updates
-      const scrollY = window.scrollY;
-      
-      // Use requestAnimationFrame to restore scroll position after any DOM updates
-      requestAnimationFrame(() => {
-        window.scrollTo(0, scrollY);
-      });
+      await updateItemQuantity(sku, qty, bundle, allItems);
     });
   });
+
+  // Quantity input controls
+  document.querySelectorAll('.simple-qty-input').forEach(input => {
+    // Store original value on the input element itself so it persists across updates
+    if (!input.dataset.originalValue) {
+      input.dataset.originalValue = input.value;
+    }
+    let originalValue = input.dataset.originalValue;
+    
+    // Clear input when focused (by click or tab)
+    input.addEventListener('focus', (e) => {
+      originalValue = e.target.value;
+      e.target.dataset.originalValue = originalValue;
+      e.target.value = '';
+    });
+    
+    // Handle quantity update on blur (after focus has moved)
+    input.addEventListener('blur', async (e) => {
+      const sku = input.dataset.sku;
+      let qty = parseInt(input.value);
+      
+      // Validate quantity
+      if (!input.value || isNaN(qty) || qty < 1) {
+        // Restore original value if invalid
+        input.value = originalValue;
+        return;
+      }
+      
+      if (qty > 9999) {
+        qty = 9999;
+        input.value = qty;
+      }
+      
+      // Only update if value actually changed
+      if (qty !== parseInt(originalValue)) {
+        await updateItemQuantity(sku, qty, bundle, allItems);
+        originalValue = qty.toString();
+        input.dataset.originalValue = originalValue;
+      } else {
+        // Even if value didn't change, restore it to ensure consistency
+        input.value = originalValue;
+      }
+    });
+    
+    // Prevent scroll when hovering over input
+    input.addEventListener('wheel', (e) => {
+      e.preventDefault();
+    });
+  });
+
+  // Helper function to update item quantity
+  async function updateItemQuantity(sku, qty, bundle, allItems) {
+    const item = allItems.find(i => i.sku === sku);
+    if (!item) return;
+    
+    // Update quantity and recalculate subtotal
+    item.quantity = qty;
+    item.subtotal = item.quantity * (item.unitPrice || 0);
+    
+    // Update state
+    updateCustomItemQuantity(sku, qty);
+    
+    // Recalculate bundle totals
+    bundle.totalPrice = bundle.items.reduce((sum, i) => sum + i.subtotal, 0);
+    
+    // Update subtotal display
+    const row = document.querySelector(`.simple-list-row[data-sku="${sku}"]`);
+    if (row) {
+      const subtotalEl = row.querySelector('.simple-list-col-total');
+      if (subtotalEl) {
+        subtotalEl.textContent = `$${item.subtotal.toFixed(2)}`;
+      }
+      
+      // Ensure the input value matches the updated quantity
+      const qtyInput = row.querySelector('.simple-qty-input');
+      if (qtyInput) {
+        qtyInput.value = item.quantity;
+      }
+    }
+    
+    // Update header totals
+    const subtitleEl = document.querySelector('.simple-list-subtitle');
+    if (subtitleEl) {
+      subtitleEl.textContent = `${bundle.items.length} items`;
+    }
+    
+    const totalEl = document.querySelector('.simple-list-total');
+    if (totalEl) {
+      totalEl.textContent = `$${bundle.totalPrice.toFixed(2)}`;
+    }
+
+    const wizardState = getWizardState() || {};
+    // Preserve currentStep to prevent navigation reset
+    const currentStep = getCurrentStep();
+    wizardState.bundle = bundle;
+    wizardState.currentStep = currentStep;
+    saveWizardState(wizardState);
+    
+    // Ensure step 5 radio button stays checked to prevent CSS-based navigation reset
+    const step5Radio = document.getElementById('wizard-step-5');
+    if (step5Radio && currentStep === 5) {
+      step5Radio.checked = true;
+    }
+    
+    // Prevent scrolling to top
+    const scrollY = window.scrollY;
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY);
+    });
+  }
 
   // Remove buttons
   document.querySelectorAll('.simple-remove-btn').forEach(btn => {

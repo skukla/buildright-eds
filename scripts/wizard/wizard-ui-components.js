@@ -34,9 +34,9 @@ export function createSimpleProductRow(item) {
       </div>
       <div class="simple-list-col-qty">
         <div class="simple-qty-controls">
-          <button class="simple-qty-btn" data-sku="${itemSku}" data-action="decrease">−</button>
-          <span class="simple-qty-value">${item.quantity}</span>
-          <button class="simple-qty-btn" data-sku="${itemSku}" data-action="increase">+</button>
+          <button class="simple-qty-btn" data-sku="${itemSku}" data-action="decrease" tabindex="-1">−</button>
+          <input type="number" class="simple-qty-input" data-sku="${itemSku}" value="${item.quantity}" min="1" max="9999">
+          <button class="simple-qty-btn" data-sku="${itemSku}" data-action="increase" tabindex="-1">+</button>
         </div>
       </div>
       <div class="simple-list-col-price">$${unitPrice.toFixed(2)}</div>
