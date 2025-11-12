@@ -50,6 +50,16 @@
   box-shadow: var(--shape-shadow-2);
 }
 
+.btn-error {
+  background-color: var(--color-error-500, #dc2626);
+  color: white;
+}
+
+.btn-error:hover {
+  background-color: var(--color-error-600, #b91c1c);
+  color: white;
+}
+
 .btn-cta {
   background-color: var(--color-accent-500);
   color: white;
@@ -288,6 +298,22 @@
   color: var(--color-negative-500);
 }
 
+/* Featured Category Cards */
+.featured-category-card {
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  transition: all 0.2s;
+  border: 1px solid var(--color-border);
+}
+
+.featured-category-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-brand-500);
+  box-shadow: var(--shape-shadow-2);
+}
+
 /* Featured Category Icons */
 .featured-category-icon {
   width: 64px;
@@ -313,6 +339,19 @@
 /* Hover state for category cards */
 .featured-category-card:hover .featured-category-icon {
   background: rgba(15, 91, 167, 0.15); /* Slightly darker on hover */
+}
+
+.featured-category-card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.featured-category-card p {
+  color: var(--color-text-light);
+  font-size: 0.875rem;
+  margin: 0;
 }
 
 /* Kit View Switcher */
@@ -1207,6 +1246,99 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
+/* Fade-in animation for newly added items */
+.kit-sidebar-item-newly-added {
+  animation: kitSidebarItemFadeIn 0.3s ease-out;
+}
+
+@keyframes kitSidebarItemFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Highlight animation for existing items when quantity is updated */
+.kit-sidebar-item-highlighted {
+  animation: kitSidebarItemHighlight 2s ease-out;
+  z-index: 1;
+  position: relative;
+}
+
+@keyframes kitSidebarItemHighlight {
+  0% {
+    background-color: var(--color-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+  20% {
+    background-color: var(--color-brand-100);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 0 3px var(--color-brand-300);
+    border-color: var(--color-brand-400);
+  }
+  50% {
+    background-color: var(--color-brand-50);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 0 0 2px var(--color-brand-200);
+    border-color: var(--color-brand-300);
+  }
+  100% {
+    background-color: var(--color-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Out-of-stock item styling */
+.kit-sidebar-item-out-of-stock {
+  background-color: var(--color-error-50, #fef2f2);
+  border-color: var(--color-error-300, #fca5a5);
+}
+
+.kit-sidebar-item-out-of-stock .kit-sidebar-item-name {
+  color: var(--color-error-700, #991b1b);
+}
+
+/* Out of stock badge - matches CUSTOM badge styling */
+.kit-sidebar-item-badge-out {
+  background: var(--color-error-500, #dc2626) !important;
+  color: white !important;
+}
+
+/* Ensure remove button and controls remain fully visible and clickable */
+.kit-sidebar-item-out-of-stock .kit-sidebar-item-remove,
+.kit-sidebar-item-out-of-stock .kit-sidebar-qty-btn,
+.kit-sidebar-item-out-of-stock .kit-sidebar-qty-input {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Disabled button state */
+.btn-disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Fade-out animation for items being removed */
+.kit-sidebar-item-removing {
+  animation: kitSidebarItemFadeOut 0.3s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes kitSidebarItemFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .kit-sidebar-item-image {
   width: 60px;
   height: 60px;
@@ -1230,11 +1362,25 @@
   gap: 0.5rem;
 }
 
+.kit-sidebar-item-header-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: start;
+}
+
 .kit-sidebar-item-name-row {
   display: flex;
   align-items: center;
+  min-width: 0;
+}
+
+.kit-sidebar-item-badges {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-self: flex-start;
 }
 
 .kit-sidebar-item-name {
@@ -1259,6 +1405,32 @@
   flex-shrink: 0;
   text-transform: uppercase;
   letter-spacing: 0.025em;
+}
+
+/* Inventory status badges */
+.kit-sidebar-item-status {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--shape-border-radius-2);
+  margin-left: 0.5rem;
+  white-space: nowrap;
+}
+
+.kit-sidebar-item-status-in {
+  background-color: var(--color-success-100, #dcfce7);
+  color: var(--color-success-700, #15803d);
+}
+
+.kit-sidebar-item-status-low {
+  background-color: var(--color-warning-100, #fef3c7);
+  color: var(--color-warning-700, #a16207);
+}
+
+.kit-sidebar-item-status-out {
+  background-color: var(--color-error-100, #fee2e2);
+  color: var(--color-error-700, #991b1b);
 }
 
 
@@ -1616,6 +1788,43 @@
   .project-builder-resume-actions button {
     flex: 1;
   }
+}
+
+/* Inventory notification */
+.kit-inventory-notification {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  max-width: 400px;
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-radius: var(--shape-border-radius-3);
+  box-shadow: var(--shape-shadow-3);
+  z-index: 10001;
+  font: var(--type-body-1-default-font);
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.kit-inventory-notification-error {
+  background-color: var(--color-error-50, #fef2f2);
+  border: 2px solid var(--color-error-500, #dc2626);
+  color: var(--color-error-700, #991b1b);
+}
+
+.kit-inventory-notification-warning {
+  background-color: var(--color-warning-50, #fffbeb);
+  border: 2px solid var(--color-warning-500, #f59e0b);
+  color: var(--color-warning-700, #92400e);
 }
 
 .kit-sidebar-actions-bottom {

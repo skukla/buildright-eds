@@ -3,6 +3,7 @@
 import { getWizardState, saveWizardState, getFullKit, removeItemFromKit, updateCustomItemQuantity, updateBundleItemQuantity } from './project-builder.js';
 import { getProductImageUrl } from './data-mock.js';
 import { escapeHtml } from './project-builder-constants.js';
+import { parseHTML, parseHTMLFragment } from './utils.js';
 
 let kitSidebarElement = null;
 let kitSidebarBackdrop = null;
@@ -93,12 +94,7 @@ export async function initKitSidebar() {
  * Create kit sidebar DOM structure
  */
 function createKitSidebar() {
-  kitSidebarElement = document.createElement('div');
-  kitSidebarElement.className = 'kit-sidebar';
-  kitSidebarElement.id = 'kit-sidebar';
-  kitSidebarElement.setAttribute('aria-label', 'Project Kit Summary');
-  
-  kitSidebarElement.innerHTML = `
+  const sidebarHTML = `
     <div class="kit-sidebar-header">
       <button class="kit-sidebar-toggle" id="kit-sidebar-toggle" aria-expanded="true" aria-label="Toggle kit sidebar">
         <span class="kit-sidebar-toggle-icon">
@@ -123,13 +119,25 @@ function createKitSidebar() {
         <p class="kit-sidebar-empty-description">Add items from the catalog to get started</p>
       </div>
       <div class="kit-sidebar-actions-bottom">
-        <a href="pages/project-builder.html?continue=true" class="btn btn-primary btn-sm" id="kit-sidebar-view-full">Add All to Cart</a>
+        <button class="btn btn-primary btn-sm" id="kit-sidebar-view-full">Add All to Cart</button>
         <button class="kit-sidebar-exit-btn" id="kit-sidebar-exit-btn">
           Exit Kit Mode
         </button>
       </div>
     </div>
   `;
+  
+  // Create wrapper div and append parsed content
+  kitSidebarElement = document.createElement('div');
+  kitSidebarElement.className = 'kit-sidebar';
+  kitSidebarElement.id = 'kit-sidebar';
+  kitSidebarElement.setAttribute('aria-label', 'Project Kit Summary');
+  
+  // Parse and append the sidebar content
+  const fragment = parseHTMLFragment(sidebarHTML);
+  while (fragment.firstChild) {
+    kitSidebarElement.appendChild(fragment.firstChild);
+  }
 
   // Setup toggle functionality
   const toggleBtn = kitSidebarElement.querySelector('#kit-sidebar-toggle');
@@ -148,19 +156,94 @@ function createKitSidebar() {
         window.location.reload();
     });
   }
+  
+  // Setup "Add All to Cart" button
+  const addToCartBtn = kitSidebarElement.querySelector('#kit-sidebar-view-full');
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const fullKit = getFullKit();
+      if (!fullKit || !fullKit.items || fullKit.items.length === 0) {
+        return;
+      }
+      
+      // Check if any items are out of stock (should be prevented by disabled button, but double-check)
+      const hasOutOfStock = await checkAndHighlightOutOfStockItems();
+      if (hasOutOfStock) {
+        return; // Button should be disabled, but prevent action if somehow clicked
+      }
+      
+      // Add to cart
+      addToCartBtn.disabled = true;
+      addToCartBtn.textContent = 'Adding to cart...';
+      
+      await addKitToCart(fullKit);
+      
+      // Navigate to cart
+      window.location.href = 'pages/cart.html';
+    });
+  }
+  
+  // Prevent page scrolling when mouse is over the flyout
+  // Always capture scroll events when hovering over the flyout, regardless of boundaries
+  kitSidebarElement.addEventListener('wheel', (e) => {
+    const contentEl = kitSidebarElement.querySelector('.kit-sidebar-content');
+    if (!contentEl) {
+      // If no content element, allow page scroll
+      return;
+    }
+    
+    const { scrollHeight, clientHeight } = contentEl;
+    
+    // If content doesn't overflow, allow page scroll (flyout doesn't need scrolling)
+    if (scrollHeight <= clientHeight) {
+      return;
+    }
+    
+    // Always prevent page scroll when mouse is over the flyout
+    // The flyout will handle its own scrolling (or do nothing if at boundaries)
+    e.stopPropagation();
+  }, { passive: false });
 }
 
 /**
  * Update kit sidebar content
+ * @param {boolean} scrollToNewItem - If true, scroll to show the item
+ * @param {string|null} existingItemSku - If provided, item already exists - scroll to it and highlight instead of fading in
  */
-export async function updateKitSidebar() {
+export async function updateKitSidebar(scrollToNewItem = false, existingItemSku = null) {
+  const fullKit = getFullKit();
+  const state = getWizardState();
+  
+  // If kit becomes empty, exit kit mode
+  if (!fullKit || fullKit.items.length === 0) {
+    // Kit is empty - exit kit mode
+    if (kitSidebarElement) {
+      removeKitSidebar();
+    }
+    sessionStorage.removeItem('kit_mode_resume_choice');
+    sessionStorage.removeItem('buildright_wizard_state');
+    return;
+  }
+  
+  // If we have items but no sidebar, create and show it
   if (!kitSidebarElement) {
-    // If sidebar doesn't exist, create it
+    // Set kit_mode_resume_choice to 'edit' if not already set (so sidebar persists)
+    const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
+    if (!resumeChoice || resumeChoice === 'shop') {
+      sessionStorage.setItem('kit_mode_resume_choice', 'edit');
+    }
+    
+    // Create sidebar
     createKitSidebar();
+    
     // Append to body if not already there
     if (kitSidebarElement && !kitSidebarElement.parentElement) {
       document.body.appendChild(kitSidebarElement);
     }
+    
     // Check if we should force expansion
     const shouldExpand = sessionStorage.getItem('buildright_kit_sidebar_expanded') === 'true';
     if (shouldExpand) {
@@ -172,8 +255,17 @@ export async function updateKitSidebar() {
       const persistedCollapsed = sessionStorage.getItem('buildright_kit_sidebar_collapsed') === 'true';
       isExpanded = !persistedCollapsed;
     }
-    // Show sidebar
+    
+    // Show sidebar - ensure it's appended to body first
     if (kitSidebarElement) {
+      // Make sure it's in the DOM before applying classes
+      if (!kitSidebarElement.parentElement) {
+        document.body.appendChild(kitSidebarElement);
+      }
+      
+      // Force a reflow to ensure DOM is ready
+      void kitSidebarElement.offsetHeight;
+      
       kitSidebarElement.classList.add('kit-sidebar-open');
       kitSidebarElement.classList.add('kit-sidebar-visible');
       
@@ -185,9 +277,9 @@ export async function updateKitSidebar() {
         kitSidebarElement.classList.add('kit-sidebar-expanded');
         kitSidebarElement.classList.remove('kit-sidebar-collapsed');
         if (content) content.style.display = 'block';
-      if (toggle) {
+        if (toggle) {
           toggle.setAttribute('aria-expanded', 'true');
-        toggle.classList.remove('collapsed');
+          toggle.classList.remove('collapsed');
         }
       } else {
         kitSidebarElement.classList.add('kit-sidebar-collapsed');
@@ -198,21 +290,28 @@ export async function updateKitSidebar() {
           toggle.classList.add('collapsed');
         }
       }
+      
+      // Ensure it's visible (clear any inline styles that might hide it)
+      kitSidebarElement.style.display = '';
+      kitSidebarElement.style.visibility = '';
+      kitSidebarElement.style.opacity = '';
+      kitSidebarElement.style.transform = '';
+    }
+  } else {
+    // Sidebar exists - ensure it's visible if we have items
+    if (fullKit && fullKit.items && fullKit.items.length > 0) {
+      // Ensure sidebar is visible
+      if (!kitSidebarElement.parentElement) {
+        document.body.appendChild(kitSidebarElement);
+      }
+      kitSidebarElement.classList.add('kit-sidebar-open');
+      kitSidebarElement.classList.add('kit-sidebar-visible');
+      kitSidebarElement.style.display = '';
+      kitSidebarElement.style.visibility = '';
+      kitSidebarElement.style.opacity = '';
     }
   }
 
-  const fullKit = getFullKit();
-  const state = getWizardState();
-  
-  // If kit becomes empty, exit kit mode
-  if (!fullKit || fullKit.items.length === 0) {
-    // Kit is empty - exit kit mode
-    removeKitSidebar();
-    sessionStorage.removeItem('kit_mode_resume_choice');
-    sessionStorage.removeItem('buildright_wizard_state');
-    return;
-  }
-  
   // Show empty state if no items (shouldn't reach here due to check above, but keeping for safety)
   const itemsEl = kitSidebarElement.querySelector('#kit-sidebar-items');
   const emptyStateEl = kitSidebarElement.querySelector('#kit-sidebar-empty-state');
@@ -221,7 +320,8 @@ export async function updateKitSidebar() {
   const viewFullBtn = kitSidebarElement.querySelector('#kit-sidebar-view-full');
   if (viewFullBtn) {
     viewFullBtn.textContent = 'Add All to Cart';
-    viewFullBtn.href = 'pages/project-builder.html?continue=true';
+    viewFullBtn.disabled = false;
+    viewFullBtn.classList.remove('btn-error');
   }
 
   // Hide empty state and show items
@@ -251,22 +351,145 @@ export async function updateKitSidebar() {
     totalEl.textContent = `$${fullKit.totalPrice.toFixed(2)}`;
   }
 
-  // Update items list (show all items - list is scrollable)
-  if (itemsEl) {
-    // Create items HTML asynchronously for all items
-    const itemsHTML = await Promise.all(
-      fullKit.items.map(item => createKitSidebarItem(item))
-    );
+    // Update items list (show all items - list is scrollable)
+    if (itemsEl) {
+      // Create items HTML asynchronously for all items
+      const itemsHTML = await Promise.all(
+        fullKit.items.map(item => createKitSidebarItem(item))
+      );
 
-    itemsEl.innerHTML = `
-      <div class="kit-sidebar-items-list">
-        ${itemsHTML.join('')}
-      </div>
-    `;
+      const itemsListHTML = `
+        <div class="kit-sidebar-items-list">
+          ${itemsHTML.join('')}
+        </div>
+      `;
+      itemsEl.innerHTML = '';
+      itemsEl.appendChild(parseHTML(itemsListHTML));
 
-    // Setup quantity controls and remove buttons
-    setupKitSidebarItemListeners(fullKit);
+      // Setup quantity controls and remove buttons
+      setupKitSidebarItemListeners(fullKit);
+      
+      // Check inventory status and update button state
+      await checkAndHighlightOutOfStockItems();
+      
+      // Scroll to show item if requested
+      if (scrollToNewItem) {
+        const contentEl = kitSidebarElement.querySelector('.kit-sidebar-content');
+        const itemsList = itemsEl.querySelector('.kit-sidebar-items-list');
+        if (contentEl && itemsList) {
+          if (existingItemSku) {
+            // Existing item - find it, scroll to it, and highlight it
+            const existingItem = itemsList.querySelector(`.kit-sidebar-item[data-sku="${existingItemSku}"]`);
+            if (existingItem) {
+              // Wait for DOM to be ready
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  // Check if item is already visible in the viewport
+                  const itemRect = existingItem.getBoundingClientRect();
+                  const contentRect = contentEl.getBoundingClientRect();
+                  
+                  const isVisible = (
+                    itemRect.top >= contentRect.top &&
+                    itemRect.bottom <= contentRect.bottom &&
+                    itemRect.left >= contentRect.left &&
+                    itemRect.right <= contentRect.right
+                  );
+                  
+                  if (!isVisible) {
+                    // Item is not visible - scroll to it and highlight
+                    existingItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Small delay to let scroll start, then add highlight
+                    setTimeout(() => {
+                      existingItem.classList.add('kit-sidebar-item-highlighted');
+                      
+                      // Remove highlight after animation completes
+                      setTimeout(() => {
+                        existingItem.classList.remove('kit-sidebar-item-highlighted');
+                      }, 2000);
+                    }, 100);
+                  }
+                  // If item is already visible, don't highlight or scroll
+                });
+              });
+            }
+          } else {
+            // New item - fade in and scroll to bottom
+            const lastItem = itemsList.lastElementChild;
+            if (lastItem) {
+              lastItem.classList.add('kit-sidebar-item-newly-added');
+              // Remove the class after animation completes
+              setTimeout(() => {
+                lastItem.classList.remove('kit-sidebar-item-newly-added');
+              }, 300);
+            }
+            
+            // Wait a bit for the item to start rendering, then scroll smoothly
+            // Use double requestAnimationFrame to ensure DOM is fully rendered and painted
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                // Small delay to let the fade-in animation start
+                setTimeout(() => {
+                  contentEl.scrollTo({
+                    top: contentEl.scrollHeight,
+                    behavior: 'smooth'
+                  });
+                }, 50);
+              });
+            });
+          }
+        }
+      }
+    }
+}
+
+/**
+ * Check for out-of-stock items and update UI
+ */
+async function checkAndHighlightOutOfStockItems() {
+  const fullKit = getFullKit();
+  if (!fullKit || !fullKit.items || fullKit.items.length === 0) {
+    return false;
   }
+  
+  const { getProducts, getInventoryStatus, getPrimaryWarehouse } = await import('./data-mock.js');
+  const products = await getProducts();
+  const primaryWarehouse = getPrimaryWarehouse();
+  
+  let hasOutOfStock = false;
+  const itemsList = kitSidebarElement?.querySelector('.kit-sidebar-items-list');
+  
+  if (itemsList) {
+    for (const item of fullKit.items) {
+      const product = products.find(p => p.sku === item.sku);
+      const itemElement = itemsList.querySelector(`.kit-sidebar-item[data-sku="${item.sku}"]`);
+      
+      if (product && itemElement) {
+        const status = getInventoryStatus(product, primaryWarehouse);
+        
+        if (status === 'out-of-stock') {
+          hasOutOfStock = true;
+          itemElement.classList.add('kit-sidebar-item-out-of-stock');
+        } else {
+          itemElement.classList.remove('kit-sidebar-item-out-of-stock');
+        }
+      }
+    }
+  }
+  
+  // Disable "Add All to Cart" button if there are out-of-stock items
+  const addToCartBtn = kitSidebarElement?.querySelector('#kit-sidebar-view-full');
+  if (addToCartBtn) {
+    if (hasOutOfStock) {
+      addToCartBtn.disabled = true;
+      addToCartBtn.classList.add('btn-disabled');
+    } else {
+      addToCartBtn.disabled = false;
+      addToCartBtn.classList.remove('btn-disabled');
+    }
+  }
+  
+  return hasOutOfStock;
 }
 
 /**
@@ -278,15 +501,37 @@ async function createKitSidebarItem(item) {
   const itemSku = escapeHtml(item.sku);
   const isCustom = item.isCustom || false;
   
+  // Get inventory status for this item - only show if out of stock
+  let inventoryStatus = 'unknown';
+  let showOutOfStockBadge = false;
+  
+  try {
+    const { getProductBySKU, getInventoryStatus, getPrimaryWarehouse } = await import('./data-mock.js');
+    const product = await getProductBySKU(item.sku);
+    if (product) {
+      const primaryWarehouse = getPrimaryWarehouse();
+      const status = getInventoryStatus(product, primaryWarehouse);
+      inventoryStatus = status;
+      showOutOfStockBadge = (status === 'out-of-stock');
+    }
+  } catch (e) {
+    console.warn('Could not get inventory status for item:', item.sku, e);
+  }
+  
   return `
-    <div class="kit-sidebar-item" data-sku="${itemSku}">
+    <div class="kit-sidebar-item ${inventoryStatus === 'out-of-stock' ? 'kit-sidebar-item-out-of-stock' : ''}" data-sku="${itemSku}" data-inventory-status="${inventoryStatus}">
       <div class="kit-sidebar-item-image">
         <img src="${imageUrl}" alt="${itemName}" onerror="this.style.display='none'">
       </div>
       <div class="kit-sidebar-item-info">
-        <div class="kit-sidebar-item-name-row">
-          <div class="kit-sidebar-item-name">${itemName}</div>
-          ${isCustom ? '<span class="custom-item-badge">Custom</span>' : ''}
+        <div class="kit-sidebar-item-header-row">
+          <div class="kit-sidebar-item-name-row">
+            <div class="kit-sidebar-item-name">${itemName}</div>
+          </div>
+          <div class="kit-sidebar-item-badges">
+            ${isCustom ? '<span class="custom-item-badge">Custom</span>' : ''}
+            ${showOutOfStockBadge ? '<span class="custom-item-badge kit-sidebar-item-badge-out">OUT OF STOCK</span>' : ''}
+          </div>
         </div>
         <div class="kit-sidebar-item-details-row">
           <div class="kit-sidebar-item-qty">
@@ -475,15 +720,41 @@ function setupKitSidebarItemListeners(fullKit) {
       e.stopPropagation();
       const sku = btn.dataset.sku;
       
-      // Remove item from kit (handles both bundle and custom items)
-      const result = removeItemFromKit(sku);
+      // Find the item element to animate
+      const itemElement = btn.closest('.kit-sidebar-item');
       
-      if (result.removed) {
-        // Update sidebar to reflect changes
-        await updateKitSidebar();
+      if (itemElement) {
+        // Add fade-out class for smooth removal animation
+        itemElement.classList.add('kit-sidebar-item-removing');
         
-        // Dispatch event for other components
-        window.dispatchEvent(new CustomEvent('kitUpdated'));
+        // Wait for animation to complete before removing
+        setTimeout(async () => {
+          // Remove item from kit (handles both bundle and custom items)
+          const result = removeItemFromKit(sku);
+          
+          if (result.removed) {
+            // Update sidebar to reflect changes
+            await updateKitSidebar();
+            
+            // Re-check inventory after removal (this will re-enable button if no out-of-stock items remain)
+            await checkAndHighlightOutOfStockItems();
+            
+            // Dispatch event for other components
+            window.dispatchEvent(new CustomEvent('kitUpdated'));
+          } else {
+            // If removal failed, remove the animation class
+            itemElement.classList.remove('kit-sidebar-item-removing');
+          }
+        }, 300); // Match CSS animation duration
+      } else {
+        // Fallback if element not found
+        const result = removeItemFromKit(sku);
+        if (result.removed) {
+          await updateKitSidebar();
+          // Re-check inventory after removal
+          await checkAndHighlightOutOfStockItems();
+          window.dispatchEvent(new CustomEvent('kitUpdated'));
+        }
       }
     });
   });
@@ -530,6 +801,36 @@ async function clearKit() {
   window.dispatchEvent(new CustomEvent('kitUpdated'));
   window.location.reload();
 }
+
+/**
+ * Add kit to cart (helper function)
+ */
+async function addKitToCart(fullKit) {
+  const { addBundleToCart } = await import('./project-builder.js');
+  const state = getWizardState();
+  
+  // Create bundle object for cart
+  const bundle = {
+    bundleId: state.bundle?.bundleId || `kit-${Date.now()}`,
+    bundleName: state.bundle?.bundleName || 'Project Kit',
+    projectType: state.bundle?.projectType || 'custom',
+    projectDetail: state.bundle?.projectDetail || 'custom',
+    complexity: state.bundle?.complexity || 'moderate',
+    budget: state.bundle?.budget || 'custom',
+    items: fullKit.items.map(item => ({
+      sku: item.sku,
+      name: item.name,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice
+    })),
+    totalPrice: fullKit.totalPrice,
+    itemCount: fullKit.itemCount,
+    createdAt: state.bundle?.createdAt || new Date().toISOString()
+  };
+  
+  await addBundleToCart(bundle);
+}
+
 
 /**
  * Remove kit sidebar from DOM

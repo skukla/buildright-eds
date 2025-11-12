@@ -4,7 +4,7 @@
 import { getWizardState, saveWizardState, addBundleToCart, updateCustomItemQuantity, removeCustomItemFromKit, removeItemFromKit } from '../project-builder.js';
 import { getLabel, getProjectDetailLabel, escapeHtml } from '../project-builder-constants.js';
 import { getResourceLinks } from '../educational-content.js';
-import { parseHTMLFragment, handleError, showToast } from './wizard-utils.js';
+import { parseHTMLFragment, parseHTML, handleError, showToast } from './wizard-utils.js';
 import { getCurrentStep } from './wizard-core.js';
 import { createEmptyState } from './wizard-ui-components.js';
 
@@ -166,9 +166,9 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
   // Add all to cart button
   const addAllBtn = document.getElementById('add-all-to-cart-btn');
   if (addAllBtn) {
-    addAllBtn.addEventListener('click', () => {
+    addAllBtn.addEventListener('click', async () => {
       saveOrderToHistory(bundle);
-      addBundleToCart(bundle);
+      await addBundleToCart(bundle);
       window.location.href = 'pages/cart.html';
     });
   }
@@ -365,11 +365,13 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
             // No items left - show empty state
             const container = document.getElementById('bundle-container');
             if (container) {
-              container.innerHTML = createEmptyState(
+              const emptyStateHTML = createEmptyState(
                 'Your kit is empty', 
                 'Start the project builder to create your custom kit',
                 { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn-3' }
               );
+              container.innerHTML = '';
+              container.appendChild(parseHTML(emptyStateHTML));
               
               // Add event listener for restart button
               const restartBtn = document.getElementById('empty-state-restart-btn-3');
@@ -413,9 +415,9 @@ export function setupListViewEventListeners(bundle, itemsByGroup) {
   // Add all to cart button
   const addAllBtn = document.getElementById('add-all-to-cart-btn');
   if (addAllBtn) {
-    addAllBtn.addEventListener('click', () => {
+    addAllBtn.addEventListener('click', async () => {
       saveOrderToHistory(bundle);
-      addBundleToCart(bundle);
+      await addBundleToCart(bundle);
       window.location.href = 'pages/cart.html';
     });
   }
@@ -503,9 +505,9 @@ export function setupBundleEventListeners(bundle, itemsByCategory, includedGroup
     // Add bundle to cart button
     const addBtn = document.getElementById('add-bundle-btn');
     if (addBtn) {
-      addBtn.addEventListener('click', () => {
+      addBtn.addEventListener('click', async () => {
         saveOrderToHistory(bundle);
-        addBundleToCart(bundle);
+        await addBundleToCart(bundle);
         window.location.href = 'pages/cart.html';
       });
     }

@@ -2,7 +2,7 @@
 
 import { updateBundleItemQuantity, removeBundleFromCart } from '../../scripts/project-builder.js';
 
-export default function decorate(block) {
+export default async function decorate(block) {
   const bundleData = block.dataset.bundle;
   if (!bundleData) {
     console.error('Project bundle block missing bundle data');
@@ -29,7 +29,8 @@ export default function decorate(block) {
   // Populate bundle items
   const bundleItemsContainer = block.querySelector('.bundle-items');
   if (bundleItemsContainer && bundle.items) {
-    bundleItemsContainer.innerHTML = bundle.items.map(item => `
+    const { parseHTMLFragment } = await import('../../scripts/utils.js');
+    const itemsHTML = bundle.items.map(item => `
       <div class="bundle-item" data-sku="${item.sku}">
         <div class="bundle-item-info">
           <div class="bundle-item-name">${item.name}</div>
@@ -40,12 +41,14 @@ export default function decorate(block) {
             <input type="number" min="1" value="${item.quantity}" data-sku="${item.sku}" class="bundle-item-qty-input">
           </div>
         </div>
-        <div class="bundle-item-pricing">
-          <div class="bundle-item-unit-price">$${(item.unitPrice || 0).toFixed(2)} each</div>
-          <div class="bundle-item-subtotal">$${(item.subtotal || 0).toFixed(2)}</div>
-        </div>
+      <div class="bundle-item-pricing">
+        <div class="bundle-item-unit-price">$${(item.unitPrice || 0).toFixed(2)} each</div>
+        <div class="bundle-item-subtotal">$${(item.subtotal || 0).toFixed(2)}</div>
       </div>
+    </div>
     `).join('');
+    bundleItemsContainer.innerHTML = '';
+    bundleItemsContainer.appendChild(parseHTMLFragment(itemsHTML));
 
     // Setup quantity change handlers
     bundleItemsContainer.querySelectorAll('.bundle-item-qty-input').forEach(input => {
@@ -95,21 +98,11 @@ export default function decorate(block) {
   // Setup add to cart button
   const addBtn = block.querySelector('.bundle-add-btn');
   if (addBtn) {
-    addBtn.addEventListener('click', () => {
+    addBtn.addEventListener('click', async () => {
       // Import addBundleToCart dynamically to avoid circular dependency
-      import('../../scripts/project-builder.js').then(module => {
-        module.addBundleToCart(bundle);
-        
-        // Show notification
-        const notification = document.createElement('div');
-        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-success); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000;';
-        notification.textContent = 'Bundle added to cart!';
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-          notification.remove();
-        }, 3000);
-      });
+      const module = await import('../../scripts/project-builder.js');
+      // addBundleToCart now handles notifications internally, so we don't need to show a separate one
+      await module.addBundleToCart(bundle);
     });
   }
 

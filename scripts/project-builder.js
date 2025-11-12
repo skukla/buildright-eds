@@ -239,12 +239,81 @@ export async function generateBundle(wizardState) {
   };
 }
 
-// Add bundle to cart
-export function addBundleToCart(bundle) {
+// Check inventory for all items in a bundle
+export async function checkBundleInventory(bundle) {
+  const { getProductBySKU, getInventory, getInventoryStatus, getPrimaryWarehouse } = await import('./data-mock.js');
+  const primaryWarehouse = getPrimaryWarehouse();
+  
+  const inventoryResults = [];
+  let hasOutOfStock = false;
+  let hasLowStock = false;
+  
+  for (const item of bundle.items) {
+    const product = await getProductBySKU(item.sku);
+    if (!product) {
+      inventoryResults.push({
+        sku: item.sku,
+        name: item.name,
+        requestedQuantity: item.quantity,
+        availableQuantity: 0,
+        status: 'not-found',
+        warehouse: primaryWarehouse,
+        message: 'Product not found'
+      });
+      hasOutOfStock = true;
+      continue;
+    }
+    
+    const availableQuantity = getInventory(product, primaryWarehouse);
+    const status = getInventoryStatus(product, primaryWarehouse);
+    const canFulfill = availableQuantity >= item.quantity;
+    
+    if (!canFulfill) {
+      hasOutOfStock = true;
+    } else if (status === 'low-stock') {
+      hasLowStock = true;
+    }
+    
+    inventoryResults.push({
+      sku: item.sku,
+      name: item.name,
+      requestedQuantity: item.quantity,
+      availableQuantity: availableQuantity,
+      status: canFulfill ? status : 'out-of-stock',
+      warehouse: primaryWarehouse,
+      message: canFulfill 
+        ? (status === 'low-stock' ? `Low stock: ${availableQuantity} available` : 'In stock')
+        : `Insufficient inventory: ${availableQuantity} available, ${item.quantity} requested`
+    });
+  }
+  
+  return {
+    results: inventoryResults,
+    hasOutOfStock,
+    hasLowStock,
+    allInStock: !hasOutOfStock && !hasLowStock
+  };
+}
+
+// Add bundle to cart with inventory check
+export async function addBundleToCart(bundle, options = {}) {
+  const { skipInventoryCheck = false, showNotifications = true } = options;
+  
+  // Check inventory before adding to cart
+  let inventoryCheck = null;
+  if (!skipInventoryCheck) {
+    inventoryCheck = await checkBundleInventory(bundle);
+    
+    // If there are out-of-stock items, we can either:
+    // 1. Block adding to cart (strict mode)
+    // 2. Allow adding with a warning (default)
+    // For now, we'll allow adding but show warnings
+  }
+  
   // Get cart from localStorage
   const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
   
-  // Add bundle metadata
+  // Add bundle metadata with inventory status
   const bundleEntry = {
     type: 'bundle',
     bundleId: bundle.bundleId,
@@ -261,7 +330,12 @@ export function addBundleToCart(bundle) {
     })),
     totalPrice: bundle.totalPrice,
     itemCount: bundle.itemCount,
-    createdAt: bundle.createdAt
+    createdAt: bundle.createdAt,
+    inventoryCheck: inventoryCheck ? {
+      checkedAt: new Date().toISOString(),
+      hasOutOfStock: inventoryCheck.hasOutOfStock,
+      hasLowStock: inventoryCheck.hasLowStock
+    } : null
   };
 
   cart.push(bundleEntry);
@@ -270,7 +344,53 @@ export function addBundleToCart(bundle) {
   // Dispatch cart updated event
   window.dispatchEvent(new CustomEvent('cartUpdated'));
   
-  return cart;
+  // Show notifications if requested
+  if (showNotifications && inventoryCheck) {
+    if (inventoryCheck.hasOutOfStock) {
+      // Show warning notification
+      const notification = document.createElement('div');
+      notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-warning, #ff9800); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000; max-width: 400px;';
+      notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 0.5rem;">Bundle added with inventory warnings</div>
+        <div style="font-size: 0.9rem;">
+          ${inventoryCheck.results.filter(r => r.status === 'out-of-stock' || r.status === 'not-found').length} item(s) have insufficient inventory.
+        </div>
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 5000);
+    } else if (inventoryCheck.hasLowStock) {
+      // Show info notification
+      const notification = document.createElement('div');
+      notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-info, #2196F3); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000; max-width: 400px;';
+      notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 0.5rem;">Bundle added to cart</div>
+        <div style="font-size: 0.9rem;">Some items have low stock availability.</div>
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 4000);
+    } else {
+      // Show success notification
+      const notification = document.createElement('div');
+      notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-success, #4CAF50); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000;';
+      notification.textContent = 'Bundle added to cart!';
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  }
+  
+  return {
+    cart,
+    inventoryCheck
+  };
 }
 
 // Get bundle from cart by bundleId
