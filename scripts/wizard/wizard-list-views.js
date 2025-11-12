@@ -6,6 +6,7 @@ import { getLabel, getProjectDetailLabel, escapeHtml } from '../project-builder-
 import { getResourceLinks } from '../educational-content.js';
 import { parseHTMLFragment, handleError, showToast } from './wizard-utils.js';
 import { getCurrentStep } from './wizard-core.js';
+import { createEmptyState } from './wizard-ui-components.js';
 
 /**
  * Save order to history
@@ -178,6 +179,8 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
     browseCatalogBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      // Set flag to auto-enter kit mode (skip resume banner)
+      sessionStorage.setItem('kit_mode_resume_choice', 'edit');
       // Set flag to ensure kit sidebar is expanded when navigating to catalog
       sessionStorage.setItem('buildright_kit_sidebar_expanded', 'true');
       // Navigate to catalog (All Products) using absolute path to ensure correct navigation
@@ -305,7 +308,24 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
               // No items left - show empty state
               const container = document.getElementById('bundle-container');
               if (container) {
-                container.innerHTML = '<div class="error-message">Your kit is empty. Please generate a new kit or add items.</div>';
+                container.innerHTML = createEmptyState(
+                  'Your kit is empty', 
+                  'Start the project builder to create your custom kit',
+                  { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn-3' }
+                );
+                
+                // Add event listener for restart button
+                const restartBtn = document.getElementById('empty-state-restart-btn-3');
+                if (restartBtn) {
+                  restartBtn.addEventListener('click', () => {
+                    // Navigate to step 1
+                    const step1Radio = document.getElementById('wizard-step-1');
+                    if (step1Radio) {
+                      step1Radio.checked = true;
+                      step1Radio.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                  });
+                }
               }
             }
           }

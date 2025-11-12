@@ -427,3 +427,28 @@ export function createProjectNotes() {
   return parseHTML(html);
 }
 
+/**
+ * Create empty state component
+ * @param {string} title - Empty state title
+ * @param {string} description - Empty state description
+ * @param {Object} options - Optional configuration
+ * @param {string} options.actionLabel - Label for action button
+ * @param {string} options.actionId - ID for action button (for event binding)
+ * @returns {string} HTML string
+ */
+export function createEmptyState(title = 'Your kit is empty', description = 'Add items from the catalog to get started', options = {}) {
+  const { actionLabel, actionId } = options;
+  
+  const actionButton = actionLabel && actionId 
+    ? `<button class="btn btn-primary btn-lg kit-empty-state-action" id="${actionId}">${escapeHtml(actionLabel)}</button>`
+    : '';
+  
+  return `
+    <div class="kit-empty-state">
+      <h3 class="kit-empty-state-title">${escapeHtml(title)}</h3>
+      <p class="kit-empty-state-description">${escapeHtml(description)}</p>
+      ${actionButton}
+    </div>
+  `;
+}
+
