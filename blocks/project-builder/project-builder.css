@@ -254,6 +254,7 @@
     }
 
     .wizard-option {
+      position: relative;
       border: 2px solid var(--color-border);
       border-radius: var(--shape-border-radius-3);
       padding: 1.5rem;
@@ -265,7 +266,6 @@
       flex-direction: column;
       align-items: center;
       gap: 1rem;
-      position: relative;
     }
 
     .wizard-option:hover {
@@ -292,6 +292,25 @@
       border-width: 3px;
       background: rgba(15, 91, 167, 0.08); /* --color-brand-500 with 8% opacity */
       box-shadow: var(--shape-shadow-1);
+    }
+
+    .wizard-option:has(.wizard-option-input:checked)::after {
+      content: '✓';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 32px;
+      background: var(--color-brand-500);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.125rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      z-index: 3;
     }
 
     .wizard-icon {
