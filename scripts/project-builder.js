@@ -1,6 +1,6 @@
 // Project Builder - Wizard logic and recommendation engine
 
-import { getProducts, getProductsByProjectType, getProductsByCategory, getPrice, getInventoryStatus, getPrimaryWarehouse } from './data-mock.js';
+import { getProducts, getProductsByProjectType, getPrice, getInventoryStatus, getPrimaryWarehouse } from './data-mock.js';
 
 let recommendationsData = null;
 
@@ -35,6 +35,12 @@ export function getWizardState() {
 
 // Save wizard state to sessionStorage
 export function saveWizardState(state) {
+  // Ensure customItems array exists
+  if (!state.customItems) {
+    state.customItems = [];
+  }
+  // Add lastModified timestamp
+  state.lastModified = new Date().toISOString();
   sessionStorage.setItem('buildright_wizard_state', JSON.stringify(state));
 }
 
@@ -91,26 +97,10 @@ export async function generateBundle(wizardState) {
       });
     }
 
-    // Filter by price tier (budget) if available in mock data
-    if (budget) {
-      products = products.filter(p => {
-        // Mock data may not have price_tier, so we'll filter by actual price
-        // In real ACO data, this would be filtered by the AC-Policy-Budget-Range header
-        const price = getPrice(p, 1);
-        const budgetRanges = {
-          under_5k: [0, 5000],
-          '5k_15k': [5000, 15000],
-          '15k_30k': [15000, 30000],
-          '30k_50k': [30000, 50000],
-          '50k_plus': [50000, Infinity]
-        };
-        const range = budgetRanges[budget];
-        if (range) {
-          return price >= range[0] && price < range[1];
-        }
-        return true;
-      });
-    }
+    // Filter by price tier (budget) - REMOVED: This was filtering by individual product price
+    // which doesn't make sense. Budget should control total bundle price, not individual product prices.
+    // Individual products can be any price - the total quantity * price determines if it fits the budget.
+    // Budget filtering is handled later when calculating bundle totals.
 
   // Get budget constraints
   const budgetConfig = recData.budgetRanges[budget] || recData.budgetRanges['5k_15k'];
@@ -314,5 +304,151 @@ export function updateBundleItemQuantity(bundleId, sku, quantity) {
   }
   
   return cart;
+}
+
+// Add custom item to kit
+export async function addCustomItemToKit(sku, quantity = 1, reason = 'Added from catalog') {
+  const state = getWizardState();
+  if (!state.customItems) {
+    state.customItems = [];
+  }
+  
+  // Check if item already exists
+  const existingIndex = state.customItems.findIndex(item => item.sku === sku);
+  
+  if (existingIndex >= 0) {
+    // Update quantity
+    state.customItems[existingIndex].quantity += quantity;
+    state.customItems[existingIndex].subtotal = state.customItems[existingIndex].unitPrice * state.customItems[existingIndex].quantity;
+  } else {
+    // Fetch product details
+    const { getProducts, getPrice, getInventoryStatus, getPrimaryWarehouse } = await import('./data-mock.js');
+    const products = await getProducts();
+    const product = products.find(p => p.sku === sku);
+    
+    if (product) {
+      const unitPrice = getPrice(product, 1);
+      const subtotal = unitPrice * quantity;
+      
+      state.customItems.push({
+        sku: sku,
+        name: product.name,
+        category: product.category || 'Other',
+        quantity: quantity,
+        unitPrice: unitPrice,
+        subtotal: subtotal,
+        reason: reason,
+        isCustom: true,
+        inventoryStatus: getInventoryStatus(product, getPrimaryWarehouse())
+      });
+    } else {
+      // Product not found - use placeholder
+      state.customItems.push({
+        sku: sku,
+        name: `Product ${sku}`,
+        category: 'Other',
+        quantity: quantity,
+        unitPrice: 0,
+        subtotal: 0,
+        reason: reason,
+        isCustom: true,
+        inventoryStatus: 'unknown'
+      });
+    }
+  }
+  
+  saveWizardState(state);
+  
+  // Dispatch kit updated event to update sidebar if it exists
+  window.dispatchEvent(new CustomEvent('kitUpdated'));
+  
+  return state;
+}
+
+// Remove custom item from kit
+export function removeCustomItemFromKit(sku) {
+  const state = getWizardState();
+  if (!state.customItems) {
+    return state;
+  }
+  
+  state.customItems = state.customItems.filter(item => item.sku !== sku);
+  saveWizardState(state);
+  return state;
+}
+
+// Remove item from kit (handles both bundle items and custom items)
+export function removeItemFromKit(sku) {
+  const state = getWizardState();
+  
+  // Remove from custom items if it exists there
+  if (state.customItems) {
+    const customItemIndex = state.customItems.findIndex(item => item.sku === sku);
+    if (customItemIndex !== -1) {
+      state.customItems.splice(customItemIndex, 1);
+      // If customItems array is empty, remove it
+      if (state.customItems.length === 0) {
+        delete state.customItems;
+      }
+      saveWizardState(state);
+      return { removed: true, source: 'custom' };
+    }
+  }
+  
+  // Remove from bundle items if it exists there
+  if (state.bundle && state.bundle.items) {
+    const bundleItemIndex = state.bundle.items.findIndex(item => item.sku === sku);
+    if (bundleItemIndex !== -1) {
+      state.bundle.items.splice(bundleItemIndex, 1);
+      
+      // Recalculate bundle totals
+      state.bundle.totalPrice = state.bundle.items.reduce((sum, item) => sum + (item.subtotal || 0), 0);
+      state.bundle.itemCount = state.bundle.items.length;
+      
+      saveWizardState(state);
+      return { removed: true, source: 'bundle' };
+    }
+  }
+  
+  return { removed: false, source: null };
+}
+
+// Update custom item quantity
+export function updateCustomItemQuantity(sku, quantity) {
+  const state = getWizardState();
+  if (!state.customItems) {
+    return state;
+  }
+  
+  const item = state.customItems.find(i => i.sku === sku);
+  if (item) {
+    item.quantity = Math.max(1, quantity);
+    item.subtotal = item.unitPrice * item.quantity;
+    saveWizardState(state);
+  }
+  
+  return state;
+}
+
+// Get full kit (bundle items + custom items)
+export function getFullKit() {
+  const state = getWizardState();
+  const bundle = state.bundle;
+  const customItems = state.customItems || [];
+  
+  if (!bundle) {
+    return { items: customItems, itemCount: customItems.length, totalPrice: 0 };
+  }
+  
+  // Combine bundle items with custom items
+  const allItems = [...bundle.items, ...customItems];
+  const totalPrice = allItems.reduce((sum, item) => sum + (item.subtotal || 0), 0);
+  
+  return {
+    ...bundle,
+    items: allItems,
+    itemCount: allItems.length,
+    totalPrice: totalPrice
+  };
 }
 

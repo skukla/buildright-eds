@@ -6,7 +6,57 @@ import './cart-manager.js';
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   initializeApp();
+  initializeKitSidebar();
 });
+
+// Initialize kit sidebar only on catalog pages (NOT on project builder pages)
+async function initializeKitSidebar() {
+  // Check if we're on a page that should show the kit sidebar
+  // Body classes are set synchronously in inline scripts before DOMContentLoaded
+  const pathname = window.location.pathname.toLowerCase();
+  const hasCatalogPath = pathname.includes('catalog');
+  const hasCatalogClass = document.body.classList.contains('page-catalog');
+  const hasProjectBuilderPath = pathname.includes('project-builder');
+  const hasProjectBuilderClass = document.body.classList.contains('page-project-builder');
+  
+  const isCatalogPage = hasCatalogPath || hasCatalogClass;
+  const isProjectBuilderPage = hasProjectBuilderPath || hasProjectBuilderClass;
+  
+  // Only show kit sidebar on catalog pages, NOT on project builder pages
+  if (isCatalogPage && !isProjectBuilderPage) {
+    const { initKitSidebar } = await import('./kit-sidebar.js');
+    await initKitSidebar();
+    
+    // Listen for kit updates (use updateKitSidebar for smoother updates)
+    // Remove any existing listeners to avoid duplicates
+    const existingHandler = window._kitUpdatedHandler;
+    if (existingHandler) {
+      window.removeEventListener('kitUpdated', existingHandler);
+    }
+    
+    const kitUpdatedHandler = async (event) => {
+      // Skip re-render if the event indicates it's just a quantity update
+      if (event?.detail?.skipRerender) {
+        return;
+      }
+      const { updateKitSidebar } = await import('./kit-sidebar.js');
+      await updateKitSidebar();
+    };
+    window._kitUpdatedHandler = kitUpdatedHandler;
+    window.addEventListener('kitUpdated', kitUpdatedHandler);
+  } else if (isProjectBuilderPage) {
+    // Explicitly remove kit sidebar if we're on a project builder page
+    const { removeKitSidebar } = await import('./kit-sidebar.js');
+    removeKitSidebar();
+    
+    // Remove any existing kit update listeners
+    const existingHandler = window._kitUpdatedHandler;
+    if (existingHandler) {
+      window.removeEventListener('kitUpdated', existingHandler);
+      window._kitUpdatedHandler = null;
+    }
+  }
+}
 
 async function initializeApp() {
   // Decorate all blocks on the page

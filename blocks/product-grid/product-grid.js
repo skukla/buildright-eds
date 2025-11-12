@@ -26,6 +26,13 @@ export default async function decorate(block) {
     }
 
     const primaryWarehouse = getPrimaryWarehouse();
+    
+    // Check if kit mode is active (show "Add to Kit" if wizard state exists, even if empty)
+    const { getWizardState } = await import('../../scripts/project-builder.js');
+    const wizardState = getWizardState();
+    // Show "Add to Kit" buttons if there's a bundle (even if empty) or customItems exist
+    // This allows users to add items back even if kit became empty
+    const hasActiveKit = wizardState && (wizardState.bundle || wizardState.customItems);
 
     for (const product of products) {
       const price = getPrice(product, 1);
@@ -106,17 +113,45 @@ export default async function decorate(block) {
       const actions = document.createElement('div');
       actions.className = 'product-card-actions';
 
-      const addBtn = document.createElement('button');
-      addBtn.className = 'btn btn-primary btn-sm';
-      addBtn.textContent = 'Add to Cart';
-      addBtn.onclick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        window.dispatchEvent(new CustomEvent('addToCart', {
-          detail: { sku: product.sku, quantity: 1 }
-        }));
-      };
-      actions.appendChild(addBtn);
+      if (hasActiveKit) {
+        // Kit mode: Only show "Add to Kit" button
+        const addToKitBtn = document.createElement('button');
+        addToKitBtn.className = 'btn btn-primary btn-sm';
+        addToKitBtn.textContent = 'Add to Kit';
+        addToKitBtn.onclick = async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const { addCustomItemToKit } = await import('../../scripts/project-builder.js');
+          await addCustomItemToKit(product.sku, 1, `Added from catalog`);
+          
+          // Update kit sidebar (will show empty state if needed, or recreate if missing)
+          const { updateKitSidebar } = await import('../../scripts/kit-sidebar.js');
+          await updateKitSidebar();
+          
+          // Show feedback
+          const originalText = addToKitBtn.textContent;
+          addToKitBtn.textContent = 'Added!';
+          addToKitBtn.disabled = true;
+          setTimeout(() => {
+            addToKitBtn.textContent = originalText;
+            addToKitBtn.disabled = false;
+          }, 2000);
+        };
+        actions.appendChild(addToKitBtn);
+      } else {
+        // Normal mode: Show "Add to Cart" button
+        const addBtn = document.createElement('button');
+        addBtn.className = 'btn btn-primary btn-sm';
+        addBtn.textContent = 'Add to Cart';
+        addBtn.onclick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.dispatchEvent(new CustomEvent('addToCart', {
+            detail: { sku: product.sku, quantity: 1 }
+          }));
+        };
+        actions.appendChild(addBtn);
+      }
 
       footer.appendChild(actions);
       card.appendChild(footer);

@@ -13,6 +13,14 @@ export const WIZARD_CONSTANTS = {
   }
 };
 
+// Step to state property mapping
+export const STEP_STATE_MAP = {
+  '1': 'projectType',
+  '2': 'projectDetail',
+  '3': 'complexity',
+  '4': 'budget'
+};
+
 export const STEP_2_OPTIONS = {
   new_construction: [
     { value: 'residential_home', label: 'Residential Home' },
@@ -101,4 +109,5 @@ export function getProjectDetailLabel(projectType, projectDetail) {
   const option = options.find(opt => opt.value === projectDetail);
   return option ? option.label : projectDetail;
 }
+
 
