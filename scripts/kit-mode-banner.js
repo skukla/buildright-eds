@@ -22,7 +22,7 @@ function createKitModeResumeBanner() {
     <div class="kit-mode-resume-banner" id="kit-mode-resume-banner">
       <div class="kit-mode-resume-banner-content">
         <div class="kit-mode-resume-info">
-          <div class="kit-mode-resume-title">Your ${escapeHtml(bundleName)} project is still active</div>
+          <div class="kit-mode-resume-title">Continue building your ${escapeHtml(bundleName)}</div>
           <div class="kit-mode-resume-details">
             <span class="kit-mode-resume-count">${itemCount} items</span>
             <span class="kit-mode-resume-separator">•</span>
