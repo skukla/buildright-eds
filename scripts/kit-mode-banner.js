@@ -14,6 +14,10 @@ function createKitModeResumeBanner() {
   const itemCount = kit.itemCount || 0;
   const totalPrice = kit.totalPrice || 0;
   
+  // Determine button text based on current page
+  const isProjectBuilder = window.location.pathname.includes('project-builder');
+  const abandonButtonText = isProjectBuilder ? 'Start New Project' : 'Exit Kit Mode';
+  
   const html = `
     <div class="kit-mode-resume-banner" id="kit-mode-resume-banner">
       <div class="kit-mode-resume-banner-content">
@@ -27,7 +31,7 @@ function createKitModeResumeBanner() {
         </div>
         <div class="kit-mode-resume-actions">
           <button class="btn btn-primary btn-md" id="resume-kit-btn">Continue Editing Kit</button>
-          <button class="btn btn-outline btn-md" id="shop-normal-btn">Start New Project</button>
+          <button class="btn btn-outline btn-md" id="shop-normal-btn">${abandonButtonText}</button>
         </div>
       </div>
     </div>
