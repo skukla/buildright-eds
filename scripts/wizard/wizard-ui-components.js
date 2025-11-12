@@ -452,3 +452,42 @@ export function createEmptyState(title = 'Your kit is empty', description = 'Add
   `;
 }
 
+/**
+ * Create project details HTML for header
+ * Shows project details in a compact format with labels
+ * @param {Object} bundle - Bundle object (not used but kept for consistency)
+ * @returns {string} HTML string
+ */
+export function createProjectDetailsHTML() {
+  const wizardState = getWizardState() || {};
+  
+  // Get labels for project details
+  const projectTypeLabel = wizardState.projectType ? escapeHtml(getLabel('projectType', wizardState.projectType)) : '';
+  const projectDetailLabel = wizardState.projectType && wizardState.projectDetail 
+    ? escapeHtml(getProjectDetailLabel(wizardState.projectType, wizardState.projectDetail))
+    : '';
+  const complexityLabel = wizardState.complexity ? escapeHtml(getLabel('complexity', wizardState.complexity)) : '';
+  const budgetLabel = wizardState.budget ? escapeHtml(getLabel('budget', wizardState.budget)) : '';
+  
+  const details = [];
+  if (projectTypeLabel) details.push({ label: 'Type', value: projectTypeLabel });
+  if (projectDetailLabel) details.push({ label: 'Details', value: projectDetailLabel });
+  if (complexityLabel) details.push({ label: 'Complexity', value: complexityLabel });
+  if (budgetLabel) details.push({ label: 'Budget', value: budgetLabel });
+  
+  if (details.length === 0) {
+    return '';
+  }
+  
+  return `
+    <div class="simple-list-project-details">
+      ${details.map(detail => `
+        <div class="simple-list-project-detail-item">
+          <span class="simple-list-project-detail-label">${escapeHtml(detail.label)}</span>
+          <span class="simple-list-project-detail-value">${detail.value}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+

@@ -17,7 +17,8 @@ import {
   createBundleActions,
   createQuoteActions,
   createProjectNotes,
-  createEmptyState
+  createEmptyState,
+  createProjectDetailsHTML
 } from './wizard-ui-components.js';
 
 /**
@@ -177,12 +178,16 @@ export function displayListView(bundle, itemsByCategory, componentPrices, includ
   // Build simplified list view HTML
   const itemsHTML = allItems.map(item => createSimpleProductRow(item)).join('');
   
+  // Create project details HTML for header
+  const projectDetailsHTML = createProjectDetailsHTML();
+  
   const listViewHTML = `
     <div class="project-kit-list-view-simple" data-bundle-id="${bundle.bundleId}">
       <div class="simple-list-header">
         <div class="simple-list-header-content">
           <h3 class="simple-list-title">${escapeHtml(bundle.bundleName)}</h3>
-          <p class="simple-list-subtitle">${bundle.itemCount} items</p>
+          <p class="simple-list-subtitle">${bundle.itemCount} ${bundle.itemCount === 1 ? 'item' : 'items'}</p>
+          ${projectDetailsHTML}
         </div>
         <div class="simple-list-total">$${bundle.totalPrice.toFixed(2)}</div>
       </div>
@@ -212,6 +217,16 @@ export function displayListView(bundle, itemsByCategory, componentPrices, includ
   container.textContent = '';
   const listViewDiv = parseHTML(listViewHTML);
   container.appendChild(listViewDiv);
+
+  // Set separator width to match title width
+  requestAnimationFrame(() => {
+    const titleEl = listViewDiv.querySelector('.simple-list-title');
+    const detailsEl = listViewDiv.querySelector('.simple-list-project-details');
+    if (titleEl && detailsEl) {
+      const titleWidth = titleEl.offsetWidth;
+      detailsEl.style.setProperty('--project-title-width', `${titleWidth}px`);
+    }
+  });
 
   // Setup list view event listeners
   if (setupSimpleListViewEventListeners) {
