@@ -346,7 +346,7 @@ function showProjectBuilderResumeBanner(showResults, showStep) {
     <div class="project-builder-resume-banner" id="project-builder-resume-banner">
       <div class="project-builder-resume-banner-content">
         <div class="project-builder-resume-info">
-          <div class="project-builder-resume-title">Your ${escapeHtml(bundleName)} project is still active</div>
+          <div class="project-builder-resume-title">Continue editing your <span class="project-builder-resume-kit-name">${escapeHtml(bundleName)}</span>?</div>
           <div class="project-builder-resume-details">
             <span class="project-builder-resume-count">${itemCount} items</span>
             <span class="project-builder-resume-separator">•</span>
@@ -354,8 +354,8 @@ function showProjectBuilderResumeBanner(showResults, showStep) {
           </div>
         </div>
         <div class="project-builder-resume-actions">
-          <button class="btn btn-primary btn-md" id="continue-existing-kit-btn">Continue Editing Kit</button>
-          <button class="btn btn-outline btn-md" id="start-new-kit-btn">Start New Project</button>
+          <button class="btn btn-primary btn-md" id="continue-existing-kit-btn">Yes, Edit</button>
+          <button class="btn btn-outline btn-md" id="start-new-kit-btn">No, Start New</button>
         </div>
       </div>
     </div>

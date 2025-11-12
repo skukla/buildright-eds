@@ -1435,15 +1435,20 @@
 }
 
 .kit-mode-resume-title {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 500;
   margin-bottom: 0.25rem;
   line-height: 1.3;
 }
 
+.kit-mode-resume-kit-name {
+  font-weight: 600;
+}
+
 .kit-mode-resume-details {
   font-size: 0.875rem;
-  opacity: 0.95;
+  opacity: 0.9;
+  font-weight: 400;
   line-height: 1.4;
   display: flex;
   align-items: center;
@@ -1453,7 +1458,7 @@
 
 .kit-mode-resume-count,
 .kit-mode-resume-price {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.9375rem;
   opacity: 1;
 }
@@ -1534,15 +1539,20 @@
 }
 
 .project-builder-resume-title {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 500;
   margin-bottom: 0.25rem;
   line-height: 1.3;
 }
 
+.project-builder-resume-kit-name {
+  font-weight: 600;
+}
+
 .project-builder-resume-details {
   font-size: 0.875rem;
-  opacity: 0.95;
+  opacity: 0.9;
+  font-weight: 400;
   line-height: 1.4;
   display: flex;
   align-items: center;
@@ -1552,7 +1562,7 @@
 
 .project-builder-resume-count,
 .project-builder-resume-price {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.9375rem;
   opacity: 1;
 }
