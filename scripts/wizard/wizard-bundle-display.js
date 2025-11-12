@@ -16,7 +16,8 @@ import {
   createBundleProducts,
   createBundleActions,
   createQuoteActions,
-  createProjectNotes
+  createProjectNotes,
+  createEmptyState
 } from './wizard-ui-components.js';
 
 /**
@@ -59,7 +60,24 @@ export function displayBundle(bundle, setupSimpleListViewEventListeners, display
   // Ensure we have items
   if (!allItems || allItems.length === 0) {
     console.error('[Project Builder] No items to display');
-    container.innerHTML = '<div class="error-message">No items found in bundle. Please try generating your kit again.</div>';
+    container.innerHTML = createEmptyState(
+      'Your kit is empty', 
+      'Start the project builder to create your custom kit',
+      { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn' }
+    );
+    
+    // Add event listener for restart button
+    const restartBtn = document.getElementById('empty-state-restart-btn');
+    if (restartBtn) {
+      restartBtn.addEventListener('click', () => {
+        // Navigate to step 1
+        const step1Radio = document.getElementById('wizard-step-1');
+        if (step1Radio) {
+          step1Radio.checked = true;
+          step1Radio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    }
     return;
   }
   
@@ -101,6 +119,10 @@ export function displayBundle(bundle, setupSimpleListViewEventListeners, display
   wizardState.currentStep = currentStep; // Explicitly preserve current step
   saveWizardState(wizardState);
   
+  // Set kit mode resume choice to 'edit' when a new bundle is created/saved
+  // This ensures the kit sidebar automatically shows when navigating to catalog pages
+  sessionStorage.setItem('kit_mode_resume_choice', 'edit');
+  
   // Ensure step 5 radio button stays checked to prevent CSS-based navigation reset
   const step5Radio = document.getElementById('wizard-step-5');
   if (step5Radio && currentStep === 5) {
@@ -131,7 +153,24 @@ export function displayListView(bundle, itemsByCategory, componentPrices, includ
   });
   
   if (allItems.length === 0) {
-    container.innerHTML = '<div class="error-message">No items to display. Please try generating your kit again.</div>';
+    container.innerHTML = createEmptyState(
+      'Your kit is empty', 
+      'Start the project builder to create your custom kit',
+      { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn-2' }
+    );
+    
+    // Add event listener for restart button
+    const restartBtn = document.getElementById('empty-state-restart-btn-2');
+    if (restartBtn) {
+      restartBtn.addEventListener('click', () => {
+        // Navigate to step 1
+        const step1Radio = document.getElementById('wizard-step-1');
+        if (step1Radio) {
+          step1Radio.checked = true;
+          step1Radio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    }
     return;
   }
 
