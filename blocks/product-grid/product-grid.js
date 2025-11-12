@@ -27,12 +27,12 @@ export default async function decorate(block) {
 
     const primaryWarehouse = getPrimaryWarehouse();
     
-    // Check if kit mode is active (show "Add to Kit" if wizard state exists, even if empty)
-    const { getWizardState } = await import('../../scripts/project-builder.js');
+    // Check if kit mode is active (show "Add to Kit" if kit has items and user chose to edit)
+    const { getWizardState, hasKitItems } = await import('../../scripts/project-builder.js');
     const wizardState = getWizardState();
-    // Show "Add to Kit" buttons if there's a bundle (even if empty) or customItems exist
-    // This allows users to add items back even if kit became empty
-    const hasActiveKit = wizardState && (wizardState.bundle || wizardState.customItems);
+    const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
+    // Show "Add to Kit" buttons only if user explicitly chose to edit kit and kit has items
+    const hasActiveKit = resumeChoice === 'edit' && hasKitItems();
 
     for (const product of products) {
       const price = getPrice(product, 1);

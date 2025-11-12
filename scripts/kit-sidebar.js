@@ -9,21 +9,20 @@ let kitSidebarBackdrop = null;
 let isExpanded = true;
 
 /**
- * Initialize kit sidebar if wizard state has an active kit
+ * Initialize kit sidebar if wizard state has an active kit with items
  */
 export async function initKitSidebar() {
   const state = getWizardState();
+  const { hasKitItems } = await import('./project-builder.js');
   
-  // Only show sidebar if there's wizard state (bundle or customItems)
-  // Even if empty, show sidebar with empty state so users can add items back
-  // Check if bundle exists OR customItems exists (even if empty array)
-  const hasBundle = state && state.bundle;
-  const hasCustomItems = state && state.customItems && Array.isArray(state.customItems);
-  
-  if (!state || (!hasBundle && !hasCustomItems)) {
-    // Only remove sidebar if it exists - don't create it if there's no state
+  // Only show sidebar if kit has items - empty kits should not be resumable
+  if (!state || !hasKitItems()) {
+    // Only remove sidebar if it exists - don't create it if there's no state or kit is empty
     if (kitSidebarElement) {
       removeKitSidebar();
+      // Clear kit mode if kit is empty
+      sessionStorage.removeItem('kit_mode_resume_choice');
+      sessionStorage.removeItem('buildright_wizard_state');
     }
     return;
   }
@@ -48,25 +47,38 @@ export async function initKitSidebar() {
     if (shouldExpand) {
       isExpanded = true;
       sessionStorage.removeItem('buildright_kit_sidebar_expanded');
+      // Clear persisted collapsed state when forcing expansion
+      sessionStorage.removeItem('buildright_kit_sidebar_collapsed');
+    } else {
+      // Restore persisted collapsed state, default to expanded if not set
+      const persistedCollapsed = sessionStorage.getItem('buildright_kit_sidebar_collapsed') === 'true';
+      isExpanded = !persistedCollapsed;
     }
     
-    // Show sidebar (always visible, starts expanded)
+    // Show sidebar (always visible)
     kitSidebarElement.classList.add('kit-sidebar-open');
     kitSidebarElement.classList.add('kit-sidebar-visible');
-    kitSidebarElement.classList.add('kit-sidebar-expanded');
-    kitSidebarElement.classList.remove('kit-sidebar-collapsed');
     
-    // Ensure content is visible if expanded
+    // Apply expanded/collapsed state
     const content = kitSidebarElement.querySelector('.kit-sidebar-content');
-    if (content && isExpanded) {
-      content.style.display = 'block';
-    }
-    
-    // Ensure toggle button reflects expanded state
     const toggle = kitSidebarElement.querySelector('#kit-sidebar-toggle');
-    if (toggle) {
-      toggle.setAttribute('aria-expanded', isExpanded.toString());
-      toggle.classList.remove('collapsed');
+    
+    if (isExpanded) {
+      kitSidebarElement.classList.add('kit-sidebar-expanded');
+      kitSidebarElement.classList.remove('kit-sidebar-collapsed');
+      if (content) content.style.display = 'block';
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.classList.remove('collapsed');
+      }
+    } else {
+      kitSidebarElement.classList.add('kit-sidebar-collapsed');
+      kitSidebarElement.classList.remove('kit-sidebar-expanded');
+      if (content) content.style.display = 'none';
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.classList.add('collapsed');
+      }
     }
     
     // Ensure it's not hidden
@@ -107,12 +119,14 @@ function createKitSidebar() {
         <!-- Items will be populated here -->
       </div>
       <div class="kit-sidebar-empty-state" id="kit-sidebar-empty-state" style="display: none;">
-        <div class="kit-sidebar-empty-icon">📦</div>
-        <div class="kit-sidebar-empty-message">Your kit is empty</div>
-        <div class="kit-sidebar-empty-hint">Add items from the catalog to build your kit</div>
+        <h3 class="kit-sidebar-empty-title">Your kit is empty</h3>
+        <p class="kit-sidebar-empty-description">Add items from the catalog to get started</p>
       </div>
       <div class="kit-sidebar-actions-bottom">
         <a href="pages/project-builder.html?continue=true" class="btn btn-primary btn-sm" id="kit-sidebar-view-full">View Full Kit</a>
+        <button class="kit-sidebar-exit-btn" id="kit-sidebar-exit-btn">
+          Exit Kit Mode
+        </button>
       </div>
     </div>
   `;
@@ -121,6 +135,18 @@ function createKitSidebar() {
   const toggleBtn = kitSidebarElement.querySelector('#kit-sidebar-toggle');
   if (toggleBtn) {
     toggleBtn.addEventListener('click', toggleKitSidebar);
+  }
+  
+  // Setup exit kit mode button
+  const exitBtn = kitSidebarElement.querySelector('#kit-sidebar-exit-btn');
+  if (exitBtn) {
+    exitBtn.addEventListener('click', () => {
+      // Exit kit mode immediately - user can resume via the resume banner
+      // Only remove kit_mode_resume_choice - keep wizard state so user can resume
+      // The wizard state will be cleared if they choose "Abandon Kit" from the resume banner
+      sessionStorage.removeItem('kit_mode_resume_choice');
+      window.location.reload();
+    });
   }
 }
 
@@ -140,25 +166,37 @@ export async function updateKitSidebar() {
     if (shouldExpand) {
       isExpanded = true;
       sessionStorage.removeItem('buildright_kit_sidebar_expanded');
+      sessionStorage.removeItem('buildright_kit_sidebar_collapsed');
+    } else {
+      // Restore persisted collapsed state, default to expanded if not set
+      const persistedCollapsed = sessionStorage.getItem('buildright_kit_sidebar_collapsed') === 'true';
+      isExpanded = !persistedCollapsed;
     }
     // Show sidebar
     if (kitSidebarElement) {
       kitSidebarElement.classList.add('kit-sidebar-open');
       kitSidebarElement.classList.add('kit-sidebar-visible');
-      kitSidebarElement.classList.add('kit-sidebar-expanded');
-      kitSidebarElement.classList.remove('kit-sidebar-collapsed');
       
-      // Ensure content is visible if expanded
+      // Apply expanded/collapsed state
       const content = kitSidebarElement.querySelector('.kit-sidebar-content');
-      if (content && isExpanded) {
-        content.style.display = 'block';
-      }
-      
-      // Ensure toggle button reflects expanded state
       const toggle = kitSidebarElement.querySelector('#kit-sidebar-toggle');
-      if (toggle) {
-        toggle.setAttribute('aria-expanded', isExpanded.toString());
-        toggle.classList.remove('collapsed');
+      
+      if (isExpanded) {
+        kitSidebarElement.classList.add('kit-sidebar-expanded');
+        kitSidebarElement.classList.remove('kit-sidebar-collapsed');
+        if (content) content.style.display = 'block';
+        if (toggle) {
+          toggle.setAttribute('aria-expanded', 'true');
+          toggle.classList.remove('collapsed');
+        }
+      } else {
+        kitSidebarElement.classList.add('kit-sidebar-collapsed');
+        kitSidebarElement.classList.remove('kit-sidebar-expanded');
+        if (content) content.style.display = 'none';
+        if (toggle) {
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.classList.add('collapsed');
+        }
       }
     }
   }
@@ -166,39 +204,24 @@ export async function updateKitSidebar() {
   const fullKit = getFullKit();
   const state = getWizardState();
   
-  // Show empty state if no items
+  // If kit becomes empty, exit kit mode
+  if (!fullKit || fullKit.items.length === 0) {
+    // Kit is empty - exit kit mode
+    removeKitSidebar();
+    sessionStorage.removeItem('kit_mode_resume_choice');
+    sessionStorage.removeItem('buildright_wizard_state');
+    return;
+  }
+  
+  // Show empty state if no items (shouldn't reach here due to check above, but keeping for safety)
   const itemsEl = kitSidebarElement.querySelector('#kit-sidebar-items');
   const emptyStateEl = kitSidebarElement.querySelector('#kit-sidebar-empty-state');
   
-  if (!fullKit || fullKit.items.length === 0) {
-    // Show empty state
-    if (itemsEl) itemsEl.style.display = 'none';
-    if (emptyStateEl) emptyStateEl.style.display = 'block';
-    
-    // Update header to show empty state
-    const countEl = kitSidebarElement.querySelector('#kit-sidebar-count');
-    if (countEl) {
-      countEl.textContent = '0 items';
-    }
-    
-    const totalEl = kitSidebarElement.querySelector('#kit-sidebar-total');
-    if (totalEl) {
-      totalEl.textContent = '$0.00';
-    }
-    
-    // Update title even when empty
-    const titleEl = kitSidebarElement.querySelector('#kit-sidebar-title');
-    const labelCollapsedEl = kitSidebarElement.querySelector('#kit-sidebar-label-collapsed');
-    const bundleName = state.bundle?.bundleName || 'Project Kit';
-    
-    if (titleEl) {
-      titleEl.textContent = bundleName;
-    }
-    if (labelCollapsedEl) {
-      labelCollapsedEl.textContent = 'Project Kit';
-    }
-    
-    return;
+  // When there are items, ensure button says "View Full Kit"
+  const viewFullBtn = kitSidebarElement.querySelector('#kit-sidebar-view-full');
+  if (viewFullBtn) {
+    viewFullBtn.textContent = 'View Full Kit';
+    viewFullBtn.href = 'pages/project-builder.html?continue=true';
   }
 
   // Hide empty state and show items
@@ -482,13 +505,17 @@ function toggleKitSidebar() {
       content.style.display = 'block';
       kitSidebarElement.classList.add('kit-sidebar-expanded');
       kitSidebarElement.classList.remove('kit-sidebar-collapsed');
+      // Clear persisted collapsed state
+      sessionStorage.removeItem('buildright_kit_sidebar_collapsed');
     } else {
       // Collapse: hide content but keep sidebar visible (just header)
       content.style.display = 'none';
       kitSidebarElement.classList.add('kit-sidebar-collapsed');
       kitSidebarElement.classList.remove('kit-sidebar-expanded');
+      // Persist collapsed state
+      sessionStorage.setItem('buildright_kit_sidebar_collapsed', 'true');
     }
-    toggle.setAttribute('aria-expanded', isExpanded);
+    toggle.setAttribute('aria-expanded', isExpanded.toString());
     toggle.classList.toggle('collapsed', !isExpanded);
   }
 }

@@ -24,26 +24,47 @@ async function initializeKitSidebar() {
   
   // Only show kit sidebar on catalog pages, NOT on project builder pages
   if (isCatalogPage && !isProjectBuilderPage) {
-    const { initKitSidebar } = await import('./kit-sidebar.js');
-    await initKitSidebar();
+    // Check for kit mode resume banner first
+    const { getWizardState, hasKitItems } = await import('./project-builder.js');
+    const wizardState = getWizardState();
+    const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
     
-    // Listen for kit updates (use updateKitSidebar for smoother updates)
-    // Remove any existing listeners to avoid duplicates
-    const existingHandler = window._kitUpdatedHandler;
-    if (existingHandler) {
-      window.removeEventListener('kitUpdated', existingHandler);
-    }
-    
-    const kitUpdatedHandler = async (event) => {
-      // Skip re-render if the event indicates it's just a quantity update
-      if (event?.detail?.skipRerender) {
+    // Only show resume banner if kit has items
+    if (wizardState && hasKitItems() && !resumeChoice) {
+      // User has a kit with items but hasn't made a choice yet - show resume banner
+      const { showKitModeResumeBanner } = await import('./kit-mode-banner.js');
+      showKitModeResumeBanner();
+    } else if (resumeChoice === 'edit') {
+      // Check if kit still has items - if not, exit kit mode
+      if (!hasKitItems()) {
+        // Kit is empty, exit kit mode
+        sessionStorage.removeItem('kit_mode_resume_choice');
+        sessionStorage.removeItem('buildright_wizard_state');
         return;
       }
-      const { updateKitSidebar } = await import('./kit-sidebar.js');
-      await updateKitSidebar();
-    };
-    window._kitUpdatedHandler = kitUpdatedHandler;
-    window.addEventListener('kitUpdated', kitUpdatedHandler);
+      // User chose to edit kit - show sidebar
+      const { initKitSidebar } = await import('./kit-sidebar.js');
+      await initKitSidebar();
+      
+      // Listen for kit updates (use updateKitSidebar for smoother updates)
+      // Remove any existing listeners to avoid duplicates
+      const existingHandler = window._kitUpdatedHandler;
+      if (existingHandler) {
+        window.removeEventListener('kitUpdated', existingHandler);
+      }
+      
+      const kitUpdatedHandler = async (event) => {
+        // Skip re-render if the event indicates it's just a quantity update
+        if (event?.detail?.skipRerender) {
+          return;
+        }
+        const { updateKitSidebar } = await import('./kit-sidebar.js');
+        await updateKitSidebar();
+      };
+      window._kitUpdatedHandler = kitUpdatedHandler;
+      window.addEventListener('kitUpdated', kitUpdatedHandler);
+    }
+    // If resumeChoice === 'shop' or no wizard state, normal shopping mode (no sidebar)
   } else if (isProjectBuilderPage) {
     // Explicitly remove kit sidebar if we're on a project builder page
     const { removeKitSidebar } = await import('./kit-sidebar.js');

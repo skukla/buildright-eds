@@ -452,3 +452,9 @@ export function getFullKit() {
   };
 }
 
+// Check if kit has any items
+export function hasKitItems() {
+  const kit = getFullKit();
+  return kit && kit.items && kit.items.length > 0;
+}
+
