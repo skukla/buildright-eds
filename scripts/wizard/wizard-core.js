@@ -1,7 +1,7 @@
 // Wizard Core
 // Core wizard state and navigation functions
 
-import { getWizardState, saveWizardState, clearWizardState } from '../project-builder.js';
+import { getWizardState, saveWizardState, clearWizardState, getFullKit, hasKitItems } from '../project-builder.js';
 import { handleError } from './wizard-utils.js';
 import { STEP_STATE_MAP } from '../project-builder-constants.js';
 
@@ -71,6 +71,13 @@ export async function initWizard(setupEventListeners, showResults, showStep) {
       // Only restore saved state if explicitly continuing
       currentStep = wizardState.currentStep || 1;
       restoreWizardState(showResults, showStep);
+    } else if (wizardState.projectType && wizardState.bundle) {
+      // User has an existing kit but didn't explicitly continue - show prompt
+      // Don't auto-restore, wait for user choice
+      currentStep = 1;
+      if (showStep) showStep(1);
+      // Show banner to ask if they want to continue or start fresh
+      showProjectBuilderResumeBanner(showResults, showStep);
     } else {
       // Start fresh - clear any old session data
       clearWizardState();
@@ -305,5 +312,104 @@ export function prevStep(updateProgressBar, updateNavigation, updateSidebar) {
 export function updateProgress(updateProgressBar, updateNavigation, updateSidebar) {
   // Refresh current step to update progress indicators
   showStep(currentStep, updateProgressBar, updateNavigation, updateSidebar);
+}
+
+/**
+ * Show project builder resume banner when user has existing kit
+ * @param {Function} showResults - Function to show results
+ * @param {Function} showStep - Function to show step
+ */
+function showProjectBuilderResumeBanner(showResults, showStep) {
+  // Only show if kit has items
+  if (!hasKitItems()) {
+    return;
+  }
+  
+  const kit = getFullKit();
+  const bundleName = kit.bundleName || 'Project Kit';
+  const itemCount = kit.itemCount || 0;
+  const totalPrice = kit.totalPrice || 0;
+  
+  // Check if banner already exists
+  if (document.getElementById('project-builder-resume-banner')) {
+    return;
+  }
+  
+  // Find insertion point - after header, before breadcrumb (same as catalog pages)
+  const header = document.querySelector('.header');
+  if (!header) {
+    console.warn('[Project Builder] Header not found, cannot insert banner');
+    return;
+  }
+  
+  const bannerHTML = `
+    <div class="project-builder-resume-banner" id="project-builder-resume-banner">
+      <div class="project-builder-resume-banner-content">
+        <div class="project-builder-resume-info">
+          <div class="project-builder-resume-title">Your ${escapeHtml(bundleName)} project is still active</div>
+          <div class="project-builder-resume-details">
+            <span class="project-builder-resume-count">${itemCount} items</span>
+            <span class="project-builder-resume-separator">•</span>
+            <span class="project-builder-resume-price">$${totalPrice.toFixed(2)}</span>
+          </div>
+        </div>
+        <div class="project-builder-resume-actions">
+          <button class="btn btn-primary btn-md" id="continue-existing-kit-btn">Continue Editing Kit</button>
+          <button class="btn btn-outline btn-md" id="start-new-kit-btn">Start New Project</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = bannerHTML;
+  const banner = tempDiv.firstElementChild;
+  
+  // Insert after header (same placement as catalog pages)
+  header.insertAdjacentElement('afterend', banner);
+  
+  // Setup event handlers
+  const continueBtn = document.getElementById('continue-existing-kit-btn');
+  const startNewBtn = document.getElementById('start-new-kit-btn');
+  
+  if (continueBtn) {
+    continueBtn.addEventListener('click', () => {
+      // Remove banner
+      banner.remove();
+      // Restore wizard state and go to step 5 (same as View Full Kit with continue=true)
+      const wizardState = getWizardState();
+      currentStep = wizardState.currentStep || 5;
+      setCurrentStep(currentStep);
+      
+      // Restore wizard state (restores radio buttons and selections)
+      restoreWizardState(showResults, showStep);
+      
+      // Explicitly show step 5 to update UI properly - this ensures step highlighting,
+      // content visibility, and progress indicators are correct
+      // Note: restoreWizardState already calls showResults() to display the bundle
+      if (showStep) {
+        showStep(5);
+      }
+    });
+  }
+  
+  if (startNewBtn) {
+    startNewBtn.addEventListener('click', () => {
+      // Remove banner
+      banner.remove();
+      // Clear wizard state and start fresh
+      clearWizardState();
+      sessionStorage.removeItem('kit_mode_resume_choice');
+      currentStep = 1;
+      if (showStep) showStep(1);
+    });
+  }
+}
+
+// Helper function for escaping HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
