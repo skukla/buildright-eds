@@ -727,9 +727,9 @@
 }
 
 .simple-qty-btn:hover {
-  background: var(--color-brand-50);
+  background: var(--color-brand-500);
   border-color: var(--color-brand-500);
-  color: var(--color-brand-500);
+  color: white;
 }
 
 .simple-qty-input {
