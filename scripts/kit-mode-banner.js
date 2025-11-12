@@ -16,7 +16,7 @@ function createKitModeResumeBanner() {
   
   // Determine button text based on current page
   const isProjectBuilder = window.location.pathname.includes('project-builder');
-  const abandonButtonText = isProjectBuilder ? 'Start New Project' : 'Shop Normally';
+  const dismissButtonText = isProjectBuilder ? 'Start New Project' : 'Not Now';
   
   const html = `
     <div class="kit-mode-resume-banner" id="kit-mode-resume-banner">
@@ -31,7 +31,7 @@ function createKitModeResumeBanner() {
         </div>
         <div class="kit-mode-resume-actions">
           <button class="btn btn-primary btn-md" id="resume-kit-btn">Continue Editing Kit</button>
-          <button class="btn btn-outline btn-md" id="shop-normal-btn">${abandonButtonText}</button>
+          <button class="btn btn-outline btn-md" id="dismiss-banner-btn">${dismissButtonText}</button>
         </div>
       </div>
     </div>
@@ -48,12 +48,22 @@ export function showKitModeResumeBanner() {
     return;
   }
   
+  // Check if banner was dismissed on non-builder pages
+  const isProjectBuilder = window.location.pathname.includes('project-builder');
+  const wasDismissed = sessionStorage.getItem('kit_mode_banner_dismissed') === 'true';
+  
+  // Don't show banner on non-builder pages if it was dismissed
+  if (!isProjectBuilder && wasDismissed) {
+    return;
+  }
+  
   // Only show banner if kit has items - empty kits should not be resumable
   const kit = getFullKit();
   if (!kit || !kit.items || kit.items.length === 0) {
     // Kit is empty, clear state and don't show banner
     sessionStorage.removeItem('buildright_wizard_state');
     sessionStorage.removeItem('kit_mode_resume_choice');
+    sessionStorage.removeItem('kit_mode_banner_dismissed');
     return;
   }
   
@@ -82,36 +92,47 @@ export function showKitModeResumeBanner() {
  */
 function setupBannerEventHandlers() {
   const resumeBtn = document.getElementById('resume-kit-btn');
-  const shopBtn = document.getElementById('shop-normal-btn');
+  const dismissBtn = document.getElementById('dismiss-banner-btn');
   
   if (resumeBtn) {
     resumeBtn.addEventListener('click', () => {
       // Set session flag to enter kit mode
       sessionStorage.setItem('kit_mode_resume_choice', 'edit');
+      // Clear dismissed flag so banner can show again if they exit kit mode later
+      sessionStorage.removeItem('kit_mode_banner_dismissed');
       // Reload page to ensure all components are properly initialized
       window.location.reload();
     });
   }
   
-  if (shopBtn) {
-    shopBtn.addEventListener('click', () => {
-      // Clear wizard state
-      sessionStorage.removeItem('buildright_wizard_state');
-      sessionStorage.setItem('kit_mode_resume_choice', 'shop');
+  if (dismissBtn) {
+    dismissBtn.addEventListener('click', () => {
+      const isProjectBuilder = window.location.pathname.includes('project-builder');
       
-      // Hide banner
-      const banner = document.getElementById('kit-mode-resume-banner');
-      if (banner) {
-        banner.remove();
+      if (isProjectBuilder) {
+        // On Project Builder: "Start New Project" clears the wizard state and banner disappears everywhere
+        sessionStorage.removeItem('buildright_wizard_state');
+        sessionStorage.removeItem('kit_mode_banner_dismissed');
+        sessionStorage.setItem('kit_mode_resume_choice', 'shop');
+        
+        // Remove kit sidebar if it exists
+        import('./kit-sidebar.js').then(module => {
+          module.removeKitSidebar();
+        });
+        
+        // Reload page to refresh all components
+        window.location.reload();
+      } else {
+        // On other pages: "Not Now" just dismisses the banner without clearing state
+        // Set flag to not show banner again on non-builder pages during this session
+        sessionStorage.setItem('kit_mode_banner_dismissed', 'true');
+        
+        // Hide banner
+        const banner = document.getElementById('kit-mode-resume-banner');
+        if (banner) {
+          banner.remove();
+        }
       }
-      
-      // Remove kit sidebar if it exists
-      import('./kit-sidebar.js').then(module => {
-        module.removeKitSidebar();
-      });
-      
-      // Reload page to refresh all components
-      window.location.reload();
     });
   }
 }
