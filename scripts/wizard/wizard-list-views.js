@@ -276,61 +276,53 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
       e.stopPropagation();
       const sku = btn.dataset.sku;
       
-      // Find the item to get its name for confirmation
-      const item = allItems.find(i => i.sku === sku);
-      const itemName = item ? item.name : 'this item';
+      // Remove item from kit (handles both bundle and custom items)
+      const result = removeItemFromKit(sku);
       
-      if (confirm(`Remove ${itemName} from your kit?`)) {
-        // Remove item from kit (handles both bundle and custom items)
-        const result = removeItemFromKit(sku);
+      if (result.removed) {
+        // Get updated state after removal
+        const state = getWizardState();
         
-        if (result.removed) {
-          // Get updated state after removal
-          const state = getWizardState();
-          
-          // Re-render the bundle display
-          if (state.bundle && displayBundle) {
-            // The bundle.items has already been updated by removeItemFromKit
-            // Just need to re-render with the updated bundle
-            // displayBundle will merge bundle.items with customItems automatically
-            displayBundle(state.bundle);
-          } else if (displayBundle) {
-            // If no bundle, create a minimal one for display from custom items
-            const customItems = state.customItems || [];
-            if (customItems.length > 0) {
-              const minimalBundle = {
-                items: customItems,
-                itemCount: customItems.length,
-                totalPrice: customItems.reduce((sum, item) => sum + (item.subtotal || 0), 0)
-              };
-              displayBundle(minimalBundle);
-            } else {
-              // No items left - show empty state
-              const container = document.getElementById('bundle-container');
-              if (container) {
-                container.innerHTML = createEmptyState(
-                  'Your kit is empty', 
-                  'Start the project builder to create your custom kit',
-                  { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn-3' }
-                );
-                
-                // Add event listener for restart button
-                const restartBtn = document.getElementById('empty-state-restart-btn-3');
-                if (restartBtn) {
-                  restartBtn.addEventListener('click', () => {
-                    // Navigate to step 1
-                    const step1Radio = document.getElementById('wizard-step-1');
-                    if (step1Radio) {
-                      step1Radio.checked = true;
-                      step1Radio.dispatchEvent(new Event('change', { bubbles: true }));
-                    }
-                  });
-                }
+        // Re-render the bundle display
+        if (state.bundle && displayBundle) {
+          // The bundle.items has already been updated by removeItemFromKit
+          // Just need to re-render with the updated bundle
+          // displayBundle will merge bundle.items with customItems automatically
+          displayBundle(state.bundle);
+        } else if (displayBundle) {
+          // If no bundle, create a minimal one for display from custom items
+          const customItems = state.customItems || [];
+          if (customItems.length > 0) {
+            const minimalBundle = {
+              items: customItems,
+              itemCount: customItems.length,
+              totalPrice: customItems.reduce((sum, item) => sum + (item.subtotal || 0), 0)
+            };
+            displayBundle(minimalBundle);
+          } else {
+            // No items left - show empty state
+            const container = document.getElementById('bundle-container');
+            if (container) {
+              container.innerHTML = createEmptyState(
+                'Your kit is empty', 
+                'Start the project builder to create your custom kit',
+                { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn-3' }
+              );
+              
+              // Add event listener for restart button
+              const restartBtn = document.getElementById('empty-state-restart-btn-3');
+              if (restartBtn) {
+                restartBtn.addEventListener('click', () => {
+                  // Navigate to step 1
+                  const step1Radio = document.getElementById('wizard-step-1');
+                  if (step1Radio) {
+                    step1Radio.checked = true;
+                    step1Radio.dispatchEvent(new Event('change', { bubbles: true }));
+                  }
+                });
               }
             }
           }
-        } else {
-          alert('Could not remove item. Please try again.');
         }
       }
     });
