@@ -2,7 +2,7 @@
 .site-footer {
   background: linear-gradient(135deg, var(--color-secondary-700) 0%, #0f172a 100%);  /* Same gradient as hero for consistency */
   color: var(--color-text-inverse);
-  margin-top: 4rem;
+  margin-top: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
