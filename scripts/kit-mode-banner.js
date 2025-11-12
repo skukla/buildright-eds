@@ -27,7 +27,7 @@ function createKitModeResumeBanner() {
         </div>
         <div class="kit-mode-resume-actions">
           <button class="btn btn-primary btn-md" id="resume-kit-btn">Continue Editing Kit</button>
-          <button class="btn btn-outline btn-md" id="shop-normal-btn">Abandon Kit</button>
+          <button class="btn btn-outline btn-md" id="shop-normal-btn">Start New Project</button>
         </div>
       </div>
     </div>
