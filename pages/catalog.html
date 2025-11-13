@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    // Set base tag FIRST before any resources load
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith("/buildright-eds/");
-      const basePath = isGitHubPages ? "/buildright-eds/" : "/";
-      const baseTag = document.createElement("base");
-      baseTag.href = window.location.origin + basePath;
-      document.head.appendChild(baseTag);
-      window.BASE_PATH = basePath;
-    })();
-  </script>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
   <!-- Load critical data synchronously to prevent layout shift -->
@@ -32,13 +20,13 @@
     window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
   </script>
   <title>Product Catalog - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
-  <link rel="stylesheet" href="blocks/project-filter/project-filter.css">
-  <link rel="stylesheet" href="blocks/product-grid/product-grid.css">
-  <link rel="stylesheet" href="blocks/filters-sidebar/filters-sidebar.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
+  <link rel="stylesheet" href="../blocks/project-filter/project-filter.css">
+  <link rel="stylesheet" href="../blocks/product-grid/product-grid.css">
+  <link rel="stylesheet" href="../blocks/filters-sidebar/filters-sidebar.css">
   <!-- Critical CSS for active nav state to prevent layout shift -->
   <style>
     .nav-link.active, .nav-link[aria-current="page"] {
@@ -94,6 +82,14 @@
       pointer-events: none;
     }
   </style>
+  <script>
+    // Set BASE_PATH for scripts that need it
+    (function() {
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.startsWith('/buildright-eds/');
+      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
+    })();
+  </script>
 </head>
 <body>
 <script>
@@ -433,10 +429,10 @@
     </div>
   </section>
 
-  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
   <script type="module" src="blocks/header/header.js"></script>
   <script type="module">
-    import { decorateBlock } from './scripts/utils.js';
+    import { decorateBlock } from '../scripts/utils.js';
     
       // Decorate blocks
       document.addEventListener('DOMContentLoaded', async () => {

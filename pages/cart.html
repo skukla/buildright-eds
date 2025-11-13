@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    // Set base tag FIRST before any resources load
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith("/buildright-eds/");
-      const basePath = isGitHubPages ? "/buildright-eds/" : "/";
-      const baseTag = document.createElement("base");
-      baseTag.href = window.location.origin + basePath;
-      document.head.appendChild(baseTag);
-      window.BASE_PATH = basePath;
-    })();
-  </script>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
   <title>Shopping Cart - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
-  <link rel="stylesheet" href="blocks/cart-summary/cart-summary.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
+  <link rel="stylesheet" href="../blocks/cart-summary/cart-summary.css">
+  <script>
+    // Set BASE_PATH for scripts that need it
+    (function() {
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.startsWith('/buildright-eds/');
+      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
+    })();
+  </script>
 </head>
 <body>
 <script>
@@ -251,13 +247,13 @@
     </div>
   </section>
 
-  <link rel="stylesheet" href="blocks/project-bundle/project-bundle.css">
-  <script type="module" src="scripts/app.js"></script>
+  <link rel="stylesheet" href="../blocks/project-bundle/project-bundle.css">
+  <script type="module" src="../scripts/app.js"></script>
   <script type="module">
-    import { getCart, updateCartItem, removeFromCart } from './scripts/cart-manager.js';
-    import { getProductBySKU, getPrice } from './scripts/data-mock.js';
-    import { removeBundleFromCart, updateBundleItemQuantity } from './scripts/project-builder.js';
-    import { decorateBlock } from './scripts/utils.js';
+    import { getCart, updateCartItem, removeFromCart } from '../scripts/cart-manager.js';
+    import { getProductBySKU, getPrice } from '../scripts/data-mock.js';
+    import { removeBundleFromCart, updateBundleItemQuantity } from '../scripts/project-builder.js';
+    import { decorateBlock } from '../scripts/utils.js';
     
     // Load cart items
     async function loadCartItems() {

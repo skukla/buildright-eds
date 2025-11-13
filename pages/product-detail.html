@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail - BuildRight Solutions</title>
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
+  <link rel="stylesheet" href="../blocks/product-gallery/product-gallery.css">
+  <link rel="stylesheet" href="../blocks/pricing-display/pricing-display.css">
+  <link rel="stylesheet" href="../blocks/inventory-status/inventory-status.css">
+  <link rel="stylesheet" href="../blocks/product-detail/product-detail.css">
   <script>
-    // Set base tag FIRST before any resources load
+    // Set BASE_PATH for scripts that need it
     (function() {
       const pathname = window.location.pathname;
       const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      const basePath = isGitHubPages ? '/buildright-eds/' : '/';
-      const baseTag = document.createElement('base');
-      baseTag.href = window.location.origin + basePath;
-      document.head.appendChild(baseTag);
-      window.BASE_PATH = basePath;
+      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
     })();
   </script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Detail - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
-  <link rel="stylesheet" href="blocks/product-gallery/product-gallery.css">
-  <link rel="stylesheet" href="blocks/pricing-display/pricing-display.css">
-  <link rel="stylesheet" href="blocks/inventory-status/inventory-status.css">
-  <link rel="stylesheet" href="blocks/product-detail/product-detail.css">
 </head>
 <body>
 <script>
@@ -345,11 +341,11 @@
     </div>
   </section>
 
-  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
   <script type="module">
-    import { getUrlParameter } from './scripts/utils.js';
-    import { getProductBySKU } from './scripts/data-mock.js';
-    import { decorateBlock } from './scripts/utils.js';
+    import { getUrlParameter } from '../scripts/utils.js';
+    import { getProductBySKU } from '../scripts/data-mock.js';
+    import { decorateBlock } from '../scripts/utils.js';
     
     // Load product detail
     async function loadProductDetail() {

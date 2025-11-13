@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    // Set base tag FIRST before any resources load
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      const basePath = isGitHubPages ? '/buildright-eds/' : '/';
-      const baseTag = document.createElement('base');
-      baseTag.href = window.location.origin + basePath;
-      document.head.appendChild(baseTag);
-      window.BASE_PATH = basePath;
-    })();
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Account Dashboard - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
-  <link rel="stylesheet" href="blocks/tier-badge/tier-badge.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
+  <link rel="stylesheet" href="../blocks/tier-badge/tier-badge.css">
+  <script>
+    // Set BASE_PATH for scripts that need it
+    (function() {
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.startsWith('/buildright-eds/');
+      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
+    })();
+  </script>
 </head>
 <body>
 <script>
@@ -283,10 +279,10 @@
     </div>
   </section>
 
-  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
   <script type="module">
-    import { getCustomerContext } from './scripts/data-mock.js';
-    import { decorateBlock } from './scripts/utils.js';
+    import { getCustomerContext } from '../scripts/data-mock.js';
+    import { decorateBlock } from '../scripts/utils.js';
     
     // Load account info
     function loadAccountInfo() {
