@@ -1,0 +1,50 @@
+/*
+ * Copyright 2024 Adobe. All rights reserved.
+ * BuildRight EDS - Main Styles Entry Point
+ */
+
+/* Import existing BuildRight styles */
+@import url('base.css');
+@import url('components.css');
+@import url('utilities.css');
+
+/* Import block styles */
+@import url('../blocks/product-grid/product-grid.css');
+@import url('../blocks/filters-sidebar/filters-sidebar.css');
+
+/* Import page-specific styles */
+@import url('page-specific.css');
+
+/* EDS Standard: Page reveal animation */
+body {
+  visibility: hidden;
+  opacity: 0;
+}
+
+body.appear {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.1s ease-in;
+}
+
+/* EDS Standard: Ensure header and main are always visible */
+header {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+main {
+  display: block;
+  position: relative;
+}
+
+/* EDS Standard: Loading state */
+main .section[data-section-status="loading"],
+main .section[data-section-status="initialized"] {
+  display: none;
+}
+
+main .section[data-section-status="loaded"] {
+  display: block;
+}
+

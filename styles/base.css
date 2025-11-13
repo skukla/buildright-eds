@@ -325,6 +325,12 @@ a:hover {
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* Loading State - Prevent interaction during loading */
+[data-loading="true"] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 /* Accessibility: Respect user motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,

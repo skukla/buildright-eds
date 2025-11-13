@@ -1,8 +1,10 @@
+/* EDS Block: Filters Sidebar - Sticky below header */
 #filters-aside {
   align-self: start;
   position: -webkit-sticky;
   position: sticky;
-  top: 210px;
+  top: 210px; /* Header height (143px) + spacing (67px) */
+  z-index: 10;
 }
 
 .filters-sidebar {
@@ -10,6 +12,13 @@
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-3);
   padding: var(--spacing-medium);
+  min-height: 300px; /* CLS prevention */
+}
+
+/* Filter Price Apply Button */
+.filter-price-apply {
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
 .filters-sidebar > div > div {
@@ -179,6 +188,10 @@
 
   #filters-aside {
     order: 2;
+    position: static;
+    top: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 
   #filters-aside[style*="display: none"] {

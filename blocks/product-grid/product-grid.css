@@ -23,15 +23,36 @@
   color: var(--color-text);
 }
 
+/* Grid header controls for mobile filter toggle */
+.grid-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Mobile Filter Toggle */
+#mobile-filter-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #mobile-filter-toggle {
+    display: block;
+  }
+}
+
 .product-count {
   color: var(--color-text-secondary);
   font: var(--type-body-1-default-font);
+  min-height: 24px; /* CLS prevention */
+  display: block;
 }
 
 .products-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--spacing-large);
+  min-height: 400px; /* CLS prevention */
 }
 
 /* Featured products - single row of 4 cards */

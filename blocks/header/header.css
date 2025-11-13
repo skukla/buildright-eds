@@ -1,3 +1,4 @@
+/* EDS Block: Header - Sticky at top of viewport */
 .header {
   background-color: var(--color-background);
   border-bottom: 1px solid var(--color-border);
@@ -7,6 +8,14 @@
   box-shadow: var(--shape-shadow-1);
 }
 
+/* Ensure header container is also sticky */
+header,
+header .header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
 /* Top Utility Bar */
 .header-top {
   background-color: var(--color-surface);
@@ -14,6 +23,18 @@
   padding: 0.6875rem 0; /* 11px - adjusted for 63px total height */
   font: var(--type-body-2-default-font);
   min-height: 40px;
+}
+
+/* CLS Prevention - Location selector */
+.location-selector {
+  min-height: 40px;
+  min-width: 280px;
+}
+
+/* CLS Prevention - Active nav state */
+.nav-link.active,
+.nav-link[aria-current="page"] {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .header-top-content {
@@ -136,6 +157,10 @@
   background: linear-gradient(to bottom, white 0%, white 70%, #f5f5f5 100%); /* Gradient concentrated at bottom for 3D depth effect */
   border: 1px solid var(--color-border);
   border-top: none; /* No top border - connects to button */
+  /* CLS Prevention - positioned absolutely so it doesn't affect layout */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15); /* Slightly darker bottom border for subtle separation */
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1); /* Stronger shadow for better separation from page */
   border-radius: 0 0 4px 4px; /* Match button rounding - seamless connection */
@@ -148,6 +173,8 @@
 
 .location-menu.active {
   display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 .location-menu-content {
@@ -401,6 +428,8 @@
 
 .cart-icon {
   font-size: 1.25rem;
+  display: flex;
+  align-items: center;
 }
 
 .cart-label {
@@ -411,11 +440,17 @@
   background-color: var(--color-brand-500);
   color: white;
   border-radius: var(--shape-border-radius-full);
-  padding: 0.125rem 0.5rem;
+  padding: 0.125rem 0.4rem;
   font-size: 0.75rem;
   font-weight: 600;
   min-width: 1.25rem;
-  text-align: center;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
+  margin-left: 0.25rem;
 }
 
 /* Mini Cart Positioning & Toggle - Styles are in blocks/mini-cart/mini-cart.css */
