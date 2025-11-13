@@ -479,12 +479,76 @@
   border-radius: var(--shape-border-radius-2);
   overflow: hidden;
   background: var(--color-surface-secondary);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-card-list-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Placeholder styles */
+.product-card-list-image-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+.product-card-list-image-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-text-disabled),
+    var(--color-text-disabled) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  opacity: 0.4;
+}
+
+/* Product thumbnail wrapper (for table rows) */
+.product-thumbnail-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--shape-border-radius-2);
+  overflow: hidden;
+  background: var(--color-surface-secondary);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-thumbnail-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+.product-thumbnail-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-text-disabled),
+    var(--color-text-disabled) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  opacity: 0.4;
 }
 
 .product-card-list-info {
@@ -699,12 +763,37 @@
   border-radius: var(--shape-border-radius-2);
   overflow: hidden;
   background: var(--color-surface-secondary);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .simple-list-item-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Placeholder styles */
+.simple-list-item-image-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+.simple-list-item-image-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-text-disabled),
+    var(--color-text-disabled) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  opacity: 0.4;
 }
 
 .simple-list-item-info {
@@ -1062,10 +1151,12 @@
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.3s ease, width 0.3s ease;
+  transition: transform var(--transition-slow), width var(--transition-slow);
   opacity: 0;
   visibility: hidden;
 }
+
+/* Kit sidebar styling */
 
 .kit-sidebar.kit-sidebar-visible {
   opacity: 1;
@@ -1346,12 +1437,37 @@
   overflow: hidden;
   background: var(--color-surface);
   flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .kit-sidebar-item-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Placeholder styles */
+.kit-sidebar-item-image-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+.kit-sidebar-item-image-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-text-disabled),
+    var(--color-text-disabled) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  opacity: 0.4;
 }
 
 .kit-sidebar-item-info {
@@ -1848,6 +1964,33 @@
   padding: 0.5rem;
   font-size: 0.875rem;
 }
+
+/* Animation for kit items rolling up into bundle */
+.kit-sidebar-items-list.rolling-up .kit-sidebar-item {
+  animation: rollUpIntoBundle 600ms ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes rollUpIntoBundle {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 200px;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-20px) scale(0.95);
+    max-height: 100px;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.8);
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {

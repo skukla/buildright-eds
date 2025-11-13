@@ -13,7 +13,6 @@ import { getWizardState } from '../project-builder.js';
  */
 export function createSimpleProductRow(item) {
   const unitPrice = item.unitPrice || (item.subtotal / item.quantity);
-  const imageUrl = escapeHtml(getProductImageUrl(item.sku));
   const itemName = escapeHtml(item.name);
   const itemSku = escapeHtml(item.sku);
   const isCustom = item.isCustom || false;
@@ -21,8 +20,7 @@ export function createSimpleProductRow(item) {
   return `
     <div class="simple-list-row" data-sku="${itemSku}">
       <div class="simple-list-col-item">
-        <div class="simple-list-item-image">
-          <img src="${imageUrl}" alt="${itemName}" onerror="this.style.display='none'">
+        <div class="simple-list-item-image simple-list-item-image-placeholder">
         </div>
         <div class="simple-list-item-info">
           <div class="simple-list-item-name-row">
@@ -61,7 +59,6 @@ export function createSimpleProductRow(item) {
 export function createProductCard(item, mode = 'list') {
   const inventoryStatus = getInventoryStatus({ sku: item.sku }, getPrimaryWarehouse());
   const unitPrice = item.unitPrice || (item.subtotal / item.quantity);
-  const imageUrl = escapeHtml(getProductImageUrl(item.sku));
   const itemName = escapeHtml(item.name);
   const itemReason = escapeHtml(item.reason);
   const itemSku = escapeHtml(item.sku);
@@ -81,8 +78,7 @@ export function createProductCard(item, mode = 'list') {
   // Compact list mode - table row style
   return `
     <div class="product-card-list" data-sku="${itemSku}">
-      <div class="product-card-list-image">
-        <img src="${imageUrl}" alt="${itemName}" onerror="this.style.display='none'">
+      <div class="product-card-list-image product-card-list-image-placeholder">
       </div>
       <div class="product-card-list-info">
         <h5 class="product-card-list-name">${itemName}</h5>
@@ -344,7 +340,6 @@ export function createProductsTable(items) {
 export function createProductRow(item) {
   const inventoryStatus = getInventoryStatus({ sku: item.sku }, getPrimaryWarehouse());
   const unitPrice = item.unitPrice || (item.subtotal / item.quantity);
-  const imageUrl = escapeHtml(getProductImageUrl(item.sku));
   const itemName = escapeHtml(item.name);
   const itemReason = escapeHtml(item.reason);
   const itemSku = escapeHtml(item.sku);
@@ -364,7 +359,8 @@ export function createProductRow(item) {
   const html = `
     <tr>
       <td>
-        <img src="${imageUrl}" alt="${itemName}" class="product-thumbnail" onerror="this.style.display='none'">
+        <div class="product-thumbnail-wrapper product-thumbnail-placeholder">
+        </div>
       </td>
       <td>
         <div class="product-info">

@@ -9,6 +9,8 @@ let kitSidebarElement = null;
 let kitSidebarBackdrop = null;
 let isExpanded = true;
 
+// Cart sidebar functionality removed - using mini cart dropdown instead
+
 /**
  * Initialize kit sidebar if wizard state has an active kit with items
  */
@@ -68,9 +70,9 @@ export async function initKitSidebar() {
       kitSidebarElement.classList.add('kit-sidebar-expanded');
       kitSidebarElement.classList.remove('kit-sidebar-collapsed');
       if (content) content.style.display = 'block';
-    if (toggle) {
+      if (toggle) {
         toggle.setAttribute('aria-expanded', 'true');
-      toggle.classList.remove('collapsed');
+        toggle.classList.remove('collapsed');
       }
     } else {
       kitSidebarElement.classList.add('kit-sidebar-collapsed');
@@ -179,12 +181,18 @@ function createKitSidebar() {
       addToCartBtn.disabled = true;
       addToCartBtn.textContent = 'Adding to cart...';
       
-      await addKitToCart(fullKit);
+      const bundleId = await addKitToCart(fullKit);
       
-      // Navigate to cart
-      window.location.href = 'pages/cart.html';
+      // Reset button state
+      addToCartBtn.disabled = false;
+      addToCartBtn.textContent = 'Add All to Cart';
+      
+      // Handle kit added to cart (roll up animation and open mini cart)
+      await handleKitAddedToCart(bundleId);
     });
   }
+  
+  // Cart sidebar removed - mini cart handles cart display
   
   // Prevent page scrolling when mouse is over the flyout
   // Always capture scroll events when hovering over the flyout, regardless of boundaries
@@ -255,6 +263,8 @@ export async function updateKitSidebar(scrollToNewItem = false, existingItemSku 
       const persistedCollapsed = sessionStorage.getItem('buildright_kit_sidebar_collapsed') === 'true';
       isExpanded = !persistedCollapsed;
     }
+    
+    // Ensure sidebar is in kit mode
     
     // Show sidebar - ensure it's appended to body first
     if (kitSidebarElement) {
@@ -496,7 +506,6 @@ async function checkAndHighlightOutOfStockItems() {
  * Create kit sidebar item HTML
  */
 async function createKitSidebarItem(item) {
-  const imageUrl = escapeHtml(getProductImageUrl(item.sku));
   const itemName = escapeHtml(item.name);
   const itemSku = escapeHtml(item.sku);
   const isCustom = item.isCustom || false;
@@ -520,8 +529,7 @@ async function createKitSidebarItem(item) {
   
   return `
     <div class="kit-sidebar-item ${inventoryStatus === 'out-of-stock' ? 'kit-sidebar-item-out-of-stock' : ''}" data-sku="${itemSku}" data-inventory-status="${inventoryStatus}">
-      <div class="kit-sidebar-item-image">
-        <img src="${imageUrl}" alt="${itemName}" onerror="this.style.display='none'">
+      <div class="kit-sidebar-item-image kit-sidebar-item-image-placeholder">
       </div>
       <div class="kit-sidebar-item-info">
         <div class="kit-sidebar-item-header-row">
@@ -770,19 +778,27 @@ function toggleKitSidebar() {
   const content = kitSidebarElement.querySelector('.kit-sidebar-content');
   const toggle = kitSidebarElement.querySelector('#kit-sidebar-toggle');
   
+  // Handle width changes
+  if (isExpanded) {
+    kitSidebarElement.classList.add('kit-sidebar-expanded');
+    kitSidebarElement.classList.remove('kit-sidebar-collapsed');
+  } else {
+    kitSidebarElement.classList.add('kit-sidebar-collapsed');
+    kitSidebarElement.classList.remove('kit-sidebar-expanded');
+  }
+  
   if (content && toggle) {
     if (isExpanded) {
       // Expand: show content
       content.style.display = 'block';
-      kitSidebarElement.classList.add('kit-sidebar-expanded');
+      // Width classes already set above based on mode
       kitSidebarElement.classList.remove('kit-sidebar-collapsed');
       // Clear persisted collapsed state
       sessionStorage.removeItem('buildright_kit_sidebar_collapsed');
     } else {
       // Collapse: hide content but keep sidebar visible (just header)
       content.style.display = 'none';
-      kitSidebarElement.classList.add('kit-sidebar-collapsed');
-      kitSidebarElement.classList.remove('kit-sidebar-expanded');
+      // Width classes already set above
       // Persist collapsed state
       sessionStorage.setItem('buildright_kit_sidebar_collapsed', 'true');
     }
@@ -804,6 +820,7 @@ async function clearKit() {
 
 /**
  * Add kit to cart (helper function)
+ * @returns {string} bundleId - The ID of the added bundle
  */
 async function addKitToCart(fullKit) {
   const { addBundleToCart } = await import('./project-builder.js');
@@ -829,8 +846,39 @@ async function addKitToCart(fullKit) {
   };
   
   await addBundleToCart(bundle);
+  return bundle.bundleId;
 }
 
+
+/**
+ * Handle kit added to cart - roll up animation and open mini cart
+ */
+async function handleKitAddedToCart(addedBundleId = null) {
+  if (!kitSidebarElement) return;
+  
+  // Trigger roll-up animation for kit items
+  const itemsList = kitSidebarElement.querySelector('.kit-sidebar-items-list');
+  if (itemsList) {
+    itemsList.classList.add('rolling-up');
+  }
+  
+  // Wait for roll-up animation to complete (600ms)
+  await new Promise(resolve => setTimeout(resolve, 600));
+  
+  // Exit kit mode - clear wizard state and session storage
+  const { clearWizardState } = await import('./project-builder.js');
+  clearWizardState();
+  sessionStorage.removeItem('kit_mode_resume_choice');
+  sessionStorage.removeItem('buildright_wizard_state');
+  
+  // Close kit sidebar
+  removeKitSidebar();
+  
+  // Open mini cart dropdown to show the added bundle
+  window.dispatchEvent(new CustomEvent('openMiniCart', { detail: { highlightBundleId: addedBundleId } }));
+}
+
+// Cart sidebar functions removed - mini cart handles cart display
 
 /**
  * Remove kit sidebar from DOM
