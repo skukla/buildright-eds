@@ -26,7 +26,7 @@ export async function generateAndShowResults(showStep, displayBundle, prevStep) 
       <div class="project-kit-list-view-simple">
         <div class="simple-list-header">
           <div class="simple-list-header-content">
-            <div class="skeleton-text" style="width: 300px; height: 24px; background: var(--color-border); border-radius: 4px; margin-bottom: 8px;"></div>
+            <div class="skeleton-text mb-2" style="width: 300px; height: 24px; background: var(--color-border); border-radius: 4px;"></div>
             <div class="skeleton-text" style="width: 120px; height: 16px; background: var(--color-border); border-radius: 4px;"></div>
           </div>
           <div class="skeleton-text" style="width: 100px; height: 28px; background: var(--color-border); border-radius: 4px;"></div>
@@ -43,23 +43,23 @@ export async function generateAndShowResults(showStep, displayBundle, prevStep) 
             ${Array(5).fill(0).map(() => `
               <div class="simple-list-row">
                 <div class="simple-list-col-item">
-                  <div class="skeleton-image" style="width: 60px; height: 60px; background: var(--color-border); border-radius: 4px; flex-shrink: 0;"></div>
-                  <div style="flex: 1; min-width: 0;">
-                    <div class="skeleton-text" style="width: 80%; height: 16px; background: var(--color-border); border-radius: 4px; margin-bottom: 8px;"></div>
+                  <div class="skeleton-image flex-shrink-0" style="width: 60px; height: 60px; background: var(--color-border); border-radius: 4px;"></div>
+                  <div class="flex-1" style="min-width: 0;">
+                    <div class="skeleton-text mb-2" style="width: 80%; height: 16px; background: var(--color-border); border-radius: 4px;"></div>
                     <div class="skeleton-text" style="width: 60%; height: 14px; background: var(--color-border); border-radius: 4px;"></div>
                   </div>
                 </div>
                 <div class="simple-list-col-qty">
-                  <div class="skeleton-text" style="width: 80px; height: 32px; background: var(--color-border); border-radius: 4px; margin: 0 auto;"></div>
+                  <div class="skeleton-text mx-auto" style="width: 80px; height: 32px; background: var(--color-border); border-radius: 4px;"></div>
                 </div>
                 <div class="simple-list-col-price">
-                  <div class="skeleton-text" style="width: 60px; height: 16px; background: var(--color-border); border-radius: 4px; margin-left: auto;"></div>
+                  <div class="skeleton-text ml-auto" style="width: 60px; height: 16px; background: var(--color-border); border-radius: 4px;"></div>
                 </div>
                 <div class="simple-list-col-total">
-                  <div class="skeleton-text" style="width: 70px; height: 18px; background: var(--color-border); border-radius: 4px; margin-left: auto;"></div>
+                  <div class="skeleton-text ml-auto" style="width: 70px; height: 18px; background: var(--color-border); border-radius: 4px;"></div>
                 </div>
                 <div class="simple-list-col-actions">
-                  <div class="skeleton-text" style="width: 24px; height: 24px; background: var(--color-border); border-radius: 4px; margin: 0 auto;"></div>
+                  <div class="skeleton-text mx-auto" style="width: 24px; height: 24px; background: var(--color-border); border-radius: 4px;"></div>
                 </div>
               </div>
             `).join('')}
@@ -67,7 +67,8 @@ export async function generateAndShowResults(showStep, displayBundle, prevStep) 
         </div>
       </div>
     `;
-    container.innerHTML = skeletonHTML;
+    container.innerHTML = '';
+    container.appendChild(parseHTML(skeletonHTML));
     
     const wizardState = getWizardState() || {};
     const bundle = await generateBundle(wizardState);
@@ -104,11 +105,11 @@ export function showErrorState(container, error, prevStep) {
     <div class="error-message">
       <span class="error-message-icon">${svgIcon}</span>
       <div>
-        <div style="font-weight: 600; margin-bottom: 0.25rem;">Unable to generate bundle</div>
-        <div style="font-size: 0.875rem;">${errorMessage}</div>
+        <div class="font-semibold mb-1">Unable to generate bundle</div>
+        <div class="text-sm">${errorMessage}</div>
       </div>
     </div>
-    <div style="text-align: center; margin-top: 1.5rem;">
+    <div class="text-center mt-6">
       <button class="btn btn-primary" id="error-go-back-btn">← Go Back</button>
     </div>
   `;

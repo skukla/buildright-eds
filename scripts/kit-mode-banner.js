@@ -3,6 +3,7 @@
 
 import { getWizardState, getFullKit } from './project-builder.js';
 import { escapeHtml } from './project-builder-constants.js';
+import { parseHTML } from './scripts/utils.js';
 
 /**
  * Create kit mode resume banner HTML
@@ -83,9 +84,7 @@ export function showKitModeResumeBanner() {
   
   // Create banner element
   const bannerHTML = createKitModeResumeBanner();
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = bannerHTML;
-  const banner = tempDiv.firstElementChild;
+  const banner = parseHTML(bannerHTML);
   
   // Insert after header
   header.insertAdjacentElement('afterend', banner);

@@ -4,6 +4,7 @@
 import { getWizardState, saveWizardState, clearWizardState, getFullKit, hasKitItems } from '../project-builder.js';
 import { handleError } from './wizard-utils.js';
 import { STEP_STATE_MAP } from '../project-builder-constants.js';
+import { parseHTML } from '../utils.js';
 
 // Current step tracker (can be overridden by state)
 let currentStep = 1;
@@ -231,14 +232,16 @@ export function showStep(step, updateProgressBar, updateNavigation, updateSideba
     // Hide all steps
     document.querySelectorAll('.wizard-step-content').forEach(content => {
       content.classList.remove('active');
-      content.style.display = 'none';
+      content.classList.add('hidden');
+      content.classList.remove('block');
     });
 
     // Show current step
     const currentContent = document.querySelector(`.wizard-step-content[data-step="${step}"]`);
     if (currentContent) {
       currentContent.classList.add('active');
-      currentContent.style.display = 'block';
+      currentContent.classList.remove('hidden');
+      currentContent.classList.add('block');
     }
 
     // Update progress indicators
@@ -255,7 +258,8 @@ export function showStep(step, updateProgressBar, updateNavigation, updateSideba
       // Hide step 6 indicator (no longer needed)
       const step6Indicator = document.getElementById('step-indicator-6');
       if (step6Indicator) {
-        step6Indicator.style.display = 'none';
+        step6Indicator.classList.add('hidden');
+        step6Indicator.classList.remove('block');
       }
       
       // Step numbering: 1, 2, 3(Complexity), 4(Budget), 5(Results)
@@ -361,9 +365,7 @@ function showProjectBuilderResumeBanner(showResults, showStep) {
     </div>
   `;
   
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = bannerHTML;
-  const banner = tempDiv.firstElementChild;
+  const banner = parseHTML(bannerHTML);
   
   // Insert after header (same placement as catalog pages)
   header.insertAdjacentElement('afterend', banner);

@@ -15,7 +15,19 @@ export function el(tag, props = {}, ...children) {
   if (props.className) element.className = props.className;
   if (props.id) element.id = props.id;
   if (props.textContent !== undefined) element.textContent = props.textContent;
-  if (props.innerHTML) element.innerHTML = props.innerHTML;
+  if (props.innerHTML) {
+    // Use parseHTML for safer HTML insertion (parseHTML is defined below)
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(props.innerHTML, 'text/html');
+    const parsed = doc.body.firstElementChild || doc.body;
+    // If parsed element is the same tag, replace innerHTML with parsed content
+    if (parsed.tagName.toLowerCase() === tag.toLowerCase()) {
+      element.innerHTML = '';
+      Array.from(parsed.childNodes).forEach(child => element.appendChild(child.cloneNode(true)));
+    } else {
+      element.appendChild(parsed);
+    }
+  }
   if (props.dataset) Object.assign(element.dataset, props.dataset);
   if (props.style) Object.assign(element.style, props.style);
   if (props.type) element.type = props.type;

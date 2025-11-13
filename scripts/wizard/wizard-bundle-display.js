@@ -61,11 +61,13 @@ export function displayBundle(bundle, setupSimpleListViewEventListeners, display
   // Ensure we have items
   if (!allItems || allItems.length === 0) {
     console.error('[Project Builder] No items to display');
-    container.innerHTML = createEmptyState(
+    const emptyStateHTML = createEmptyState(
       'Your kit is empty', 
       'Start the project builder to create your custom kit',
       { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn' }
     );
+    container.innerHTML = '';
+    container.appendChild(parseHTML(emptyStateHTML));
     
     // Add event listener for restart button
     const restartBtn = document.getElementById('empty-state-restart-btn');
@@ -154,11 +156,13 @@ export function displayListView(bundle, itemsByCategory, componentPrices, includ
   });
   
   if (allItems.length === 0) {
-    container.innerHTML = createEmptyState(
+    const emptyStateHTML = createEmptyState(
       'Your kit is empty', 
       'Start the project builder to create your custom kit',
       { actionLabel: 'Build A New Project', actionId: 'empty-state-restart-btn-2' }
     );
+    container.innerHTML = '';
+    container.appendChild(parseHTML(emptyStateHTML));
     
     // Add event listener for restart button
     const restartBtn = document.getElementById('empty-state-restart-btn-2');

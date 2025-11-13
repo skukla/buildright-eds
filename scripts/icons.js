@@ -66,8 +66,11 @@ async function insertIcon(element, name) {
     return;
   }
   
+  const { parseHTML } = await import('./utils.js');
   const svgContent = await getIcon(name);
-  target.innerHTML = svgContent;
+  const svgElement = parseHTML(svgContent);
+  target.innerHTML = '';
+  target.appendChild(svgElement);
 }
 
 /**
@@ -77,10 +80,9 @@ async function insertIcon(element, name) {
  * @returns {Promise<HTMLElement>} SVG element
  */
 async function createIconElement(name, className = '') {
+  const { parseHTML } = await import('./utils.js');
   const svgContent = await getIcon(name);
-  const temp = document.createElement('div');
-  temp.innerHTML = svgContent;
-  const svg = temp.firstElementChild;
+  const svg = parseHTML(svgContent);
   
   if (className) {
     svg.className = className;
