@@ -3,19 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
-    // Set base tag immediately before any resources load
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      const basePath = isGitHubPages ? '/buildright-eds/' : '/';
-      const baseTag = document.createElement('base');
-      baseTag.href = window.location.origin + basePath;
-      document.head.insertBefore(baseTag, document.head.firstChild);
-      window.BASE_PATH = basePath;
-    })();
-  </script>
-  <script src="./scripts/base-url.js"></script>
   <!-- Load critical data synchronously to prevent layout shift -->
   <script>
     window.__INITIAL_CART_COUNT__ = (() => {
@@ -29,15 +16,11 @@
     window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
   </script>
   <title>BuildRight Solutions - Building Materials Distributor</title>
-  <link rel="stylesheet" href="./styles/base.css">
-  <link rel="stylesheet" href="./styles/components.css">
-  <link rel="stylesheet" href="./styles/utilities.css">
+  <script src="./scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="./styles/styles.css">
   <link rel="stylesheet" href="./styles/blocks/hero-banner.css">
   <link rel="stylesheet" href="./styles/blocks/ideas-center.css">
   <link rel="stylesheet" href="./styles/blocks/shop-by-job.css">
-  <link rel="stylesheet" href="./styles/blocks/footer.css">
-  <link rel="stylesheet" href="./blocks/header/header.css">
-  <link rel="stylesheet" href="./blocks/product-grid/product-grid.css">
   <!-- Critical CSS for active nav state and comprehensive CLS prevention -->
   <style>
     .nav-link.active, .nav-link[aria-current="page"] {
@@ -64,12 +47,6 @@
       visibility: visible;
     }
     
-    /* Cart count - always show, even if 0 */
-    .cart-count {
-      min-width: 20px;
-      display: inline-block;
-      text-align: center;
-    }
     
     /* Product grid */
     .products-container {
@@ -84,195 +61,10 @@
   </style>
 </head>
 <body>
-<script>
-  // Set body classes early for CSS-only navigation highlighting
-  (function() {
-    const redirectPath = sessionStorage.getItem('spa_redirect_path');
-    const currentPath = redirectPath || window.location.pathname;
-    const normalizePath = (path) => path ? path.replace(/^\/+|\/+$/g, '').toLowerCase() : '';
-    const normalizedPath = normalizePath(currentPath);
-    
-    // Set page type classes
-    if (normalizedPath.includes('catalog')) {
-      document.body.classList.add('page-catalog');
-      
-      // Set category data attribute
-      const pathParts = normalizedPath.split('/');
-      if (pathParts.length > 1 && pathParts[0] === 'catalog') {
-        const categorySlug = pathParts[1];
-        const categoryMap = {
-          'structural-materials': 'structural_materials',
-          'windows-doors': 'windows_doors',
-          'fasteners-hardware': 'fasteners_hardware',
-          'roofing': 'roofing',
-          'framing-drywall': 'framing_drywall'
-        };
-        const category = categoryMap[categorySlug];
-        if (category) {
-          document.body.setAttribute('data-category', category);
-        }
-      }
-    } else if (normalizedPath.includes('project-builder')) {
-      document.body.classList.add('page-project-builder');
-    }
-  })();
-</script>
-  <div class="header">
-  <!-- Top Utility Bar -->
-  <div class="header-top">
-    <div class="header-top-content">
-      <div class="header-location" id="header-location" style="display: none;">
-        <span class="location-label">You're Shopping</span>
-        <div class="location-selector-wrapper">
-          <button class="location-selector" id="location-selector">
-            <span class="location-name">Premium Commercial Builders - Los Angeles, CA</span>
-            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-          <!-- Location Dropdown -->
-          <div class="location-menu" id="location-menu">
-            <div class="location-menu-content">
-              <ul class="location-menu-list" id="location-menu-list">
-                <!-- Locations will be populated by JavaScript -->
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-  <!-- Main Header -->
-  <div class="header-main">
-    <div class="header-main-content">
-      <div class="header-brand">
-        <a href="index.html">BuildRight</a>
-      </div>
-      
-      <!-- Search Bar -->
-      <div class="header-search">
-        <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
-        <button class="search-button" aria-label="Search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21 21-4.34-4.34" />
-            <circle cx="11" cy="11" r="8" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="header-actions">
-        <div class="user-menu-wrapper">
-          <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
-            <span class="user-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-            </span>
-            <span class="user-label">Account</span>
-          </button>
-          <!-- User Menu Dropdown - Will be loaded as a block -->
-          <div id="user-menu-container"></div>
-        </div>
-        <div class="cart-link-wrapper">
-          <button class="cart-link" id="cart-link-toggle" aria-expanded="false" aria-label="Shopping cart">
-            <span class="cart-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8" cy="21" r="1"/>
-                <circle cx="19" cy="21" r="1"/>
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-              </svg>
-            </span>
-            <span class="cart-label">Cart</span>
-            <span class="cart-count">0</span>
-          </button>
-          <!-- Mini Cart Dropdown - Will be loaded as a block -->
-          <div id="mini-cart-container"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation Bar -->
-  <div class="header-nav-bar">
-    <div class="header-nav-content">
-      <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-        <nav class="main-nav">
-          <div class="nav-item">
-            <a href="catalog" class="nav-link" data-category="all">All Products</a>
-          </div>
-          <div class="nav-item">
-            <a href="pages/project-builder.html" class="nav-link nav-link-cta">Project Builder</a>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="structural_materials">Structural Materials</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="windows_doors">Windows & Doors</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="fasteners_hardware">Fasteners & Hardware</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="roofing">Roofing</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="framing_drywall">Framing & Drywall</button>
-          </div>
-        </nav>
-      <div class="nav-industry">
-          <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
-            Shop By Industry
-            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Industry Dropdown -->
-  <div class="industry-menu" id="industry-menu">
-    <div class="industry-menu-content">
-        <div class="industry-column">
-          <h3>Commercial</h3>
-          <ul>
-            <li><a href="catalog/commercial">Commercial Construction</a></li>
-            <li><a href="catalog/structural-materials">Structural Materials</a></li>
-            <li><a href="catalog/windows-doors">Windows & Doors</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Residential</h3>
-          <ul>
-            <li><a href="catalog/residential">Residential Construction</a></li>
-            <li><a href="catalog/structural-materials">Framing Materials</a></li>
-            <li><a href="catalog/windows-doors">Residential Windows</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Pro</h3>
-          <ul>
-            <li><a href="catalog/pro">Trade Contractors</a></li>
-            <li><a href="catalog/fasteners-hardware">Fasteners & Tools</a></li>
-            <li><a href="catalog/roofing">Roofing Supplies</a></li>
-          </ul>
-        </div>
-    </div>
-  </div>
-</div>
-
+  <!-- Header loaded dynamically from blocks/header/ -->
+  <header></header>
 
   <!-- Hero Banner -->
-  <!-- 
-    Recommended Adobe Stock images:
-    - Search: "construction warehouse interior building materials"
-    - Search: "professional contractor building supplies"
-    - Search: "modern construction materials warehouse"
-    - Image should be high-resolution (1920x1080 minimum), professional, well-lit
-  -->
   <section class="hero-banner hero-banner--light">
     <div class="hero-banner__container">
       <!-- Left: Content -->
@@ -325,200 +117,191 @@
   </section>
 
   <!-- Featured Products - Main Content -->
-  <section class="section" style="padding: 4rem 0 5rem 0; background: var(--color-surface);">
-    <div class="container">
-      <div class="flex justify-between items-center mb-4">
-        <h2 style="margin: 0; font-size: 1.75rem; font-weight: 700;">Featured Products</h2>
-        <a href="catalog" style="color: var(--color-brand-500); text-decoration: none; font-weight: 600; font-size: var(--font-size-base);">View All Products →</a>
+  <main>
+    <section class="section" style="padding: 4rem 0 5rem 0; background: var(--color-surface);">
+      <div class="container">
+        <div class="flex justify-between items-center mb-4">
+          <h2 style="margin: 0; font-size: 1.75rem; font-weight: 700;">Featured Products</h2>
+          <a href="catalog" style="color: var(--color-brand-500); text-decoration: none; font-weight: 600; font-size: var(--font-size-base);">View All Products →</a>
+        </div>
+        <div class="products-container featured-products" id="featured-products">
+          <!-- Products will be loaded by JavaScript -->
+        </div>
       </div>
-      <div class="products-container featured-products" id="featured-products">
-        <!-- Products will be loaded by JavaScript -->
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Ideas Center -->
-  <section class="section section-dark" style="padding: 4rem 0 5rem 0;">
-    <div class="container">
-      <h2 class="text-center mb-2 text-2xl">Ideas Center</h2>
-      <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Expert tips, guides, and inspiration for your next project</p>
-      <div class="grid grid-4 gap-6">
-        <!-- Card 1: How-To Guide -->
-        <!-- Adobe Stock: "lumber grade wood texture" -->
-        <div class="ideas-center__card">
-          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div class="ideas-center__content">
-            <span class="badge badge-warning mb-4">How-To Guide</span>
-            <h3 class="ideas-center__heading">Choosing the Right Grade</h3>
-            <p class="ideas-center__text">Learn about different lumber grades and when to use each for optimal results.</p>
-            <a href="#" class="ideas-center__link">Read More →</a>
+    <!-- Ideas Center -->
+    <section class="section section-dark" style="padding: 4rem 0 5rem 0;">
+      <div class="container">
+        <h2 class="text-center mb-2 text-2xl">Ideas Center</h2>
+        <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Expert tips, guides, and inspiration for your next project</p>
+        <div class="grid grid-4 gap-6">
+          <!-- Card 1: How-To Guide -->
+          <div class="ideas-center__card">
+            <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="ideas-center__content">
+              <span class="badge badge-warning mb-4">How-To Guide</span>
+              <h3 class="ideas-center__heading">Choosing the Right Grade</h3>
+              <p class="ideas-center__text">Learn about different lumber grades and when to use each for optimal results.</p>
+              <a href="#" class="ideas-center__link">Read More →</a>
+            </div>
           </div>
-        </div>
-        
-        <!-- Card 2: Project Ideas -->
-        <!-- Adobe Stock: "modern kitchen remodel" -->
-        <div class="ideas-center__card">
-          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1556912173-46c336c7fd55?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div class="ideas-center__content">
-            <span class="badge badge-primary mb-4">Project Ideas</span>
-            <h3 class="ideas-center__heading">10 Kitchen Remodel Ideas</h3>
-            <p class="ideas-center__text">Inspiration and material recommendations for your kitchen renovation.</p>
-            <a href="#" class="ideas-center__link">Read More →</a>
+          
+          <!-- Card 2: Project Ideas -->
+          <div class="ideas-center__card">
+            <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1556912173-46c336c7fd55?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="ideas-center__content">
+              <span class="badge badge-primary mb-4">Project Ideas</span>
+              <h3 class="ideas-center__heading">10 Kitchen Remodel Ideas</h3>
+              <p class="ideas-center__text">Inspiration and material recommendations for your kitchen renovation.</p>
+              <a href="#" class="ideas-center__link">Read More →</a>
+            </div>
           </div>
-        </div>
-        
-        <!-- Card 3: Expert Tips -->
-        <!-- Adobe Stock: "contractor framing wall construction" -->
-        <div class="ideas-center__card">
-          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div class="ideas-center__content">
-            <span class="badge badge-success mb-4">Expert Tips</span>
-            <h3 class="ideas-center__heading">Pro Tips for Framing</h3>
-            <p class="ideas-center__text">Professional framing techniques and best practices from experienced contractors.</p>
-            <a href="#" class="ideas-center__link">Read More →</a>
+          
+          <!-- Card 3: Expert Tips -->
+          <div class="ideas-center__card">
+            <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="ideas-center__content">
+              <span class="badge badge-success mb-4">Expert Tips</span>
+              <h3 class="ideas-center__heading">Pro Tips for Framing</h3>
+              <p class="ideas-center__text">Professional framing techniques and best practices from experienced contractors.</p>
+              <a href="#" class="ideas-center__link">Read More →</a>
+            </div>
           </div>
-        </div>
-        
-        <!-- Card 4: Product Spotlight -->
-        <!-- Adobe Stock: "construction fasteners hardware assortment" -->
-        <div class="ideas-center__card">
-          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1581244277943-fe4a9c777189?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-          <div class="ideas-center__content">
-            <span class="badge badge-secondary mb-4">Product Spotlight</span>
-            <h3 class="ideas-center__heading">Best Fasteners for Outdoors</h3>
-            <p class="ideas-center__text">Choosing the right fasteners for weather-resistant outdoor construction.</p>
-            <a href="#" class="ideas-center__link">Read More →</a>
+          
+          <!-- Card 4: Product Spotlight -->
+          <div class="ideas-center__card">
+            <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1581244277943-fe4a9c777189?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+            <div class="ideas-center__content">
+              <span class="badge badge-secondary mb-4">Product Spotlight</span>
+              <h3 class="ideas-center__heading">Best Fasteners for Outdoors</h3>
+              <p class="ideas-center__text">Choosing the right fasteners for weather-resistant outdoor construction.</p>
+              <a href="#" class="ideas-center__link">Read More →</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Featured Categories -->
-  <section class="section" style="padding: 4rem 0 5rem 0; background: var(--color-surface);">
-    <div class="container">
-      <h2 class="text-center mb-2 text-2xl">Featured Categories</h2>
-      <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Browse our most popular building material categories</p>
-      <div class="grid grid-3 gap-6">
-        <a href="pages/catalog.html?category=structural_materials" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div class="featured-category-icon">
-            <img src="icons/categories/structural.svg" alt="Structural Materials" width="64" height="64">
-          </div>
-          <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Structural Materials</h3>
-          <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Lumber, studs, joists, beams</p>
-        </a>
-        <a href="pages/catalog.html?category=windows_doors" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div class="featured-category-icon">
-            <img src="icons/categories/windows-doors.svg" alt="Windows & Doors" width="64" height="64">
-          </div>
-          <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Windows & Doors</h3>
-          <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Residential and commercial</p>
-        </a>
-        <a href="pages/catalog.html?category=fasteners_hardware" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div class="featured-category-icon">
-            <img src="icons/categories/fasteners.svg" alt="Fasteners & Hardware" width="64" height="64">
-          </div>
-          <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Fasteners & Hardware</h3>
-          <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Nails, screws, brackets</p>
-        </a>
-        <a href="pages/catalog.html?category=roofing" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div class="featured-category-icon">
-            <img src="icons/categories/roofing.svg" alt="Roofing Materials" width="64" height="64">
-          </div>
-          <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Roofing Materials</h3>
-          <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Shingles, underlayment, flashing</p>
-        </a>
-        <a href="pages/catalog.html?category=framing_drywall" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div class="featured-category-icon">
-            <img src="icons/categories/framing-drywall.svg" alt="Framing & Drywall" width="64" height="64">
-          </div>
-          <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Framing & Drywall</h3>
-          <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Panels, tape, compound</p>
-        </a>
-        <a href="catalog" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
-          <div class="featured-category-icon">
-            <img src="icons/categories/catalog.svg" alt="View All Products" width="64" height="64">
-          </div>
-          <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">View All Products</h3>
-          <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Browse complete catalog</p>
-        </a>
+    <!-- Featured Categories -->
+    <section class="section" style="padding: 4rem 0 5rem 0; background: var(--color-surface);">
+      <div class="container">
+        <h2 class="text-center mb-2 text-2xl">Featured Categories</h2>
+        <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Browse our most popular building material categories</p>
+        <div class="grid grid-3 gap-6">
+          <a href="catalog/structural-materials" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
+            <div class="featured-category-icon">
+              <img src="icons/categories/structural.svg" alt="Structural Materials" width="64" height="64">
+            </div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Structural Materials</h3>
+            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Lumber, studs, joists, beams</p>
+          </a>
+          <a href="catalog/windows-doors" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
+            <div class="featured-category-icon">
+              <img src="icons/categories/windows-doors.svg" alt="Windows & Doors" width="64" height="64">
+            </div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Windows & Doors</h3>
+            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Residential and commercial</p>
+          </a>
+          <a href="catalog/fasteners-hardware" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
+            <div class="featured-category-icon">
+              <img src="icons/categories/fasteners.svg" alt="Fasteners & Hardware" width="64" height="64">
+            </div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Fasteners & Hardware</h3>
+            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Nails, screws, brackets</p>
+          </a>
+          <a href="catalog/roofing" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
+            <div class="featured-category-icon">
+              <img src="icons/categories/roofing.svg" alt="Roofing Materials" width="64" height="64">
+            </div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Roofing Materials</h3>
+            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Shingles, underlayment, flashing</p>
+          </a>
+          <a href="catalog/framing-drywall" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
+            <div class="featured-category-icon">
+              <img src="icons/categories/framing-drywall.svg" alt="Framing & Drywall" width="64" height="64">
+            </div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">Framing & Drywall</h3>
+            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Panels, tape, compound</p>
+          </a>
+          <a href="catalog" class="card featured-category-card" style="text-decoration: none; color: inherit; text-align: center; padding: 2rem 1.5rem; transition: all 0.2s; border: 1px solid var(--color-border);" onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='var(--color-primary)'; this.style.boxShadow='var(--shape-shadow-2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'">
+            <div class="featured-category-icon">
+              <img src="icons/categories/catalog.svg" alt="View All Products" width="64" height="64">
+            </div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--color-text); font-size: 1.125rem; font-weight: 600;">View All Products</h3>
+            <p style="color: var(--color-text-light); font-size: 0.875rem; margin: 0;">Browse complete catalog</p>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Shop By Job -->
-  <section class="section" style="padding: 4rem 0 5rem 0;">
-    <div class="container">
-      <h2 class="text-center mb-2 text-2xl">Shop By Job</h2>
-      <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Get a customized material kit for your specific construction job</p>
-      <div class="grid grid-3 gap-6">
-        <!-- Adobe Stock: "residential wall framing construction" -->
-        <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Frame a Wall</h3>
-            <p class="shop-by-job__text">Complete framing materials for residential wall construction</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "bathroom renovation modern" -->
-        <a href="pages/project-builder.html?projectType=remodel&projectDetail=bathroom&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Remodel a Bathroom</h3>
-            <p class="shop-by-job__text">Materials for bathroom renovation and remodeling projects</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "window installation construction" -->
-        <a href="pages/project-builder.html?projectType=remodel&projectDetail=exterior&complexity=basic" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Install Windows</h3>
-            <p class="shop-by-job__text">Window installation materials and hardware</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "roofing construction shingles installation" -->
-        <!-- Unsplash: https://unsplash.com/photos/grey-roof-m_vEaZizd2s -->
-        <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=complex" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1518736346281-76873166a64a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Roof a House</h3>
-            <p class="shop-by-job__text">Complete roofing materials for new construction</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "plumbing tools pipes repair" -->
-        <a href="pages/project-builder.html?projectType=repair&projectDetail=plumbing&complexity=basic" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Repair Plumbing</h3>
-            <p class="shop-by-job__text">Essential materials for plumbing repairs and maintenance</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "outdoor deck construction lumber" -->
-        <!-- Unsplash: https://unsplash.com/photos/a-deck-with-chairs-and-tables-on-it-and-a-deck-with-plants-8c4kyStDeAE -->
-        <a href="pages/project-builder.html?projectType=new_construction&projectDetail=outdoor&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1656646549607-8fda5837a4ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Build a Deck</h3>
-            <p class="shop-by-job__text">Lumber, fasteners, and materials for outdoor deck construction</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
+    <!-- Shop By Job -->
+    <section class="section" style="padding: 4rem 0 5rem 0;">
+      <div class="container">
+        <h2 class="text-center mb-2 text-2xl">Shop By Job</h2>
+        <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Get a customized material kit for your specific construction job</p>
+        <div class="grid grid-3 gap-6">
+          <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+            <div class="shop-by-job__overlay"></div>
+            <div class="shop-by-job__content">
+              <h3 class="shop-by-job__heading">Frame a Wall</h3>
+              <p class="shop-by-job__text">Complete framing materials for residential wall construction</p>
+              <span class="shop-by-job__cta">Start Project →</span>
+            </div>
+          </a>
+          
+          <a href="pages/project-builder.html?projectType=remodel&projectDetail=bathroom&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+            <div class="shop-by-job__overlay"></div>
+            <div class="shop-by-job__content">
+              <h3 class="shop-by-job__heading">Remodel a Bathroom</h3>
+              <p class="shop-by-job__text">Materials for bathroom renovation and remodeling projects</p>
+              <span class="shop-by-job__cta">Start Project →</span>
+            </div>
+          </a>
+          
+          <a href="pages/project-builder.html?projectType=remodel&projectDetail=exterior&complexity=basic" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+            <div class="shop-by-job__overlay"></div>
+            <div class="shop-by-job__content">
+              <h3 class="shop-by-job__heading">Install Windows</h3>
+              <p class="shop-by-job__text">Window installation materials and hardware</p>
+              <span class="shop-by-job__cta">Start Project →</span>
+            </div>
+          </a>
+          
+          <a href="pages/project-builder.html?projectType=new_construction&projectDetail=residential_home&complexity=complex" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1518736346281-76873166a64a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+            <div class="shop-by-job__overlay"></div>
+            <div class="shop-by-job__content">
+              <h3 class="shop-by-job__heading">Roof a House</h3>
+              <p class="shop-by-job__text">Complete roofing materials for new construction</p>
+              <span class="shop-by-job__cta">Start Project →</span>
+            </div>
+          </a>
+          
+          <a href="pages/project-builder.html?projectType=repair&projectDetail=plumbing&complexity=basic" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+            <div class="shop-by-job__overlay"></div>
+            <div class="shop-by-job__content">
+              <h3 class="shop-by-job__heading">Repair Plumbing</h3>
+              <p class="shop-by-job__text">Essential materials for plumbing repairs and maintenance</p>
+              <span class="shop-by-job__cta">Start Project →</span>
+            </div>
+          </a>
+          
+          <a href="pages/project-builder.html?projectType=new_construction&projectDetail=outdoor&complexity=moderate" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1656646549607-8fda5837a4ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+            <div class="shop-by-job__overlay"></div>
+            <div class="shop-by-job__content">
+              <h3 class="shop-by-job__heading">Build a Deck</h3>
+              <p class="shop-by-job__text">Lumber, fasteners, and materials for outdoor deck construction</p>
+              <span class="shop-by-job__cta">Start Project →</span>
+            </div>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <script type="module" src="scripts/app.js"></script>
-  <script type="module" src="blocks/header/header.js"></script>
+  <!-- Footer loaded dynamically from blocks/footer/ -->
+  <footer></footer>
+
   <script type="module">
     import { getProducts, getPrice, getInventoryStatus, getPrimaryWarehouse, getProductImageUrl } from './scripts/data-mock.js';
     
@@ -620,7 +403,7 @@
             e.preventDefault();
             e.stopPropagation();
             window.dispatchEvent(new CustomEvent('addToCart', {
-              detail: { sku: product.sku, quantity: 1 }
+              detail: { sku: product.sku, quantity: 1, productName: product.name }
             }));
           };
           actions.appendChild(addBtn);
@@ -641,102 +424,5 @@
       loadFeaturedProducts();
     }
   </script>
-
-    <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <!-- Products Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Products</h3>
-          <ul class="footer-links">
-            <li><a href="catalog">All Products</a></li>
-            <li><a href="pages/catalog.html?category=structural_materials">Structural Materials</a></li>
-            <li><a href="pages/catalog.html?category=windows_doors">Windows & Doors</a></li>
-            <li><a href="pages/catalog.html?category=fasteners_hardware">Fasteners & Hardware</a></li>
-            <li><a href="pages/catalog.html?category=roofing">Roofing</a></li>
-            <li><a href="pages/catalog.html?category=framing_drywall">Framing & Drywall</a></li>
-          </ul>
-        </div>
-
-        <!-- Services Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Services</h3>
-          <ul class="footer-links">
-            <li><a href="pages/project-builder.html">Project Builder</a></li>
-            <li><a href="pages/login.html">Apply for Credit</a></li>
-            <li><a href="pages/account.html#orders">Order History</a></li>
-            <li><a href="pages/account.html">My Account</a></li>
-          </ul>
-        </div>
-
-        <!-- Resources Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Resources</h3>
-          <ul class="footer-links">
-            <li><a href="index.html#ideas-center">Ideas Center</a></li>
-            <li><a href="pages/account.html#help">Help Center</a></li>
-            <li><a href="#">Product Guides</a></li>
-            <li><a href="#">Installation Tips</a></li>
-            <li><a href="#">Safety Resources</a></li>
-          </ul>
-        </div>
-
-        <!-- Company Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Company</h3>
-          <ul class="footer-links">
-            <li><a href="#">About BuildRight</a></li>
-            <li><a href="#">Locations</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Become a Partner</a></li>
-            <li><a href="#">News & Updates</a></li>
-          </ul>
-        </div>
-
-        <!-- Contact Column -->
-        <div class="footer-column footer-contact">
-          <h3 class="footer-heading">Contact Us</h3>
-          <div class="footer-contact-info">
-            <div class="footer-contact-item">
-              <svg class="footer-contact-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-              </svg>
-              <div class="footer-contact-content">
-                <a href="tel:1800285437748">1-800-BUILDRIGHT</a>
-              </div>
-            </div>
-            <div class="footer-contact-item">
-              <svg class="footer-contact-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-              </svg>
-              <div class="footer-contact-content">
-                <a href="mailto:support@buildright.com">support@buildright.com</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Bottom -->
-      <div class="footer-bottom">
-        <div class="footer-bottom-content">
-          <div class="footer-copyright">
-            <p>&copy; 2025 BuildRight Solutions. All rights reserved.</p>
-          </div>
-          <div class="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <span class="footer-separator">|</span>
-            <a href="#">Terms of Service</a>
-            <span class="footer-separator">|</span>
-            <a href="#">Accessibility</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-
 </body>
 </html>
-

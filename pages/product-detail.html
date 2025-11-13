@@ -1,206 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail - BuildRight Solutions</title>
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/utilities.css">
-  <link rel="stylesheet" href="../blocks/header/header.css">
+  <script src="../scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="../styles/styles.css">
   <link rel="stylesheet" href="../blocks/product-gallery/product-gallery.css">
   <link rel="stylesheet" href="../blocks/pricing-display/pricing-display.css">
   <link rel="stylesheet" href="../blocks/inventory-status/inventory-status.css">
   <link rel="stylesheet" href="../blocks/product-detail/product-detail.css">
-  <script>
-    // Set BASE_PATH for scripts that need it
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
-    })();
-  </script>
 </head>
 <body>
-<script>
-  // Set body classes early for CSS-only navigation highlighting
-  (function() {
-    const redirectPath = sessionStorage.getItem('spa_redirect_path');
-    const currentPath = redirectPath || window.location.pathname;
-    const normalizePath = (path) => path ? path.replace(/^\/+|\/+$/g, '').toLowerCase() : '';
-    const normalizedPath = normalizePath(currentPath);
-    
-    // Set page type classes
-    if (normalizedPath.includes('catalog')) {
-      document.body.classList.add('page-catalog');
-      
-      // Set category data attribute
-      const pathParts = normalizedPath.split('/');
-      if (pathParts.length > 1 && pathParts[0] === 'catalog') {
-        const categorySlug = pathParts[1];
-        const categoryMap = {
-          'structural-materials': 'structural_materials',
-          'windows-doors': 'windows_doors',
-          'fasteners-hardware': 'fasteners_hardware',
-          'roofing': 'roofing',
-          'framing-drywall': 'framing_drywall'
-        };
-        const category = categoryMap[categorySlug];
-        if (category) {
-          document.body.setAttribute('data-category', category);
-        }
-      }
-    } else if (normalizedPath.includes('project-builder')) {
-      document.body.classList.add('page-project-builder');
-    }
-  })();
-</script>
-  <div class="header">
-  <!-- Top Utility Bar -->
-  <div class="header-top">
-    <div class="header-top-content">
-      <div class="header-location" id="header-location" style="display: none;">
-        <span class="location-label">You're Shopping</span>
-        <div class="location-selector-wrapper">
-          <button class="location-selector" id="location-selector">
-            <span class="location-name">Premium Commercial Builders - Los Angeles, CA</span>
-            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-          <!-- Location Dropdown -->
-          <div class="location-menu" id="location-menu">
-            <div class="location-menu-content">
-              <ul class="location-menu-list" id="location-menu-list">
-                <!-- Locations will be populated by JavaScript -->
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      
+  <!-- Header loaded dynamically from blocks/header/ -->
+  <header></header>
+
+  <!-- Breadcrumbs -->
+  <div style="background: var(--color-surface); padding: var(--spacing-small) 0; border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <nav style="font: var(--type-body-2-default-font); color: var(--color-text-secondary);">
+        <a href="../index.html" style="color: var(--color-brand-500); text-decoration: none;">Home</a>
+        <span style="margin: 0 var(--spacing-small);">/</span>
+        <a href="../catalog" style="color: var(--color-brand-500); text-decoration: none;">Products</a>
+        <span style="margin: 0 var(--spacing-small);">/</span>
+        <span>Product Detail</span>
+      </nav>
     </div>
   </div>
 
-  <!-- Main Header -->
-  <div class="header-main">
-    <div class="header-main-content">
-      <div class="header-brand">
-        <a href="index.html">BuildRight</a>
-      </div>
-      
-      <!-- Search Bar -->
-      <div class="header-search">
-        <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
-        <button class="search-button" aria-label="Search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21 21-4.34-4.34" />
-            <circle cx="11" cy="11" r="8" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="header-actions">
-        <div class="user-menu-wrapper">
-          <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
-            <span class="user-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-            </span>
-            <span class="user-label">Account</span>
-          </button>
-          <!-- User Menu Dropdown - Will be loaded as a block -->
-          <div id="user-menu-container"></div>
-        </div>
-        <div class="cart-link-wrapper">
-          <button class="cart-link" id="cart-link-toggle" aria-expanded="false" aria-label="Shopping cart">
-            <span class="cart-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8" cy="21" r="1"/>
-                <circle cx="19" cy="21" r="1"/>
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-              </svg>
-            </span>
-            <span class="cart-label">Cart</span>
-            <span class="cart-count">0</span>
-          </button>
-          <!-- Mini Cart Dropdown - Will be loaded as a block -->
-          <div id="mini-cart-container"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation Bar -->
-  <div class="header-nav-bar">
-    <div class="header-nav-content">
-      <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-        <nav class="main-nav">
-          <div class="nav-item">
-            <a href="catalog" class="nav-link" data-category="all">All Products</a>
-          </div>
-          <div class="nav-item">
-            <a href="pages/project-builder.html" class="nav-link nav-link-cta">Project Builder</a>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="structural_materials">Structural Materials</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="windows_doors">Windows & Doors</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="fasteners_hardware">Fasteners & Hardware</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="roofing">Roofing</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="framing_drywall">Framing & Drywall</button>
-          </div>
-        </nav>
-      <div class="nav-industry">
-          <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
-            Shop By Industry
-            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Industry Dropdown -->
-  <div class="industry-menu" id="industry-menu">
-    <div class="industry-menu-content">
-        <div class="industry-column">
-          <h3>Commercial</h3>
-          <ul>
-            <li><a href="catalog/commercial">Commercial Construction</a></li>
-            <li><a href="catalog/structural-materials">Structural Materials</a></li>
-            <li><a href="catalog/windows-doors">Windows & Doors</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Residential</h3>
-          <ul>
-            <li><a href="catalog/residential">Residential Construction</a></li>
-            <li><a href="catalog/structural-materials">Framing Materials</a></li>
-            <li><a href="catalog/windows-doors">Residential Windows</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Pro</h3>
-          <ul>
-            <li><a href="catalog/pro">Trade Contractors</a></li>
-            <li><a href="catalog/fasteners-hardware">Fasteners & Tools</a></li>
-            <li><a href="catalog/roofing">Roofing Supplies</a></li>
-          </ul>
-        </div>
-    </div>
-  </div>
-  <section class="section">
+  <!-- Product Detail -->
+  <main>
+    <section class="section">
     <div class="container" style="max-width: 1400px;">
       <!-- Product Detail Container -->
       <div class="product-detail-container">
@@ -341,14 +171,25 @@
     </div>
   </section>
 
-  <script type="module" src="../scripts/app.js"></script>
+  </main>
+
+  <!-- Footer loaded dynamically from blocks/footer/ -->
+  <footer></footer>
+
   <script type="module">
-    import { getUrlParameter } from '../scripts/utils.js';
+    import { getUrlParameter, cleanElementListeners } from '../scripts/utils.js';
     import { getProductBySKU } from '../scripts/data-mock.js';
-    import { decorateBlock } from '../scripts/utils.js';
+    import { decorateBlock } from '../scripts/scripts.js';
     
-    // Load product detail
+    // Load product detail - idempotent function
     async function loadProductDetail() {
+      // Track initialization to prevent duplicate execution
+      const initKey = '_productDetailInitialized';
+      if (window[initKey]) {
+        return; // Already initialized, skip
+      }
+      window[initKey] = true;
+      
       const sku = getUrlParameter('sku');
       if (!sku) {
         window.location.href = 'catalog';
@@ -409,11 +250,14 @@
         specsContainer.innerHTML = '<p style="color: var(--color-text-secondary); font-style: italic; margin: 0;">No specifications available for this product.</p>';
       }
 
-      // Add to cart handler
-      document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+      // Add to cart handler - use utility to clean listeners (idempotent)
+      const addToCartBtn = document.getElementById('add-to-cart-btn');
+      const cleanBtn = cleanElementListeners(addToCartBtn);
+      
+      cleanBtn.addEventListener('click', () => {
         const quantity = parseInt(document.getElementById('quantity').value) || 1;
         window.dispatchEvent(new CustomEvent('addToCart', {
-          detail: { sku, quantity }
+          detail: { sku, quantity, productName: product.name }
         }));
       });
 
@@ -483,9 +327,8 @@
 
     document.addEventListener('DOMContentLoaded', loadProductDetail);
   </script>
-<!-- Footer -->
-  <!-- Footer -->
-  <footer class="site-footer">
+</body>
+</html>
     <div class="footer-container">
       <div class="footer-content">
         <!-- Products Column -->

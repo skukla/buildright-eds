@@ -1,261 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Select Project Type - BuildRight Solutions</title>
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/utilities.css">
-  <link rel="stylesheet" href="../blocks/header/header.css">
-  <script>
-    // Set BASE_PATH for scripts that need it
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
-    })();
-  </script>
+  <script src="../scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-<script>
-  // Set body classes early for CSS-only navigation highlighting
-  (function() {
-    const redirectPath = sessionStorage.getItem('spa_redirect_path');
-    const currentPath = redirectPath || window.location.pathname;
-    const normalizePath = (path) => path ? path.replace(/^\/+|\/+$/g, '').toLowerCase() : '';
-    const normalizedPath = normalizePath(currentPath);
-    
-    // Set page type classes
-    if (normalizedPath.includes('catalog')) {
-      document.body.classList.add('page-catalog');
-      
-      // Set category data attribute
-      const pathParts = normalizedPath.split('/');
-      if (pathParts.length > 1 && pathParts[0] === 'catalog') {
-        const categorySlug = pathParts[1];
-        const categoryMap = {
-          'structural-materials': 'structural_materials',
-          'windows-doors': 'windows_doors',
-          'fasteners-hardware': 'fasteners_hardware',
-          'roofing': 'roofing',
-          'framing-drywall': 'framing_drywall'
-        };
-        const category = categoryMap[categorySlug];
-        if (category) {
-          document.body.setAttribute('data-category', category);
-        }
-      }
-    } else if (normalizedPath.includes('project-builder')) {
-      document.body.classList.add('page-project-builder');
-    }
-  })();
-</script>
-  <div class="header">
-  <!-- Top Utility Bar -->
-  <div class="header-top">
-    <div class="header-top-content">
-      <div class="header-location" id="header-location" style="display: none;">
-        <span class="location-label">You're Shopping</span>
-        <div class="location-selector-wrapper">
-          <button class="location-selector" id="location-selector">
-            <span class="location-name">Premium Commercial Builders - Los Angeles, CA</span>
-            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-          <!-- Location Dropdown -->
-          <div class="location-menu" id="location-menu">
-            <div class="location-menu-content">
-              <ul class="location-menu-list" id="location-menu-list">
-                <!-- Locations will be populated by JavaScript -->
-              </ul>
+  <!-- Header loaded dynamically from blocks/header/ -->
+  <header></header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="section">
+      <div class="container" style="max-width: 1000px;">
+        <h1 style="text-align: center; margin-bottom: 1rem;">Select Your Project Type</h1>
+        <p style="text-align: center; margin-bottom: 3rem; color: var(--color-text-light);">Choose the type of project you're working on to see relevant products</p>
+        
+        <div class="grid grid-2" style="gap: 2rem;">
+          <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('new_construction')">
+            <div class="card-header">
+              <h3>New Construction</h3>
+            </div>
+            <div class="card-body">
+              <p>Structural materials, framing lumber, foundation supplies, and materials for new building projects.</p>
+              <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+                <strong>Best for:</strong> General contractors, commercial builders, residential developers
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
 
-  <!-- Main Header -->
-  <div class="header-main">
-    <div class="header-main-content">
-      <div class="header-brand">
-        <a href="index.html">BuildRight</a>
-      </div>
-      
-      <!-- Search Bar -->
-      <div class="header-search">
-        <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
-        <button class="search-button" aria-label="Search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21 21-4.34-4.34" />
-            <circle cx="11" cy="11" r="8" />
-          </svg>
-        </button>
-      </div>
+          <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('remodel')">
+            <div class="card-header">
+              <h3>Remodel</h3>
+            </div>
+            <div class="card-body">
+              <p>Finishing materials, windows, doors, drywall, and renovation supplies for existing structures.</p>
+              <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+                <strong>Best for:</strong> Remodeling contractors, renovation specialists, home improvement
+              </div>
+            </div>
+          </div>
 
-      <div class="header-actions">
-        <div class="user-menu-wrapper">
-          <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
-            <span class="user-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-            </span>
-            <span class="user-label">Account</span>
-          </button>
-          <!-- User Menu Dropdown - Will be loaded as a block -->
-          <div id="user-menu-container"></div>
-        </div>
-        <div class="cart-link-wrapper">
-          <button class="cart-link" id="cart-link-toggle" aria-expanded="false" aria-label="Shopping cart">
-            <span class="cart-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8" cy="21" r="1"/>
-                <circle cx="19" cy="21" r="1"/>
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-              </svg>
-            </span>
-            <span class="cart-label">Cart</span>
-            <span class="cart-count">0</span>
-          </button>
-          <!-- Mini Cart Dropdown - Will be loaded as a block -->
-          <div id="mini-cart-container"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('repair')">
+            <div class="card-header">
+              <h3>Repair</h3>
+            </div>
+            <div class="card-body">
+              <p>Maintenance products, smaller quantities, quick availability for repair and maintenance work.</p>
+              <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+                <strong>Best for:</strong> Maintenance teams, repair contractors, property managers
+              </div>
+            </div>
+          </div>
 
-  <!-- Navigation Bar -->
-  <div class="header-nav-bar">
-    <div class="header-nav-content">
-      <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-        <nav class="main-nav">
-          <div class="nav-item">
-            <a href="catalog" class="nav-link" data-category="all">All Products</a>
-          </div>
-          <div class="nav-item">
-            <a href="project-builder.html" class="nav-link nav-link-cta">Project Builder</a>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="structural_materials">Structural Materials</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="windows_doors">Windows & Doors</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="fasteners_hardware">Fasteners & Hardware</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="roofing">Roofing</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="framing_drywall">Framing & Drywall</button>
-          </div>
-        </nav>
-      <div class="nav-industry">
-          <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
-            Shop By Industry
-            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Industry Dropdown -->
-  <div class="industry-menu" id="industry-menu">
-    <div class="industry-menu-content">
-        <div class="industry-column">
-          <h3>Commercial</h3>
-          <ul>
-            <li><a href="catalog/commercial">Commercial Construction</a></li>
-            <li><a href="catalog/structural-materials">Structural Materials</a></li>
-            <li><a href="catalog/windows-doors">Windows & Doors</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Residential</h3>
-          <ul>
-            <li><a href="catalog/residential">Residential Construction</a></li>
-            <li><a href="catalog/structural-materials">Framing Materials</a></li>
-            <li><a href="catalog/windows-doors">Residential Windows</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Pro</h3>
-          <ul>
-            <li><a href="catalog/pro">Trade Contractors</a></li>
-            <li><a href="catalog/fasteners-hardware">Fasteners & Tools</a></li>
-            <li><a href="catalog/roofing">Roofing Supplies</a></li>
-          </ul>
-        </div>
-    </div>
-  </div>
-  <section class="section">
-    <div class="container" style="max-width: 1000px;">
-      <h1 style="text-align: center; margin-bottom: 1rem;">Select Your Project Type</h1>
-      <p style="text-align: center; margin-bottom: 3rem; color: var(--color-text-light);">Choose the type of project you're working on to see relevant products</p>
-      
-      <div class="grid grid-2" style="gap: 2rem;">
-        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('new_construction')">
-          <div class="card-header">
-            <h3>New Construction</h3>
-          </div>
-          <div class="card-body">
-            <p>Structural materials, framing lumber, foundation supplies, and materials for new building projects.</p>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
-              <strong>Best for:</strong> General contractors, commercial builders, residential developers
+          <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('restoration')">
+            <div class="card-header">
+              <h3>Restoration</h3>
+            </div>
+            <div class="card-body">
+              <p>Specialty items, matching materials, historic preservation products for restoration projects.</p>
+              <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
+                <strong>Best for:</strong> Historic preservation, restoration specialists, custom builders
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('remodel')">
-          <div class="card-header">
-            <h3>Remodel</h3>
-          </div>
-          <div class="card-body">
-            <p>Finishing materials, windows, doors, drywall, and renovation supplies for existing structures.</p>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
-              <strong>Best for:</strong> Remodeling contractors, renovation specialists, home improvement
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('repair')">
-          <div class="card-header">
-            <h3>Repair</h3>
-          </div>
-          <div class="card-body">
-            <p>Maintenance products, smaller quantities, quick availability for repair and maintenance work.</p>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
-              <strong>Best for:</strong> Maintenance teams, repair contractors, property managers
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="selectProjectType('restoration')">
-          <div class="card-header">
-            <h3>Restoration</h3>
-          </div>
-          <div class="card-body">
-            <p>Specialty items, matching materials, historic preservation products for restoration projects.</p>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(30, 58, 138, 0.1); border-radius: 0.5rem;">
-              <strong>Best for:</strong> Historic preservation, restoration specialists, custom builders
-            </div>
-          </div>
+        <div style="text-align: center; margin-top: 3rem;">
+          <a href="catalog" class="btn btn-primary btn-lg">Continue to Catalog</a>
         </div>
       </div>
+    </section>
+  </main>
 
-      <div style="text-align: center; margin-top: 3rem;">
-        <a href="catalog" class="btn btn-primary btn-lg">Continue to Catalog</a>
-      </div>
-    </div>
-  </section>
+  <!-- Footer loaded dynamically from blocks/footer/ -->
+  <footer></footer>
 
   <script>
     function selectProjectType(type) {
@@ -263,102 +84,5 @@
       window.location.href = 'catalog';
     }
   </script>
-  <script type="module" src="../scripts/app.js"></script>
-<!-- Footer -->
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <!-- Products Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Products</h3>
-          <ul class="footer-links">
-            <li><a href="catalog">All Products</a></li>
-            <li><a href="catalog.html?category=structural_materials">Structural Materials</a></li>
-            <li><a href="catalog.html?category=windows_doors">Windows & Doors</a></li>
-            <li><a href="catalog.html?category=fasteners_hardware">Fasteners & Hardware</a></li>
-            <li><a href="catalog.html?category=roofing">Roofing</a></li>
-            <li><a href="catalog.html?category=framing_drywall">Framing & Drywall</a></li>
-          </ul>
-        </div>
-
-        <!-- Services Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Services</h3>
-          <ul class="footer-links">
-            <li><a href="project-builder.html">Project Builder</a></li>
-            <li><a href="login.html">Apply for Credit</a></li>
-            <li><a href="account.html#orders">Order History</a></li>
-            <li><a href="account.html">My Account</a></li>
-          </ul>
-        </div>
-
-        <!-- Resources Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Resources</h3>
-          <ul class="footer-links">
-            <li><a href="index.html#ideas-center">Ideas Center</a></li>
-            <li><a href="account.html#help">Help Center</a></li>
-            <li><a href="#">Product Guides</a></li>
-            <li><a href="#">Installation Tips</a></li>
-            <li><a href="#">Safety Resources</a></li>
-          </ul>
-        </div>
-
-        <!-- Company Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Company</h3>
-          <ul class="footer-links">
-            <li><a href="#">About BuildRight</a></li>
-            <li><a href="#">Locations</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Become a Partner</a></li>
-            <li><a href="#">News & Updates</a></li>
-          </ul>
-        </div>
-
-        <!-- Contact Column -->
-        <div class="footer-column footer-contact">
-          <h3 class="footer-heading">Contact Us</h3>
-          <div class="footer-contact-info">
-            <div class="footer-contact-item">
-              <svg class="footer-contact-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-              </svg>
-              <div class="footer-contact-content">
-                <a href="tel:1800285437748">1-800-BUILDRIGHT</a>
-              </div>
-            </div>
-            <div class="footer-contact-item">
-              <svg class="footer-contact-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-              </svg>
-              <div class="footer-contact-content">
-                <a href="mailto:support@buildright.com">support@buildright.com</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Bottom -->
-      <div class="footer-bottom">
-        <div class="footer-bottom-content">
-          <div class="footer-copyright">
-            <p>&copy; 2025 BuildRight Solutions. All rights reserved.</p>
-          </div>
-          <div class="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <span class="footer-separator">|</span>
-            <a href="#">Terms of Service</a>
-            <span class="footer-separator">|</span>
-            <a href="#">Accessibility</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
 </body>
 </html>
-

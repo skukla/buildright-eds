@@ -61,16 +61,17 @@
     }
   })();
 </script>
-  <div class="header">
+  <!-- Header -->
+<div class="header">
   <!-- Top Utility Bar -->
   <div class="header-top">
     <div class="header-top-content">
-      <div class="header-location">
+      <div class="header-location" id="header-location" style="display: none;">
         <span class="location-label">You're Shopping</span>
         <div class="location-selector-wrapper">
           <button class="location-selector" id="location-selector">
             <span class="location-name">Premium Commercial Builders - Los Angeles, CA</span>
-            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="align-middle"><path d="m6 9 6 6 6-6"/></svg></span>
+            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
           </button>
           <!-- Location Dropdown -->
           <div class="location-menu" id="location-menu">
@@ -81,11 +82,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="header-top-links">
-        <a href="pages/order-history.html">Order History</a>
-        <a href="pages/account.html">My Account</a>
-        <a href="pages/account.html#help">Help</a>
       </div>
     </div>
   </div>
@@ -109,24 +105,34 @@
       </div>
 
       <div class="header-actions">
-        <a href="pages/login.html" class="header-action-link">
-          <span class="action-label">Login</span>
-        </a>
-        <span class="action-separator">|</span>
-        <a href="pages/login.html" class="header-action-link">
-          <span class="action-label">Create Account</span>
-        </a>
-        <a href="pages/cart.html" class="cart-link">
-          <span class="cart-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="8" cy="21" r="1"/>
-              <circle cx="19" cy="21" r="1"/>
-              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-            </svg>
-          </span>
-          <span class="cart-label">Cart</span>
-          <span class="cart-count">0</span>
-        </a>
+        <div class="user-menu-wrapper">
+          <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
+            <span class="user-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </span>
+            <span class="user-label">Account</span>
+          </button>
+          <!-- User Menu Dropdown - Will be loaded as a block -->
+          <div id="user-menu-container"></div>
+        </div>
+        <div class="cart-link-wrapper">
+          <button class="cart-link" id="cart-link-toggle" aria-expanded="false" aria-label="Shopping cart">
+            <span class="cart-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+              </svg>
+            </span>
+            <span class="cart-label">Cart</span>
+            <span class="cart-count">0</span>
+          </button>
+          <!-- Mini Cart Dropdown - Will be loaded as a block -->
+          <div id="mini-cart-container"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -165,7 +171,7 @@
       <div class="nav-industry">
           <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
             Shop By Industry
-            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="align-middle"><path d="m6 9 6 6 6-6"/></svg></span>
+            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
           </button>
       </div>
     </div>
@@ -201,114 +207,6 @@
     </div>
   </div>
 </div>
-
-        <div class="header-top-links">
-          <a href="pages/order-history.html">Order History</a>
-          <a href="pages/account.html">My Account</a>
-          <a href="pages/account.html#help">Help</a>
-        </div>
-      </div>
-    </div>
-    <div class="header-main">
-      <div class="header-main-content">
-        <div class="header-brand">
-          <a href="index.html">BuildRight</a>
-        </div>
-        <div class="header-search">
-          <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input">
-          <button class="search-button" aria-label="Search">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m21 21-4.34-4.34" />
-              <circle cx="11" cy="11" r="8" />
-            </svg>
-          </button>
-        </div>
-        <div class="header-actions">
-          <a href="pages/login.html" class="header-action-link">
-            <span class="action-label">Login</span>
-          </a>
-          <span class="action-separator">|</span>
-          <a href="pages/login.html" class="header-action-link">
-            <span class="action-label">Create Account</span>
-          </a>
-          <a href="pages/cart.html" class="cart-link">
-            <span class="cart-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8" cy="21" r="1"/>
-                <circle cx="19" cy="21" r="1"/>
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-              </svg>
-            </span>
-            <span class="cart-label">Cart</span>
-            <span class="cart-count">0</span>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="header-nav-bar">
-      <div class="header-nav-content">
-        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <nav class="main-nav">
-          <div class="nav-item">
-            <a href="catalog" class="nav-link" data-category="all">All Products</a>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="structural_materials">Structural Materials</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="windows_doors">Windows & Doors</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="fasteners_hardware">Fasteners & Hardware</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="roofing">Roofing</button>
-          </div>
-          <div class="nav-item">
-            <button class="nav-link" data-category="framing_drywall">Framing & Drywall</button>
-          </div>
-        </nav>
-        <div class="nav-industry">
-          <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
-            Shop By Industry
-            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="align-middle"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="industry-menu" id="industry-menu">
-      <div class="industry-menu-content">
-        <div class="industry-column">
-          <h3>Commercial</h3>
-          <ul>
-            <li><a href="catalog/commercial">Commercial Construction</a></li>
-            <li><a href="catalog/structural-materials">Structural Materials</a></li>
-            <li><a href="catalog/windows-doors">Windows & Doors</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Residential</h3>
-          <ul>
-            <li><a href="catalog/residential">Residential Construction</a></li>
-            <li><a href="catalog/structural-materials">Framing Materials</a></li>
-            <li><a href="catalog/windows-doors">Residential Windows</a></li>
-          </ul>
-        </div>
-        <div class="industry-column">
-          <h3>Pro</h3>
-          <ul>
-            <li><a href="catalog/pro">Trade Contractors</a></li>
-            <li><a href="catalog/fasteners-hardware">Fasteners & Tools</a></li>
-            <li><a href="catalog/roofing">Roofing Supplies</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Hero Banner -->
   <!-- 
@@ -591,9 +489,10 @@
           const inventory = product.inventory[primaryWarehouse] || 0;
           const imageUrl = getProductImageUrl(product);
           
+          const basePath = window.BASE_PATH || '/';
           const card = document.createElement('a');
           card.className = 'product-card';
-          card.href = `pages/product-detail.html?sku=${product.sku}`;
+          card.href = `${basePath}pages/product-detail.html?sku=${product.sku}`;
           
           // Product image with background
           const image = document.createElement('div');
@@ -661,7 +560,7 @@
             e.preventDefault();
             e.stopPropagation();
             window.dispatchEvent(new CustomEvent('addToCart', {
-              detail: { sku: product.sku, quantity: 1 }
+              detail: { sku: product.sku, quantity: 1, productName: product.name }
             }));
           };
           actions.appendChild(addBtn);
@@ -692,11 +591,11 @@
           <h3 class="footer-heading">Products</h3>
           <ul class="footer-links">
             <li><a href="catalog">All Products</a></li>
-            <li><a href="pages/catalog.html?category=structural_materials">Structural Materials</a></li>
-            <li><a href="pages/catalog.html?category=windows_doors">Windows & Doors</a></li>
-            <li><a href="pages/catalog.html?category=fasteners_hardware">Fasteners & Hardware</a></li>
-            <li><a href="pages/catalog.html?category=roofing">Roofing</a></li>
-            <li><a href="pages/catalog.html?category=framing_drywall">Framing & Drywall</a></li>
+            <li><a href="catalog/structural-materials">Structural Materials</a></li>
+            <li><a href="catalog/windows-doors">Windows & Doors</a></li>
+            <li><a href="catalog/fasteners-hardware">Fasteners & Hardware</a></li>
+            <li><a href="catalog/roofing">Roofing</a></li>
+            <li><a href="catalog/framing-drywall">Framing & Drywall</a></li>
           </ul>
         </div>
 
