@@ -226,7 +226,7 @@ a:hover {
 
 /* Section */
 .section {
-  padding: var(--section-padding-vertical) var(--section-padding-horizontal);
+  padding: 2.5rem var(--section-padding-horizontal) var(--section-padding-vertical);
 }
 
 /* Utility Classes */
@@ -287,6 +287,10 @@ a:hover {
   :root {
     --section-padding-vertical: 3rem; /* 48px */
     --section-padding-horizontal: 1rem; /* 16px */
+  }
+  
+  .section {
+    padding: 2rem var(--section-padding-horizontal) var(--section-padding-vertical);
   }
 
   h1 {
