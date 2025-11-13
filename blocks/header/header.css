@@ -13,6 +13,7 @@
   border-bottom: 1px solid var(--color-border);
   padding: 0.6875rem 0; /* 11px - adjusted for 63px total height */
   font: var(--type-body-2-default-font);
+  min-height: 40px;
 }
 
 .header-top-content {
@@ -118,6 +119,10 @@
   font-size: 0.75rem;
   margin-left: 0.25rem;
   transition: transform var(--transition-fast);
+}
+
+.location-icon svg {
+  vertical-align: middle;
 }
 
 .location-selector[aria-expanded="true"] .location-icon {
@@ -316,6 +321,11 @@
   font: var(--type-body-2-default-font);
   font-weight: 500;
   transition: color var(--transition-fast);
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 }
 
 .header-action-link:hover {
@@ -325,6 +335,46 @@
 .action-separator {
   color: var(--color-border);
   font: var(--type-body-2-default-font);
+}
+
+/* User Menu */
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  padding: var(--spacing-small) var(--spacing-3);
+  border-radius: var(--shape-border-radius-3);
+  transition: background-color var(--transition-fast);
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.user-link:hover {
+  background-color: var(--color-surface);
+}
+
+.user-icon {
+  font-size: 1.25rem;
+}
+
+.user-label {
+  font: var(--type-body-2-default-font);
+}
+
+/* Cart */
+.cart-link-wrapper {
+  position: relative;
 }
 
 .cart-link {
@@ -338,6 +388,11 @@
   border-radius: var(--shape-border-radius-3);
   transition: background-color var(--transition-fast);
   position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .cart-link:hover {
@@ -362,6 +417,8 @@
   min-width: 1.25rem;
   text-align: center;
 }
+
+/* Mini Cart Positioning & Toggle - Styles are in blocks/mini-cart/mini-cart.css */
 
 /* Navigation Bar */
 .header-nav-bar {
@@ -500,6 +557,10 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
   display: inline-block;
   transition: transform var(--transition-fast);
   transform-origin: center;
+}
+
+.industry-toggle-icon svg {
+  vertical-align: middle;
 }
 
 .industry-toggle[aria-expanded="true"] .industry-toggle-icon {

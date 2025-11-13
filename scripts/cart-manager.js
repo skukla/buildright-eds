@@ -31,8 +31,16 @@ function addToCart(sku, quantity = 1) {
 }
 
 // Remove item from cart
-function removeFromCart(sku) {
-  const cart = getCart().filter(item => item.sku !== sku);
+function removeFromCart(identifier) {
+  // Filter out items by SKU or bundleId
+  const cart = getCart().filter(item => {
+    // Check if it's a bundle removal
+    if (item.bundleId) {
+      return item.bundleId !== identifier;
+    }
+    // Otherwise check SKU
+    return item.sku !== identifier;
+  });
   saveCart(cart);
   return cart;
 }
@@ -70,9 +78,14 @@ window.addEventListener('addToCart', (e) => {
   const { sku, quantity } = e.detail;
   addToCart(sku, quantity);
   
+  // Open mini-cart to show the added item
+  window.dispatchEvent(new CustomEvent('openMiniCart', {
+    detail: { sku }
+  }));
+  
   // Show notification
   const notification = document.createElement('div');
-  notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-success); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000;';
+  notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10000; font-family: system-ui, -apple-system, sans-serif; font-size: 0.875rem; font-weight: 500;';
   notification.textContent = 'Item added to cart!';
   document.body.appendChild(notification);
   
@@ -81,7 +94,18 @@ window.addEventListener('addToCart', (e) => {
   }, 3000);
 });
 
-// Export for use in other scripts
+// Export for use in other scripts (ES6 modules)
+export {
+  getCart,
+  saveCart,
+  addToCart,
+  removeFromCart,
+  updateCartItem,
+  clearCart,
+  getCartItemCount
+};
+
+// Also export for CommonJS compatibility
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     getCart,

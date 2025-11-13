@@ -2,12 +2,12 @@
   <!-- Top Utility Bar -->
   <div class="header-top">
     <div class="header-top-content">
-      <div class="header-location">
+      <div class="header-location" id="header-location" style="display: none;">
         <span class="location-label">You're Shopping</span>
         <div class="location-selector-wrapper">
           <button class="location-selector" id="location-selector">
             <span class="location-name">Premium Commercial Builders - Los Angeles, CA</span>
-            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="m6 9 6 6 6-6"/></svg></span>
+            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
           </button>
           <!-- Location Dropdown -->
           <div class="location-menu" id="location-menu">
@@ -18,11 +18,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="header-top-links">
-        <a href="pages/order-history.html">Order History</a>
-        <a href="pages/account.html">My Account</a>
-        <a href="pages/account.html#help">Help</a>
       </div>
     </div>
   </div>
@@ -46,24 +41,34 @@
       </div>
 
       <div class="header-actions">
-        <a href="pages/login.html" class="header-action-link">
-          <span class="action-label">Login</span>
-        </a>
-        <span class="action-separator">|</span>
-        <a href="pages/login.html" class="header-action-link">
-          <span class="action-label">Create Account</span>
-        </a>
-        <a href="pages/cart.html" class="cart-link">
-          <span class="cart-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="8" cy="21" r="1"/>
-              <circle cx="19" cy="21" r="1"/>
-              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-            </svg>
-          </span>
-          <span class="cart-label">Cart</span>
-          <span class="cart-count">0</span>
-        </a>
+        <div class="user-menu-wrapper">
+          <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
+            <span class="user-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </span>
+            <span class="user-label">Account</span>
+          </button>
+          <!-- User Menu Dropdown - Will be loaded as a block -->
+          <div id="user-menu-container"></div>
+        </div>
+        <div class="cart-link-wrapper">
+          <button class="cart-link" id="cart-link-toggle" aria-expanded="false" aria-label="Shopping cart">
+            <span class="cart-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+              </svg>
+            </span>
+            <span class="cart-label">Cart</span>
+            <span class="cart-count">0</span>
+          </button>
+          <!-- Mini Cart Dropdown - Will be loaded as a block -->
+          <div id="mini-cart-container"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -102,7 +107,7 @@
       <div class="nav-industry">
           <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
             Shop By Industry
-            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="m6 9 6 6 6-6"/></svg></span>
+            <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
           </button>
       </div>
     </div>
