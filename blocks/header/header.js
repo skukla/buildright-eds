@@ -39,7 +39,8 @@ export default async function decorate(block) {
   window.addEventListener('userLoggedOut', updateAuthenticatedElements);
   
   // Use absolute URL to avoid path resolution issues with dynamic imports
-  const baseUrl = document.querySelector('base')?.href || window.location.origin + '/';
+  const basePath = window.BASE_PATH || '/';
+  const baseUrl = window.location.origin + basePath;
   const utilsModule = await import(new URL('scripts/utils.js', baseUrl).href);
   const { loadBlockHTML, loadBlockCSS } = utilsModule;
   

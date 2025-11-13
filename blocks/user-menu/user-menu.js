@@ -5,7 +5,8 @@
 
 export default async function decorate(block) {
   // Import dependencies
-  const baseUrl = document.querySelector('base')?.href || window.location.origin + '/';
+  const basePath = window.BASE_PATH || '/';
+  const baseUrl = window.location.origin + basePath;
   const authModule = await import(new URL('scripts/auth.js', baseUrl).href);
   const { isLoggedIn, logout } = authModule;
   
