@@ -2,6 +2,7 @@
 import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyRedirect } from '../../scripts/url-router.js';
 import { isLoggedIn } from '../../scripts/auth.js';
 import { parseHTMLFragment } from '../../scripts/utils.js';
+import { showCartNotification } from '../../scripts/cart-notification.js';
 
 export default async function decorate(block) {
   // Check for legacy URLs and redirect if needed
@@ -144,6 +145,7 @@ export default async function decorate(block) {
         button.appendChild(labelSpan);
       }
       
+      // Add count badge after the label
       if (cartCountEl) {
         button.appendChild(cartCountEl.cloneNode(true));
       } else {
@@ -665,5 +667,11 @@ export default async function decorate(block) {
       link.classList.remove('active');
       link.removeAttribute('aria-current');
     }
+  });
+  
+  // Listen for cart item added events to show notification
+  window.addEventListener('cartItemAdded', (e) => {
+    const { productName, quantity } = e.detail;
+    showCartNotification(productName, quantity);
   });
 }

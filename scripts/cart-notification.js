@@ -1,0 +1,150 @@
+// Cart Notification - Show success notification when items are added to cart
+// This notification appears to the right of the cart icon and provides immediate feedback
+// without automatically opening the cart. Users can open the cart manually.
+
+let activeNotification = null;
+
+/**
+ * Show cart notification near the cart icon
+ * @param {string} productName - Name of the product added
+ * @param {number} quantity - Quantity added
+ */
+export function showCartNotification(productName, quantity = 1) {
+  // Remove any existing notification
+  if (activeNotification && activeNotification.parentElement) {
+    activeNotification.remove();
+  }
+
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = 'cart-notification';
+  notification.setAttribute('role', 'status');
+  notification.setAttribute('aria-live', 'polite');
+  
+  // Build notification content
+  notification.innerHTML = `
+    <div class="cart-notification-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="cart-notification-content">
+      <span class="cart-notification-text">
+        <strong>${escapeHtml(productName)}</strong>
+        ${quantity > 1 ? ` × ${quantity}` : ''}
+        added
+      </span>
+    </div>
+    <button class="cart-notification-close" aria-label="Close notification">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  `;
+  
+  // Position notification near cart icon
+  positionNotification(notification);
+  
+  // Add to DOM
+  document.body.appendChild(notification);
+  activeNotification = notification;
+  
+  // Trigger animation
+  requestAnimationFrame(() => {
+    notification.classList.add('active');
+  });
+  
+  // Setup close button
+  const closeBtn = notification.querySelector('.cart-notification-close');
+  closeBtn.addEventListener('click', () => {
+    dismissNotification(notification);
+  });
+  
+  // Auto-dismiss after 2.5 seconds
+  setTimeout(() => {
+    dismissNotification(notification);
+  }, 2500);
+  
+  // Reposition on window resize
+  const handleResize = () => positionNotification(notification);
+  window.addEventListener('resize', handleResize);
+  
+  // Clean up resize listener when notification is removed
+  notification.addEventListener('transitionend', (e) => {
+    if (e.propertyName === 'opacity' && !notification.classList.contains('active')) {
+      window.removeEventListener('resize', handleResize);
+    }
+  });
+}
+
+/**
+ * Position notification relative to cart icon (to the right, not below)
+ */
+function positionNotification(notification) {
+  const cartButton = document.querySelector('#cart-link-toggle');
+  
+  if (!cartButton) {
+    // Fallback to top-right if cart button not found
+    notification.style.top = '80px';
+    notification.style.right = '20px';
+    return;
+  }
+  
+  const rect = cartButton.getBoundingClientRect();
+  
+  // Position to the right of cart icon with 12px gap
+  // This prevents overlap with the mini cart dropdown that appears below
+  const leftPosition = rect.right + 12;
+  
+  // If notification would go off-screen right, position to left of cart instead
+  const notificationWidth = 280; // Approximate width from CSS
+  if (leftPosition + notificationWidth > window.innerWidth) {
+    notification.style.left = 'auto';
+    notification.style.right = `${window.innerWidth - rect.left + 12}px`;
+  } else {
+    notification.style.left = `${leftPosition}px`;
+    notification.style.right = 'auto';
+  }
+  
+  // Vertically align with top of cart icon
+  notification.style.top = `${rect.top}px`;
+}
+
+/**
+ * Dismiss notification with animation
+ */
+function dismissNotification(notification) {
+  if (!notification || !notification.parentElement) return;
+  
+  notification.classList.remove('active');
+  
+  // Remove from DOM after animation completes
+  setTimeout(() => {
+    if (notification.parentElement) {
+      notification.remove();
+    }
+    if (activeNotification === notification) {
+      activeNotification = null;
+    }
+  }, 300); // Match animation duration
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
+ * Initialize cart notification system
+ */
+export function initCartNotification() {
+  // Module is ready to use on import
+}
+
