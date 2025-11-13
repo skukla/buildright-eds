@@ -15,7 +15,7 @@
       window.BASE_PATH = basePath;
     })();
   </script>
-  <title>Product Detail - BuildRight Solutions</title>
+  <title>Product Detail (Variant) - BuildRight Solutions</title>
   <link rel="stylesheet" href="../styles/base.css">
   <link rel="stylesheet" href="../styles/components.css">
   <link rel="stylesheet" href="../styles/utilities.css">
@@ -204,10 +204,11 @@
         </div>
     </div>
   </div>
+  
   <section class="section">
     <div class="container" style="max-width: 1400px;">
       <!-- Product Detail Container -->
-      <div class="product-detail-container">
+      <div class="product-detail-container product-detail-variant">
         <!-- Product Header -->
         <div class="product-detail-header">
           <!-- Product Name Badge - Full Width -->
@@ -216,7 +217,7 @@
             <p id="product-sku" class="product-detail-sku">SKU: Loading...</p>
           </div>
 
-          <!-- Two Column Layout: Gallery + Purchase -->
+          <!-- Two Column Layout: Gallery + Title Info -->
           <div class="product-detail-header-content">
             <div class="product-detail-image-section">
               <div class="product-gallery" id="product-gallery" data-sku="">
@@ -251,53 +252,8 @@
               </div>
             </div>
 
-            <div class="product-detail-purchase-section">
-
-              <!-- Pricing & Purchase Card -->
-              <div class="product-detail-purchase-card">
-                <!-- Left Column: Pricing, Quantity, Add to Cart -->
-                <div class="product-detail-purchase-left">
-                  <div class="pricing-display" id="pricing-display" data-sku="">
-                    <div>
-                      <div>
-                        <div class="current-price-section">
-                          <span class="current-price">$0.00</span>
-                          <span class="tier-indicator">Loading...</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Quantity & Add to Cart -->
-                  <div class="product-detail-purchase-controls">
-                    <div class="product-detail-quantity">
-                      <label for="quantity" class="product-detail-label">Quantity</label>
-                      <div class="product-detail-qty-controls">
-                        <button class="product-detail-qty-btn" data-action="decrease" aria-label="Decrease quantity">-</button>
-                        <input type="number" id="quantity" class="product-detail-quantity-input" value="1" min="1" max="9999">
-                        <button class="product-detail-qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
-                      </div>
-                    </div>
-                    <button id="add-to-cart-btn" class="product-detail-add-to-cart">Add to Cart</button>
-                  </div>
-                </div>
-
-                <!-- Right Column: Volume Pricing -->
-                <div class="product-detail-volume-pricing" id="volume-pricing-section">
-                  <h3 class="volume-pricing-title">Volume Pricing</h3>
-                  <table class="volume-pricing-table">
-                    <thead>
-                      <tr>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                      </tr>
-                    </thead>
-                    <tbody class="pricing-tiers">
-                      <!-- Pricing tiers will be populated by JavaScript -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            <div class="product-detail-title-section">
+              <p id="product-description" class="product-detail-description">Loading...</p>
             </div>
           </div>
         </div>
@@ -340,6 +296,52 @@
               </div>
             </div>
           </div>
+
+          <!-- Right Column: Purchase -->
+          <div class="product-detail-right">
+            <!-- Pricing & Purchase Section -->
+            <div class="product-detail-section product-detail-purchase-card-sidebar">
+              <div class="pricing-display" id="pricing-display" data-sku="">
+                <div>
+                  <div>
+                    <div class="current-price-section">
+                      <span class="current-price">$0.00</span>
+                      <span class="tier-indicator">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quantity & Add to Cart -->
+              <div class="product-detail-purchase-controls">
+                <div class="product-detail-quantity">
+                  <label for="quantity" class="product-detail-label">Quantity</label>
+                  <div class="product-detail-qty-controls">
+                    <button class="product-detail-qty-btn" data-action="decrease" aria-label="Decrease quantity">-</button>
+                    <input type="number" id="quantity" class="product-detail-quantity-input" value="1" min="1" max="9999">
+                    <button class="product-detail-qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
+                  </div>
+                </div>
+                <button id="add-to-cart-btn" class="product-detail-add-to-cart">Add to Cart</button>
+              </div>
+
+              <!-- Volume Pricing -->
+              <div class="product-detail-volume-pricing" id="volume-pricing-section">
+                <h3 class="volume-pricing-title">Volume Pricing</h3>
+                <table class="volume-pricing-table">
+                  <thead>
+                    <tr>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                    </tr>
+                  </thead>
+                  <tbody class="pricing-tiers">
+                    <!-- Pricing tiers will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -368,6 +370,12 @@
       // Update product info
       document.getElementById('product-name').textContent = product.name;
       document.getElementById('product-sku').textContent = `SKU: ${product.sku}`;
+      
+      // Short description in header (first sentence or first 120 chars)
+      const shortDesc = product.description 
+        ? (product.description.split('.')[0] + '.' || product.description.substring(0, 120) + '...')
+        : '';
+      document.getElementById('product-description').textContent = shortDesc;
       
       // Full description in left column
       document.getElementById('product-description-full').textContent = product.description || 'No description available.';
@@ -488,7 +496,6 @@
     document.addEventListener('DOMContentLoaded', loadProductDetail);
   </script>
 <!-- Footer -->
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-content">
