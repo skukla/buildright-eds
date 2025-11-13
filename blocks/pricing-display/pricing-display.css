@@ -27,13 +27,14 @@
 
 .tier-indicator {
   display: inline-block;
-  padding: var(--spacing-xsmall) var(--spacing-3);
+  padding: 0.375rem 0.875rem;
   background-color: var(--color-brand-500);
   color: white;
   border-radius: var(--shape-border-radius-full);
-  font: var(--type-body-2-default-font);
+  font-size: 0.8125rem;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 
 .volume-pricing {

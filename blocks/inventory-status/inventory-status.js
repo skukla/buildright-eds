@@ -1,71 +1,70 @@
 // Inventory status block decoration
+import { parseHTMLFragment } from '../../scripts/utils.js';
+
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
+  const companyId = block.getAttribute('data-company');
   if (!sku) return;
 
   // Import data functions
-  const { getProductBySKU, getInventory, getInventoryStatus, getWarehouses, getPrimaryWarehouse } = await import('../../scripts/data-mock.js');
+  const { getProductBySKU, getInventory, getInventoryStatus, getWarehouses, getPrimaryWarehouse, getCustomerContext } = await import('../../scripts/data-mock.js');
 
-  // Load product and update inventory
+  // Load product and update inventory using HTML templates
   async function updateInventory() {
     const product = await getProductBySKU(sku);
     if (!product) return;
 
-    const warehouses = await getWarehouses();
+    const context = getCustomerContext();
+    const allWarehouses = await getWarehouses();
     const primaryWarehouse = getPrimaryWarehouse();
+    
+    // Filter warehouses based on user's company/region
+    let warehouses;
+    if (context.isLoggedIn && context.company) {
+      // For logged-in users, show warehouses relevant to their company
+      // In a real implementation, this would filter based on company's service area
+      warehouses = allWarehouses.filter(wh => wh.priority === 1);
+    } else {
+      // For non-logged-in users, show primary distribution centers
+      warehouses = allWarehouses.filter(wh => wh.id === primaryWarehouse);
+    }
+    
     const warehouseList = block.querySelector('.warehouse-list');
 
     if (!warehouseList) return;
 
-    warehouseList.innerHTML = '';
+    // Escape HTML helper
+    const escapeHtml = (text) => {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    };
 
-    warehouses.forEach(warehouse => {
+    // Build HTML template for all warehouse items
+    const warehousesHTML = warehouses.map(warehouse => {
       const quantity = getInventory(product, warehouse.id);
       const status = getInventoryStatus(product, warehouse.id);
       const isPrimary = warehouse.id === primaryWarehouse;
+      const priorityClass = isPrimary ? 'priority' : '';
+      const warehouseName = isPrimary ? `${warehouse.name} (Primary)` : warehouse.name;
+      
+      // Combine quantity and status into one line
+      const stockInfo = status === 'in-stock' ? `${quantity} available` : 
+                        status === 'low-stock' ? `${quantity} (Low stock)` : 
+                        'Out of stock';
 
-      const item = document.createElement('div');
-      item.className = 'warehouse-item';
-      if (isPrimary) {
-        item.classList.add('priority');
-      }
+      return `
+        <div class="warehouse-item ${priorityClass}">
+            <div class="warehouse-name">${escapeHtml(warehouseName)}</div>
+          <div class="warehouse-quantity">${escapeHtml(stockInfo)}</div>
+        </div>
+      `;
+    }).join('');
 
-      const info = document.createElement('div');
-      info.className = 'warehouse-info';
-
-      const name = document.createElement('div');
-      name.className = 'warehouse-name';
-      name.textContent = warehouse.name;
-      if (isPrimary) {
-        name.textContent += ' (Primary)';
-      }
-      info.appendChild(name);
-
-      const location = document.createElement('div');
-      location.className = 'warehouse-location';
-      location.textContent = warehouse.location;
-      info.appendChild(location);
-
-      item.appendChild(info);
-
-      const statusDiv = document.createElement('div');
-      statusDiv.className = 'warehouse-status';
-
-      const qty = document.createElement('div');
-      qty.className = 'warehouse-quantity';
-      qty.textContent = `${quantity} in stock`;
-      statusDiv.appendChild(qty);
-
-      const statusBadge = document.createElement('span');
-      statusBadge.className = `status ${status}`;
-      statusBadge.textContent = status === 'in-stock' ? 'Available' : 
-                                status === 'low-stock' ? 'Low Stock' : 
-                                'Out of Stock';
-      statusDiv.appendChild(statusBadge);
-
-      item.appendChild(statusDiv);
-      warehouseList.appendChild(item);
-    });
+    // Parse and append all warehouse items at once
+    warehouseList.innerHTML = '';
+    const fragment = parseHTMLFragment(warehousesHTML);
+    warehouseList.appendChild(fragment);
   }
 
   // Initial load

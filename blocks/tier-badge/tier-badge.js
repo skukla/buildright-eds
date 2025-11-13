@@ -19,10 +19,10 @@ export default async function decorate(block) {
     };
 
     const savings = {
-      'commercial_tier1': 'Save up to 3%',
-      'commercial_tier2': 'Save up to 5%',
-      'residential_builder': 'Save up to 3%',
-      'pro_specialty': 'Save up to 2%',
+      'commercial_tier1': 'Volume Pricing Benefits',
+      'commercial_tier2': 'Volume Pricing Benefits',
+      'residential_builder': 'Volume Pricing Benefits',
+      'pro_specialty': 'Volume Pricing Benefits',
       'base': ''
     };
 

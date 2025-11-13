@@ -1,4 +1,5 @@
 // Pricing display block decoration
+
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
   if (!sku) return;
@@ -13,12 +14,13 @@ export default async function decorate(block) {
 
     const context = getCustomerContext();
     const tier = context.tier || 'base';
-    const tierPricing = product.pricing[tier] || product.pricing.base;
+    let tierPricing = product.pricing[tier] || product.pricing.base;
 
     // Update current price
     const currentPriceEl = block.querySelector('.current-price');
     const tierIndicatorEl = block.querySelector('.tier-indicator');
-    const tiersBody = block.querySelector('.pricing-tiers');
+    // Look for pricing tiers table in the page (may be outside the block)
+    const tiersBody = document.querySelector('.pricing-tiers');
 
     if (currentPriceEl) {
       const price = getPrice(product, quantity);
@@ -36,40 +38,52 @@ export default async function decorate(block) {
       tierIndicatorEl.textContent = tierNames[tier] || 'Standard Pricing';
     }
 
-    // Update volume pricing table
+    // Update volume pricing table using HTML templates
+    const volumePricingSection = document.getElementById('volume-pricing-section');
+    
+    // Hide volume pricing section for base pricing (no volume discounts)
+    if (tier === 'base' && typeof tierPricing === 'number') {
+      if (volumePricingSection) {
+        volumePricingSection.style.display = 'none';
+      }
+      return; // Don't populate the table
+    } else {
+      if (volumePricingSection) {
+        volumePricingSection.style.display = 'block';
+      }
+    }
+    
     if (tiersBody && typeof tierPricing === 'object') {
-      tiersBody.innerHTML = '';
       const breakpoints = Object.keys(tierPricing).sort((a, b) => {
         const aNum = parseInt(a.split('-')[0]) || parseInt(a.split('+')[0]);
         const bNum = parseInt(b.split('-')[0]) || parseInt(b.split('+')[0]);
         return aNum - bNum; // Sort ascending
       });
 
-      breakpoints.forEach(breakpoint => {
+      // Build HTML template for all pricing tier rows
+      const rowsHTML = breakpoints.map(breakpoint => {
         const price = tierPricing[breakpoint];
-        const row = document.createElement('tr');
         const isActive = (breakpoint.includes('+') && quantity >= parseInt(breakpoint)) ||
                         (breakpoint.includes('-') && (() => {
                           const [min, max] = breakpoint.split('-').map(Number);
                           return quantity >= min && quantity <= max;
                         })());
 
-        if (isActive) {
-          row.classList.add('active');
-        }
-
-        const rangeCell = document.createElement('td');
-        rangeCell.textContent = breakpoint.includes('+') 
+        const activeClass = isActive ? 'active' : '';
+        const rangeText = breakpoint.includes('+') 
           ? `${breakpoint.replace('+', '')}+ units`
           : `${breakpoint} units`;
-        row.appendChild(rangeCell);
 
-        const priceCell = document.createElement('td');
-        priceCell.textContent = `$${price.toFixed(2)}`;
-        row.appendChild(priceCell);
+        return `
+          <tr class="${activeClass}">
+            <td>${rangeText}</td>
+            <td>$${price.toFixed(2)}</td>
+          </tr>
+        `;
+      }).join('');
 
-        tiersBody.appendChild(row);
-      });
+      // Parse and append all rows at once
+      tiersBody.innerHTML = rowsHTML;
     }
   }
 

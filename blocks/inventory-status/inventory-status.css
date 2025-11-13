@@ -5,10 +5,39 @@
   border: 1px solid var(--color-border);
 }
 
+/* Subtle/informational style for product detail page */
+.inventory-status-subtle {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* Hide h3 when Regional Availability has its own section title */
+.product-detail-section .inventory-status-subtle h3 {
+  display: none;
+}
+
+.inventory-status-subtle h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-small);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .inventory-status > div > div {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-medium);
+}
+
+.inventory-status-subtle > div > div {
+  gap: 0;
+}
+
+.inventory-status-subtle .warehouse-list {
+  gap: 0;
 }
 
 .inventory-status h3 {
@@ -32,6 +61,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-3);
   transition: border-color var(--transition-fast);
+  gap: var(--spacing-medium);
 }
 
 .warehouse-item.priority {
@@ -41,6 +71,43 @@
 
 .warehouse-item:hover {
   border-color: var(--color-brand-500);
+}
+
+/* Subtle warehouse items - less prominent, more informational */
+.inventory-status-subtle .warehouse-item {
+  padding: var(--spacing-small) var(--spacing-3);
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  gap: var(--spacing-medium);
+}
+
+.inventory-status-subtle .warehouse-item:last-child {
+  border-bottom: none;
+}
+
+.inventory-status-subtle .warehouse-item:hover {
+  border-color: var(--color-border);
+  background-color: transparent;
+}
+
+.inventory-status-subtle .warehouse-item.priority {
+  border-color: var(--color-border);
+  background-color: transparent;
+}
+
+.inventory-status-subtle .warehouse-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  flex: 1;
+}
+
+.inventory-status-subtle .warehouse-quantity {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-align: right;
 }
 
 .warehouse-info {
