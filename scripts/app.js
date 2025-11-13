@@ -80,6 +80,27 @@ async function initializeKitSidebar() {
 }
 
 async function initializeApp() {
+  // Fix all static links that start with "pages/" or "/pages/" to use BASE_PATH
+  // This ensures links work on both localhost and GitHub Pages
+  const basePath = window.BASE_PATH || '/';
+  
+  // Fix relative paths: pages/...
+  const relativePageLinks = document.querySelectorAll('a[href^="pages/"]');
+  relativePageLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    link.setAttribute('href', `${basePath}${href}`);
+  });
+  
+  // Fix absolute paths: /pages/... (only when basePath is not '/')
+  if (basePath !== '/') {
+    const absolutePageLinks = document.querySelectorAll('a[href^="/pages/"]');
+    absolutePageLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      // Replace /pages/ with {basePath}pages/
+      link.setAttribute('href', href.replace(/^\/pages\//, `${basePath}pages/`));
+    });
+  }
+  
   // Decorate all blocks on the page
   const blocks = document.querySelectorAll('[class*="block"], [class*="-block"]');
   

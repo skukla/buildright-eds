@@ -125,6 +125,119 @@ function parseHTMLFragment(htmlString) {
   return fragment;
 }
 
+/**
+ * Safe event listener management - ensures idempotent listener addition
+ * Tracks listeners on the target element/object to enable cleanup
+ * @param {EventTarget} target - Element or object to attach listener to
+ * @param {string} event - Event name
+ * @param {Function} handler - Event handler function
+ * @param {string} key - Unique key for this listener (for cleanup)
+ * @param {object} options - Event listener options
+ */
+function safeAddEventListener(target, event, handler, key, options = {}) {
+  // Create a storage key for tracking listeners
+  const storageKey = `_safeListeners_${event}`;
+  
+  // Initialize storage if it doesn't exist
+  if (!target[storageKey]) {
+    target[storageKey] = new Map();
+  }
+  
+  // Remove existing listener with same key if it exists
+  const existing = target[storageKey].get(key);
+  if (existing) {
+    target.removeEventListener(event, existing.handler, existing.options);
+  }
+  
+  // Add new listener and store reference
+  target.addEventListener(event, handler, options);
+  target[storageKey].set(key, { handler, options });
+}
+
+/**
+ * Remove a safely tracked event listener
+ * @param {EventTarget} target - Element or object
+ * @param {string} event - Event name
+ * @param {string} key - Unique key for the listener
+ */
+function safeRemoveEventListener(target, event, key) {
+  const storageKey = `_safeListeners_${event}`;
+  if (!target[storageKey]) return;
+  
+  const listener = target[storageKey].get(key);
+  if (listener) {
+    target.removeEventListener(event, listener.handler, listener.options);
+    target[storageKey].delete(key);
+  }
+}
+
+/**
+ * Remove all safely tracked listeners for a specific event
+ * @param {EventTarget} target - Element or object
+ * @param {string} event - Event name (optional, removes all if not provided)
+ */
+function cleanupEventListeners(target, event = null) {
+  if (event) {
+    const storageKey = `_safeListeners_${event}`;
+    if (target[storageKey]) {
+      target[storageKey].forEach((listener, key) => {
+        target.removeEventListener(event, listener.handler, listener.options);
+      });
+      target[storageKey].clear();
+    }
+  } else {
+    // Remove all listeners for all events
+    Object.keys(target).forEach(key => {
+      if (key.startsWith('_safeListeners_')) {
+        const eventName = key.replace('_safeListeners_', '');
+        cleanupEventListeners(target, eventName);
+      }
+    });
+  }
+}
+
+/**
+ * Make a function idempotent - safe to call multiple times
+ * Uses a flag to prevent re-execution until cleanup
+ * @param {Function} fn - Function to make idempotent
+ * @param {string} key - Unique key for tracking initialization state
+ * @param {Function} cleanupFn - Optional cleanup function to call before re-initialization
+ * @returns {Function} Idempotent version of the function
+ */
+function makeIdempotent(fn, key = 'default', cleanupFn = null) {
+  return function(...args) {
+    const initKey = `_initialized_${key}`;
+    const context = this;
+    
+    // If already initialized and no cleanup, skip
+    if (context[initKey] && !cleanupFn) {
+      return;
+    }
+    
+    // If cleanup function provided, call it before re-initializing
+    if (context[initKey] && cleanupFn) {
+      cleanupFn.call(context, ...args);
+    }
+    
+    // Mark as initialized and execute
+    context[initKey] = true;
+    return fn.apply(context, args);
+  };
+}
+
+/**
+ * Replace an element's event listeners by cloning it
+ * Useful when you can't track individual listeners
+ * @param {HTMLElement} element - Element to clean
+ * @returns {HTMLElement} New element with no listeners
+ */
+function cleanElementListeners(element) {
+  if (!element || !element.parentNode) return element;
+  const newElement = element.cloneNode(true);
+  element.parentNode.replaceChild(newElement, element);
+  return newElement;
+}
+
 // ES6 exports
 export {
   getUrlParameter,
@@ -136,7 +249,12 @@ export {
   loadBlockJS,
   decorateBlock,
   parseHTML,
-  parseHTMLFragment
+  parseHTMLFragment,
+  safeAddEventListener,
+  safeRemoveEventListener,
+  cleanupEventListeners,
+  makeIdempotent,
+  cleanElementListeners
 };
 
 // CommonJS exports (for compatibility)
@@ -151,7 +269,12 @@ if (typeof module !== 'undefined' && module.exports) {
     loadBlockJS,
     decorateBlock,
     parseHTML,
-    parseHTMLFragment
+    parseHTMLFragment,
+    safeAddEventListener,
+    safeRemoveEventListener,
+    cleanupEventListeners,
+    makeIdempotent,
+    cleanElementListeners
   };
 }
 

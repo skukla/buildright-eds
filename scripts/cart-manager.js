@@ -75,23 +75,17 @@ function getCartItemCount() {
 
 // Listen for add to cart events
 window.addEventListener('addToCart', (e) => {
-  const { sku, quantity } = e.detail;
+  const { sku, quantity, productName } = e.detail;
   addToCart(sku, quantity);
   
-  // Open mini-cart to show the added item
-  window.dispatchEvent(new CustomEvent('openMiniCart', {
-    detail: { sku }
+  // Dispatch event for notification system (notification only, no auto-open)
+  window.dispatchEvent(new CustomEvent('cartItemAdded', {
+    detail: {
+      sku,
+      productName: productName || 'Product',
+      quantity: quantity || 1
+    }
   }));
-  
-  // Show notification
-  const notification = document.createElement('div');
-  notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10000; font-family: system-ui, -apple-system, sans-serif; font-size: 0.875rem; font-weight: 500;';
-  notification.textContent = 'Item added to cart!';
-  document.body.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.remove();
-  }, 3000);
 });
 
 // Export for use in other scripts (ES6 modules)

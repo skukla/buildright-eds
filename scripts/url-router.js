@@ -134,16 +134,18 @@ export function parseProjectBuilderPath(pathname) {
  * @returns {string} - Clean URL path (e.g., 'catalog' or 'catalog/structural-materials')
  */
 export function getCatalogUrl(categoryCode) {
+  const basePath = getBasePath();
+  
   if (!categoryCode || categoryCode === 'all') {
-    return 'catalog';
+    return `${basePath}catalog`;
   }
   
   // Convert internal format to URL slug
   // e.g., 'structural_materials' -> 'structural-materials'
   const slug = categoryCode.replace(/_/g, '-');
   
-  // Return clean path
-  return `catalog/${slug}`;
+  // Return absolute path with BASE_PATH for consistent navigation
+  return `${basePath}catalog/${slug}`;
 }
 
 /**
