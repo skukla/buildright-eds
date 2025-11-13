@@ -1,24 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
-    // Set base path immediately for use in module imports
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
-    })();
-  </script>
-  <base href="/buildright-eds/" id="dynamic-base">
-  <script>
-    // Update base tag if not on GitHub Pages
-    if (!window.location.pathname.startsWith('/buildright-eds/')) {
-      document.getElementById('dynamic-base').href = '/';
-      window.BASE_PATH = '/';
-    }
-  </script>
   <title>Project Builder - BuildRight Solutions</title>
   <link rel="stylesheet" href="../styles/base.css">
   <link rel="stylesheet" href="../styles/components.css">
@@ -27,6 +11,14 @@
   <link rel="stylesheet" href="../blocks/project-builder/project-builder.css">
   <link rel="stylesheet" href="../blocks/wizard-progress/wizard-progress.css">
   <link rel="stylesheet" href="../blocks/wizard-sidebar/wizard-sidebar.css">
+  <script>
+    // Set BASE_PATH for scripts that need it
+    (function() {
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.startsWith('/buildright-eds/');
+      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
+    })();
+  </script>
 </head>
 <body>
 <script>
