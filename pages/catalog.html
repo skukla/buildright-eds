@@ -23,7 +23,7 @@
       }
     })();
   </script>
-  <script src="../scripts/base-url.js"></script>
+  <script src="scripts/base-url.js"></script>
   <!-- Load critical data synchronously to prevent layout shift -->
   <script>
     // Pre-load cart count to prevent shift
@@ -40,13 +40,13 @@
     window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
   </script>
   <title>Product Catalog - BuildRight Solutions</title>
-  <link rel="stylesheet" href="../styles/base.css">
-  <link rel="stylesheet" href="../styles/components.css">
-  <link rel="stylesheet" href="../styles/utilities.css">
-  <link rel="stylesheet" href="../blocks/header/header.css">
-  <link rel="stylesheet" href="../blocks/project-filter/project-filter.css">
-  <link rel="stylesheet" href="../blocks/product-grid/product-grid.css">
-  <link rel="stylesheet" href="../blocks/filters-sidebar/filters-sidebar.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/utilities.css">
+  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="blocks/project-filter/project-filter.css">
+  <link rel="stylesheet" href="blocks/product-grid/product-grid.css">
+  <link rel="stylesheet" href="blocks/filters-sidebar/filters-sidebar.css">
   <!-- Critical CSS for active nav state to prevent layout shift -->
   <style>
     .nav-link.active, .nav-link[aria-current="page"] {
@@ -441,10 +441,10 @@
     </div>
   </section>
 
-  <script type="module" src="../scripts/app.js"></script>
+  <script type="module" src="scripts/app.js"></script>
   <script type="module" src="blocks/header/header.js"></script>
   <script type="module">
-    import { decorateBlock } from '../scripts/utils.js';
+    import { decorateBlock } from 'scripts/utils.js';
     
       // Decorate blocks
       document.addEventListener('DOMContentLoaded', async () => {
