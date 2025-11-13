@@ -1,5 +1,6 @@
 // Product grid block decoration
 import { parseCatalogPath } from '../../scripts/url-router.js';
+import { parseHTMLFragment, parseHTML } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
   const container = block.querySelector('.products-container');
@@ -9,14 +10,15 @@ export default async function decorate(block) {
   // Import data functions
   const { getProducts, getProductsByProjectType, getProductsByCategory, getPrice, getInventoryStatus, getPrimaryWarehouse, getProductImageUrl } = await import('../../scripts/data-mock.js');
 
-  // Render products
+  // Render products using HTML templates (reduces DOM manipulation)
   async function renderProducts(products) {
     if (!container) return;
 
     container.innerHTML = '';
 
     if (products.length === 0) {
-      container.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; padding: 3rem;">No products found matching your criteria.</p>';
+      const emptyMessage = parseHTML('<p class="text-center py-5" style="grid-column: 1 / -1;">No products found matching your criteria.</p>');
+      container.appendChild(emptyMessage);
       if (countEl) countEl.textContent = '0 products';
       return;
     }
@@ -34,130 +36,91 @@ export default async function decorate(block) {
     // Show "Add to Kit" buttons only if user explicitly chose to edit kit and kit has items
     const hasActiveKit = resumeChoice === 'edit' && hasKitItems();
 
-    for (const product of products) {
+    // Escape HTML helper
+    const escapeHtml = (text) => {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    };
+
+    // Build HTML template for all products
+    const productsHTML = products.map(product => {
       const price = getPrice(product, 1);
       const status = getInventoryStatus(product, primaryWarehouse);
       const inventory = product.inventory[primaryWarehouse] || 0;
       const imageUrl = getProductImageUrl(product);
+      const imageStyle = imageUrl ? `style="background-image: url('${imageUrl.replace(/'/g, "\\'")}')"` : '';
+      
+      const statusText = status === 'in-stock' ? `${inventory} available` : 
+                        status === 'low-stock' ? `Low stock (${inventory})` : 
+                        'Out of stock';
+      
+      const actionButton = hasActiveKit 
+        ? `<button class="btn btn-primary btn-sm" data-action="add-to-kit" data-sku="${escapeHtml(product.sku)}">Add to Kit</button>`
+        : `<button class="btn btn-primary btn-sm" data-action="add-to-cart" data-sku="${escapeHtml(product.sku)}">Add to Cart</button>`;
 
-      const card = document.createElement('a');
-      card.className = 'product-card';
-      card.href = `pages/product-detail.html?sku=${product.sku}`;
+      return `
+        <a class="product-card" href="pages/product-detail.html?sku=${escapeHtml(product.sku)}">
+          <div class="product-card-image bg-image" ${imageStyle}></div>
+          <div class="product-card-header">
+            <div class="product-card-sku">${escapeHtml(product.sku)}</div>
+            <div class="product-card-name">${escapeHtml(product.name)}</div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-description">${escapeHtml(product.description || '')}</div>
+          </div>
+          <div class="product-card-footer">
+            <div class="product-card-pricing">
+              <span class="product-card-price">$${price.toFixed(2)}</span>
+              <span class="product-card-price-label">per unit</span>
+            </div>
+            <div class="product-card-inventory">
+              <span class="status ${status}">${escapeHtml(statusText)}</span>
+            </div>
+            <div class="product-card-actions">
+              ${actionButton}
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
 
-      // Product image with background
-      const image = document.createElement('div');
-      image.className = 'product-card-image';
-      if (imageUrl) {
-        image.style.backgroundImage = `url('${imageUrl}')`;
-        image.style.backgroundSize = 'cover';
-        image.style.backgroundPosition = 'center';
-        image.style.backgroundRepeat = 'no-repeat';
-      }
-      card.appendChild(image);
+    // Parse and append all products at once
+    const fragment = parseHTMLFragment(productsHTML);
+    container.appendChild(fragment);
 
-      const header = document.createElement('div');
-      header.className = 'product-card-header';
+    // Setup event listeners for action buttons
+    container.querySelectorAll('[data-action="add-to-kit"]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const sku = btn.getAttribute('data-sku');
+        
+        // Check if item already exists before adding
+        const { getFullKit } = await import('../../scripts/project-builder.js');
+        const fullKit = getFullKit();
+        const itemExists = fullKit?.items?.some(item => item.sku === sku) || false;
+        
+        // Add item and update sidebar
+        const { addCustomItemToKit } = await import('../../scripts/project-builder.js');
+        await addCustomItemToKit(sku, 1, `Added from catalog`);
+        
+        // Update kit sidebar - scroll and highlight if existing, fade in if new
+        const { updateKitSidebar } = await import('../../scripts/kit-sidebar.js');
+        await updateKitSidebar(true, itemExists ? sku : null);
+      });
+    });
 
-      const sku = document.createElement('div');
-      sku.className = 'product-card-sku';
-      sku.textContent = product.sku;
-      header.appendChild(sku);
-
-      const name = document.createElement('div');
-      name.className = 'product-card-name';
-      name.textContent = product.name;
-      header.appendChild(name);
-
-      card.appendChild(header);
-
-      const body = document.createElement('div');
-      body.className = 'product-card-body';
-
-      const description = document.createElement('div');
-      description.className = 'product-card-description';
-      description.textContent = product.description || '';
-      body.appendChild(description);
-
-      card.appendChild(body);
-
-      const footer = document.createElement('div');
-      footer.className = 'product-card-footer';
-
-      const pricing = document.createElement('div');
-      pricing.className = 'product-card-pricing';
-
-      const priceEl = document.createElement('span');
-      priceEl.className = 'product-card-price';
-      priceEl.textContent = `$${price.toFixed(2)}`;
-      pricing.appendChild(priceEl);
-
-      const priceLabel = document.createElement('span');
-      priceLabel.className = 'product-card-price-label';
-      priceLabel.textContent = 'per unit';
-      pricing.appendChild(priceLabel);
-
-      footer.appendChild(pricing);
-
-      const inventoryDiv = document.createElement('div');
-      inventoryDiv.className = 'product-card-inventory';
-
-      const statusBadge = document.createElement('span');
-      statusBadge.className = `status ${status}`;
-      statusBadge.textContent = status === 'in-stock' ? `${inventory} available` : 
-                                status === 'low-stock' ? `Low stock (${inventory})` : 
-                                'Out of stock';
-      inventoryDiv.appendChild(statusBadge);
-
-      footer.appendChild(inventoryDiv);
-
-      const actions = document.createElement('div');
-      actions.className = 'product-card-actions';
-
-      if (hasActiveKit) {
-        // Kit mode: Only show "Add to Kit" button
-        const addToKitBtn = document.createElement('button');
-        addToKitBtn.className = 'btn btn-primary btn-sm';
-        addToKitBtn.textContent = 'Add to Kit';
-        addToKitBtn.onclick = async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const { addCustomItemToKit } = await import('../../scripts/project-builder.js');
-          await addCustomItemToKit(product.sku, 1, `Added from catalog`);
-          
-          // Update kit sidebar (will show empty state if needed, or recreate if missing)
-          const { updateKitSidebar } = await import('../../scripts/kit-sidebar.js');
-          await updateKitSidebar();
-          
-          // Show feedback
-          const originalText = addToKitBtn.textContent;
-          addToKitBtn.textContent = 'Added!';
-          addToKitBtn.disabled = true;
-          setTimeout(() => {
-            addToKitBtn.textContent = originalText;
-            addToKitBtn.disabled = false;
-          }, 2000);
-        };
-        actions.appendChild(addToKitBtn);
-      } else {
-        // Normal mode: Show "Add to Cart" button
-        const addBtn = document.createElement('button');
-        addBtn.className = 'btn btn-primary btn-sm';
-        addBtn.textContent = 'Add to Cart';
-        addBtn.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          window.dispatchEvent(new CustomEvent('addToCart', {
-            detail: { sku: product.sku, quantity: 1 }
-          }));
-        };
-        actions.appendChild(addBtn);
-      }
-
-      footer.appendChild(actions);
-      card.appendChild(footer);
-
-      container.appendChild(card);
-    }
+    container.querySelectorAll('[data-action="add-to-cart"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const sku = btn.getAttribute('data-sku');
+        window.dispatchEvent(new CustomEvent('addToCart', {
+          detail: { sku, quantity: 1 }
+        }));
+      });
+    });
   }
 
   // Load and filter products
@@ -198,7 +161,9 @@ export default async function decorate(block) {
       if (!products || products.length === 0) {
         console.warn('No products found');
         if (container) {
-          container.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; padding: 3rem;">No products found.</p>';
+          const emptyMessage = parseHTML('<p class="text-center py-5" style="grid-column: 1 / -1;">No products found.</p>');
+          container.innerHTML = '';
+          container.appendChild(emptyMessage);
         }
         return;
       }
@@ -212,7 +177,9 @@ export default async function decorate(block) {
     } catch (error) {
       console.error('Error loading products:', error);
       if (container) {
-        container.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; padding: 3rem; color: var(--color-negative-500);">Error loading products. Please refresh the page.</p>';
+        const errorMessage = parseHTML('<p class="text-center py-5 text-error" style="grid-column: 1 / -1;">Error loading products. Please refresh the page.</p>');
+        container.innerHTML = '';
+        container.appendChild(errorMessage);
       }
     }
   }
