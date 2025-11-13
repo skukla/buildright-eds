@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="scripts/base-url.js"></script>
+  <script src="../scripts/base-url.js"></script>
   <script>
     // Set base tag immediately before any resources load
     (function() {
@@ -17,10 +17,10 @@
     })();
   </script>
   <title>Order History - BuildRight Solutions</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/utilities.css">
-  <link rel="stylesheet" href="blocks/header/header.css">
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/utilities.css">
+  <link rel="stylesheet" href="../blocks/header/header.css">
   <style>
     .page-header {
       background: var(--color-surface);
@@ -418,7 +418,7 @@
             <a href="catalog" class="nav-link" data-category="all">All Products</a>
           </div>
           <div class="nav-item">
-            <a href="pages/project-builder.html" class="nav-link nav-link-cta">Project Builder</a>
+            <a href="project-builder.html" class="nav-link nav-link-cta">Project Builder</a>
           </div>
           <div class="nav-item">
             <button class="nav-link" data-category="structural_materials">Structural Materials</button>
@@ -546,7 +546,7 @@
             <div class="empty-state-icon">📦</div>
             <h3 class="empty-state-title">No Orders Yet</h3>
             <p class="empty-state-text">Your completed project orders will appear here.</p>
-            <a href="pages/project-builder.html" class="btn btn-primary">Start Building a Project</a>
+            <a href="project-builder.html" class="btn btn-primary">Start Building a Project</a>
           </div>
         `;
         return;
@@ -701,7 +701,7 @@
     displayOrders();
     decorateBlock(document.querySelector('[data-block-name="header"]'));
   </script>
-  <script type="module" src="scripts/app.js"></script>
+  <script type="module" src="../scripts/app.js"></script>
   <script type="module" src="blocks/header/header.js"></script>
 <!-- Footer -->
   <!-- Footer -->
@@ -713,11 +713,11 @@
           <h3 class="footer-heading">Products</h3>
           <ul class="footer-links">
             <li><a href="catalog">All Products</a></li>
-            <li><a href="pages/catalog.html?category=structural_materials">Structural Materials</a></li>
-            <li><a href="pages/catalog.html?category=windows_doors">Windows & Doors</a></li>
-            <li><a href="pages/catalog.html?category=fasteners_hardware">Fasteners & Hardware</a></li>
-            <li><a href="pages/catalog.html?category=roofing">Roofing</a></li>
-            <li><a href="pages/catalog.html?category=framing_drywall">Framing & Drywall</a></li>
+            <li><a href="catalog.html?category=structural_materials">Structural Materials</a></li>
+            <li><a href="catalog.html?category=windows_doors">Windows & Doors</a></li>
+            <li><a href="catalog.html?category=fasteners_hardware">Fasteners & Hardware</a></li>
+            <li><a href="catalog.html?category=roofing">Roofing</a></li>
+            <li><a href="catalog.html?category=framing_drywall">Framing & Drywall</a></li>
           </ul>
         </div>
 
@@ -725,10 +725,10 @@
         <div class="footer-column">
           <h3 class="footer-heading">Services</h3>
           <ul class="footer-links">
-            <li><a href="pages/project-builder.html">Project Builder</a></li>
-            <li><a href="pages/login.html">Apply for Credit</a></li>
-            <li><a href="pages/account.html#orders">Order History</a></li>
-            <li><a href="pages/account.html">My Account</a></li>
+            <li><a href="project-builder.html">Project Builder</a></li>
+            <li><a href="login.html">Apply for Credit</a></li>
+            <li><a href="account.html#orders">Order History</a></li>
+            <li><a href="account.html">My Account</a></li>
           </ul>
         </div>
 
@@ -737,7 +737,7 @@
           <h3 class="footer-heading">Resources</h3>
           <ul class="footer-links">
             <li><a href="index.html#ideas-center">Ideas Center</a></li>
-            <li><a href="pages/account.html#help">Help Center</a></li>
+            <li><a href="account.html#help">Help Center</a></li>
             <li><a href="#">Product Guides</a></li>
             <li><a href="#">Installation Tips</a></li>
             <li><a href="#">Safety Resources</a></li>
