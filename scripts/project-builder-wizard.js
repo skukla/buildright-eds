@@ -113,6 +113,45 @@
 
   // Initialize wizard with bound functions
   async function initializeWizard() {
+    // Check for edit mode: ?edit=bundleId
+    const urlParams = new URLSearchParams(window.location.search);
+    const editBundleId = urlParams.get('edit');
+    
+    if (editBundleId) {
+      // Load bundle from cart for editing
+      const { getBundleFromCart, loadBundleIntoWizardState } = await import(`${scriptBase}scripts/project-builder.js`);
+      const cartBundle = getBundleFromCart(editBundleId);
+      
+      if (cartBundle) {
+        // Load bundle into wizard state
+        const loaded = loadBundleIntoWizardState(cartBundle);
+        
+        if (loaded) {
+          console.log(`[Project Builder] Loaded bundle ${editBundleId} for editing`);
+          
+          // Initialize wizard
+          await initWizard(setupEventListeners, boundShowResults, boundShowStep);
+          
+          // Go directly to Step 5 (Kit PDP)
+          boundShowStep(5);
+          
+          // Display the bundle
+          boundShowResults();
+          
+          // Call update functions after initialization
+          updateNavigation();
+          updateSidebar();
+          
+          return;
+        } else {
+          console.error(`[Project Builder] Failed to load bundle ${editBundleId}`);
+        }
+      } else {
+        console.error(`[Project Builder] Bundle ${editBundleId} not found in cart`);
+      }
+    }
+    
+    // Normal initialization (no edit mode)
     await initWizard(setupEventListeners, boundShowResults, boundShowStep);
     
     // Get current step and show it with proper callbacks

@@ -163,13 +163,45 @@ export function emailQuote(bundle, wizardState) {
  * @param {Function} displayBundle - Function to display bundle
  */
 export function setupSimpleListViewEventListeners(bundle, allItems, displayBundle) {
-  // Add all to cart button
+  // Add all to cart button (or Update Cart if editing)
   const addAllBtn = document.getElementById('add-all-to-cart-btn');
   if (addAllBtn) {
     addAllBtn.addEventListener('click', async () => {
       saveOrderToHistory(bundle);
-      await addBundleToCart(bundle);
-      window.location.href = 'pages/cart.html';
+      
+      // Check if we're editing an existing cart bundle
+      if (bundle.inCart && bundle.isEditing) {
+        // Update existing bundle in cart
+        const { updateBundleInCart } = await import('../project-builder.js');
+        const result = await updateBundleInCart(bundle.bundleId, bundle);
+        
+        if (result.success) {
+          // Clear wizard state after updating
+          const { clearWizardState } = await import('../project-builder.js');
+          clearWizardState();
+          sessionStorage.removeItem('kit_mode_resume_choice');
+          
+          // Navigate to cart
+          window.location.href = 'pages/cart.html';
+        } else {
+          console.error('Failed to update bundle in cart:', result.error);
+          alert('Failed to update cart. Please try again.');
+        }
+      } else {
+        // Add new bundle to cart
+        await addBundleToCart(bundle);
+        
+        // Clear wizard state after adding to cart - kit now lives in cart, not wizard
+        const { clearWizardState } = await import('../project-builder.js');
+        clearWizardState();
+        sessionStorage.removeItem('kit_mode_resume_choice');
+        
+        // Dispatch event to notify UI that kit mode has exited
+        window.dispatchEvent(new CustomEvent('kitModeExited'));
+        
+        // Navigate to cart
+        window.location.href = 'pages/cart.html';
+      }
     });
   }
 

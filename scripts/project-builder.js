@@ -71,6 +71,16 @@ export async function generateBundle(wizardState) {
   if (projectType) {
     products = await getProductsByProjectType(projectType);
   }
+  
+  // Filter out out-of-stock products - only recommend items that are actually available
+  const primaryWarehouse = getPrimaryWarehouse();
+  products = products.filter(product => {
+    const status = getInventoryStatus(product, primaryWarehouse);
+    // Include both 'in-stock' and 'low-stock' items, exclude only 'out-of-stock'
+    return status !== 'out-of-stock';
+  });
+  
+  console.log(`[Project Builder] Filtered to ${products.length} available products`);
 
     // Determine categories based on project type and detail
     let targetCategories = [];
@@ -153,7 +163,6 @@ export async function generateBundle(wizardState) {
 
   // Generate bundle items with quantities
   const bundleItems = [];
-  const primaryWarehouse = getPrimaryWarehouse();
   let totalPrice = 0;
 
   for (const product of finalProducts) {
@@ -344,48 +353,13 @@ export async function addBundleToCart(bundle, options = {}) {
   // Dispatch cart updated event
   window.dispatchEvent(new CustomEvent('cartUpdated'));
   
-  // Show notifications if requested
-  if (showNotifications && inventoryCheck) {
-    if (inventoryCheck.hasOutOfStock) {
-      // Show warning notification
-      const notification = document.createElement('div');
-      notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-warning, #ff9800); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000; max-width: 400px;';
-      notification.innerHTML = `
-        <div style="font-weight: bold; margin-bottom: 0.5rem;">Bundle added with inventory warnings</div>
-        <div style="font-size: 0.9rem;">
-          ${inventoryCheck.results.filter(r => r.status === 'out-of-stock' || r.status === 'not-found').length} item(s) have insufficient inventory.
-        </div>
-      `;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.remove();
-      }, 5000);
-    } else if (inventoryCheck.hasLowStock) {
-      // Show info notification
-      const notification = document.createElement('div');
-      notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-info, #2196F3); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000; max-width: 400px;';
-      notification.innerHTML = `
-        <div style="font-weight: bold; margin-bottom: 0.5rem;">Bundle added to cart</div>
-        <div style="font-size: 0.9rem;">Some items have low stock availability.</div>
-      `;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.remove();
-      }, 4000);
-    } else {
-      // Show success notification
-      const notification = document.createElement('div');
-      notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--color-success, #4CAF50); color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000;';
-      notification.textContent = 'Bundle added to cart!';
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
+  // Dispatch cart item added event for notification consistency
+  window.dispatchEvent(new CustomEvent('cartItemAdded', {
+    detail: {
+      productName: bundle.bundleName || bundle.projectName || bundle.name || 'Project Kit',
+      quantity: 1
     }
-  }
+  }));
   
   return {
     cart,
@@ -425,6 +399,120 @@ export function updateBundleItemQuantity(bundleId, sku, quantity) {
   }
   
   return cart;
+}
+
+// Update entire bundle in cart (for editing from Kit PDP)
+export async function updateBundleInCart(bundleId, updatedBundleData, options = {}) {
+  const { showNotifications = true } = options;
+  const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+  const index = cart.findIndex(item => item.type === 'bundle' && item.bundleId === bundleId);
+  
+  if (index === -1) {
+    console.error(`Bundle ${bundleId} not found in cart`);
+    return { success: false, error: 'Bundle not found in cart' };
+  }
+  
+  // Check inventory before updating
+  let inventoryCheck = null;
+  const { checkBundleInventory } = await import('./project-builder.js');
+  inventoryCheck = await checkBundleInventory(updatedBundleData);
+  
+  // Update the existing bundle entry
+  cart[index] = {
+    ...cart[index],
+    items: updatedBundleData.items,
+    customItems: updatedBundleData.customItems || [],
+    totalPrice: updatedBundleData.totalPrice,
+    itemCount: updatedBundleData.itemCount,
+    projectName: updatedBundleData.projectName || updatedBundleData.name,
+    updatedAt: new Date().toISOString(),
+    inventoryStatus: inventoryCheck ? {
+      hasOutOfStock: inventoryCheck.hasOutOfStock,
+      hasLowStock: inventoryCheck.hasLowStock
+    } : null
+  };
+  
+  localStorage.setItem('buildright_cart', JSON.stringify(cart));
+  window.dispatchEvent(new CustomEvent('cartUpdated'));
+  
+  // Dispatch notification event
+  if (showNotifications) {
+    window.dispatchEvent(new CustomEvent('cartItemAdded', {
+      detail: {
+        productName: updatedBundleData.bundleName || updatedBundleData.projectName || updatedBundleData.name || 'Project Kit',
+        quantity: 1
+      }
+    }));
+  }
+  
+  return {
+    success: true,
+    cart,
+    inventoryCheck
+  };
+}
+
+// Load bundle from cart into wizard state for editing
+export function loadBundleIntoWizardState(cartBundle) {
+  if (!cartBundle || cartBundle.type !== 'bundle') {
+    console.error('Invalid bundle provided to loadBundleIntoWizardState');
+    return false;
+  }
+  
+  // Normalize items to ensure they have subtotal calculated
+  const normalizedItems = (cartBundle.items || []).map(item => ({
+    ...item,
+    unitPrice: item.unitPrice || 0,
+    quantity: item.quantity || 1,
+    subtotal: item.subtotal || (item.unitPrice || 0) * (item.quantity || 1)
+  }));
+  
+  // Normalize custom items if they exist
+  const normalizedCustomItems = (cartBundle.customItems || []).map(item => ({
+    ...item,
+    unitPrice: item.unitPrice || 0,
+    quantity: item.quantity || 1,
+    subtotal: item.subtotal || (item.unitPrice || 0) * (item.quantity || 1)
+  }));
+  
+  // Recalculate total price from normalized items
+  const allItems = [...normalizedItems, ...normalizedCustomItems];
+  const recalculatedTotal = allItems.reduce((sum, item) => sum + (item.subtotal || 0), 0);
+  
+  const wizardState = {
+    // Preserve original project configuration if available
+    projectType: cartBundle.projectType || '',
+    projectDetail: cartBundle.projectDetail || '',
+    complexity: cartBundle.complexity || '',
+    budget: cartBundle.budget || 0,
+    
+    // Load bundle data with normalized items
+    bundle: {
+      bundleId: cartBundle.bundleId,
+      bundleName: cartBundle.bundleName || cartBundle.projectName || cartBundle.name || 'Project Kit',
+      projectName: cartBundle.projectName,
+      name: cartBundle.name || cartBundle.projectName,
+      items: normalizedItems,
+      totalPrice: recalculatedTotal,
+      itemCount: allItems.length,
+      createdAt: cartBundle.createdAt,
+      inCart: true,  // Mark as being in cart
+      isEditing: true  // Mark as editing mode
+    },
+    
+    // Load normalized custom items if they exist
+    customItems: normalizedCustomItems.length > 0 ? normalizedCustomItems : undefined,
+    
+    // Set to step 5 (Kit PDP)
+    currentStep: 5
+  };
+  
+  saveWizardState(wizardState);
+  
+  // Set kit mode to 'edit' so sidebar can appear if needed
+  sessionStorage.setItem('kit_mode_resume_choice', 'edit');
+  
+  return true;
 }
 
 // Add custom item to kit

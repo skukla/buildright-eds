@@ -8,6 +8,18 @@ export default async function decorate(block) {
   const miniCartTotal = block.querySelector('.mini-cart-total');
   const closeBtn = block.querySelector('#mini-cart-close');
 
+  // Fix static link paths to use BASE_PATH
+  const basePath = window.BASE_PATH || '/';
+  const cartLinks = block.querySelectorAll('a[href^="pages/"]');
+  cartLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    link.setAttribute('href', `${basePath}${href}`);
+  });
+  const catalogLink = block.querySelector('a[href="catalog"]');
+  if (catalogLink) {
+    catalogLink.setAttribute('href', `${basePath}catalog`);
+  }
+
   // Import data functions
   const { getCart } = await import('../../scripts/cart-manager.js');
   const { getProductBySKU, getPrice, getProductImageUrl } = await import('../../scripts/data-mock.js');
@@ -144,14 +156,16 @@ export default async function decorate(block) {
 
   // Create bundle HTML
   function createBundleHTML(bundle) {
+    const basePath = window.BASE_PATH || '/';
     const escapeHtml = (text) => {
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
     };
 
+    // Link to Kit PDP (Step 5) with edit mode
     return `
-      <a href="pages/project-builder.html?bundleId=${bundle.bundleId}" class="mini-cart-item mini-cart-bundle mini-cart-item-link" data-bundle-id="${bundle.bundleId}">
+      <a href="${basePath}pages/project-builder.html?edit=${bundle.bundleId}" class="mini-cart-item mini-cart-bundle mini-cart-item-link" data-bundle-id="${bundle.bundleId}" title="View/Edit ${escapeHtml(bundle.bundleName || 'Project Bundle')}">
         <div class="mini-cart-item-info">
           <div class="mini-cart-bundle-badge-row">
             <span class="mini-cart-badge">BUNDLE</span>
@@ -175,6 +189,7 @@ export default async function decorate(block) {
 
   // Create item HTML
   async function createItemHTML(item, product) {
+    const basePath = window.BASE_PATH || '/';
     const escapeHtml = (text) => {
       const div = document.createElement('div');
       div.textContent = text;
@@ -187,7 +202,7 @@ export default async function decorate(block) {
     const hasImage = imageUrl && imageUrl.trim() !== '';
 
     return `
-      <a href="pages/product-detail.html?sku=${item.sku}" class="mini-cart-item mini-cart-item-link" data-sku="${item.sku}">
+      <a href="${basePath}pages/product-detail.html?sku=${item.sku}" class="mini-cart-item mini-cart-item-link" data-sku="${item.sku}">
         <div class="mini-cart-item-image ${!hasImage ? 'mini-cart-item-image-placeholder' : ''}">
           ${hasImage ? `<img src="${imageUrl}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.classList.add('mini-cart-item-image-placeholder'); this.style.display='none';">` : ''}
         </div>
