@@ -1,8 +1,15 @@
 // Product grid block decoration
 import { parseCatalogPath } from '../../scripts/url-router.js';
-import { parseHTMLFragment, parseHTML } from '../../scripts/utils.js';
+import { parseHTMLFragment, parseHTML, safeAddEventListener, cleanupEventListeners, cleanElementListeners } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
+  // Ensure idempotent - if already decorated, cleanup first
+  if (block._decorated) {
+    cleanupEventListeners(window, 'projectFilterChanged');
+    cleanupEventListeners(window, 'kitModeExited');
+  }
+  block._decorated = true;
+  
   const container = block.querySelector('.products-container');
   const countEl = block.querySelector('.product-count');
   if (!container) return;
@@ -11,116 +18,136 @@ export default async function decorate(block) {
   const { getProducts, getProductsByProjectType, getProductsByCategory, getPrice, getInventoryStatus, getPrimaryWarehouse, getProductImageUrl } = await import('../../scripts/data-mock.js');
 
   // Render products using HTML templates (reduces DOM manipulation)
+  // Track if rendering is in progress to prevent concurrent execution
+  let isRendering = false;
   async function renderProducts(products) {
     if (!container) return;
-
-    container.innerHTML = '';
-
-    if (products.length === 0) {
-      const emptyMessage = parseHTML('<p class="text-center py-5" style="grid-column: 1 / -1;">No products found matching your criteria.</p>');
-      container.appendChild(emptyMessage);
-      if (countEl) countEl.textContent = '0 products';
+    
+    // Prevent concurrent execution
+    if (isRendering) {
       return;
     }
-
-    if (countEl) {
-      countEl.textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
-    }
-
-    const primaryWarehouse = getPrimaryWarehouse();
+    isRendering = true;
     
-    // Check if kit mode is active (show "Add to Kit" if kit has items and user chose to edit)
-    const { getWizardState, hasKitItems } = await import('../../scripts/project-builder.js');
-    const wizardState = getWizardState();
-    const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
-    // Show "Add to Kit" buttons only if user explicitly chose to edit kit and kit has items
-    const hasActiveKit = resumeChoice === 'edit' && hasKitItems();
+    try {
+      container.innerHTML = '';
 
-    // Escape HTML helper
-    const escapeHtml = (text) => {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    };
+      if (products.length === 0) {
+        const emptyMessage = parseHTML('<p class="text-center py-5" style="grid-column: 1 / -1;">No products found matching your criteria.</p>');
+        container.appendChild(emptyMessage);
+        if (countEl) countEl.textContent = '0 products';
+        return;
+      }
 
-    // Build HTML template for all products
-    const productsHTML = products.map(product => {
-      const price = getPrice(product, 1);
-      const status = getInventoryStatus(product, primaryWarehouse);
-      const inventory = product.inventory[primaryWarehouse] || 0;
-      const imageUrl = getProductImageUrl(product);
-      const imageStyle = imageUrl ? `style="background-image: url('${imageUrl.replace(/'/g, "\\'")}')"` : '';
+      if (countEl) {
+        countEl.textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
+      }
+
+      const primaryWarehouse = getPrimaryWarehouse();
+      const basePath = window.BASE_PATH || '/';
       
-      const statusText = status === 'in-stock' ? `${inventory} available` : 
-                        status === 'low-stock' ? `Low stock (${inventory})` : 
-                        'Out of stock';
-      
-      const actionButton = hasActiveKit 
-        ? `<button class="btn btn-primary btn-sm" data-action="add-to-kit" data-sku="${escapeHtml(product.sku)}">Add to Kit</button>`
-        : `<button class="btn btn-primary btn-sm" data-action="add-to-cart" data-sku="${escapeHtml(product.sku)}">Add to Cart</button>`;
+      // Check if kit mode is active (show "Add to Kit" if kit has items and user chose to edit)
+      const { getWizardState, hasKitItems } = await import('../../scripts/project-builder.js');
+      const wizardState = getWizardState();
+      const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
+      // Show "Add to Kit" buttons only if user explicitly chose to edit kit and kit has items
+      const hasActiveKit = resumeChoice === 'edit' && hasKitItems();
 
-      return `
-        <a class="product-card" href="pages/product-detail.html?sku=${escapeHtml(product.sku)}">
+      // Escape HTML helper
+      const escapeHtml = (text) => {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      };
+
+      // Build HTML template for all products
+      const productsHTML = products.map(product => {
+        const price = getPrice(product, 1);
+        const status = getInventoryStatus(product, primaryWarehouse);
+        const inventory = product.inventory[primaryWarehouse] || 0;
+        const imageUrl = getProductImageUrl(product);
+        const imageStyle = imageUrl ? `style="background-image: url('${imageUrl.replace(/'/g, "\\'")}')"` : '';
+        
+        const statusText = status === 'in-stock' ? `${inventory} available` : 
+                          status === 'low-stock' ? `Low stock (${inventory})` : 
+                          'Out of stock';
+        
+        const actionButton = hasActiveKit 
+          ? `<button class="btn btn-primary btn-sm" data-action="add-to-kit" data-sku="${escapeHtml(product.sku)}">Add to Kit</button>`
+          : `<button class="btn btn-primary btn-sm" data-action="add-to-cart" data-sku="${escapeHtml(product.sku)}" data-product-name="${escapeHtml(product.name)}">Add to Cart</button>`;
+
+        const productUrl = `${basePath}pages/product-detail.html?sku=${escapeHtml(product.sku)}`;
+        
+        return `
+          <a class="product-card" href="${productUrl}">
           <div class="product-card-image bg-image" ${imageStyle}></div>
-          <div class="product-card-header">
-            <div class="product-card-sku">${escapeHtml(product.sku)}</div>
-            <div class="product-card-name">${escapeHtml(product.name)}</div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-description">${escapeHtml(product.description || '')}</div>
-          </div>
-          <div class="product-card-footer">
-            <div class="product-card-pricing">
-              <span class="product-card-price">$${price.toFixed(2)}</span>
-              <span class="product-card-price-label">per unit</span>
+            <div class="product-card-header">
+              <div class="product-card-sku">${escapeHtml(product.sku)}</div>
+              <div class="product-card-name">${escapeHtml(product.name)}</div>
             </div>
-            <div class="product-card-inventory">
-              <span class="status ${status}">${escapeHtml(statusText)}</span>
+            <div class="product-card-body">
+              <div class="product-card-description">${escapeHtml(product.description || '')}</div>
             </div>
-            <div class="product-card-actions">
-              ${actionButton}
+            <div class="product-card-footer">
+              <div class="product-card-pricing">
+                <span class="product-card-price">$${price.toFixed(2)}</span>
+                <span class="product-card-price-label">per unit</span>
+              </div>
+              <div class="product-card-inventory">
+                <span class="status ${status}">${escapeHtml(statusText)}</span>
+              </div>
+              <div class="product-card-actions">
+                ${actionButton}
+              </div>
             </div>
-          </div>
-        </a>
-      `;
-    }).join('');
+          </a>
+        `;
+      }).join('');
 
-    // Parse and append all products at once
-    const fragment = parseHTMLFragment(productsHTML);
-    container.appendChild(fragment);
+      // Parse and append all products at once
+      const fragment = parseHTMLFragment(productsHTML);
+      container.appendChild(fragment);
 
-    // Setup event listeners for action buttons
-    container.querySelectorAll('[data-action="add-to-kit"]').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const sku = btn.getAttribute('data-sku');
-        
-        // Check if item already exists before adding
-        const { getFullKit } = await import('../../scripts/project-builder.js');
-        const fullKit = getFullKit();
-        const itemExists = fullKit?.items?.some(item => item.sku === sku) || false;
-        
-        // Add item and update sidebar
-        const { addCustomItemToKit } = await import('../../scripts/project-builder.js');
-        await addCustomItemToKit(sku, 1, `Added from catalog`);
-        
-        // Update kit sidebar - scroll and highlight if existing, fade in if new
-        const { updateKitSidebar } = await import('../../scripts/kit-sidebar.js');
-        await updateKitSidebar(true, itemExists ? sku : null);
+      // Setup event listeners for action buttons
+      container.querySelectorAll('[data-action="add-to-kit"]').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const sku = btn.getAttribute('data-sku');
+          
+          // Check if item already exists before adding
+          const { getFullKit } = await import('../../scripts/project-builder.js');
+          const fullKit = getFullKit();
+          const itemExists = fullKit?.items?.some(item => item.sku === sku) || false;
+          
+          // Add item and update sidebar
+          const { addCustomItemToKit } = await import('../../scripts/project-builder.js');
+          await addCustomItemToKit(sku, 1, `Added from catalog`);
+          
+          // Update kit sidebar - scroll and highlight if existing, fade in if new
+          const { updateKitSidebar } = await import('../../scripts/kit-sidebar.js');
+          await updateKitSidebar(true, itemExists ? sku : null);
+        });
       });
-    });
 
-    container.querySelectorAll('[data-action="add-to-cart"]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const sku = btn.getAttribute('data-sku');
-        window.dispatchEvent(new CustomEvent('addToCart', {
-          detail: { sku, quantity: 1 }
-        }));
+      // Clean buttons before adding listeners (idempotent - safe even if called multiple times)
+      container.querySelectorAll('[data-action="add-to-cart"]').forEach(btn => {
+        // Clean any existing listeners by cloning the button
+        const cleanBtn = cleanElementListeners(btn);
+        cleanBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const sku = cleanBtn.getAttribute('data-sku');
+          const productName = cleanBtn.getAttribute('data-product-name') || 'Product';
+          window.dispatchEvent(new CustomEvent('addToCart', {
+            detail: { sku, quantity: 1, productName }
+          }));
+        });
       });
-    });
+    } finally {
+      // Always reset rendering flag, even if an error occurs
+      isRendering = false;
+    }
   }
 
   // Load and filter products
@@ -184,8 +211,12 @@ export default async function decorate(block) {
     }
   }
 
-  // Listen for filter changes
-  window.addEventListener('projectFilterChanged', loadProducts);
+  // Listen for filter changes using safe listener management
+  // This ensures only one listener exists even if decorate() is called multiple times
+  safeAddEventListener(window, 'projectFilterChanged', loadProducts, 'product-grid-filter');
+  
+  // Listen for kit mode exit to update "Add to Kit" → "Add to Cart" buttons
+  safeAddEventListener(window, 'kitModeExited', loadProducts, 'product-grid-kit-exit');
 
   // Initial load
   loadProducts();

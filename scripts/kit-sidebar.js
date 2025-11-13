@@ -17,15 +17,21 @@ let isExpanded = true;
 export async function initKitSidebar() {
   const state = getWizardState();
   const { hasKitItems } = await import('./project-builder.js');
+  const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
   
-  // Only show sidebar if kit has items - empty kits should not be resumable
-  if (!state || !hasKitItems()) {
-    // Only remove sidebar if it exists - don't create it if there's no state or kit is empty
+  // Only show sidebar if:
+  // 1. Wizard state exists
+  // 2. Kit has items
+  // 3. User explicitly chose to edit kit (resumeChoice === 'edit')
+  if (!state || !hasKitItems() || resumeChoice !== 'edit') {
+    // Only remove sidebar if it exists - don't create it if conditions not met
     if (kitSidebarElement) {
       removeKitSidebar();
-      // Clear kit mode if kit is empty
-      sessionStorage.removeItem('kit_mode_resume_choice');
-      sessionStorage.removeItem('buildright_wizard_state');
+      // Clear kit mode if kit is empty or user not in edit mode
+      if (!hasKitItems()) {
+        sessionStorage.removeItem('kit_mode_resume_choice');
+        sessionStorage.removeItem('buildright_wizard_state');
+      }
     }
     return;
   }
@@ -813,8 +819,10 @@ function toggleKitSidebar() {
 async function clearKit() {
   const { clearWizardState } = await import('./project-builder.js');
   clearWizardState();
+  sessionStorage.removeItem('kit_mode_resume_choice');
+  sessionStorage.removeItem('buildright_wizard_state');
   removeKitSidebar();
-  window.dispatchEvent(new CustomEvent('kitUpdated'));
+  window.dispatchEvent(new CustomEvent('kitModeExited'));
   window.location.reload();
 }
 
@@ -851,19 +859,10 @@ async function addKitToCart(fullKit) {
 
 
 /**
- * Handle kit added to cart - roll up animation and open mini cart
+ * Handle kit added to cart - close kit sidebar (no auto-open mini cart for consistency)
  */
 async function handleKitAddedToCart(addedBundleId = null) {
   if (!kitSidebarElement) return;
-  
-  // Trigger roll-up animation for kit items
-  const itemsList = kitSidebarElement.querySelector('.kit-sidebar-items-list');
-  if (itemsList) {
-    itemsList.classList.add('rolling-up');
-  }
-  
-  // Wait for roll-up animation to complete (600ms)
-  await new Promise(resolve => setTimeout(resolve, 600));
   
   // Exit kit mode - clear wizard state and session storage
   const { clearWizardState } = await import('./project-builder.js');
@@ -874,8 +873,11 @@ async function handleKitAddedToCart(addedBundleId = null) {
   // Close kit sidebar
   removeKitSidebar();
   
-  // Open mini cart dropdown to show the added bundle
-  window.dispatchEvent(new CustomEvent('openMiniCart', { detail: { highlightBundleId: addedBundleId } }));
+  // Dispatch event to notify UI that kit mode has exited
+  window.dispatchEvent(new CustomEvent('kitModeExited'));
+  
+  // Don't auto-open mini cart - toast notification provides sufficient feedback
+  // User can manually open cart if desired (consistent with regular product additions)
 }
 
 // Cart sidebar functions removed - mini cart handles cart display

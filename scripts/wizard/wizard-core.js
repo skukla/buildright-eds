@@ -47,11 +47,12 @@ export async function initWizard(setupEventListeners, showResults, showStep) {
     const projectType = pathInfo.projectType;
     const projectDetail = pathInfo.projectDetail;
     
-    // Check URL query params for backward compatibility
+    // Check URL query params for backward compatibility and edit mode
     const urlParams = new URLSearchParams(window.location.search);
     const complexity = urlParams.get('complexity');
     const budget = urlParams.get('budget');
     const continueSession = urlParams.get('continue');
+    const editBundleId = urlParams.get('edit'); // Check for edit mode
     
     if (projectType) {
       // URL params override saved state - always start fresh when coming from Shop By Job
@@ -72,6 +73,13 @@ export async function initWizard(setupEventListeners, showResults, showStep) {
       // Only restore saved state if explicitly continuing
       currentStep = wizardState.currentStep || 1;
       restoreWizardState(showResults, showStep);
+    } else if (editBundleId) {
+      // Edit mode - bundle will be loaded by project-builder-wizard.js
+      // Don't show banner, user intentionally clicked to edit
+      // This is handled by the URL parameter detection in project-builder-wizard.js
+      // Just initialize without showing banner
+      currentStep = wizardState.currentStep || 5;
+      if (showStep) showStep(currentStep);
     } else if (wizardState.projectType && wizardState.bundle) {
       // User has an existing kit but didn't explicitly continue - show prompt
       // Don't auto-restore, wait for user choice
@@ -402,6 +410,8 @@ function showProjectBuilderResumeBanner(showResults, showStep) {
       // Clear wizard state and start fresh
       clearWizardState();
       sessionStorage.removeItem('kit_mode_resume_choice');
+      // Dispatch event to notify UI that kit mode has exited
+      window.dispatchEvent(new CustomEvent('kitModeExited'));
       currentStep = 1;
       if (showStep) showStep(1);
     });
