@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    // Set base tag FIRST before any resources load
+    (function() {
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.startsWith("/buildright-eds/");
+      const basePath = isGitHubPages ? "/buildright-eds/" : "/";
+      const baseTag = document.createElement("base");
+      baseTag.href = window.location.origin + basePath;
+      document.head.appendChild(baseTag);
+      window.BASE_PATH = basePath;
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
-    // Set base tag immediately before any resources load
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      const basePath = isGitHubPages ? '/buildright-eds/' : '/';
-      const baseTag = document.createElement('base');
-      baseTag.href = window.location.origin + basePath;
-      document.head.insertBefore(baseTag, document.head.firstChild);
-      window.BASE_PATH = basePath;
-      
-      // Restore clean URL if we were redirected via 404
-      const redirectPath = sessionStorage.getItem('spa_redirect_path');
-      if (redirectPath) {
-        // Use History API to restore the clean URL immediately
-        window.history.replaceState({}, '', redirectPath);
-        // Don't remove from sessionStorage yet - other scripts need it
-      }
-    })();
-  </script>
-  <script src="scripts/base-url.js"></script>
   <!-- Load critical data synchronously to prevent layout shift -->
   <script>
     // Pre-load cart count to prevent shift
