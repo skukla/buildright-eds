@@ -100,6 +100,31 @@ async function decorateBlock(blockElement, blockName) {
   }
 }
 
+/**
+ * Parse HTML template string to DOM (reduces DOM manipulation)
+ * Uses DOMParser for secure parsing without innerHTML on live DOM
+ * @param {string} htmlString - HTML string to parse
+ * @returns {HTMLElement} First element from parsed HTML
+ */
+function parseHTML(htmlString) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, 'text/html');
+  return doc.body.firstElementChild || doc.body;
+}
+
+/**
+ * Parse HTML template and return fragment (for multiple root elements)
+ * @param {string} htmlString - HTML string to parse
+ * @returns {DocumentFragment} Fragment containing all parsed elements
+ */
+function parseHTMLFragment(htmlString) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, 'text/html');
+  const fragment = document.createDocumentFragment();
+  Array.from(doc.body.children).forEach(child => fragment.appendChild(child));
+  return fragment;
+}
+
 // ES6 exports
 export {
   getUrlParameter,
@@ -109,7 +134,9 @@ export {
   loadBlockHTML,
   loadBlockCSS,
   loadBlockJS,
-  decorateBlock
+  decorateBlock,
+  parseHTML,
+  parseHTMLFragment
 };
 
 // CommonJS exports (for compatibility)
@@ -122,7 +149,9 @@ if (typeof module !== 'undefined' && module.exports) {
     loadBlockHTML,
     loadBlockCSS,
     loadBlockJS,
-    decorateBlock
+    decorateBlock,
+    parseHTML,
+    parseHTMLFragment
   };
 }
 

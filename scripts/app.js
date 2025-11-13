@@ -88,6 +88,8 @@ async function initializeApp() {
     const classList = Array.from(block.classList);
     const blockClass = classList.find(cls => 
       cls.includes('header') || 
+      cls.includes('footer') ||
+      cls.includes('site-footer') ||
       cls.includes('project-filter') || 
       cls.includes('pricing-display') || 
       cls.includes('inventory-status') || 
@@ -97,7 +99,9 @@ async function initializeApp() {
     );
 
     if (blockClass) {
-      const blockName = blockClass.replace(/-block$/, '').replace(/^block-/, '');
+      let blockName = blockClass.replace(/-block$/, '').replace(/^block-/, '');
+      // Map site-footer to footer
+      if (blockName === 'site-footer') blockName = 'footer';
       await decorateBlock(block, blockName);
     }
   }
@@ -105,6 +109,7 @@ async function initializeApp() {
   // Decorate blocks by class name pattern
   const blockPatterns = [
     'header',
+    'site-footer',
     'project-filter',
     'pricing-display',
     'inventory-status',
@@ -117,7 +122,9 @@ async function initializeApp() {
   for (const pattern of blockPatterns) {
     const blocks = document.querySelectorAll(`.${pattern}`);
     for (const block of blocks) {
-      await decorateBlock(block, pattern);
+      // Map site-footer to footer for block loading
+      const blockName = pattern === 'site-footer' ? 'footer' : pattern;
+      await decorateBlock(block, blockName);
     }
   }
 }

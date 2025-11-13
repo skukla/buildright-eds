@@ -2,11 +2,12 @@
 
 let mockData = null;
 let customerContext = {
-  company: "Premium Commercial Builders Inc.",
-  tier: "commercial_tier2",
-  region: "Western",
-  primary_warehouse: "warehouse_west",
-  locations: ["Los Angeles", "Phoenix"]
+  company: null,
+  location_id: null,
+  tier: "base",
+  region: null,
+  primary_warehouse: null,
+  isLoggedIn: false
 };
 
 // Load mock data from JSON file
@@ -76,9 +77,40 @@ async function getWarehouses() {
 function getCustomerContext() {
   // Try to load from localStorage first
   const stored = localStorage.getItem('buildright_customer_context');
+  
   if (stored) {
     try {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      
+      // Migration 1: Convert old company names to new IDs
+      if (parsed.company && typeof parsed.company === 'string') {
+        // Check if it's an old full company name format
+        if (parsed.company.includes(' ')) {
+          localStorage.removeItem('buildright_customer_context');
+          return customerContext;
+        }
+      }
+      
+      // Migration 2: Add tier if missing but company exists
+      if (parsed.company && !parsed.tier) {
+        const companyTierMap = {
+          'premium_commercial': 'commercial_tier2',
+          'coastal_residential': 'residential_builder',
+          'elite_trade': 'pro_specialty'
+        };
+        
+        const tier = companyTierMap[parsed.company] || 'base';
+        const migrated = {
+          ...parsed,
+          tier: tier,
+          isLoggedIn: true
+        };
+        
+        localStorage.setItem('buildright_customer_context', JSON.stringify(migrated));
+        return migrated;
+      }
+      
+      return parsed;
     } catch (e) {
       console.error('Error parsing stored customer context:', e);
     }
@@ -151,7 +183,9 @@ function getProductImageUrl(product) {
   
   // First, check if product has image_url directly in the data
   if (product.image_url) {
-    return product.image_url;
+    // Use base path-aware path for GitHub Pages compatibility
+    const basePath = window.BASE_PATH || '/';
+    return `${basePath}${product.image_url}`;
   }
   
   // Fallback to category/name-based mapping
