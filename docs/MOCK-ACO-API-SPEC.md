@@ -1,10 +1,16 @@
 # Mock ACO Service Architecture - CORRECTED
 
 **Research Date**: November 15, 2024  
-**Purpose**: Design mock Adobe Commerce Optimizer (ACO) service for BuildRight demo  
+**Purpose**: Design mock Adobe Commerce Optimizer (ACO) service for BuildRight **frontend demo**  
 **Corrections**: Updated to accurately reflect Adobe's Composable Catalog Data Model (CCDM)
 
-This document specifies the architecture for our mock ACO service that will demonstrate Adobe Commerce Optimizer's **Composable Catalog Data Model (CCDM)** capabilities through catalog views, policies, and progressive product filtering.
+This document specifies the architecture for our **frontend mock ACO service** (`buildright-eds/scripts/aco-service.js`) that will demonstrate Adobe Commerce Optimizer's **Composable Catalog Data Model (CCDM)** capabilities through catalog views, policies, and progressive product filtering.
+
+**IMPORTANT**: 
+- The `buildright-aco` repository **DOES** have access to a real ACO instance
+- Products and price books **ARE** ingested to real ACO via API
+- This mock is for the **frontend** (`buildright-eds`) to enable development without GraphQL calls
+- The mock reads the same data structure that's in ACO for consistency
 
 ---
 

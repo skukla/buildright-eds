@@ -17,14 +17,15 @@ BuildRight is a demonstration of Adobe Commerce Optimizer (ACO) capabilities, sp
 - Progressive catalog filtering (e.g., deck wizard)
 - Customer-group-specific pricing
 
-However, we do not have access to a real ACO backend during development. We need a way to demonstrate ACO/CCDM capabilities without the actual service.
+The `buildright-aco` repository **has access to a real ACO instance** and ingests product data via ACO API. However, for **frontend development** (`buildright-eds`), we need a mock service to enable rapid iteration without GraphQL calls to ACO during development.
 
 ### Key Requirements
 1. **Accurate Simulation**: Mock must behave like real ACO
 2. **Demo-Ready**: Must convincingly demonstrate CCDM capabilities
-3. **Production Migration Path**: Easy to swap mock for real ACO
+3. **Production Migration Path**: Easy to swap mock for real ACO GraphQL
 4. **Persona Support**: Must handle 5 different persona experiences
 5. **API Compatibility**: Mock API should match real ACO API signatures
+6. **Data Consistency**: Mock reads same data structure that's in real ACO
 
 ### Research Findings
 - ACO is Adobe's backend service for catalog optimization
@@ -35,6 +36,12 @@ However, we do not have access to a real ACO backend during development. We need
   - **Triggered Policies**: Policies activated by customer attributes
   - **Catalog Sources**: Origin of product data
   - **Price Books**: Customer-group-specific pricing
+
+### Why Mock for Frontend?
+- **Real ACO exists** in `buildright-aco` with real data ingestion
+- **Frontend needs mock** to develop without ACO GraphQL dependency
+- **Mock reads same data files** generated for ACO ingestion
+- **Production path**: Replace mock with ACO GraphQL queries
 
 ---
 

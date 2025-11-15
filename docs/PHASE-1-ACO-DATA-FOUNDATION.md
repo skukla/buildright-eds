@@ -1,14 +1,14 @@
-# Phase 1: ACO Data Foundation (Mocked)
+# Phase 1: ACO Data Foundation
 
 ## Overview
 
 **Duration**: 2-3 weeks  
 **Dependencies**: None (can run parallel to Phase 0)  
-**Status**: Not Started
+**Status**: In Progress
 
-Create mock data structures and generation pipeline that mirrors Adobe Commerce Optimizer (ACO) format. This phase works in the `buildright-aco` repository to generate data that will be consumed by `buildright-eds`.
+Generate persona-enhanced product data and ingest to Adobe Commerce Optimizer (ACO). This phase works in the `buildright-aco` repository to generate data that will be ingested to a real ACO instance and also consumed by `buildright-eds` for frontend mock services.
 
-**CRITICAL**: ACO connection is **MOCKED**. All data structures should match expected ACO format to enable seamless transition to production.
+**CRITICAL**: This phase works with a **REAL ACO INSTANCE**. All data structures follow ACO format and will be ingested via ACO API. The frontend (`buildright-eds`) will use a mock service that reads the same data structure for development without GraphQL calls.
 
 ---
 
@@ -16,10 +16,10 @@ Create mock data structures and generation pipeline that mirrors Adobe Commerce 
 
 1. Update product definitions with persona-specific attributes
 2. Enhance generation scripts to include new attributes
-3. Enhance ingestion scripts (for eventual ACO ingestion)
-4. Create 6 customer group price books
-5. Document triggered policy definitions
-6. Generate EDS-compatible data files
+3. Ingest products to ACO instance with new attributes
+4. Create 6 customer group price books and ingest to ACO
+5. Document triggered policy definitions (for manual ACO configuration)
+6. Generate EDS-compatible data files (for frontend mock)
 7. Update documentation (BUILDRIGHT-CASE-STUDY.md, SETUP-GUIDE.md)
 
 ---
