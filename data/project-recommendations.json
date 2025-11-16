@@ -1,104 +1,154 @@
 {
-  "roomCategories": {
-    "bathroom": ["fasteners_hardware", "framing_drywall", "windows_doors"],
-    "kitchen": ["fasteners_hardware", "framing_drywall", "windows_doors", "structural_materials"],
-    "basement": ["structural_materials", "framing_drywall", "fasteners_hardware"],
-    "whole_house": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"],
-    "exterior": ["windows_doors", "roofing", "structural_materials", "fasteners_hardware"],
-    "other": ["structural_materials", "framing_drywall", "fasteners_hardware"]
-  },
-  "complexityMultipliers": {
-    "basic": {
-      "itemCount": 0.6,
-      "quantityMultiplier": 0.7,
-      "qualityTier": "standard"
-    },
-    "moderate": {
-      "itemCount": 1.0,
-      "quantityMultiplier": 1.0,
-      "qualityTier": "standard"
-    },
-    "complex": {
-      "itemCount": 1.5,
-      "quantityMultiplier": 1.3,
-      "qualityTier": "premium"
+  "templates": [
+    {
+      "id": "sedona",
+      "name": "The Sedona",
+      "description": "2-story single-family home with optional bonus room",
+      "sqft": 2450,
+      "stories": 2,
+      "bedrooms": 4,
+      "bathrooms": 2.5,
+      "image": "/images/floor-plans/sedona.png",
+      "finishedImage": "/images/finished-homes/sedona.jpg",
+      "variants": [
+        {
+          "id": "standard",
+          "name": "Standard",
+          "description": "Base 2,450 sqft layout"
+        },
+        {
+          "id": "bonus_room",
+          "name": "With Bonus Room",
+          "description": "Adds 800 sqft bonus room above garage",
+          "additionalSqft": 800
+        }
+      ],
+      "phases": [
+        {
+          "phase": "foundation_framing",
+          "name": "Foundation & Framing",
+          "week": 1,
+          "products": []
+        },
+        {
+          "phase": "envelope",
+          "name": "Building Envelope",
+          "week": 3,
+          "products": []
+        }
+      ]
     }
+  ],
+  "packages": {
+    "bathroom": [
+      {
+        "id": "bathroom-good",
+        "tier": "good",
+        "name": "Good Package",
+        "type": "bathroom_remodel",
+        "price": 8500,
+        "image": "/images/packages/bathroom-good.jpg",
+        "products": [],
+        "features": [
+          "Builder-grade fixtures",
+          "Standard bathtub",
+          "Laminate vanity",
+          "Ceramic tile"
+        ]
+      },
+      {
+        "id": "bathroom-better",
+        "tier": "better",
+        "name": "Better Package",
+        "type": "bathroom_remodel",
+        "price": 14200,
+        "image": "/images/packages/bathroom-better.jpg",
+        "products": [],
+        "features": [
+          "Mid-range fixtures",
+          "Acrylic tub",
+          "Semi-custom vanity",
+          "Porcelain tile"
+        ]
+      },
+      {
+        "id": "bathroom-best",
+        "tier": "best",
+        "name": "Best Package",
+        "type": "bathroom_remodel",
+        "price": 23800,
+        "image": "/images/packages/bathroom-best.jpg",
+        "products": [],
+        "features": [
+          "Premium fixtures",
+          "Soaking tub",
+          "Custom vanity",
+          "Natural stone tile"
+        ]
+      }
+    ]
   },
-  "budgetRanges": {
-    "under_5k": {
-      "maxItems": 8,
-      "maxTotalPrice": 5000,
-      "preferredCategories": ["fasteners_hardware", "framing_drywall"]
-    },
-    "5k_15k": {
-      "maxItems": 15,
-      "maxTotalPrice": 15000,
-      "preferredCategories": ["fasteners_hardware", "framing_drywall", "windows_doors", "structural_materials"]
-    },
-    "15k_30k": {
-      "maxItems": 25,
-      "maxTotalPrice": 30000,
-      "preferredCategories": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"]
-    },
-    "30k_50k": {
-      "maxItems": 35,
-      "maxTotalPrice": 50000,
-      "preferredCategories": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"]
-    },
-    "50k_plus": {
-      "maxItems": 50,
-      "maxTotalPrice": 1000000,
-      "preferredCategories": ["structural_materials", "framing_drywall", "windows_doors", "fasteners_hardware", "roofing"]
+  "deckKits": [
+    {
+      "id": "deck-16x20-composite",
+      "name": "16x20 Composite Deck Kit",
+      "type": "deck",
+      "shape": "rectangular",
+      "material": "composite",
+      "dimensions": {
+        "width": 16,
+        "depth": 20,
+        "sqft": 320
+      },
+      "price": 6817,
+      "image": "/images/kits/deck-composite.jpg",
+      "products": [],
+      "features": [
+        "Low maintenance composite decking",
+        "Aluminum railing system",
+        "Hidden fastener system",
+        "LED post cap lights",
+        "Complete hardware kit",
+        "Installation guide included"
+      ],
+      "requirements": [
+        "Intermediate DIY skill level",
+        "4-6 weekend project",
+        "Basic tools required"
+      ],
+      "notIncluded": [
+        "Concrete mix for footings",
+        "Post-hole digger",
+        "Power tools"
+      ]
     }
-  },
-  "projectTypeCategories": {
-    "new_construction": {
-      "primary": ["structural_materials", "framing_drywall", "fasteners_hardware"],
-      "secondary": ["windows_doors", "roofing"]
+  ],
+  "restockCategories": [
+    {
+      "id": "restock-high",
+      "velocityCategory": "high",
+      "name": "High Velocity Items",
+      "frequency": "2-3 times per week",
+      "products": []
     },
-    "remodel": {
-      "primary": ["framing_drywall", "windows_doors", "fasteners_hardware"],
-      "secondary": ["structural_materials"]
+    {
+      "id": "restock-medium",
+      "velocityCategory": "medium",
+      "name": "Medium Velocity Items",
+      "frequency": "Weekly",
+      "products": []
     },
-    "repair": {
-      "primary": ["fasteners_hardware"],
-      "secondary": ["framing_drywall", "structural_materials"]
-    },
-    "restoration": {
-      "primary": ["windows_doors", "structural_materials"],
-      "secondary": ["framing_drywall", "fasteners_hardware"]
+    {
+      "id": "restock-low",
+      "velocityCategory": "low",
+      "name": "Low Velocity Items",
+      "frequency": "As needed",
+      "products": []
     }
-  },
-  "itemReasons": {
-    "bathroom": {
-      "framing_drywall": "Essential for wall construction and moisture-resistant drywall",
-      "fasteners_hardware": "Required for securing fixtures and hardware",
-      "windows_doors": "May need replacement windows or door frames"
-    },
-    "kitchen": {
-      "framing_drywall": "Needed for wall construction and cabinet installation",
-      "fasteners_hardware": "Essential for cabinet and fixture installation",
-      "windows_doors": "Kitchen windows and door frames",
-      "structural_materials": "May need structural support for heavy cabinets"
-    },
-    "basement": {
-      "structural_materials": "Foundation and structural support materials",
-      "framing_drywall": "Wall framing and finishing",
-      "fasteners_hardware": "Securing materials and fixtures"
-    },
-    "whole_house": {
-      "structural_materials": "Core structural components for entire home",
-      "framing_drywall": "Complete wall systems throughout",
-      "windows_doors": "All windows and doors",
-      "fasteners_hardware": "Comprehensive hardware needs",
-      "roofing": "Complete roofing system"
-    },
-    "exterior": {
-      "windows_doors": "Exterior windows and doors",
-      "roofing": "Roofing materials and components",
-      "structural_materials": "Exterior structural elements",
-      "fasteners_hardware": "Exterior fasteners and hardware"
-    }
+  ],
+  "metadata": {
+    "generated": "2025-11-16T03:18:10.917Z",
+    "version": "2.0",
+    "source": "buildright-aco"
   }
 }
-
