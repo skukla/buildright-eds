@@ -2074,9 +2074,606 @@ if (document.readyState === 'loading') {
 
 ---
 
-## Task 5: Remove All Emojis
+## Task 5: Fragment-Based Personalization ⭐ **NEW**
 
-### 5.1 Search and Replace Emojis
+### 5.1 Overview
+
+**Purpose**: Implement EDS fragments for reusable, author-managed personalized content sections.
+
+**Key Benefit**: Separates content (managed by authors in Google Docs) from logic (managed by developers in JavaScript).
+
+---
+
+### 5.2 Create Fragment Documents
+
+**Directory**: `/fragments/` (new)
+
+**Create the following fragment documents**:
+
+1. **Hero Fragments** (persona-specific):
+   - `/fragments/hero-sarah.html`
+   - `/fragments/hero-marcus.html`
+   - `/fragments/hero-lisa.html`
+   - `/fragments/hero-david.html`
+   - `/fragments/hero-kevin.html`
+   - `/fragments/hero-default.html` (unauthenticated)
+
+2. **Feature Highlight Fragments** (persona-specific):
+   - `/fragments/features-sarah.html`
+   - `/fragments/features-marcus.html`
+   - `/fragments/features-lisa.html`
+   - `/fragments/features-david.html`
+   - `/fragments/features-kevin.html`
+
+3. **Shared Fragments**:
+   - `/fragments/footer-buildright.html`
+   - `/fragments/support-links.html`
+   - `/fragments/legal-disclaimer.html`
+   - `/fragments/promo-banner.html` (for A/B testing)
+
+**Example Fragment**: `/fragments/hero-sarah.html`
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hero - Sarah Martinez</title>
+</head>
+<body>
+  <main>
+    <div class="section">
+      <div class="hero">
+        <div>
+          <div>
+            <h1>Welcome back, Sarah!</h1>
+            <p>Ready to order materials for your next template?</p>
+            <p><img src="/images/hero-production-builder.jpg" alt="Production Builder"></p>
+            <p>
+              <a href="/pages/dashboard.html?view=templates" class="button primary">View Templates</a>
+              <a href="/pages/catalog.html" class="button secondary">Browse Catalog</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
+```
+
+**Deliverable**: All fragment documents created
+
+---
+
+### 5.3 Create Fragment Loader Utility
+
+**File**: `scripts/fragment-loader.js` (new)
+
+```javascript
+/**
+ * Fragment Loader Utility
+ * Loads and injects EDS fragments dynamically
+ */
+
+/**
+ * Load a fragment and inject it into a container
+ * @param {string} container - CSS selector for container element
+ * @param {string} fragmentPath - Path to fragment (e.g., '/fragments/hero-sarah')
+ * @returns {Promise<void>}
+ */
+export async function loadFragment(container, fragmentPath) {
+  const containerEl = typeof container === 'string' 
+    ? document.querySelector(container) 
+    : container;
+    
+  if (!containerEl) {
+    console.error(`[Fragment Loader] Container not found: ${container}`);
+    return;
+  }
+  
+  try {
+    // Fetch the plain HTML version of the fragment
+    const response = await fetch(`${fragmentPath}.plain.html`);
+    
+    if (!response.ok) {
+      throw new Error(`Fragment not found: ${fragmentPath} (${response.status})`);
+    }
+    
+    const html = await response.text();
+    
+    // Create a temporary container to parse the HTML
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    
+    // Extract the main content (skip header/footer if present)
+    const main = temp.querySelector('main');
+    const content = main ? main.innerHTML : html;
+    
+    // Inject the content
+    containerEl.innerHTML = content;
+    
+    // Decorate any blocks within the fragment
+    const blocks = containerEl.querySelectorAll('[data-block-name]');
+    if (blocks.length > 0) {
+      const { decorateBlocks } = await import('./scripts.js');
+      await decorateBlocks(containerEl);
+    }
+    
+    console.log(`[Fragment Loader] Loaded: ${fragmentPath}`);
+    
+  } catch (error) {
+    console.error(`[Fragment Loader] Error loading fragment ${fragmentPath}:`, error);
+    
+    // Show error state in container
+    containerEl.innerHTML = `
+      <div class="fragment-error">
+        <p>Content temporarily unavailable</p>
+      </div>
+    `;
+  }
+}
+
+/**
+ * Load multiple fragments in parallel
+ * @param {Array<{container: string, path: string}>} fragments - Array of fragment configs
+ * @returns {Promise<void>}
+ */
+export async function loadFragments(fragments) {
+  await Promise.all(
+    fragments.map(({ container, path }) => loadFragment(container, path))
+  );
+}
+
+/**
+ * Preload a fragment (fetch but don't inject)
+ * Useful for performance optimization
+ * @param {string} fragmentPath - Path to fragment
+ * @returns {Promise<string>} - Fragment HTML
+ */
+export async function preloadFragment(fragmentPath) {
+  try {
+    const response = await fetch(`${fragmentPath}.plain.html`);
+    if (!response.ok) {
+      throw new Error(`Fragment not found: ${fragmentPath}`);
+    }
+    return await response.text();
+  } catch (error) {
+    console.error(`[Fragment Loader] Error preloading fragment ${fragmentPath}:`, error);
+    return null;
+  }
+}
+```
+
+**Deliverable**: Fragment loader utility
+
+---
+
+### 5.4 Update Personalization System
+
+**File**: `scripts/personalize-page.js` (update existing)
+
+```javascript
+/**
+ * Personalize Page with Fragments
+ * Loads persona-specific fragments based on authentication state
+ */
+
+import { authService } from './auth.js';
+import { getPersona } from './persona-config.js';
+import { loadFragment, loadFragments } from './fragment-loader.js';
+
+/**
+ * Personalize the homepage with fragments
+ */
+export async function personalizeHomepage() {
+  const isAuth = authService.isAuthenticated();
+  
+  if (isAuth) {
+    const user = authService.getCurrentUser();
+    const persona = getPersona(user.personaId);
+    
+    // Load persona-specific fragments in parallel
+    await loadFragments([
+      {
+        container: '.hero-container',
+        path: `/fragments/hero-${persona.id}`
+      },
+      {
+        container: '.features-container',
+        path: `/fragments/features-${persona.id}`
+      },
+      {
+        container: '.footer-container',
+        path: '/fragments/footer-buildright'
+      }
+    ]);
+    
+    // Optionally: Add dynamic personalization on top of fragments
+    personalizeWithDynamicData(persona);
+    
+  } else {
+    // Load unauthenticated fragments
+    await loadFragments([
+      {
+        container: '.hero-container',
+        path: '/fragments/hero-default'
+      },
+      {
+        container: '.footer-container',
+        path: '/fragments/footer-buildright'
+      }
+    ]);
+  }
+  
+  // Show content after personalization
+  document.body.classList.add('ready');
+}
+
+/**
+ * Add dynamic data on top of fragment content
+ * @param {Object} persona - Persona object
+ */
+function personalizeWithDynamicData(persona) {
+  // Example: Update name dynamically
+  const nameElements = document.querySelectorAll('[data-persona-name]');
+  nameElements.forEach(el => {
+    el.textContent = persona.name;
+  });
+  
+  // Example: Update company dynamically
+  const companyElements = document.querySelectorAll('[data-persona-company]');
+  companyElements.forEach(el => {
+    el.textContent = persona.company;
+  });
+}
+
+/**
+ * Personalize any page with fragment support
+ * @param {Object} config - Configuration object
+ * @param {Array} config.fragments - Array of fragment configs
+ * @param {Function} config.onComplete - Callback after personalization
+ */
+export async function personalizePage(config = {}) {
+  const isAuth = authService.isAuthenticated();
+  
+  if (!config.fragments || config.fragments.length === 0) {
+    console.warn('[Personalize] No fragments configured');
+    return;
+  }
+  
+  const user = isAuth ? authService.getCurrentUser() : null;
+  const persona = user ? getPersona(user.personaId) : null;
+  
+  // Resolve fragment paths based on persona
+  const resolvedFragments = config.fragments.map(fragment => {
+    let path = fragment.path;
+    
+    // Replace {persona} placeholder
+    if (path.includes('{persona}')) {
+      path = path.replace('{persona}', persona ? persona.id : 'default');
+    }
+    
+    return {
+      container: fragment.container,
+      path
+    };
+  });
+  
+  // Load all fragments
+  await loadFragments(resolvedFragments);
+  
+  // Run callback if provided
+  if (config.onComplete) {
+    config.onComplete(persona);
+  }
+  
+  // Show content
+  document.body.classList.add('ready');
+}
+```
+
+**Deliverable**: Updated personalization system with fragment support
+
+---
+
+### 5.5 Update Homepage to Use Fragments
+
+**File**: `index.html` (update)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BuildRight Solutions</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <style>
+    /* Prevent FOUC (Flash of Unstyled Content) */
+    body { opacity: 0; transition: opacity 0.3s; }
+    body.ready { opacity: 1; }
+  </style>
+</head>
+<body>
+  <header></header>
+  
+  <!-- Hero Section (Fragment Container) -->
+  <div class="hero-container">
+    <!-- Loading skeleton -->
+    <div class="skeleton-loader">
+      <div class="skeleton-text"></div>
+      <div class="skeleton-text"></div>
+    </div>
+  </div>
+  
+  <!-- Features Section (Fragment Container) -->
+  <div class="features-container">
+    <!-- Loading skeleton -->
+    <div class="skeleton-loader">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </div>
+  
+  <!-- Always visible: Featured Products -->
+  <section>
+    <h2>Featured Products</h2>
+    <div class="product-grid" data-block-name="product-grid"></div>
+  </section>
+  
+  <!-- Footer (Fragment Container) -->
+  <div class="footer-container"></div>
+  
+  <script type="module">
+    import { personalizeHomepage } from './scripts/personalize-page.js';
+    
+    // Personalize on load
+    await personalizeHomepage();
+  </script>
+</body>
+</html>
+```
+
+**Deliverable**: Updated homepage with fragment containers
+
+---
+
+### 5.6 Add Fragment Styles
+
+**File**: `styles/fragments.css` (new)
+
+```css
+/* Fragment Loading States */
+.skeleton-loader {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 1.5rem;
+  background: var(--color-neutral-200);
+  border-radius: var(--shape-border-radius-2);
+  margin-bottom: var(--spacing-small);
+}
+
+.skeleton-card {
+  height: 200px;
+  background: var(--color-neutral-200);
+  border-radius: var(--shape-border-radius-3);
+  margin-bottom: var(--spacing-medium);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Fragment Error State */
+.fragment-error {
+  padding: var(--spacing-large);
+  text-align: center;
+  color: var(--color-neutral-600);
+  background: var(--color-neutral-50);
+  border-radius: var(--shape-border-radius-2);
+}
+
+/* Ensure fragments are hidden until loaded */
+body:not(.ready) .hero-container,
+body:not(.ready) .features-container {
+  min-height: 400px;
+}
+```
+
+**File**: `styles/styles.css` (update)
+
+```css
+/* Existing imports */
+@import './base.css';
+@import './components.css';
+@import './utilities.css';
+@import './page-specific.css';
+@import './signup-wizard.css';
+
+/* Add this */
+@import './fragments.css';
+```
+
+**Deliverable**: Fragment styles added
+
+---
+
+### 5.7 Create Fragment Authoring Guide
+
+**File**: `docs/FRAGMENT-AUTHORING-GUIDE.md` (new)
+
+```markdown
+# Fragment Authoring Guide
+
+## What Are Fragments?
+
+Fragments are reusable content sections that can be:
+- Managed by content authors in Google Docs/SharePoint
+- Used across multiple pages
+- Updated centrally (change once, update everywhere)
+- Personalized based on user context
+
+---
+
+## Creating a Fragment
+
+### 1. Create a New Document
+
+In Google Docs or SharePoint, create a new document in the `/fragments/` folder.
+
+**Naming Convention**:
+- Persona-specific: `hero-{persona}.gdoc` (e.g., `hero-sarah.gdoc`)
+- Shared: `{name}.gdoc` (e.g., `footer-buildright.gdoc`)
+
+### 2. Author the Content
+
+Use standard EDS authoring patterns:
+
+**Example: Hero Fragment**
+
+| Hero |
+|------|
+| Welcome back, Sarah! |
+| Ready to order materials for your next template? |
+| ![Production Builder](/images/hero-production-builder.jpg) |
+| [View Templates](/pages/dashboard.html?view=templates) |
+| [Browse Catalog](/pages/catalog.html) |
+
+### 3. Publish the Fragment
+
+Use the AEM Sidekick to preview and publish the fragment.
+
+### 4. Reference the Fragment
+
+Developers will reference your fragment using the fragment path:
+
+```javascript
+loadFragment('.hero-container', '/fragments/hero-sarah');
+```
+
+---
+
+## Fragment Best Practices
+
+### Content Guidelines
+
+✅ **DO**:
+- Keep fragments focused on a single purpose
+- Use semantic HTML (headings, paragraphs, lists)
+- Include descriptive alt text for images
+- Use relative URLs for internal links
+
+❌ **DON'T**:
+- Mix multiple unrelated sections in one fragment
+- Use inline styles
+- Hardcode absolute URLs
+- Include page-specific metadata
+
+### Performance Tips
+
+- Keep fragments lightweight (< 50KB HTML)
+- Optimize images before adding to fragments
+- Avoid embedding large videos directly
+
+---
+
+## Fragment Types
+
+### 1. Hero Fragments
+
+**Purpose**: Main banner at top of page
+
+**Content**:
+- Heading (H1)
+- Subheading/description
+- Hero image
+- 1-2 CTA buttons
+
+**Example**: `/fragments/hero-sarah.html`
+
+---
+
+### 2. Feature Highlight Fragments
+
+**Purpose**: Showcase key features or benefits
+
+**Content**:
+- Section heading (H2)
+- 3-4 feature cards with icons
+- Brief descriptions
+
+**Example**: `/fragments/features-marcus.html`
+
+---
+
+### 3. Shared Fragments
+
+**Purpose**: Content used across all personas
+
+**Content**:
+- Footer links
+- Legal disclaimers
+- Support information
+- Promotional banners
+
+**Example**: `/fragments/footer-buildright.html`
+
+---
+
+## Testing Your Fragments
+
+1. **Preview**: Use AEM Sidekick preview
+2. **Validate**: Check all links and images work
+3. **Responsive**: Test on mobile, tablet, desktop
+4. **Accessibility**: Ensure proper heading hierarchy
+
+---
+
+## Updating Fragments
+
+**To update a fragment**:
+1. Edit the Google Doc
+2. Preview changes in Sidekick
+3. Publish when ready
+4. Changes appear on all pages using that fragment
+
+**No code changes required!**
+
+---
+
+## Getting Help
+
+- **Technical Issues**: Contact development team
+- **Content Questions**: Refer to EDS authoring docs
+- **Fragment Requests**: Submit via project board
+```
+
+**Deliverable**: Fragment authoring guide for content team
+
+---
+
+### 5.8 Update Phase 5 Testing
+
+**Add to Testing/Validation section**:
+
+#### Fragment Testing
+- [ ] All persona fragments load correctly
+- [ ] Fragment content displays properly
+- [ ] Fragments are responsive
+- [ ] Fragment error states work
+- [ ] Shared fragments appear on all pages
+- [ ] Fragment updates reflect immediately after publish
+- [ ] No FOUC (Flash of Unstyled Content)
+
+**Deliverable**: Fragment testing checklist
+
+---
+
+## Task 6: Remove All Emojis
+
+### 6.1 Search and Replace Emojis
 
 **Script**: Run emoji detection script from Phase 2
 
@@ -2095,6 +2692,7 @@ node scripts/replace-emojis.js
 - All `.js` files in `scripts/` and `blocks/`
 - Data files (`.json`)
 - CSS content properties
+- **Fragment documents** (new)
 
 **Deliverable**: No emojis remaining in codebase
 
@@ -2110,6 +2708,10 @@ node scripts/replace-emojis.js
 ✅ Kit mode completely removed  
 ✅ PDP displays customer-group pricing  
 ✅ Cart integrates with cart manager  
+✅ **Fragment system implemented** ⭐ **NEW**  
+✅ **All persona fragments created** ⭐ **NEW**  
+✅ **Fragment loader utility working** ⭐ **NEW**  
+✅ **Homepage uses fragments for personalization** ⭐ **NEW**  
 ✅ All emojis replaced with custom icons  
 ✅ All pages work with auth system  
 ✅ All pages tested with each persona
@@ -2149,6 +2751,24 @@ node scripts/replace-emojis.js
 
 ### Documentation
 - [ ] `docs/PAGE-AUDIT-CHECKLIST.md`
+- [ ] `docs/FRAGMENT-AUTHORING-GUIDE.md` ⭐ **NEW**
+
+### Fragment Documents ⭐ **NEW**
+- [ ] `/fragments/hero-sarah.html`
+- [ ] `/fragments/hero-marcus.html`
+- [ ] `/fragments/hero-lisa.html`
+- [ ] `/fragments/hero-david.html`
+- [ ] `/fragments/hero-kevin.html`
+- [ ] `/fragments/hero-default.html`
+- [ ] `/fragments/features-sarah.html`
+- [ ] `/fragments/features-marcus.html`
+- [ ] `/fragments/features-lisa.html`
+- [ ] `/fragments/features-david.html`
+- [ ] `/fragments/features-kevin.html`
+- [ ] `/fragments/footer-buildright.html`
+- [ ] `/fragments/support-links.html`
+- [ ] `/fragments/legal-disclaimer.html`
+- [ ] `/fragments/promo-banner.html`
 
 ### Updated Pages
 - [ ] `pages/login.html`
@@ -2157,7 +2777,11 @@ node scripts/replace-emojis.js
 - [ ] `pages/cart.html`
 - [ ] `pages/account.html`
 - [ ] `pages/order-history.html`
-- [ ] `index.html`
+- [ ] `index.html` (updated to use fragments) ⭐ **UPDATED**
+
+### New Scripts ⭐ **NEW**
+- [ ] `scripts/fragment-loader.js`
+- [ ] `scripts/personalize-page.js` (updated with fragment support)
 
 ### Updated Scripts
 - [ ] `scripts/login.js`
@@ -2170,7 +2794,11 @@ node scripts/replace-emojis.js
 - [ ] `scripts/kit-mode-banner.js`
 - [ ] `scripts/kit-sidebar.js`
 
+### New Styles ⭐ **NEW**
+- [ ] `styles/fragments.css`
+
 ### Updated Styles
+- [ ] `styles/styles.css` (import fragments.css)
 - [ ] Login page styles added to `styles/page-specific.css`
 - [ ] Catalog updates
 - [ ] Remove kit mode styles
