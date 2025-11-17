@@ -341,13 +341,80 @@ For each existing page, document:
 
 ## Task 2: Authentication Pages
 
-This task covers both the quick persona selector (for rapid demos) and the guided sign-up wizard (for realistic onboarding demos).
+This task creates a realistic authentication experience that doesn't look like a demo. The sign-up wizard is the primary demo path, while the login page provides quick access for repeat demos.
+
+**Key Principle**: The demo should look and feel like a real-world B2B commerce experience, not a canned demo with "persona selection cards."
 
 ---
 
-### 2.1 Create Sign-Up Wizard (Guided Onboarding) ⭐ **RECOMMENDED FOR DEMOS**
+### 2.1 Update Existing Login Page (Realistic B2B Login)
 
-**Purpose**: Demonstrate realistic customer onboarding that collects business attributes and determines persona assignment.
+**Purpose**: Provide a standard B2B login experience for quick demos and repeat sessions.
+
+**Current State**: 
+- Basic email/password/company form
+- Company dropdown maps to customer tiers
+- Uses inline authentication (not `auth.js`)
+
+**Updates Required**:
+- Keep standard email/password/company form (looks real)
+- Update company dropdown with realistic demo accounts
+- Integrate with `auth.js` service
+- Map company selection to persona behind the scenes
+- **No persona selection UI** - maintain B2B authenticity
+
+**File**: `pages/login.html` (update existing)
+
+**Demo Accounts** (add to company dropdown):
+```javascript
+const DEMO_ACCOUNTS = {
+  'Sunbelt Homes': { 
+    email: 'sarah.martinez@sunbelthomes.com',
+    persona: 'sarah', 
+    tier: 'commercial_tier2',
+    name: 'Sarah Martinez'
+  },
+  'Custom Builders LLC': { 
+    email: 'marcus.johnson@custombuilders.com',
+    persona: 'marcus', 
+    tier: 'commercial_tier1',
+    name: 'Marcus Johnson'
+  },
+  'Elite Remodeling': { 
+    email: 'lisa.chen@eliteremodeling.com',
+    persona: 'lisa', 
+    tier: 'pro_specialty',
+    name: 'Lisa Chen'
+  },
+  'Thompson Residence': { 
+    email: 'david.thompson@gmail.com',
+    persona: 'david', 
+    tier: 'retail_homeowner',
+    name: 'David Thompson'
+  },
+  'BuildMart Supply': { 
+    email: 'kevin.rodriguez@buildmart.com',
+    persona: 'kevin', 
+    tier: 'retail_chain_buyer',
+    name: 'Kevin Rodriguez'
+  }
+};
+```
+
+**Authentication Flow**:
+1. User selects company from dropdown (or types email)
+2. User enters password (can be anything in demo mode)
+3. System maps company → persona behind the scenes
+4. User is authenticated and redirected to persona dashboard
+5. **No visible persona selection** - looks like normal B2B login
+
+**Deliverable**: Updated login page with realistic demo accounts
+
+---
+
+### 2.2 Create Sign-Up Wizard (Guided Onboarding) ⭐ **PRIMARY DEMO PATH**
+
+**Purpose**: Demonstrate realistic customer onboarding that collects business attributes and determines persona assignment. This is the recommended entry point for stakeholder demos as it shows the "why" behind personalization.
 
 **File**: `pages/signup-demo.html`
 
@@ -1618,6 +1685,29 @@ if (document.readyState === 'loading') {
 ```
 
 **Deliverable**: Login page styles
+
+---
+
+### Task 2 Summary
+
+**What We're Building**:
+- ✅ **Realistic B2B Login** (Task 2.1) - Standard email/password/company form with demo accounts
+- ✅ **Sign-Up Wizard** (Task 2.2) - Multi-step onboarding that determines persona from business attributes
+- ✅ **Auth Helper Functions** (Task 2.3) - Persona determination logic
+- ✅ **Wizard & Login Styles** (Task 2.4-2.5) - Professional styling for both experiences
+
+**Key Principle**: The demo looks and feels like a real B2B commerce site, not a canned demo.
+
+**Demo Paths**:
+1. **For Stakeholder Demos**: Use sign-up wizard to show onboarding → personalization flow
+2. **For Quick Demos**: Use login page with pre-configured company accounts
+3. **For Presentations**: Either path works - both look authentic
+
+**Why This Approach**:
+- ❌ **NOT**: "Pick your persona!" cards (looks like a demo)
+- ✅ **YES**: "Tell us about your business" wizard (looks real)
+- ❌ **NOT**: Visible persona selection (breaks immersion)
+- ✅ **YES**: Behind-the-scenes persona mapping (authentic)
 
 ---
 
