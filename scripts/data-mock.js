@@ -23,11 +23,20 @@ async function loadMockData() {
       console.error(`Failed to load mock data: ${response.status} ${response.statusText} from ${dataPath}`);
       return null;
     }
-    mockData = await response.json();
-    if (!mockData || !mockData.products) {
+    const data = await response.json();
+    
+    // Handle both array format (new) and object format (legacy)
+    if (Array.isArray(data)) {
+      // New format: direct array of products
+      mockData = { products: data };
+    } else if (data && data.products) {
+      // Legacy format: { products: [...] }
+      mockData = data;
+    } else {
       console.error('Invalid mock data structure');
       return null;
     }
+    
     return mockData;
   } catch (error) {
     console.error('Error loading mock data:', error);

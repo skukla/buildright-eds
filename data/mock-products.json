@@ -1,2656 +1,2654 @@
-{
-  "products": [
-    {
-      "id": "LBR-D0414F1E",
-      "sku": "LBR-D0414F1E",
-      "name": "ToughGrip 2x4 Stud - 8ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/LBR-D0414F1E.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "toughgrip",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_cut_resistance": "a7",
-        "ppe_hard_hat_class": "class_c",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "builder_grade",
-        "deck_compatible": true,
-        "deck_shape": [
-          "rectangular",
-          "l_shaped"
-        ],
-        "deck_material_type": "wood",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 100,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 85,
-      "type": "simple",
-      "_acoSku": "LBR-D0414F1E"
-    },
-    {
-      "id": "LBR-2EBB314A",
-      "sku": "LBR-2EBB314A",
-      "name": "SafeGuard 2x6 Stud - 8ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/LBR-2EBB314A.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "proframe",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair"
-        ],
-        "ppe_cut_resistance": "a8",
-        "lumber_treatment": "pressure_treated_aca",
-        "ppe_category": "hearing_protection",
-        "drywall_edge_type": "square",
-        "ppe_niosh_rating": "p100",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": true,
-        "deck_shape": [
-          "rectangular",
-          "l_shaped"
-        ],
-        "deck_material_type": "wood",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 75,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 42,
-      "type": "simple",
-      "_acoSku": "LBR-2EBB314A"
-    },
-    {
-      "id": "LBR-26852468",
-      "sku": "LBR-26852468",
-      "name": "FastenPro 2x8 Joist - 10ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/LBR-26852468.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "structuremaster",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair"
-        ],
-        "door_core_type": "foam_core",
-        "door_material": "vinyl",
-        "drywall_product_type": "mold_resistant",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": true,
-        "deck_shape": [
-          "rectangular",
-          "l_shaped"
-        ],
-        "deck_material_type": "wood",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 50,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 20,
-      "type": "simple",
-      "_acoSku": "LBR-26852468"
-    },
-    {
-      "id": "LBR-2D637246",
-      "sku": "LBR-2D637246",
-      "name": "PremiumBuild 2x10 Joist - 12ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/LBR-2D637246.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "premiumbuild",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_material": "steel",
-        "fastener_drive_type": "torx",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": true,
-        "deck_shape": [
-          "rectangular",
-          "l_shaped"
-        ],
-        "deck_material_type": "wood",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 40,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 85,
-      "type": "simple",
-      "_acoSku": "LBR-2D637246"
-    },
-    {
-      "id": "LBR-96F409FB",
-      "sku": "LBR-96F409FB",
-      "name": "ToughGrip 2x12 Beam - 16ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/LBR-96F409FB.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "fastenpro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "drywall_fire_rating": "non_rated",
-        "fastener_head_type": "flat",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "premium",
-        "deck_compatible": false,
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 20,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 81,
-      "type": "simple",
-      "_acoSku": "LBR-96F409FB"
-    },
-    {
-      "id": "LBR-9D32768F",
-      "sku": "LBR-9D32768F",
-      "name": "ProFrame 4x4 Post - 8ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/LBR-9D32768F.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "premiumbuild",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_nrr_rating": "30",
-        "fastener_drive_type": "phillips",
-        "fastener_subtype": "framing_nail",
-        "door_core_type": "hollow_core",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": true,
-        "deck_shape": [
-          "rectangular",
-          "l_shaped"
-        ],
-        "deck_material_type": "wood",
-        "deck_railing_compatible": [
-          "wood"
-        ],
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 30,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 97,
-      "type": "simple",
-      "_acoSku": "LBR-9D32768F"
-    },
-    {
-      "id": "PLY-7D58FF99",
-      "sku": "PLY-7D58FF99",
-      "name": "ProFrame OSB Sheathing 7/16\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/PLY-7D58FF99.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "proframe",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_material": "steel",
-        "fastener_coating": "hot_dip_galvanized",
-        "window_energy_star": true,
-        "fastener_drive_type": "square",
-        "ppe_hard_hat_type": "type_2",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "builder_grade",
-        "deck_compatible": false,
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 50,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 28,
-      "type": "simple",
-      "_acoSku": "PLY-7D58FF99"
-    },
-    {
-      "id": "PLY-AF7C8BA7",
-      "sku": "PLY-AF7C8BA7",
-      "name": "FastenPro CDX Plywood 1/2\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/PLY-AF7C8BA7.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "toughgrip",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_drive_type": "phillips",
-        "ppe_niosh_rating": "n95",
-        "drywall_fire_rating": "type_x",
-        "ppe_hard_hat_type": "type_1",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": false,
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 40,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 11,
-      "type": "simple",
-      "_acoSku": "PLY-AF7C8BA7"
-    },
-    {
-      "id": "PLY-3C2EC476",
-      "sku": "PLY-3C2EC476",
-      "name": "PremiumBuild T&G Subfloor 3/4\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/PLY-3C2EC476.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "fastenpro",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "window_material": "composite",
-        "ppe_hard_hat_class": "class_c",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": false,
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 30,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 58,
-      "type": "simple",
-      "_acoSku": "PLY-3C2EC476"
-    },
-    {
-      "id": "PLY-2BA5387B",
-      "sku": "PLY-2BA5387B",
-      "name": "ReliaBuild Marine Plywood 3/4\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/PLY-2BA5387B.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "safeguard",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair"
-        ],
-        "fastener_type": "anchor",
-        "fastener_drive_type": "slotted",
-        "door_core_type": "hollow_core",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "deck_compatible": true,
-        "deck_material_type": "wood",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 10,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 89,
-      "type": "simple",
-      "_acoSku": "PLY-2BA5387B"
-    },
-    {
-      "id": "PLY-4C31A6A6",
-      "sku": "PLY-4C31A6A6",
-      "name": "ReliaBuild Hardwood Plywood 1/4\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/PLY-4C31A6A6.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "durabuilt",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair"
-        ],
-        "door_type": "interior",
-        "fastener_drive_type": "torx",
-        "window_glazing_type": "single_pane",
-        "window_operation_type": "single_hung",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "surfaces",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 15,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 55,
-      "type": "simple",
-      "_acoSku": "PLY-4C31A6A6"
-    },
-    {
-      "id": "PLY-E0240635",
-      "sku": "PLY-E0240635",
-      "name": "DuraBuilt Siding Panel 3/8\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/PLY-E0240635.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "durabuilt",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "window_material": "aluminum",
-        "door_material": "wood",
-        "ppe_cut_resistance": "a4",
-        "fastener_material": "stainless_steel_304",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": false,
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 48,
-      "type": "simple",
-      "_acoSku": "PLY-E0240635"
-    },
-    {
-      "id": "STUD-44C79532",
-      "sku": "STUD-44C79532",
-      "name": "BuildRight Pro Metal Stud 20ga - 3.5\" x 10ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/STUD-44C79532.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "structuremaster",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_category": "fall_protection",
-        "window_operation_type": "double_hung",
-        "door_material": "composite",
-        "window_material": "vinyl",
-        "ppe_cut_resistance": "a4",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 50,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 103,
-      "type": "simple",
-      "_acoSku": "STUD-44C79532"
-    },
-    {
-      "id": "STUD-B6E3E673",
-      "sku": "STUD-B6E3E673",
-      "name": "ReliaBuild Metal Stud 20ga - 6\" x 10ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/STUD-B6E3E673.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "durabuilt",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "drywall_fire_rating": "type_c",
-        "window_material": "composite",
-        "drywall_edge_type": "beveled",
-        "ppe_category": "respiratory_protection",
-        "fastener_drive_type": "slotted",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 40,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 95,
-      "type": "simple",
-      "_acoSku": "STUD-B6E3E673"
-    },
-    {
-      "id": "STUD-95E9D258",
-      "sku": "STUD-95E9D258",
-      "name": "ProFrame Metal Track 20ga - 3.5\" x 10ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/STUD-95E9D258.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "buildright_pro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "door_core_type": "solid_core",
-        "window_glazing_type": "triple_pane",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 45,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 75,
-      "type": "simple",
-      "_acoSku": "STUD-95E9D258"
-    },
-    {
-      "id": "STUD-984F2EC0",
-      "sku": "STUD-984F2EC0",
-      "name": "ToughGrip Metal Track 20ga - 6\" x 10ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/STUD-984F2EC0.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "fastenpro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_material": "stainless_steel_304",
-        "ppe_niosh_rating": "p100",
-        "fastener_coating": "galvanized",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 35,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 29,
-      "type": "simple",
-      "_acoSku": "STUD-984F2EC0"
-    },
-    {
-      "id": "STUD-8DEC7739",
-      "sku": "STUD-8DEC7739",
-      "name": "PremiumBuild Steel C-Channel - 8ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/STUD-8DEC7739.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "fastenpro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_hi_vis_class": "class_3",
-        "window_energy_star": false,
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "premium",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 20,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 67,
-      "type": "simple",
-      "_acoSku": "STUD-8DEC7739"
-    },
-    {
-      "id": "STUD-07E7F7E4",
-      "sku": "STUD-07E7F7E4",
-      "name": "StructureMaster Hat Channel - 12ft",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/STUD-07E7F7E4.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "reliabuild",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_size": "xxxl",
-        "door_material": "vinyl",
-        "ppe_cut_resistance": "a3",
-        "ppe_hard_hat_type": "type_2",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 38,
-      "type": "simple",
-      "_acoSku": "STUD-07E7F7E4"
-    },
-    {
-      "id": "DRYWALL-8F034793",
-      "sku": "DRYWALL-8F034793",
-      "name": "ToughGrip Drywall 1/2\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DRYWALL-8F034793.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "reliabuild",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_head_type": "pan",
-        "ppe_hard_hat_class": "class_c",
-        "ppe_hi_vis_class": "class_2",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "builder_grade",
-        "package_tier": [
-          "good",
-          "better"
-        ],
-        "room_category": "surfaces",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 60,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 51,
-      "type": "simple",
-      "_acoSku": "DRYWALL-8F034793"
-    },
-    {
-      "id": "DRYWALL-A8217B48",
-      "sku": "DRYWALL-A8217B48",
-      "name": "PremiumBuild Drywall 5/8\" - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DRYWALL-A8217B48.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "proframe",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_hard_hat_type": "type_1",
-        "window_operation_type": "bay",
-        "fastener_drive_type": "slotted",
-        "drywall_product_type": "sound_dampening",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better",
-          "best"
-        ],
-        "room_category": "surfaces",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 50,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 101,
-      "type": "simple",
-      "_acoSku": "DRYWALL-A8217B48"
-    },
-    {
-      "id": "DRYWALL-67027AF0",
-      "sku": "DRYWALL-67027AF0",
-      "name": "PremiumBuild Moisture Resistant Drywall - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DRYWALL-67027AF0.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "structuremaster",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "drywall_fire_rating": "type_x",
-        "door_material": "fiberglass",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better",
-          "best"
-        ],
-        "room_category": "surfaces",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 30,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 30,
-      "type": "simple",
-      "_acoSku": "DRYWALL-67027AF0"
-    },
-    {
-      "id": "DRYWALL-1E512505",
-      "sku": "DRYWALL-1E512505",
-      "name": "BuildRight Pro Fire Rated Drywall - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DRYWALL-1E512505.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "reliabuild",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "lumber_species": "spruce_pine_fir",
-        "ppe_hard_hat_type": "type_1",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "surfaces",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 20,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 94,
-      "type": "simple",
-      "_acoSku": "DRYWALL-1E512505"
-    },
-    {
-      "id": "DRYWALL-038C3C6C",
-      "sku": "DRYWALL-038C3C6C",
-      "name": "ToughGrip Cement Board 1/2\" - 3x5",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DRYWALL-038C3C6C.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "premiumbuild",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_coating": "hot_dip_galvanized",
-        "window_material": "vinyl",
-        "fastener_material": "stainless_steel_316",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better",
-          "best"
-        ],
-        "room_category": "surfaces",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 51,
-      "type": "simple",
-      "_acoSku": "DRYWALL-038C3C6C"
-    },
-    {
-      "id": "DRYWALL-439D9A62",
-      "sku": "DRYWALL-439D9A62",
-      "name": "MaxStrength Sound Dampening Drywall - 4x8",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DRYWALL-439D9A62.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "reliabuild",
-        "unit_of_measure": "SHEET",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_hard_hat_type": "type_1",
-        "drywall_product_type": "sound_dampening",
-        "ppe_niosh_rating": "n100",
-        "door_material": "composite",
-        "fastener_head_type": "round",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "surfaces",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 15,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 19,
-      "type": "simple",
-      "_acoSku": "DRYWALL-439D9A62"
-    },
-    {
-      "id": "WINDOW-8039584D",
-      "sku": "WINDOW-8039584D",
-      "name": "ToughGrip Single Hung Window - 36\"x48\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/WINDOW-8039584D.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "maxstrength",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "drywall_edge_type": "square",
-        "lumber_species": "southern_yellow_pine",
-        "ppe_nrr_rating": "29",
-        "window_operation_type": "single_hung",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "builder_grade",
-        "package_tier": [
-          "good"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 15,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 23,
-      "type": "simple",
-      "_acoSku": "WINDOW-8039584D"
-    },
-    {
-      "id": "WINDOW-6642736C",
-      "sku": "WINDOW-6642736C",
-      "name": "StructureMaster Double Hung Window - 36\"x60\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/WINDOW-6642736C.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "durabuilt",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "ppe_hard_hat_type": "type_2",
-        "ppe_hard_hat_class": "class_c",
-        "fastener_head_type": "bugle",
-        "lumber_certification": [
-          "fsc_mix",
-          "pefc_certified",
-          "sfi_certified"
-        ],
-        "ppe_niosh_rating": "n100",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 12,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 68,
-      "type": "simple",
-      "_acoSku": "WINDOW-6642736C"
-    },
-    {
-      "id": "WINDOW-888AFAE6",
-      "sku": "WINDOW-888AFAE6",
-      "name": "BuildRight Pro Sliding Window - 48\"x36\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/WINDOW-888AFAE6.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "structuremaster",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "window_energy_star": false,
-        "lumber_species": "redwood",
-        "door_type": "french",
-        "ppe_size": "xxxl",
-        "ppe_hard_hat_type": "type_1",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 10,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 84,
-      "type": "simple",
-      "_acoSku": "WINDOW-888AFAE6"
-    },
-    {
-      "id": "WINDOW-8F26E917",
-      "sku": "WINDOW-8F26E917",
-      "name": "ProFrame Casement Window - 30\"x48\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/WINDOW-8F26E917.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "buildright_pro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "window_energy_star": true,
-        "fastener_head_type": "pan",
-        "lumber_certification": [
-          "sfi_certified"
-        ],
-        "fastener_subtype": "drywall_screw",
-        "lumber_grade": "no_2",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 8,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 59,
-      "type": "simple",
-      "_acoSku": "WINDOW-8F26E917"
-    },
-    {
-      "id": "WINDOW-51CD3FC4",
-      "sku": "WINDOW-51CD3FC4",
-      "name": "ProFrame Bay Window - 72\"x48\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/WINDOW-51CD3FC4.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "structuremaster",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "ppe_nrr_rating": "20",
-        "door_core_type": "foam_core",
-        "lumber_species": "western_red_cedar",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 5,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 48,
-      "type": "simple",
-      "_acoSku": "WINDOW-51CD3FC4"
-    },
-    {
-      "id": "WINDOW-5946F85C",
-      "sku": "WINDOW-5946F85C",
-      "name": "ToughGrip Awning Window - 36\"x24\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/WINDOW-5946F85C.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "structuremaster",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "fastener_drive_type": "slotted",
-        "fastener_head_type": "pan",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 10,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 34,
-      "type": "simple",
-      "_acoSku": "WINDOW-5946F85C"
-    },
-    {
-      "id": "DOOR-34C72FD2",
-      "sku": "DOOR-34C72FD2",
-      "name": "FastenPro Entry Door - Steel 36\"x80\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DOOR-34C72FD2.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "buildright_pro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "window_material": "aluminum",
-        "door_type": "patio",
-        "lumber_grade": "select_structural",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 10,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 31,
-      "type": "simple",
-      "_acoSku": "DOOR-34C72FD2"
-    },
-    {
-      "id": "DOOR-89357B1F",
-      "sku": "DOOR-89357B1F",
-      "name": "PremiumBuild Interior Door - Hollow Core 32\"x80\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DOOR-89357B1F.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "reliabuild",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "drywall_thickness": "0.25",
-        "drywall_fire_rating": "type_c",
-        "ppe_hard_hat_type": "type_1",
-        "ppe_hi_vis_class": "class_1",
-        "lumber_grade": "no_2",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "builder_grade",
-        "package_tier": [
-          "good"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 53,
-      "type": "simple",
-      "_acoSku": "DOOR-89357B1F"
-    },
-    {
-      "id": "DOOR-070629C1",
-      "sku": "DOOR-070629C1",
-      "name": "ToughGrip French Door - 60\"x80\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DOOR-070629C1.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "fastenpro",
-        "unit_of_measure": "PAIR",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "fastener_type": "nail",
-        "fastener_subtype": "self_drilling_screw",
-        "ppe_ansi_standard": [
-          "s3_19",
-          "isea_105",
-          "z89_1"
-        ],
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 5,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 45,
-      "type": "simple",
-      "_acoSku": "DOOR-070629C1"
-    },
-    {
-      "id": "DOOR-E93CC71C",
-      "sku": "DOOR-E93CC71C",
-      "name": "SafeGuard Sliding Patio Door - 72\"x80\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DOOR-E93CC71C.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "fastenpro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "ppe_hard_hat_class": "class_c",
-        "door_core_type": "solid_core",
-        "door_type": "storm",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "fixtures",
-        "deck_compatible": true,
-        "deck_shape": [
-          "rectangular",
-          "l_shaped"
-        ],
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 5,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 74,
-      "type": "simple",
-      "_acoSku": "DOOR-E93CC71C"
-    },
-    {
-      "id": "DOOR-75F9C73D",
-      "sku": "DOOR-75F9C73D",
-      "name": "DuraBuilt Bi-fold Closet Door - 36\"x80\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DOOR-75F9C73D.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "reliabuild",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "fastener_material": "brass",
-        "window_material": "aluminum",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 15,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 15,
-      "type": "simple",
-      "_acoSku": "DOOR-75F9C73D"
-    },
-    {
-      "id": "DOOR-81B579D4",
-      "sku": "DOOR-81B579D4",
-      "name": "StructureMaster Storm Door - 36\"x80\"",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/DOOR-81B579D4.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "buildright_pro",
-        "unit_of_measure": "EA",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "restoration"
-        ],
-        "ppe_hard_hat_class": "class_e",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 8,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 47,
-      "type": "simple",
-      "_acoSku": "DOOR-81B579D4"
-    },
-    {
-      "id": "NAIL-244FD20C",
-      "sku": "NAIL-244FD20C",
-      "name": "MaxStrength Framing Nails 16d - 50lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/NAIL-244FD20C.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "proframe",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "window_glazing_type": "single_pane",
-        "door_type": "interior",
-        "window_energy_star": true,
-        "door_material": "vinyl",
-        "fastener_head_type": "bugle",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "builder_grade",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 30,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 105,
-      "type": "simple",
-      "_acoSku": "NAIL-244FD20C"
-    },
-    {
-      "id": "NAIL-9D448DAA",
-      "sku": "NAIL-9D448DAA",
-      "name": "ReliaBuild Finish Nails 8d - 5lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/NAIL-9D448DAA.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "maxstrength",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "fastener_material": "stainless_steel_304",
-        "door_type": "entry",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 40,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 108,
-      "type": "simple",
-      "_acoSku": "NAIL-9D448DAA"
-    },
-    {
-      "id": "NAIL-2DBD44A2",
-      "sku": "NAIL-2DBD44A2",
-      "name": "ReliaBuild Roofing Nails - 50lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/NAIL-2DBD44A2.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "premiumbuild",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_category": "respiratory_protection",
-        "lumber_species": "redwood",
-        "lumber_certification": [
-          "fsc_mix"
-        ],
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 14,
-      "type": "simple",
-      "_acoSku": "NAIL-2DBD44A2"
-    },
-    {
-      "id": "NAIL-D27A9BC3",
-      "sku": "NAIL-D27A9BC3",
-      "name": "SafeGuard Brad Nails 18ga - 5000ct",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/NAIL-D27A9BC3.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "fastenpro",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_hard_hat_type": "type_2",
-        "ppe_nrr_rating": "20",
-        "fastener_material": "steel",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 35,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 39,
-      "type": "simple",
-      "_acoSku": "NAIL-D27A9BC3"
-    },
-    {
-      "id": "NAIL-65F44C61",
-      "sku": "NAIL-65F44C61",
-      "name": "SafeGuard Concrete Nails - 5lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/NAIL-65F44C61.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "structuremaster",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_size": "xl",
-        "ppe_cut_resistance": "a4",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 20,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 108,
-      "type": "simple",
-      "_acoSku": "NAIL-65F44C61"
-    },
-    {
-      "id": "NAIL-7AD0771D",
-      "sku": "NAIL-7AD0771D",
-      "name": "BuildRight Pro Ring Shank Nails - 25lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/NAIL-7AD0771D.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "fastenpro",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_hard_hat_type": "type_2",
-        "window_material": "fiberglass",
-        "drywall_thickness": "0.625",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": true,
-        "deck_material_type": "wood",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 20,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 56,
-      "type": "simple",
-      "_acoSku": "NAIL-7AD0771D"
-    },
-    {
-      "id": "SCREW-48C3413B",
-      "sku": "SCREW-48C3413B",
-      "name": "FastenPro Deck Screws #8 - 5lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SCREW-48C3413B.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "safeguard",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_nrr_rating": "25",
-        "drywall_thickness": "0.5",
-        "ppe_hard_hat_type": "type_2",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "deck_compatible": true,
-        "deck_shape": [
-          "rectangular",
-          "l_shaped"
-        ],
-        "deck_material_type": "wood",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 35,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 63,
-      "type": "simple",
-      "_acoSku": "SCREW-48C3413B"
-    },
-    {
-      "id": "SCREW-704B6626",
-      "sku": "SCREW-704B6626",
-      "name": "ToughGrip Drywall Screws - 5lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SCREW-704B6626.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "premiumbuild",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "fastener_head_type": "bugle",
-        "lumber_certification": [
-          "sfi_certified",
-          "none"
-        ],
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "builder_grade",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 50,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 106,
-      "type": "simple",
-      "_acoSku": "SCREW-704B6626"
-    },
-    {
-      "id": "SCREW-AD274060",
-      "sku": "SCREW-AD274060",
-      "name": "ToughGrip Wood Screws #10 - 1lb Box",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SCREW-AD274060.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "proframe",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "fastener_head_type": "truss",
-        "ppe_ansi_standard": [
-          "astm_f2413"
-        ],
-        "ppe_size": "xxxl",
-        "window_material": "vinyl",
-        "lumber_certification": [
-          "fsc_mix"
-        ],
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 40,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 72,
-      "type": "simple",
-      "_acoSku": "SCREW-AD274060"
-    },
-    {
-      "id": "SCREW-4DC6B336",
-      "sku": "SCREW-4DC6B336",
-      "name": "PremiumBuild Self-Drilling Screws - 1lb",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SCREW-4DC6B336.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "proframe",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "fastener_coating": "hot_dip_galvanized",
-        "window_energy_star": false,
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 30,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 48,
-      "type": "simple",
-      "_acoSku": "SCREW-4DC6B336"
-    },
-    {
-      "id": "SCREW-0DAA49A4",
-      "sku": "SCREW-0DAA49A4",
-      "name": "ProFrame Lag Screws 1/2\" - 50ct",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SCREW-0DAA49A4.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "maxstrength",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "lumber_treatment": "pressure_treated_ca",
-        "ppe_hard_hat_class": "class_g",
-        "ppe_category": "head_protection",
-        "construction_phase": [
-          "foundation_framing"
-        ],
-        "quality_tier": "premium",
-        "deck_compatible": true,
-        "deck_material_type": "wood",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 15,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 92,
-      "type": "simple",
-      "_acoSku": "SCREW-0DAA49A4"
-    },
-    {
-      "id": "SCREW-A3256812",
-      "sku": "SCREW-A3256812",
-      "name": "SafeGuard Cabinet Screws - 100ct",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SCREW-A3256812.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "premiumbuild",
-        "unit_of_measure": "BOX",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "drywall_thickness": "0.625",
-        "door_material": "fiberglass",
-        "ppe_size": "universal",
-        "ppe_niosh_rating": "n95",
-        "ppe_hi_vis_class": "class_1",
-        "construction_phase": [
-          "interior_finish"
-        ],
-        "quality_tier": "professional",
-        "package_tier": [
-          "better",
-          "best"
-        ],
-        "room_category": "fixtures",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 81,
-      "type": "simple",
-      "_acoSku": "SCREW-A3256812"
-    },
-    {
-      "id": "ROOF-23151318",
-      "sku": "ROOF-23151318",
-      "name": "ToughGrip Asphalt Shingles 3-Tab - Bundle",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-23151318.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "safeguard",
-        "unit_of_measure": "BUNDLE",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_hi_vis_class": "class_2",
-        "fastener_drive_type": "slotted",
-        "drywall_product_type": "mold_resistant",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "builder_grade",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 40,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 104,
-      "type": "simple",
-      "_acoSku": "ROOF-23151318"
-    },
-    {
-      "id": "ROOF-D793BF8B",
-      "sku": "ROOF-D793BF8B",
-      "name": "MaxStrength Architectural Shingles - Bundle",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-D793BF8B.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "fastenpro",
-        "unit_of_measure": "BUNDLE",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_cut_resistance": "a7",
-        "fastener_type": "nail",
-        "ppe_size": "xxl",
-        "door_material": "fiberglass",
-        "lumber_certification": [
-          "none",
-          "pefc_certified",
-          "fsc_certified"
-        ],
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 35,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 21,
-      "type": "simple",
-      "_acoSku": "ROOF-D793BF8B"
-    },
-    {
-      "id": "ROOF-7B1F4022",
-      "sku": "ROOF-7B1F4022",
-      "name": "MaxStrength Premium Designer Shingles - Bundle",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-7B1F4022.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "durabuilt",
-        "unit_of_measure": "BUNDLE",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "door_type": "entry",
-        "fastener_type": "bolt",
-        "window_glazing_type": "single_pane",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "finishes",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 20,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 69,
-      "type": "simple",
-      "_acoSku": "ROOF-7B1F4022"
-    },
-    {
-      "id": "ROOF-F252FD03",
-      "sku": "ROOF-F252FD03",
-      "name": "ReliaBuild Impact Resistant Shingles - Bundle",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-F252FD03.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "structuremaster",
-        "unit_of_measure": "BUNDLE",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_hi_vis_class": "class_3",
-        "ppe_hard_hat_type": "type_1",
-        "window_operation_type": "awning",
-        "window_glazing_type": "double_pane",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "finishes",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 94,
-      "type": "simple",
-      "_acoSku": "ROOF-F252FD03"
-    },
-    {
-      "id": "ROOF-9406AB24",
-      "sku": "ROOF-9406AB24",
-      "name": "PremiumBuild Starter Strip Shingles - Roll",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-9406AB24.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "premiumbuild",
-        "unit_of_measure": "ROLL",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_type": "anchor",
-        "ppe_hi_vis_class": "class_3",
-        "window_glazing_type": "single_pane",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 30,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 98,
-      "type": "simple",
-      "_acoSku": "ROOF-9406AB24"
-    },
-    {
-      "id": "ROOF-7662E2BB",
-      "sku": "ROOF-7662E2BB",
-      "name": "BuildRight Pro Ridge Cap Shingles - Bundle",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-7662E2BB.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "proframe",
-        "unit_of_measure": "BUNDLE",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "window_glazing_type": "double_pane",
-        "drywall_edge_type": "beveled",
-        "fastener_material": "aluminum",
-        "drywall_product_type": "fire_rated",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 107,
-      "type": "simple",
-      "_acoSku": "ROOF-7662E2BB"
-    },
-    {
-      "id": "ROOF-905BF883",
-      "sku": "ROOF-905BF883",
-      "name": "FastenPro Roofing Felt 15lb - Roll",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-905BF883.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "maxstrength",
-        "unit_of_measure": "ROLL",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "window_energy_star": true,
-        "ppe_nrr_rating": "32",
-        "ppe_category": "respiratory_protection",
-        "ppe_cut_resistance": "a7",
-        "ppe_ansi_standard": [
-          "z89_1",
-          "z87_1",
-          "z359"
-        ],
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "builder_grade",
-        "store_velocity_category": "high",
-        "recommended_restock_quantity": 30,
-        "typical_days_supply": 7,
-        "restock_priority": "high"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 109,
-      "type": "simple",
-      "_acoSku": "ROOF-905BF883"
-    },
-    {
-      "id": "ROOF-1B7CF825",
-      "sku": "ROOF-1B7CF825",
-      "name": "FastenPro Roofing Felt 30lb - Roll",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-1B7CF825.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "structuremaster",
-        "unit_of_measure": "ROLL",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "drywall_edge_type": "tongue_and_groove",
-        "lumber_treatment": "pressure_treated_acq",
-        "window_energy_star": false,
-        "ppe_category": "head_protection",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "professional",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 25,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 52,
-      "type": "simple",
-      "_acoSku": "ROOF-1B7CF825"
-    },
-    {
-      "id": "ROOF-ED3E9B3B",
-      "sku": "ROOF-ED3E9B3B",
-      "name": "ProFrame Synthetic Underlayment - Roll",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-ED3E9B3B.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "toughgrip",
-        "unit_of_measure": "ROLL",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "drywall_thickness": "0.375",
-        "fastener_material": "stainless_steel_316",
-        "door_core_type": "solid_core",
-        "drywall_edge_type": "square",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "finishes",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 15,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 15,
-      "type": "simple",
-      "_acoSku": "ROOF-ED3E9B3B"
-    },
-    {
-      "id": "ROOF-5A1F5021",
-      "sku": "ROOF-5A1F5021",
-      "name": "DuraBuilt Ice & Water Shield - Roll",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-5A1F5021.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "reliabuild",
-        "unit_of_measure": "ROLL",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "fastener_subtype": "finish_nail",
-        "fastener_type": "nail",
-        "ppe_niosh_rating": "n95",
-        "drywall_edge_type": "tapered",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "better",
-          "best"
-        ],
-        "room_category": "finishes",
-        "store_velocity_category": "medium",
-        "recommended_restock_quantity": 20,
-        "typical_days_supply": 14,
-        "restock_priority": "medium"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 102,
-      "type": "simple",
-      "_acoSku": "ROOF-5A1F5021"
-    },
-    {
-      "id": "ROOF-A8DE0B49",
-      "sku": "ROOF-A8DE0B49",
-      "name": "PremiumBuild Self-Adhering Underlayment - Roll",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-A8DE0B49.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "buildright_pro",
-        "unit_of_measure": "ROLL",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "ppe_hard_hat_type": "type_1",
-        "fastener_drive_type": "combination",
-        "lumber_treatment": "pressure_treated_aca",
-        "fastener_material": "steel",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "finishes",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 10,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 96,
-      "type": "simple",
-      "_acoSku": "ROOF-A8DE0B49"
-    },
-    {
-      "id": "ROOF-05516930",
-      "sku": "ROOF-05516930",
-      "name": "DuraBuilt Ventilated Underlayment - Roll",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/ROOF-05516930.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "structuremaster",
-        "unit_of_measure": "ROLL",
-        "project_types": [
-          "new_construction",
-          "remodel"
-        ],
-        "window_operation_type": "bay",
-        "drywall_thickness": "0.5",
-        "construction_phase": [
-          "envelope"
-        ],
-        "quality_tier": "premium",
-        "package_tier": [
-          "best"
-        ],
-        "room_category": "finishes",
-        "store_velocity_category": "low",
-        "recommended_restock_quantity": 10,
-        "typical_days_supply": 30,
-        "restock_priority": "low"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 14,
-      "type": "simple",
-      "_acoSku": "ROOF-05516930"
-    },
-    {
-      "id": "SVC-BE782144",
-      "sku": "SVC-BE782144",
-      "name": "Structural Material Delivery",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-BE782144.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "toughgrip",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_cut_resistance": "a5",
-        "lumber_species": "hem_fir",
-        "lumber_treatment": "kiln_dried"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 75,
-      "type": "service",
-      "_acoSku": "SVC-BE782144"
-    },
-    {
-      "id": "SVC-DA991F80",
-      "sku": "SVC-DA991F80",
-      "name": "Lumber Cutting Service",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-DA991F80.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "structural_materials",
-        "brand": "maxstrength",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "lumber_grade": "select_structural"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 93,
-      "type": "service",
-      "_acoSku": "SVC-DA991F80"
-    },
-    {
-      "id": "SVC-8E4FBE5D",
-      "sku": "SVC-8E4FBE5D",
-      "name": "Drywall Installation Service",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-8E4FBE5D.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "maxstrength",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "door_core_type": "hollow_core",
-        "drywall_fire_rating": "non_rated",
-        "ppe_category": "eye_protection",
-        "window_material": "vinyl",
-        "ppe_hard_hat_type": "type_2"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 95,
-      "type": "service",
-      "_acoSku": "SVC-8E4FBE5D"
-    },
-    {
-      "id": "SVC-B2559E94",
-      "sku": "SVC-B2559E94",
-      "name": "Framing Consultation",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-B2559E94.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "framing_drywall",
-        "brand": "buildright_pro",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_cut_resistance": "a5",
-        "drywall_product_type": "mold_resistant",
-        "fastener_coating": "polymer_coated"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 32,
-      "type": "service",
-      "_acoSku": "SVC-B2559E94"
-    },
-    {
-      "id": "SVC-74321042",
-      "sku": "SVC-74321042",
-      "name": "Door & Window Installation",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-74321042.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "safeguard",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "drywall_edge_type": "tapered",
-        "door_type": "patio",
-        "lumber_species": "western_red_cedar",
-        "ppe_cut_resistance": "a3"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 101,
-      "type": "service",
-      "_acoSku": "SVC-74321042"
-    },
-    {
-      "id": "SVC-EEAD2FDF",
-      "sku": "SVC-EEAD2FDF",
-      "name": "Window Measurement Service",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-EEAD2FDF.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "windows_doors",
-        "brand": "safeguard",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_ansi_standard": [
-          "z359"
-        ],
-        "window_glazing_type": "double_pane",
-        "drywall_product_type": "fire_rated"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 85,
-      "type": "service",
-      "_acoSku": "SVC-EEAD2FDF"
-    },
-    {
-      "id": "SVC-3774CB8D",
-      "sku": "SVC-3774CB8D",
-      "name": "Fastener Consultation",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-3774CB8D.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "structuremaster",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "door_material": "steel",
-        "ppe_niosh_rating": "p99"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 77,
-      "type": "service",
-      "_acoSku": "SVC-3774CB8D"
-    },
-    {
-      "id": "SVC-72C95BE6",
-      "sku": "SVC-72C95BE6",
-      "name": "Bulk Order Processing",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-72C95BE6.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "fasteners_hardware",
-        "brand": "structuremaster",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "ppe_ansi_standard": [
-          "isea_107",
-          "isea_105",
-          "z87_1"
-        ],
-        "fastener_head_type": "round"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 32,
-      "type": "service",
-      "_acoSku": "SVC-72C95BE6"
-    },
-    {
-      "id": "SVC-1F7FC9F7",
-      "sku": "SVC-1F7FC9F7",
-      "name": "Roof Inspection Service",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-1F7FC9F7.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "durabuilt",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "fastener_subtype": "framing_nail",
-        "ppe_niosh_rating": "n99",
-        "window_material": "vinyl",
-        "lumber_species": "western_red_cedar",
-        "lumber_treatment": "pressure_treated_ca"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 76,
-      "type": "service",
-      "_acoSku": "SVC-1F7FC9F7"
-    },
-    {
-      "id": "SVC-887043F3",
-      "sku": "SVC-887043F3",
-      "name": "Roofing Material Delivery",
-      "description": "",
-      "price": 0,
-      "image": "/images/products/SVC-887043F3.png",
-      "images": [],
-      "categoryIds": [],
-      "attributes": {
-        "product_category": "roofing",
-        "brand": "safeguard",
-        "unit_of_measure": "SERVICE",
-        "project_types": [
-          "new_construction",
-          "remodel",
-          "repair",
-          "restoration"
-        ],
-        "lumber_treatment": "green",
-        "drywall_thickness": "0.25"
-      },
-      "inStock": true,
-      "rating": 4.5,
-      "reviewCount": 63,
-      "type": "service",
-      "_acoSku": "SVC-887043F3"
-    }
-  ]
-}
+[
+  {
+    "id": "LBR-D0414F1E",
+    "sku": "LBR-D0414F1E",
+    "name": "ToughGrip 2x4 Stud - 8ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/LBR-D0414F1E.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "toughgrip",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_cut_resistance": "a7",
+      "ppe_hard_hat_class": "class_c",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "builder_grade",
+      "deck_compatible": true,
+      "deck_shape": [
+        "rectangular",
+        "l_shaped"
+      ],
+      "deck_material_type": "wood",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 100,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 84,
+    "type": "simple",
+    "_acoSku": "LBR-D0414F1E"
+  },
+  {
+    "id": "LBR-2EBB314A",
+    "sku": "LBR-2EBB314A",
+    "name": "SafeGuard 2x6 Stud - 8ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/LBR-2EBB314A.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "proframe",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "ppe_cut_resistance": "a8",
+      "lumber_treatment": "pressure_treated_aca",
+      "ppe_category": "hearing_protection",
+      "drywall_edge_type": "square",
+      "ppe_niosh_rating": "p100",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": true,
+      "deck_shape": [
+        "rectangular",
+        "l_shaped"
+      ],
+      "deck_material_type": "wood",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 75,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 70,
+    "type": "simple",
+    "_acoSku": "LBR-2EBB314A"
+  },
+  {
+    "id": "LBR-26852468",
+    "sku": "LBR-26852468",
+    "name": "FastenPro 2x8 Joist - 10ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/LBR-26852468.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "structuremaster",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "door_core_type": "foam_core",
+      "door_material": "vinyl",
+      "drywall_product_type": "mold_resistant",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": true,
+      "deck_shape": [
+        "rectangular",
+        "l_shaped"
+      ],
+      "deck_material_type": "wood",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 50,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 67,
+    "type": "simple",
+    "_acoSku": "LBR-26852468"
+  },
+  {
+    "id": "LBR-2D637246",
+    "sku": "LBR-2D637246",
+    "name": "PremiumBuild 2x10 Joist - 12ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/LBR-2D637246.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "premiumbuild",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_material": "steel",
+      "fastener_drive_type": "torx",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": true,
+      "deck_shape": [
+        "rectangular",
+        "l_shaped"
+      ],
+      "deck_material_type": "wood",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 40,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 14,
+    "type": "simple",
+    "_acoSku": "LBR-2D637246"
+  },
+  {
+    "id": "LBR-96F409FB",
+    "sku": "LBR-96F409FB",
+    "name": "ToughGrip 2x12 Beam - 16ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/LBR-96F409FB.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "fastenpro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "drywall_fire_rating": "non_rated",
+      "fastener_head_type": "flat",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "premium",
+      "deck_compatible": false,
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 20,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 36,
+    "type": "simple",
+    "_acoSku": "LBR-96F409FB"
+  },
+  {
+    "id": "LBR-9D32768F",
+    "sku": "LBR-9D32768F",
+    "name": "ProFrame 4x4 Post - 8ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/LBR-9D32768F.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "premiumbuild",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_nrr_rating": "30",
+      "fastener_drive_type": "phillips",
+      "fastener_subtype": "framing_nail",
+      "door_core_type": "hollow_core",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": true,
+      "deck_shape": [
+        "rectangular",
+        "l_shaped"
+      ],
+      "deck_material_type": "wood",
+      "deck_railing_compatible": [
+        "wood"
+      ],
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 30,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 95,
+    "type": "simple",
+    "_acoSku": "LBR-9D32768F"
+  },
+  {
+    "id": "PLY-7D58FF99",
+    "sku": "PLY-7D58FF99",
+    "name": "ProFrame OSB Sheathing 7/16\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/PLY-7D58FF99.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "proframe",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_material": "steel",
+      "fastener_coating": "hot_dip_galvanized",
+      "window_energy_star": true,
+      "fastener_drive_type": "square",
+      "ppe_hard_hat_type": "type_2",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "builder_grade",
+      "deck_compatible": false,
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 50,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 21,
+    "type": "simple",
+    "_acoSku": "PLY-7D58FF99"
+  },
+  {
+    "id": "PLY-AF7C8BA7",
+    "sku": "PLY-AF7C8BA7",
+    "name": "FastenPro CDX Plywood 1/2\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/PLY-AF7C8BA7.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "toughgrip",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_drive_type": "phillips",
+      "ppe_niosh_rating": "n95",
+      "drywall_fire_rating": "type_x",
+      "ppe_hard_hat_type": "type_1",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": false,
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 40,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 67,
+    "type": "simple",
+    "_acoSku": "PLY-AF7C8BA7"
+  },
+  {
+    "id": "PLY-3C2EC476",
+    "sku": "PLY-3C2EC476",
+    "name": "PremiumBuild T&G Subfloor 3/4\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/PLY-3C2EC476.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "fastenpro",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "window_material": "composite",
+      "ppe_hard_hat_class": "class_c",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": false,
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 30,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 103,
+    "type": "simple",
+    "_acoSku": "PLY-3C2EC476"
+  },
+  {
+    "id": "PLY-2BA5387B",
+    "sku": "PLY-2BA5387B",
+    "name": "ReliaBuild Marine Plywood 3/4\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/PLY-2BA5387B.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "safeguard",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "fastener_type": "anchor",
+      "fastener_drive_type": "slotted",
+      "door_core_type": "hollow_core",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "deck_compatible": true,
+      "deck_material_type": "wood",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 10,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 81,
+    "type": "simple",
+    "_acoSku": "PLY-2BA5387B"
+  },
+  {
+    "id": "PLY-4C31A6A6",
+    "sku": "PLY-4C31A6A6",
+    "name": "ReliaBuild Hardwood Plywood 1/4\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/PLY-4C31A6A6.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "durabuilt",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair"
+      ],
+      "door_type": "interior",
+      "fastener_drive_type": "torx",
+      "window_glazing_type": "single_pane",
+      "window_operation_type": "single_hung",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "surfaces",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 15,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 19,
+    "type": "simple",
+    "_acoSku": "PLY-4C31A6A6"
+  },
+  {
+    "id": "PLY-E0240635",
+    "sku": "PLY-E0240635",
+    "name": "DuraBuilt Siding Panel 3/8\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/PLY-E0240635.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "durabuilt",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "window_material": "aluminum",
+      "door_material": "wood",
+      "ppe_cut_resistance": "a4",
+      "fastener_material": "stainless_steel_304",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": false,
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 105,
+    "type": "simple",
+    "_acoSku": "PLY-E0240635"
+  },
+  {
+    "id": "STUD-44C79532",
+    "sku": "STUD-44C79532",
+    "name": "BuildRight Pro Metal Stud 20ga - 3.5\" x 10ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/STUD-44C79532.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "structuremaster",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_category": "fall_protection",
+      "window_operation_type": "double_hung",
+      "door_material": "composite",
+      "window_material": "vinyl",
+      "ppe_cut_resistance": "a4",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 50,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 108,
+    "type": "simple",
+    "_acoSku": "STUD-44C79532"
+  },
+  {
+    "id": "STUD-B6E3E673",
+    "sku": "STUD-B6E3E673",
+    "name": "ReliaBuild Metal Stud 20ga - 6\" x 10ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/STUD-B6E3E673.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "durabuilt",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "drywall_fire_rating": "type_c",
+      "window_material": "composite",
+      "drywall_edge_type": "beveled",
+      "ppe_category": "respiratory_protection",
+      "fastener_drive_type": "slotted",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 40,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 61,
+    "type": "simple",
+    "_acoSku": "STUD-B6E3E673"
+  },
+  {
+    "id": "STUD-95E9D258",
+    "sku": "STUD-95E9D258",
+    "name": "ProFrame Metal Track 20ga - 3.5\" x 10ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/STUD-95E9D258.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "buildright_pro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "door_core_type": "solid_core",
+      "window_glazing_type": "triple_pane",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 45,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 37,
+    "type": "simple",
+    "_acoSku": "STUD-95E9D258"
+  },
+  {
+    "id": "STUD-984F2EC0",
+    "sku": "STUD-984F2EC0",
+    "name": "ToughGrip Metal Track 20ga - 6\" x 10ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/STUD-984F2EC0.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "fastenpro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_material": "stainless_steel_304",
+      "ppe_niosh_rating": "p100",
+      "fastener_coating": "galvanized",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 35,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 103,
+    "type": "simple",
+    "_acoSku": "STUD-984F2EC0"
+  },
+  {
+    "id": "STUD-8DEC7739",
+    "sku": "STUD-8DEC7739",
+    "name": "PremiumBuild Steel C-Channel - 8ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/STUD-8DEC7739.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "fastenpro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_hi_vis_class": "class_3",
+      "window_energy_star": false,
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "premium",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 20,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 10,
+    "type": "simple",
+    "_acoSku": "STUD-8DEC7739"
+  },
+  {
+    "id": "STUD-07E7F7E4",
+    "sku": "STUD-07E7F7E4",
+    "name": "StructureMaster Hat Channel - 12ft",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/STUD-07E7F7E4.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "reliabuild",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_size": "xxxl",
+      "door_material": "vinyl",
+      "ppe_cut_resistance": "a3",
+      "ppe_hard_hat_type": "type_2",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 55,
+    "type": "simple",
+    "_acoSku": "STUD-07E7F7E4"
+  },
+  {
+    "id": "DRYWALL-8F034793",
+    "sku": "DRYWALL-8F034793",
+    "name": "ToughGrip Drywall 1/2\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DRYWALL-8F034793.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "reliabuild",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_head_type": "pan",
+      "ppe_hard_hat_class": "class_c",
+      "ppe_hi_vis_class": "class_2",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "builder_grade",
+      "package_tier": [
+        "good",
+        "better"
+      ],
+      "room_category": "surfaces",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 60,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 92,
+    "type": "simple",
+    "_acoSku": "DRYWALL-8F034793"
+  },
+  {
+    "id": "DRYWALL-A8217B48",
+    "sku": "DRYWALL-A8217B48",
+    "name": "PremiumBuild Drywall 5/8\" - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DRYWALL-A8217B48.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "proframe",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_hard_hat_type": "type_1",
+      "window_operation_type": "bay",
+      "fastener_drive_type": "slotted",
+      "drywall_product_type": "sound_dampening",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better",
+        "best"
+      ],
+      "room_category": "surfaces",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 50,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 44,
+    "type": "simple",
+    "_acoSku": "DRYWALL-A8217B48"
+  },
+  {
+    "id": "DRYWALL-67027AF0",
+    "sku": "DRYWALL-67027AF0",
+    "name": "PremiumBuild Moisture Resistant Drywall - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DRYWALL-67027AF0.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "structuremaster",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "drywall_fire_rating": "type_x",
+      "door_material": "fiberglass",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better",
+        "best"
+      ],
+      "room_category": "surfaces",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 30,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 73,
+    "type": "simple",
+    "_acoSku": "DRYWALL-67027AF0"
+  },
+  {
+    "id": "DRYWALL-1E512505",
+    "sku": "DRYWALL-1E512505",
+    "name": "BuildRight Pro Fire Rated Drywall - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DRYWALL-1E512505.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "reliabuild",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "lumber_species": "spruce_pine_fir",
+      "ppe_hard_hat_type": "type_1",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "surfaces",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 20,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 36,
+    "type": "simple",
+    "_acoSku": "DRYWALL-1E512505"
+  },
+  {
+    "id": "DRYWALL-038C3C6C",
+    "sku": "DRYWALL-038C3C6C",
+    "name": "ToughGrip Cement Board 1/2\" - 3x5",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DRYWALL-038C3C6C.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "premiumbuild",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_coating": "hot_dip_galvanized",
+      "window_material": "vinyl",
+      "fastener_material": "stainless_steel_316",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better",
+        "best"
+      ],
+      "room_category": "surfaces",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 27,
+    "type": "simple",
+    "_acoSku": "DRYWALL-038C3C6C"
+  },
+  {
+    "id": "DRYWALL-439D9A62",
+    "sku": "DRYWALL-439D9A62",
+    "name": "MaxStrength Sound Dampening Drywall - 4x8",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DRYWALL-439D9A62.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "reliabuild",
+      "unit_of_measure": "SHEET",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_hard_hat_type": "type_1",
+      "drywall_product_type": "sound_dampening",
+      "ppe_niosh_rating": "n100",
+      "door_material": "composite",
+      "fastener_head_type": "round",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "surfaces",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 15,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 55,
+    "type": "simple",
+    "_acoSku": "DRYWALL-439D9A62"
+  },
+  {
+    "id": "WINDOW-8039584D",
+    "sku": "WINDOW-8039584D",
+    "name": "ToughGrip Single Hung Window - 36\"x48\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/WINDOW-8039584D.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "maxstrength",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "drywall_edge_type": "square",
+      "lumber_species": "southern_yellow_pine",
+      "ppe_nrr_rating": "29",
+      "window_operation_type": "single_hung",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "builder_grade",
+      "package_tier": [
+        "good"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 15,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 16,
+    "type": "simple",
+    "_acoSku": "WINDOW-8039584D"
+  },
+  {
+    "id": "WINDOW-6642736C",
+    "sku": "WINDOW-6642736C",
+    "name": "StructureMaster Double Hung Window - 36\"x60\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/WINDOW-6642736C.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "durabuilt",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "ppe_hard_hat_type": "type_2",
+      "ppe_hard_hat_class": "class_c",
+      "fastener_head_type": "bugle",
+      "lumber_certification": [
+        "fsc_mix",
+        "pefc_certified",
+        "sfi_certified"
+      ],
+      "ppe_niosh_rating": "n100",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 12,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 24,
+    "type": "simple",
+    "_acoSku": "WINDOW-6642736C"
+  },
+  {
+    "id": "WINDOW-888AFAE6",
+    "sku": "WINDOW-888AFAE6",
+    "name": "BuildRight Pro Sliding Window - 48\"x36\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/WINDOW-888AFAE6.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "structuremaster",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "window_energy_star": false,
+      "lumber_species": "redwood",
+      "door_type": "french",
+      "ppe_size": "xxxl",
+      "ppe_hard_hat_type": "type_1",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 10,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 71,
+    "type": "simple",
+    "_acoSku": "WINDOW-888AFAE6"
+  },
+  {
+    "id": "WINDOW-8F26E917",
+    "sku": "WINDOW-8F26E917",
+    "name": "ProFrame Casement Window - 30\"x48\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/WINDOW-8F26E917.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "buildright_pro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "window_energy_star": true,
+      "fastener_head_type": "pan",
+      "lumber_certification": [
+        "sfi_certified"
+      ],
+      "fastener_subtype": "drywall_screw",
+      "lumber_grade": "no_2",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 8,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 96,
+    "type": "simple",
+    "_acoSku": "WINDOW-8F26E917"
+  },
+  {
+    "id": "WINDOW-51CD3FC4",
+    "sku": "WINDOW-51CD3FC4",
+    "name": "ProFrame Bay Window - 72\"x48\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/WINDOW-51CD3FC4.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "structuremaster",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "ppe_nrr_rating": "20",
+      "door_core_type": "foam_core",
+      "lumber_species": "western_red_cedar",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 5,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 84,
+    "type": "simple",
+    "_acoSku": "WINDOW-51CD3FC4"
+  },
+  {
+    "id": "WINDOW-5946F85C",
+    "sku": "WINDOW-5946F85C",
+    "name": "ToughGrip Awning Window - 36\"x24\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/WINDOW-5946F85C.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "structuremaster",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "fastener_drive_type": "slotted",
+      "fastener_head_type": "pan",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 10,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 75,
+    "type": "simple",
+    "_acoSku": "WINDOW-5946F85C"
+  },
+  {
+    "id": "DOOR-34C72FD2",
+    "sku": "DOOR-34C72FD2",
+    "name": "FastenPro Entry Door - Steel 36\"x80\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DOOR-34C72FD2.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "buildright_pro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "window_material": "aluminum",
+      "door_type": "patio",
+      "lumber_grade": "select_structural",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 10,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 17,
+    "type": "simple",
+    "_acoSku": "DOOR-34C72FD2"
+  },
+  {
+    "id": "DOOR-89357B1F",
+    "sku": "DOOR-89357B1F",
+    "name": "PremiumBuild Interior Door - Hollow Core 32\"x80\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DOOR-89357B1F.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "reliabuild",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "drywall_thickness": "0.25",
+      "drywall_fire_rating": "type_c",
+      "ppe_hard_hat_type": "type_1",
+      "ppe_hi_vis_class": "class_1",
+      "lumber_grade": "no_2",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "builder_grade",
+      "package_tier": [
+        "good"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 52,
+    "type": "simple",
+    "_acoSku": "DOOR-89357B1F"
+  },
+  {
+    "id": "DOOR-070629C1",
+    "sku": "DOOR-070629C1",
+    "name": "ToughGrip French Door - 60\"x80\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DOOR-070629C1.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "fastenpro",
+      "unit_of_measure": "PAIR",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "fastener_type": "nail",
+      "fastener_subtype": "self_drilling_screw",
+      "ppe_ansi_standard": [
+        "s3_19",
+        "isea_105",
+        "z89_1"
+      ],
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 5,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 77,
+    "type": "simple",
+    "_acoSku": "DOOR-070629C1"
+  },
+  {
+    "id": "DOOR-E93CC71C",
+    "sku": "DOOR-E93CC71C",
+    "name": "SafeGuard Sliding Patio Door - 72\"x80\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DOOR-E93CC71C.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "fastenpro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "ppe_hard_hat_class": "class_c",
+      "door_core_type": "solid_core",
+      "door_type": "storm",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "fixtures",
+      "deck_compatible": true,
+      "deck_shape": [
+        "rectangular",
+        "l_shaped"
+      ],
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 5,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 60,
+    "type": "simple",
+    "_acoSku": "DOOR-E93CC71C"
+  },
+  {
+    "id": "DOOR-75F9C73D",
+    "sku": "DOOR-75F9C73D",
+    "name": "DuraBuilt Bi-fold Closet Door - 36\"x80\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DOOR-75F9C73D.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "reliabuild",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "fastener_material": "brass",
+      "window_material": "aluminum",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 15,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 93,
+    "type": "simple",
+    "_acoSku": "DOOR-75F9C73D"
+  },
+  {
+    "id": "DOOR-81B579D4",
+    "sku": "DOOR-81B579D4",
+    "name": "StructureMaster Storm Door - 36\"x80\"",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/DOOR-81B579D4.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "buildright_pro",
+      "unit_of_measure": "EA",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "restoration"
+      ],
+      "ppe_hard_hat_class": "class_e",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 8,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 54,
+    "type": "simple",
+    "_acoSku": "DOOR-81B579D4"
+  },
+  {
+    "id": "NAIL-244FD20C",
+    "sku": "NAIL-244FD20C",
+    "name": "MaxStrength Framing Nails 16d - 50lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/NAIL-244FD20C.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "proframe",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "window_glazing_type": "single_pane",
+      "door_type": "interior",
+      "window_energy_star": true,
+      "door_material": "vinyl",
+      "fastener_head_type": "bugle",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "builder_grade",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 30,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 10,
+    "type": "simple",
+    "_acoSku": "NAIL-244FD20C"
+  },
+  {
+    "id": "NAIL-9D448DAA",
+    "sku": "NAIL-9D448DAA",
+    "name": "ReliaBuild Finish Nails 8d - 5lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/NAIL-9D448DAA.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "maxstrength",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "fastener_material": "stainless_steel_304",
+      "door_type": "entry",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 40,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 45,
+    "type": "simple",
+    "_acoSku": "NAIL-9D448DAA"
+  },
+  {
+    "id": "NAIL-2DBD44A2",
+    "sku": "NAIL-2DBD44A2",
+    "name": "ReliaBuild Roofing Nails - 50lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/NAIL-2DBD44A2.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "premiumbuild",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_category": "respiratory_protection",
+      "lumber_species": "redwood",
+      "lumber_certification": [
+        "fsc_mix"
+      ],
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 49,
+    "type": "simple",
+    "_acoSku": "NAIL-2DBD44A2"
+  },
+  {
+    "id": "NAIL-D27A9BC3",
+    "sku": "NAIL-D27A9BC3",
+    "name": "SafeGuard Brad Nails 18ga - 5000ct",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/NAIL-D27A9BC3.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "fastenpro",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_hard_hat_type": "type_2",
+      "ppe_nrr_rating": "20",
+      "fastener_material": "steel",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 35,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 67,
+    "type": "simple",
+    "_acoSku": "NAIL-D27A9BC3"
+  },
+  {
+    "id": "NAIL-65F44C61",
+    "sku": "NAIL-65F44C61",
+    "name": "SafeGuard Concrete Nails - 5lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/NAIL-65F44C61.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "structuremaster",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_size": "xl",
+      "ppe_cut_resistance": "a4",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 20,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 54,
+    "type": "simple",
+    "_acoSku": "NAIL-65F44C61"
+  },
+  {
+    "id": "NAIL-7AD0771D",
+    "sku": "NAIL-7AD0771D",
+    "name": "BuildRight Pro Ring Shank Nails - 25lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/NAIL-7AD0771D.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "fastenpro",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_hard_hat_type": "type_2",
+      "window_material": "fiberglass",
+      "drywall_thickness": "0.625",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": true,
+      "deck_material_type": "wood",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 20,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 49,
+    "type": "simple",
+    "_acoSku": "NAIL-7AD0771D"
+  },
+  {
+    "id": "SCREW-48C3413B",
+    "sku": "SCREW-48C3413B",
+    "name": "FastenPro Deck Screws #8 - 5lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SCREW-48C3413B.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "safeguard",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_nrr_rating": "25",
+      "drywall_thickness": "0.5",
+      "ppe_hard_hat_type": "type_2",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "deck_compatible": true,
+      "deck_shape": [
+        "rectangular",
+        "l_shaped"
+      ],
+      "deck_material_type": "wood",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 35,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 35,
+    "type": "simple",
+    "_acoSku": "SCREW-48C3413B"
+  },
+  {
+    "id": "SCREW-704B6626",
+    "sku": "SCREW-704B6626",
+    "name": "ToughGrip Drywall Screws - 5lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SCREW-704B6626.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "premiumbuild",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "fastener_head_type": "bugle",
+      "lumber_certification": [
+        "sfi_certified",
+        "none"
+      ],
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "builder_grade",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 50,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 51,
+    "type": "simple",
+    "_acoSku": "SCREW-704B6626"
+  },
+  {
+    "id": "SCREW-AD274060",
+    "sku": "SCREW-AD274060",
+    "name": "ToughGrip Wood Screws #10 - 1lb Box",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SCREW-AD274060.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "proframe",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "fastener_head_type": "truss",
+      "ppe_ansi_standard": [
+        "astm_f2413"
+      ],
+      "ppe_size": "xxxl",
+      "window_material": "vinyl",
+      "lumber_certification": [
+        "fsc_mix"
+      ],
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 40,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 21,
+    "type": "simple",
+    "_acoSku": "SCREW-AD274060"
+  },
+  {
+    "id": "SCREW-4DC6B336",
+    "sku": "SCREW-4DC6B336",
+    "name": "PremiumBuild Self-Drilling Screws - 1lb",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SCREW-4DC6B336.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "proframe",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "fastener_coating": "hot_dip_galvanized",
+      "window_energy_star": false,
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 30,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 38,
+    "type": "simple",
+    "_acoSku": "SCREW-4DC6B336"
+  },
+  {
+    "id": "SCREW-0DAA49A4",
+    "sku": "SCREW-0DAA49A4",
+    "name": "ProFrame Lag Screws 1/2\" - 50ct",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SCREW-0DAA49A4.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "maxstrength",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "lumber_treatment": "pressure_treated_ca",
+      "ppe_hard_hat_class": "class_g",
+      "ppe_category": "head_protection",
+      "construction_phase": [
+        "foundation_framing"
+      ],
+      "quality_tier": "premium",
+      "deck_compatible": true,
+      "deck_material_type": "wood",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 15,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 83,
+    "type": "simple",
+    "_acoSku": "SCREW-0DAA49A4"
+  },
+  {
+    "id": "SCREW-A3256812",
+    "sku": "SCREW-A3256812",
+    "name": "SafeGuard Cabinet Screws - 100ct",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SCREW-A3256812.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "premiumbuild",
+      "unit_of_measure": "BOX",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "drywall_thickness": "0.625",
+      "door_material": "fiberglass",
+      "ppe_size": "universal",
+      "ppe_niosh_rating": "n95",
+      "ppe_hi_vis_class": "class_1",
+      "construction_phase": [
+        "interior_finish"
+      ],
+      "quality_tier": "professional",
+      "package_tier": [
+        "better",
+        "best"
+      ],
+      "room_category": "fixtures",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 95,
+    "type": "simple",
+    "_acoSku": "SCREW-A3256812"
+  },
+  {
+    "id": "ROOF-23151318",
+    "sku": "ROOF-23151318",
+    "name": "ToughGrip Asphalt Shingles 3-Tab - Bundle",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-23151318.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "safeguard",
+      "unit_of_measure": "BUNDLE",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_hi_vis_class": "class_2",
+      "fastener_drive_type": "slotted",
+      "drywall_product_type": "mold_resistant",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "builder_grade",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 40,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 104,
+    "type": "simple",
+    "_acoSku": "ROOF-23151318"
+  },
+  {
+    "id": "ROOF-D793BF8B",
+    "sku": "ROOF-D793BF8B",
+    "name": "MaxStrength Architectural Shingles - Bundle",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-D793BF8B.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "fastenpro",
+      "unit_of_measure": "BUNDLE",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_cut_resistance": "a7",
+      "fastener_type": "nail",
+      "ppe_size": "xxl",
+      "door_material": "fiberglass",
+      "lumber_certification": [
+        "none",
+        "pefc_certified",
+        "fsc_certified"
+      ],
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 35,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 76,
+    "type": "simple",
+    "_acoSku": "ROOF-D793BF8B"
+  },
+  {
+    "id": "ROOF-7B1F4022",
+    "sku": "ROOF-7B1F4022",
+    "name": "MaxStrength Premium Designer Shingles - Bundle",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-7B1F4022.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "durabuilt",
+      "unit_of_measure": "BUNDLE",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "door_type": "entry",
+      "fastener_type": "bolt",
+      "window_glazing_type": "single_pane",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "finishes",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 20,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 32,
+    "type": "simple",
+    "_acoSku": "ROOF-7B1F4022"
+  },
+  {
+    "id": "ROOF-F252FD03",
+    "sku": "ROOF-F252FD03",
+    "name": "ReliaBuild Impact Resistant Shingles - Bundle",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-F252FD03.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "structuremaster",
+      "unit_of_measure": "BUNDLE",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_hi_vis_class": "class_3",
+      "ppe_hard_hat_type": "type_1",
+      "window_operation_type": "awning",
+      "window_glazing_type": "double_pane",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "finishes",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 30,
+    "type": "simple",
+    "_acoSku": "ROOF-F252FD03"
+  },
+  {
+    "id": "ROOF-9406AB24",
+    "sku": "ROOF-9406AB24",
+    "name": "PremiumBuild Starter Strip Shingles - Roll",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-9406AB24.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "premiumbuild",
+      "unit_of_measure": "ROLL",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_type": "anchor",
+      "ppe_hi_vis_class": "class_3",
+      "window_glazing_type": "single_pane",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 30,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 22,
+    "type": "simple",
+    "_acoSku": "ROOF-9406AB24"
+  },
+  {
+    "id": "ROOF-7662E2BB",
+    "sku": "ROOF-7662E2BB",
+    "name": "BuildRight Pro Ridge Cap Shingles - Bundle",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-7662E2BB.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "proframe",
+      "unit_of_measure": "BUNDLE",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "window_glazing_type": "double_pane",
+      "drywall_edge_type": "beveled",
+      "fastener_material": "aluminum",
+      "drywall_product_type": "fire_rated",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 81,
+    "type": "simple",
+    "_acoSku": "ROOF-7662E2BB"
+  },
+  {
+    "id": "ROOF-905BF883",
+    "sku": "ROOF-905BF883",
+    "name": "FastenPro Roofing Felt 15lb - Roll",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-905BF883.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "maxstrength",
+      "unit_of_measure": "ROLL",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "window_energy_star": true,
+      "ppe_nrr_rating": "32",
+      "ppe_category": "respiratory_protection",
+      "ppe_cut_resistance": "a7",
+      "ppe_ansi_standard": [
+        "z89_1",
+        "z87_1",
+        "z359"
+      ],
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "builder_grade",
+      "store_velocity_category": "high",
+      "recommended_restock_quantity": 30,
+      "typical_days_supply": 7,
+      "restock_priority": "high"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 95,
+    "type": "simple",
+    "_acoSku": "ROOF-905BF883"
+  },
+  {
+    "id": "ROOF-1B7CF825",
+    "sku": "ROOF-1B7CF825",
+    "name": "FastenPro Roofing Felt 30lb - Roll",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-1B7CF825.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "structuremaster",
+      "unit_of_measure": "ROLL",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "drywall_edge_type": "tongue_and_groove",
+      "lumber_treatment": "pressure_treated_acq",
+      "window_energy_star": false,
+      "ppe_category": "head_protection",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "professional",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 25,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 39,
+    "type": "simple",
+    "_acoSku": "ROOF-1B7CF825"
+  },
+  {
+    "id": "ROOF-ED3E9B3B",
+    "sku": "ROOF-ED3E9B3B",
+    "name": "ProFrame Synthetic Underlayment - Roll",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-ED3E9B3B.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "toughgrip",
+      "unit_of_measure": "ROLL",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "drywall_thickness": "0.375",
+      "fastener_material": "stainless_steel_316",
+      "door_core_type": "solid_core",
+      "drywall_edge_type": "square",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "finishes",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 15,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 70,
+    "type": "simple",
+    "_acoSku": "ROOF-ED3E9B3B"
+  },
+  {
+    "id": "ROOF-5A1F5021",
+    "sku": "ROOF-5A1F5021",
+    "name": "DuraBuilt Ice & Water Shield - Roll",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-5A1F5021.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "reliabuild",
+      "unit_of_measure": "ROLL",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "fastener_subtype": "finish_nail",
+      "fastener_type": "nail",
+      "ppe_niosh_rating": "n95",
+      "drywall_edge_type": "tapered",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "better",
+        "best"
+      ],
+      "room_category": "finishes",
+      "store_velocity_category": "medium",
+      "recommended_restock_quantity": 20,
+      "typical_days_supply": 14,
+      "restock_priority": "medium"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 68,
+    "type": "simple",
+    "_acoSku": "ROOF-5A1F5021"
+  },
+  {
+    "id": "ROOF-A8DE0B49",
+    "sku": "ROOF-A8DE0B49",
+    "name": "PremiumBuild Self-Adhering Underlayment - Roll",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-A8DE0B49.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "buildright_pro",
+      "unit_of_measure": "ROLL",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "ppe_hard_hat_type": "type_1",
+      "fastener_drive_type": "combination",
+      "lumber_treatment": "pressure_treated_aca",
+      "fastener_material": "steel",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "finishes",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 10,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 83,
+    "type": "simple",
+    "_acoSku": "ROOF-A8DE0B49"
+  },
+  {
+    "id": "ROOF-05516930",
+    "sku": "ROOF-05516930",
+    "name": "DuraBuilt Ventilated Underlayment - Roll",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/ROOF-05516930.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "structuremaster",
+      "unit_of_measure": "ROLL",
+      "project_types": [
+        "new_construction",
+        "remodel"
+      ],
+      "window_operation_type": "bay",
+      "drywall_thickness": "0.5",
+      "construction_phase": [
+        "envelope"
+      ],
+      "quality_tier": "premium",
+      "package_tier": [
+        "best"
+      ],
+      "room_category": "finishes",
+      "store_velocity_category": "low",
+      "recommended_restock_quantity": 10,
+      "typical_days_supply": 30,
+      "restock_priority": "low"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 31,
+    "type": "simple",
+    "_acoSku": "ROOF-05516930"
+  },
+  {
+    "id": "SVC-BE782144",
+    "sku": "SVC-BE782144",
+    "name": "Structural Material Delivery",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-BE782144.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "toughgrip",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_cut_resistance": "a5",
+      "lumber_species": "hem_fir",
+      "lumber_treatment": "kiln_dried"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 42,
+    "type": "service",
+    "_acoSku": "SVC-BE782144"
+  },
+  {
+    "id": "SVC-DA991F80",
+    "sku": "SVC-DA991F80",
+    "name": "Lumber Cutting Service",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-DA991F80.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "structural_materials",
+      "brand": "maxstrength",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "lumber_grade": "select_structural"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 86,
+    "type": "service",
+    "_acoSku": "SVC-DA991F80"
+  },
+  {
+    "id": "SVC-8E4FBE5D",
+    "sku": "SVC-8E4FBE5D",
+    "name": "Drywall Installation Service",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-8E4FBE5D.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "maxstrength",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "door_core_type": "hollow_core",
+      "drywall_fire_rating": "non_rated",
+      "ppe_category": "eye_protection",
+      "window_material": "vinyl",
+      "ppe_hard_hat_type": "type_2"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 77,
+    "type": "service",
+    "_acoSku": "SVC-8E4FBE5D"
+  },
+  {
+    "id": "SVC-B2559E94",
+    "sku": "SVC-B2559E94",
+    "name": "Framing Consultation",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-B2559E94.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "framing_drywall",
+      "brand": "buildright_pro",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_cut_resistance": "a5",
+      "drywall_product_type": "mold_resistant",
+      "fastener_coating": "polymer_coated"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 34,
+    "type": "service",
+    "_acoSku": "SVC-B2559E94"
+  },
+  {
+    "id": "SVC-74321042",
+    "sku": "SVC-74321042",
+    "name": "Door & Window Installation",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-74321042.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "safeguard",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "drywall_edge_type": "tapered",
+      "door_type": "patio",
+      "lumber_species": "western_red_cedar",
+      "ppe_cut_resistance": "a3"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 79,
+    "type": "service",
+    "_acoSku": "SVC-74321042"
+  },
+  {
+    "id": "SVC-EEAD2FDF",
+    "sku": "SVC-EEAD2FDF",
+    "name": "Window Measurement Service",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-EEAD2FDF.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "windows_doors",
+      "brand": "safeguard",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_ansi_standard": [
+        "z359"
+      ],
+      "window_glazing_type": "double_pane",
+      "drywall_product_type": "fire_rated"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 74,
+    "type": "service",
+    "_acoSku": "SVC-EEAD2FDF"
+  },
+  {
+    "id": "SVC-3774CB8D",
+    "sku": "SVC-3774CB8D",
+    "name": "Fastener Consultation",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-3774CB8D.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "structuremaster",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "door_material": "steel",
+      "ppe_niosh_rating": "p99"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 107,
+    "type": "service",
+    "_acoSku": "SVC-3774CB8D"
+  },
+  {
+    "id": "SVC-72C95BE6",
+    "sku": "SVC-72C95BE6",
+    "name": "Bulk Order Processing",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-72C95BE6.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "fasteners_hardware",
+      "brand": "structuremaster",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "ppe_ansi_standard": [
+        "isea_107",
+        "isea_105",
+        "z87_1"
+      ],
+      "fastener_head_type": "round"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 72,
+    "type": "service",
+    "_acoSku": "SVC-72C95BE6"
+  },
+  {
+    "id": "SVC-1F7FC9F7",
+    "sku": "SVC-1F7FC9F7",
+    "name": "Roof Inspection Service",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-1F7FC9F7.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "durabuilt",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "fastener_subtype": "framing_nail",
+      "ppe_niosh_rating": "n99",
+      "window_material": "vinyl",
+      "lumber_species": "western_red_cedar",
+      "lumber_treatment": "pressure_treated_ca"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 57,
+    "type": "service",
+    "_acoSku": "SVC-1F7FC9F7"
+  },
+  {
+    "id": "SVC-887043F3",
+    "sku": "SVC-887043F3",
+    "name": "Roofing Material Delivery",
+    "description": "",
+    "price": 0,
+    "image": "/images/products/SVC-887043F3.png",
+    "images": [],
+    "categoryIds": [],
+    "attributes": {
+      "product_category": "roofing",
+      "brand": "safeguard",
+      "unit_of_measure": "SERVICE",
+      "project_types": [
+        "new_construction",
+        "remodel",
+        "repair",
+        "restoration"
+      ],
+      "lumber_treatment": "green",
+      "drywall_thickness": "0.25"
+    },
+    "inStock": true,
+    "rating": 4.5,
+    "reviewCount": 22,
+    "type": "service",
+    "_acoSku": "SVC-887043F3"
+  }
+]
