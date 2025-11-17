@@ -21,13 +21,13 @@ class DashboardRouter {
   async initialize() {
     console.log('[Dashboard] Initializing...');
     
-    // Require authentication
+    // Wait for auth to initialize FIRST
+    await authService.initialize();
+    
+    // Then require authentication
     if (!authService.requireAuth()) {
       return;
     }
-    
-    // Wait for auth to initialize
-    await authService.initialize();
     
     // Get content container
     this.contentContainer = document.getElementById('dashboard-content');

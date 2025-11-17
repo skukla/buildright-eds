@@ -52,16 +52,22 @@ export default async function decorate(block) {
   /**
    * Handle logout
    */
-  function handleLogout() {
-    authService.logout();
+  async function handleLogout() {
     // Close the menu
     block.classList.remove('active');
     const toggle = document.getElementById('user-menu-toggle');
     if (toggle) {
       toggle.setAttribute('aria-expanded', 'false');
     }
-    // Dispatch event for header to update
-    window.dispatchEvent(new CustomEvent('auth:logout'));
+    
+    // Logout (async)
+    await authService.logout();
+    
+    // Small delay to ensure localStorage is cleared
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Redirect to homepage
+    window.location.href = '/';
   }
 
   // Attach logout handler
@@ -69,8 +75,10 @@ export default async function decorate(block) {
     logoutBtn.addEventListener('click', handleLogout);
   }
 
-  // Initial state
-  updateMenuState();
+  // Wait for auth service to initialize, then update state
+  authService.initialize().then(() => {
+    updateMenuState();
+  });
 
   // Listen for login/logout events
   window.addEventListener('auth:login', updateMenuState);

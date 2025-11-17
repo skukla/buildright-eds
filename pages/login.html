@@ -32,18 +32,6 @@
                 <input type="password" id="password" class="form-input" required placeholder="Enter your password">
               </div>
 
-              <div class="form-group">
-                <label for="company" class="form-label">Company</label>
-                <select id="company" class="form-select" required>
-                  <option value="">Select your company</option>
-                  <option value="sunbelt_homes">Sunbelt Homes</option>
-                  <option value="custom_builders">Custom Builders LLC</option>
-                  <option value="elite_remodeling">Elite Remodeling</option>
-                  <option value="thompson_residence">Thompson Residence</option>
-                  <option value="buildmart_supply">BuildMart Supply</option>
-                </select>
-              </div>
-
               <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
                 <input type="checkbox" id="remember" style="width: auto;">
                 <label for="remember" style="margin: 0; font-weight: normal;">Remember me</label>
@@ -105,24 +93,30 @@
     };
     
     async function handleLogin(event) {
+      console.log('[Login] Form submitted');
       event.preventDefault();
       
-      const email = document.getElementById('email').value;
+      const email = document.getElementById('email').value.trim().toLowerCase();
       const password = document.getElementById('password').value;
-      const companyKey = document.getElementById('company').value;
       const remember = document.getElementById('remember').checked;
       
+      console.log('[Login] Email:', email);
+      
       // Validate inputs
-      if (!email || !password || !companyKey) {
-        alert('Please fill in all fields');
+      if (!email || !password) {
+        alert('Please enter your email and password');
         return;
       }
       
-      // Get demo account for selected company
-      const account = DEMO_ACCOUNTS[companyKey];
+      // Look up account by email
+      const account = Object.values(DEMO_ACCOUNTS).find(
+        acc => acc.email.toLowerCase() === email
+      );
+      
+      console.log('[Login] Account found:', account ? account.name : 'none');
       
       if (!account) {
-        alert('Invalid company selection');
+        alert('Account not found. Please check your email address.');
         return;
       }
       
@@ -134,24 +128,37 @@
       
       try {
         // In demo mode, we accept any password
-        // In production, this would validate against the backend
+        // In production, this would validate email/password against the backend
         
-        // Login with persona (maps company → persona behind the scenes)
+        console.log('[Login] Calling loginWithPersona for:', account.personaId);
+        
+        // Login with persona (system knows company from email lookup)
         const success = await authService.loginWithPersona(account.personaId);
         
+        console.log('[Login] loginWithPersona returned:', success);
+        
         if (success) {
-          console.log('[Login] Successfully authenticated as:', account.name);
+          console.log('[Login] Successfully authenticated as:', account.name, 'from', account.company);
           
           // Check for redirect parameter
           const urlParams = new URLSearchParams(window.location.search);
           const redirect = urlParams.get('redirect');
           
+          // Get default route
+          const defaultRoute = authService.getDefaultRoute();
+          console.log('[Login] Default route:', defaultRoute);
+          
+          // Small delay to ensure localStorage is saved before redirect
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
           // Redirect to intended page or dashboard
           if (redirect) {
+            console.log('[Login] Redirecting to:', decodeURIComponent(redirect));
             window.location.href = decodeURIComponent(redirect);
           } else {
             // Redirect to persona-specific dashboard
-            window.location.href = authService.getDefaultRoute();
+            console.log('[Login] Redirecting to dashboard:', defaultRoute);
+            window.location.href = defaultRoute;
           }
         } else {
           throw new Error('Login failed');
@@ -163,16 +170,6 @@
         submitBtn.textContent = originalText;
       }
     }
-    
-    // Auto-fill email when company is selected (for demo convenience)
-    document.getElementById('company').addEventListener('change', (e) => {
-      const companyKey = e.target.value;
-      const account = DEMO_ACCOUNTS[companyKey];
-      
-      if (account) {
-        document.getElementById('email').value = account.email;
-      }
-    });
     
     // Attach event listener when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {

@@ -374,6 +374,19 @@ class AuthService {
     
     return Object.values(PERSONAS);
   }
+  
+  /**
+   * Get the default route for the current user's persona
+   * 
+   * @returns {string} Default route URL
+   */
+  getDefaultRoute() {
+    if (!this.currentUser || !this.currentUser.persona) {
+      return '/pages/dashboard.html';
+    }
+    
+    return this.currentUser.persona.defaultRoute || '/pages/dashboard.html';
+  }
 }
 
 // Singleton instance
