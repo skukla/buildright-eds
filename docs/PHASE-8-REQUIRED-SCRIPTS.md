@@ -17,6 +17,7 @@ This document outlines the scripts that need to be created in the `buildright-ac
 | `create-products-commerce.js` | Create simple products in Adobe Commerce | HIGH |
 | `create-variants-commerce.js` | Create configurable products/variants | MEDIUM |
 | `create-bundles-commerce.js` | Create bundle products | MEDIUM |
+| `create-inventory-sources-commerce.js` | Create MSI sources and assign inventory | MEDIUM |
 | `create-customers-commerce.js` | Create demo customer accounts | HIGH |
 | `validate-commerce-sync.js` | Validate Commerce → ACO sync | HIGH |
 | `trigger-sync.sh` | Helper to trigger SaaS Data Export | HIGH |
@@ -354,7 +355,182 @@ bin/magento saas:resync --feed=products
 
 ---
 
-## 5. create-customers-commerce.js
+## 5. create-inventory-sources-commerce.js
+
+### Purpose
+Create Multi-Source Inventory (MSI) sources and assign inventory quantities to products.
+
+### Input
+- Reads from: `buildright-aco/data/buildright/inventory.json` (if exists)
+- Or uses hardcoded source definitions
+
+### Output
+- 3 inventory sources created in Adobe Commerce
+- Inventory quantities assigned to all products
+- Inventory syncs to ACO via SaaS Data Export
+
+### Key Functions
+```javascript
+const INVENTORY_SOURCES = [
+  {
+    source_code: 'warehouse_west',
+    name: 'West Coast Warehouse',
+    enabled: true,
+    description: 'Primary distribution center - West Coast',
+    latitude: 37.7749,
+    longitude: -122.4194,
+    country_id: 'US',
+    region_id: 12, // California
+    city: 'San Francisco',
+    street: '123 Warehouse Blvd',
+    postcode: '94102',
+    phone: '555-0100'
+  },
+  {
+    source_code: 'warehouse_central',
+    name: 'Central Warehouse',
+    enabled: true,
+    description: 'Central distribution hub',
+    latitude: 41.8781,
+    longitude: -87.6298,
+    country_id: 'US',
+    region_id: 14, // Illinois
+    city: 'Chicago',
+    street: '456 Distribution Way',
+    postcode: '60601',
+    phone: '555-0200'
+  },
+  {
+    source_code: 'warehouse_east',
+    name: 'East Coast Warehouse',
+    enabled: true,
+    description: 'East Coast distribution center',
+    latitude: 40.7128,
+    longitude: -74.0060,
+    country_id: 'US',
+    region_id: 43, // New York
+    city: 'New York',
+    street: '789 Logistics Ln',
+    postcode: '10001',
+    phone: '555-0300'
+  }
+];
+
+async function createInventorySource(source, token) {
+  const response = await fetch(`${COMMERCE_API_URL}/rest/V1/inventory/sources`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ source })
+  });
+  
+  return await response.json();
+}
+
+async function assignInventoryToProduct(sku, sourceItems, token) {
+  // sourceItems = [
+  //   { source_code: 'warehouse_west', quantity: 500, status: 1 },
+  //   { source_code: 'warehouse_central', quantity: 300, status: 1 },
+  //   { source_code: 'warehouse_east', quantity: 200, status: 1 }
+  // ]
+  
+  const response = await fetch(`${COMMERCE_API_URL}/rest/V1/inventory/source-items`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      sourceItems: sourceItems.map(item => ({
+        sku,
+        source_code: item.source_code,
+        quantity: item.quantity,
+        status: item.status
+      }))
+    })
+  });
+  
+  return await response.json();
+}
+
+async function main() {
+  console.log('=== Creating Multi-Source Inventory ===\n');
+  
+  // Get admin token
+  const token = await getAdminToken();
+  
+  // 1. Create inventory sources
+  console.log('Creating inventory sources...');
+  for (const source of INVENTORY_SOURCES) {
+    try {
+      await createInventorySource(source, token);
+      console.log(`✓ Created source: ${source.source_code}`);
+    } catch (error) {
+      console.error(`✗ Failed to create ${source.source_code}: ${error.message}`);
+    }
+  }
+  
+  // 2. Load products
+  const products = JSON.parse(fs.readFileSync('data/buildright/products.json', 'utf-8'));
+  
+  // 3. Assign inventory to each product
+  console.log('\nAssigning inventory to products...');
+  for (const product of products) {
+    try {
+      // Distribute inventory across sources
+      const sourceItems = [
+        { source_code: 'warehouse_west', quantity: 500, status: 1 },
+        { source_code: 'warehouse_central', quantity: 300, status: 1 },
+        { source_code: 'warehouse_east', quantity: 200, status: 1 }
+      ];
+      
+      await assignInventoryToProduct(product.sku, sourceItems, token);
+      console.log(`✓ Assigned inventory: ${product.sku}`);
+    } catch (error) {
+      console.error(`✗ Failed to assign inventory for ${product.sku}: ${error.message}`);
+    }
+  }
+  
+  console.log('\n=== Summary ===');
+  console.log('Sources created: 3');
+  console.log(`Products with inventory: ${products.length}`);
+  console.log('\nNext: Trigger sync to propagate to ACO');
+}
+```
+
+### Usage
+```bash
+cd buildright-aco
+node scripts/create-inventory-sources-commerce.js
+
+# Then trigger sync
+./scripts/trigger-sync.sh
+```
+
+### Expected Result
+```
+=== Creating Multi-Source Inventory ===
+
+Creating inventory sources...
+✓ Created source: warehouse_west
+✓ Created source: warehouse_central
+✓ Created source: warehouse_east
+
+Assigning inventory to products...
+✓ Assigned inventory: LBR-D0414F1E
+✓ Assigned inventory: LBR-D0616F1E
+...
+
+=== Summary ===
+Sources created: 3
+Products with inventory: 177
+```
+
+---
+
+## 6. create-customers-commerce.js
 
 ### Purpose
 Create demo customer accounts with correct customer groups and attributes.
@@ -549,9 +725,10 @@ Add to `buildright-aco/package.json`:
     "commerce:create-products": "node scripts/create-products-commerce.js",
     "commerce:create-variants": "node scripts/create-variants-commerce.js",
     "commerce:create-bundles": "node scripts/create-bundles-commerce.js",
+    "commerce:create-inventory": "node scripts/create-inventory-sources-commerce.js",
     "commerce:create-customers": "node scripts/create-customers-commerce.js",
     "commerce:validate-sync": "node scripts/validate-commerce-sync.js",
-    "commerce:all": "npm run commerce:register-attributes && npm run commerce:create-products && npm run commerce:create-variants && npm run commerce:create-bundles && npm run commerce:create-customers",
+    "commerce:all": "npm run commerce:register-attributes && npm run commerce:create-products && npm run commerce:create-variants && npm run commerce:create-bundles && npm run commerce:create-inventory && npm run commerce:create-customers",
     "commerce:full-setup": "npm run commerce:all && echo 'Now run: ./scripts/trigger-sync.sh'"
   }
 }
@@ -570,26 +747,31 @@ npm run commerce:create-products
 npm run commerce:create-variants
 npm run commerce:create-bundles
 
-# 3. Create customers
+# 3. Create inventory sources (MSI)
+npm run commerce:create-inventory
+
+# 4. Create customers
 npm run commerce:create-customers
 
-# 4. Trigger sync
+# 5. Trigger sync
 ./scripts/trigger-sync.sh
 
-# 5. Wait 2-5 minutes
+# 6. Wait 2-5 minutes
 
-# 6. Validate sync
+# 7. Validate sync
 npm run commerce:validate-sync
 
-# 7. Verify in ACO Admin UI
+# 8. Verify in ACO Admin UI
 # - Check products
 # - Check attributes
 # - Check prices
+# - Check inventory sources
 
-# 8. Configure ACO enhancements
-# - Create price books
-# - Configure policies
-# - Set up catalog views
+# 9. Configure ACO enhancements
+# - Create price books (npm run ingest:price-books)
+# - Ingest prices (npm run ingest:prices)
+# - Configure policies (manual in ACO Admin UI)
+# - Set up catalog views (manual in ACO Admin UI)
 ```
 
 ---
@@ -621,17 +803,21 @@ DEFAULT_INVENTORY_QTY=1000
 
 ## Success Criteria
 
-- [ ] All 7 scripts created and tested
+- [ ] All 8 scripts created and tested
 - [ ] 20 custom attributes registered in Commerce
 - [ ] 70 simple products created in Commerce
 - [ ] 92 variant products created in Commerce
 - [ ] 15 bundle products created in Commerce
+- [ ] 3 inventory sources created in Commerce (MSI)
+- [ ] Inventory assigned to all 177 products
 - [ ] 5 demo customers created in Commerce
 - [ ] All products synced to ACO
 - [ ] All attributes synced to ACO
+- [ ] All inventory synced to ACO
 - [ ] Validation script passes all checks
 - [ ] Products visible in ACO Admin UI
 - [ ] Attributes filterable in ACO GraphQL
+- [ ] Inventory sources visible in ACO
 
 ---
 
@@ -639,5 +825,5 @@ DEFAULT_INVENTORY_QTY=1000
 **Repository**: `buildright-aco`  
 **Priority**: HIGH (required for Phase 8)
 
-**Last Updated**: November 17, 2024
+**Last Updated**: January 17, 2025
 

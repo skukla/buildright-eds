@@ -74,7 +74,7 @@ This document clarifies which data is created in **Adobe Commerce PaaS** (and sy
 | Product Assignments | **ACO ONLY** | ❌ No | Manual in ACO Admin UI | N/A | Policy-based |
 | **INVENTORY** |
 | Single-Source Inventory | Commerce PaaS | ✅ Yes | Part of product creation | Commerce REST API | Default stock |
-| Multi-Source Inventory | Commerce PaaS | ✅ Yes | `create-inventory-sources-commerce.js` | Commerce REST API | 3 warehouses |
+| Multi-Source Inventory (MSI) | Commerce PaaS | ✅ Yes | `create-inventory-sources-commerce.js` | Commerce REST API | 3 warehouses |
 | **CATEGORIES** |
 | Category Tree | Commerce PaaS | ✅ Yes | `create-categories-commerce.js` | Commerce REST API | Full tree |
 | **CUSTOMERS** |
@@ -274,11 +274,10 @@ These scripts create ACO-only data:
    - Target: Local markdown generation
    - Creates: Documentation for manual policy setup
 
-6. **`generate-inventory.js`** ⚠️ EVALUATE
-   - May need to be split:
-     - Single-source inventory → Commerce
-     - Multi-source inventory → Commerce (if using MSI extension)
-     - Or keep as ACO-only if using ACO inventory features
+6. **`generate-inventory.js`** ❌ REMOVE/REPLACE
+   - Replaced by: `create-inventory-sources-commerce.js`
+   - Reason: Using Commerce MSI (Multi-Source Inventory) extension
+   - Inventory sources and quantities created in Commerce, sync to ACO
 
 ---
 
@@ -447,5 +446,5 @@ npm run generate:policy-guide
 **Status**: ✅ Approach is correct  
 **Action Required**: Keep ACO-specific scripts for price books, prices, and policy documentation
 
-**Last Updated**: November 17, 2024
+**Last Updated**: January 17, 2025
 
