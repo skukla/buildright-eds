@@ -36,9 +36,11 @@
                 <label for="company" class="form-label">Company</label>
                 <select id="company" class="form-select" required>
                   <option value="">Select your company</option>
-                  <option value="premium_commercial">Premium Commercial Builders Inc.</option>
-                  <option value="coastal_residential">Coastal Residential Builders</option>
-                  <option value="elite_trade">Elite Trade Contractors</option>
+                  <option value="sunbelt_homes">Sunbelt Homes</option>
+                  <option value="custom_builders">Custom Builders LLC</option>
+                  <option value="elite_remodeling">Elite Remodeling</option>
+                  <option value="thompson_residence">Thompson Residence</option>
+                  <option value="buildmart_supply">BuildMart Supply</option>
                 </select>
               </div>
 
@@ -54,7 +56,7 @@
           </div>
           <div class="card-footer" style="text-align: center;">
             <p style="color: var(--color-text-light); margin: 0;">
-              Don't have an account? <a href="#" onclick="alert('Account creation coming soon!')">Contact your sales representative</a>
+              Don't have an account? <a href="signup.html">Create an account</a>
             </p>
           </div>
         </div>
@@ -65,65 +67,113 @@
   <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
 
-  <script>
-    function handleLogin(event) {
+  <script type="module">
+    import { authService } from '../scripts/auth.js';
+    
+    // Demo account mapping: Company → Persona
+    const DEMO_ACCOUNTS = {
+      'sunbelt_homes': {
+        email: 'sarah.martinez@sunbelthomes.com',
+        name: 'Sarah Martinez',
+        company: 'Sunbelt Homes',
+        personaId: 'sarah'
+      },
+      'custom_builders': {
+        email: 'marcus.johnson@custombuilders.com',
+        name: 'Marcus Johnson',
+        company: 'Custom Builders LLC',
+        personaId: 'marcus'
+      },
+      'elite_remodeling': {
+        email: 'lisa.chen@eliteremodeling.com',
+        name: 'Lisa Chen',
+        company: 'Elite Remodeling',
+        personaId: 'lisa'
+      },
+      'thompson_residence': {
+        email: 'david.thompson@gmail.com',
+        name: 'David Thompson',
+        company: 'Thompson Residence',
+        personaId: 'david'
+      },
+      'buildmart_supply': {
+        email: 'kevin.rodriguez@buildmart.com',
+        name: 'Kevin Rodriguez',
+        company: 'BuildMart Supply',
+        personaId: 'kevin'
+      }
+    };
+    
+    async function handleLogin(event) {
       event.preventDefault();
       
       const email = document.getElementById('email').value;
-      const company = document.getElementById('company').value;
+      const password = document.getElementById('password').value;
+      const companyKey = document.getElementById('company').value;
+      const remember = document.getElementById('remember').checked;
       
-      // Set customer context based on company selection
-      const companyMap = {
-        'premium_commercial': {
-          company: 'Premium Commercial Builders Inc.',
-          tier: 'commercial_tier2',
-          region: 'Western',
-          primary_warehouse: 'warehouse_west',
-          locations: ['Los Angeles', 'Phoenix']
-        },
-        'coastal_residential': {
-          company: 'Coastal Residential Builders',
-          tier: 'residential_builder',
-          region: 'Central',
-          primary_warehouse: 'warehouse_denver',
-          locations: ['Dallas', 'Denver']
-        },
-        'elite_trade': {
-          company: 'Elite Trade Contractors',
-          tier: 'pro_specialty',
-          region: 'Eastern',
-          primary_warehouse: 'warehouse_east',
-          locations: ['Charlotte', 'Atlanta']
-        }
-      };
-
-      if (company && companyMap[company]) {
-        const context = {
-          ...companyMap[company],
-          isLoggedIn: true,
-          location_id: companyMap[company].primary_warehouse
-        };
-        localStorage.setItem('buildright_customer_context', JSON.stringify(context));
-        localStorage.setItem('buildright_logged_in', 'true');
+      // Validate inputs
+      if (!email || !password || !companyKey) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      // Get demo account for selected company
+      const account = DEMO_ACCOUNTS[companyKey];
+      
+      if (!account) {
+        alert('Invalid company selection');
+        return;
+      }
+      
+      // Show loading state
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Logging in...';
+      
+      try {
+        // In demo mode, we accept any password
+        // In production, this would validate against the backend
         
-        // Dispatch login event
-        window.dispatchEvent(new CustomEvent('userLoggedIn'));
+        // Login with persona (maps company → persona behind the scenes)
+        const success = await authService.loginWithPersona(account.personaId);
         
-        // Check for redirect parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirect = urlParams.get('redirect');
-        
-        // Redirect to intended page or account page
-        if (redirect) {
-          window.location.href = redirect;
+        if (success) {
+          console.log('[Login] Successfully authenticated as:', account.name);
+          
+          // Check for redirect parameter
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirect = urlParams.get('redirect');
+          
+          // Redirect to intended page or dashboard
+          if (redirect) {
+            window.location.href = decodeURIComponent(redirect);
+          } else {
+            // Redirect to persona-specific dashboard
+            window.location.href = authService.getDefaultRoute();
+          }
         } else {
-          window.location.href = 'account.html';
+          throw new Error('Login failed');
         }
-      } else {
-        alert('Please select a company');
+      } catch (error) {
+        console.error('[Login] Error:', error);
+        alert('Login failed. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
       }
     }
-
+    
+    // Auto-fill email when company is selected (for demo convenience)
+    document.getElementById('company').addEventListener('change', (e) => {
+      const companyKey = e.target.value;
+      const account = DEMO_ACCOUNTS[companyKey];
+      
+      if (account) {
+        document.getElementById('email').value = account.email;
+      }
+    });
+    
     // Attach event listener when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
       const loginForm = document.getElementById('login-form');
