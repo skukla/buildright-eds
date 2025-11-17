@@ -10,33 +10,10 @@
   padding: 2rem 1rem;
 }
 
-/* Header */
-.signup-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.signup-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: 0.75rem;
-}
-
-.signup-header p {
-  font-size: 1.125rem;
-  color: var(--color-text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Wizard Steps */
+/* Wizard Steps - now inherits card styling */
 .signup-wizard {
-  background: var(--color-background);
-  border-radius: var(--shape-border-radius-4);
-  padding: 2.5rem;
-  box-shadow: var(--shape-shadow-2);
-  margin-bottom: 2rem;
+  /* Card body provides padding and background */
+  padding: var(--spacing-large);
 }
 
 .signup-step {
@@ -58,6 +35,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-text);
+  margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
@@ -168,13 +146,14 @@
   min-width: 120px;
 }
 
-/* Progress Bar */
+/* Progress Bar - now above form in card */
 .progress-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 3rem 0 2rem;
-  padding: 0 2rem;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .progress-step {
@@ -388,43 +367,12 @@
   }
 }
 
-/* Footer */
-.signup-footer {
-  text-align: center;
-  padding: 1.5rem 0;
-}
-
-.signup-footer p {
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
-.signup-footer a {
-  color: var(--color-brand-500);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.signup-footer a:hover {
-  text-decoration: underline;
-}
+/* Footer - now uses card-footer styling */
 
 /* Responsive */
 @media (max-width: 768px) {
   .signup-container {
     padding: 1rem;
-  }
-  
-  .signup-wizard {
-    padding: 1.5rem;
-  }
-  
-  .signup-header h1 {
-    font-size: 1.5rem;
-  }
-  
-  .signup-header p {
-    font-size: 1rem;
   }
   
   .form-row {
@@ -440,7 +388,7 @@
   }
   
   .progress-bar {
-    padding: 0 1rem;
+    padding: 1rem;
   }
   
   .progress-line {

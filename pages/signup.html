@@ -16,13 +16,32 @@
   <main>
     <section class="section">
       <div class="container signup-container">
-        <div class="signup-header">
-          <h1>Welcome to BuildRight Solutions</h1>
-          <p>Create your business account to access personalized pricing and catalogs. This takes about 2 minutes.</p>
-        </div>
-        
-        <!-- Multi-step form -->
-        <div class="signup-wizard">
+        <div class="card">
+          <div class="card-header" style="text-align: center;">
+            <h1>Create Your Account</h1>
+            <p style="color: var(--color-text-light); margin-top: 0.5rem;">Get personalized pricing and catalogs in about 2 minutes</p>
+          </div>
+          
+          <!-- Progress Indicator (moved above form) -->
+          <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+              <div class="step-circle">1</div>
+              <span class="step-label">Account</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="2">
+              <div class="step-circle">2</div>
+              <span class="step-label">Business Profile</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="3">
+              <div class="step-circle">3</div>
+              <span class="step-label">Confirm</span>
+            </div>
+          </div>
+          
+          <!-- Multi-step form -->
+          <div class="card-body signup-wizard">
           
           <!-- Step 1: Account Info -->
           <div class="signup-step" data-step="1">
@@ -166,28 +185,13 @@
             </div>
           </div>
           
-        </div>
-        
-        <!-- Progress Indicator -->
-        <div class="progress-bar">
-          <div class="progress-step active" data-step="1">
-            <div class="step-circle">1</div>
-            <span class="step-label">Account</span>
           </div>
-          <div class="progress-line"></div>
-          <div class="progress-step" data-step="2">
-            <div class="step-circle">2</div>
-            <span class="step-label">Business Profile</span>
+          
+          <div class="card-footer" style="text-align: center;">
+            <p style="color: var(--color-text-light); margin: 0;">
+              Already have an account? <a href="/pages/login.html">Sign in</a>
+            </p>
           </div>
-          <div class="progress-line"></div>
-          <div class="progress-step" data-step="3">
-            <div class="step-circle">3</div>
-            <span class="step-label">Confirm</span>
-          </div>
-        </div>
-        
-        <div class="signup-footer">
-          <p>Already have an account? <a href="login.html">Sign in</a></p>
         </div>
       </div>
     </section>

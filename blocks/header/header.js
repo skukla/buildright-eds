@@ -1,6 +1,6 @@
 // Header block decoration
 import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyRedirect } from '../../scripts/url-router.js';
-import { isLoggedIn } from '../../scripts/auth.js';
+import { authService } from '../../scripts/auth.js';
 import { parseHTMLFragment } from '../../scripts/utils.js';
 import { showCartNotification } from '../../scripts/cart-notification.js';
 
@@ -12,7 +12,7 @@ export default async function decorate(block) {
   
   // Show/hide location selector based on login status
   function updateAuthenticatedElements() {
-    const loggedIn = isLoggedIn();
+    const loggedIn = authService.isAuthenticated();
     
     // Find location section - try ID first, then fallback to class
     const locationSection = block.querySelector('#header-location') || 

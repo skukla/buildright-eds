@@ -8,7 +8,7 @@ export default async function decorate(block) {
   const basePath = window.BASE_PATH || '/';
   const baseUrl = window.location.origin + basePath;
   const authModule = await import(new URL('scripts/auth.js', baseUrl).href);
-  const { isLoggedIn, logout } = authModule;
+  const { authService } = authModule;
   
   const dataMockModule = await import(new URL('scripts/data-mock.js', baseUrl).href);
   const { getCustomerContext } = dataMockModule;
@@ -21,16 +21,16 @@ export default async function decorate(block) {
    * Update the menu based on login state
    */
   function updateMenuState() {
-    const loggedIn = isLoggedIn();
+    const loggedIn = authService.isAuthenticated();
     
     if (loggedIn) {
       loggedOutState.style.display = 'none';
       loggedInState.style.display = 'block';
       
       // Update user info
-      const context = getCustomerContext();
-      const userName = context.user || 'User';
-      const companyName = context.companyName || 'Company';
+      const user = authService.getCurrentUser();
+      const userName = user.name || 'User';
+      const companyName = user.company || 'Company';
       
       // Get initials from user name
       const initials = userName
@@ -53,7 +53,7 @@ export default async function decorate(block) {
    * Handle logout
    */
   function handleLogout() {
-    logout();
+    authService.logout();
     // Close the menu
     block.classList.remove('active');
     const toggle = document.getElementById('user-menu-toggle');
@@ -61,7 +61,7 @@ export default async function decorate(block) {
       toggle.setAttribute('aria-expanded', 'false');
     }
     // Dispatch event for header to update
-    window.dispatchEvent(new CustomEvent('userLoggedOut'));
+    window.dispatchEvent(new CustomEvent('auth:logout'));
   }
 
   // Attach logout handler
@@ -73,12 +73,8 @@ export default async function decorate(block) {
   updateMenuState();
 
   // Listen for login/logout events
-  window.addEventListener('userLoggedIn', updateMenuState);
-  window.addEventListener('userLoggedOut', updateMenuState);
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'buildright_logged_in') {
-      updateMenuState();
-    }
-  });
+  window.addEventListener('auth:login', updateMenuState);
+  window.addEventListener('auth:logout', updateMenuState);
+  window.addEventListener('auth:signup-complete', updateMenuState);
 }
 
