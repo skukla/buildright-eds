@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - BuildRight Solutions</title>
+  <script src="../scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="../styles/styles.css">
+  <link rel="stylesheet" href="../styles/signup-wizard.css">
+</head>
+<body>
+  <!-- Header loaded dynamically from blocks/header/ -->
+  <header></header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="section">
+      <div class="container signup-container">
+        <div class="signup-header">
+          <h1>Welcome to BuildRight Solutions</h1>
+          <p>Create your business account to access personalized pricing and catalogs. This takes about 2 minutes.</p>
+        </div>
+        
+        <!-- Multi-step form -->
+        <div class="signup-wizard">
+          
+          <!-- Step 1: Account Info -->
+          <div class="signup-step" data-step="1">
+            <h2>Step 1: Your Account Information</h2>
+            <p class="step-description">Let's start with your basic account details.</p>
+            
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address <span class="required">*</span></label>
+              <input type="email" id="email" name="email" class="form-input" required placeholder="your@email.com">
+            </div>
+            
+            <div class="form-group">
+              <label for="password" class="form-label">Password <span class="required">*</span></label>
+              <input type="password" id="password" name="password" class="form-input" required placeholder="Create a secure password">
+              <small class="form-hint">Must be at least 8 characters</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="company_name" class="form-label">Company Name <span class="required">*</span></label>
+              <input type="text" id="company_name" name="company_name" class="form-input" required placeholder="Your Company">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstname" class="form-label">First Name <span class="required">*</span></label>
+                <input type="text" id="firstname" name="firstname" class="form-input" required placeholder="First Name">
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="form-label">Last Name <span class="required">*</span></label>
+                <input type="text" id="lastname" name="lastname" class="form-input" required placeholder="Last Name">
+              </div>
+            </div>
+            
+            <div class="button-group">
+              <button type="button" class="btn btn-primary btn-lg next-btn">Continue</button>
+            </div>
+          </div>
+          
+          <!-- Step 2: Business Profile -->
+          <div class="signup-step" data-step="2" hidden>
+            <h2>Step 2: Tell Us About Your Business</h2>
+            <p class="step-description">This helps us customize your experience and show you relevant products.</p>
+            
+            <div class="form-group">
+              <label for="business_type" class="form-label">What type of business are you? <span class="required">*</span></label>
+              <select id="business_type" name="business_type" class="form-select" required>
+                <option value="">Select your business type...</option>
+                <option value="Production Home Builder">Production Home Builder</option>
+                <option value="General Contractor">General Contractor</option>
+                <option value="Remodeling Contractor">Remodeling Contractor</option>
+                <option value="Specialty Contractor">Specialty Contractor (Decks, Outdoor, etc.)</option>
+                <option value="Professional Homeowner">Professional Homeowner (DIY Projects)</option>
+                <option value="Retail/Wholesale">Retail/Wholesale Operations</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="project_scale" class="form-label">What's your typical project volume? <span class="required">*</span></label>
+              <select id="project_scale" name="project_scale" class="form-select" required>
+                <option value="">Select project volume...</option>
+                <option value="High Volume">High Volume (15+ projects per year)</option>
+                <option value="Medium Volume">Medium Volume (5-15 projects per year)</option>
+                <option value="Low Volume">Low Volume (1-5 projects per year)</option>
+                <option value="Maintenance/Restock">Ongoing Maintenance & Restock</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="primary_service" class="form-label">What's your primary focus? <span class="required">*</span></label>
+              <select id="primary_service" name="primary_service" class="form-select" required>
+                <option value="">Select primary service...</option>
+                <option value="New Construction">New Construction</option>
+                <option value="Renovation/Remodel">Renovation/Remodel</option>
+                <option value="Specialty Work">Specialty Work (Decks, Outdoor Living)</option>
+                <option value="Maintenance/Repairs">Maintenance/Repairs</option>
+                <option value="Multi-Service">Multi-Service (All of the above)</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="buying_behavior" class="form-label">How do you typically order materials?</label>
+              <select id="buying_behavior" name="buying_behavior" class="form-select">
+                <option value="">Select ordering preference...</option>
+                <option value="Template/Repeat Orders">Same materials repeatedly (I have standard templates)</option>
+                <option value="Custom Project Planning">Custom planning for each unique project</option>
+                <option value="Package Deals">Pre-configured material packages</option>
+                <option value="Quick Restock">Quick restock of common items</option>
+                <option value="DIY with Guidance">DIY projects with step-by-step guidance</option>
+              </select>
+            </div>
+            
+            <div class="button-group">
+              <button type="button" class="btn btn-outline back-btn">Back</button>
+              <button type="button" class="btn btn-primary btn-lg next-btn">Continue</button>
+            </div>
+          </div>
+          
+          <!-- Step 3: Confirmation & Experience Preview -->
+          <div class="signup-step" data-step="3" hidden>
+            <h2>Step 3: Your Personalized Experience</h2>
+            <p class="step-description">Based on your profile, we've customized BuildRight for you:</p>
+            
+            <div class="experience-preview">
+              <div class="preview-card">
+                <div class="preview-header">
+                  <div class="preview-icon"></div>
+                  <div>
+                    <h3 class="preview-title"><!-- Dynamically populated --></h3>
+                    <p class="preview-subtitle"><!-- Dynamically populated --></p>
+                  </div>
+                </div>
+                
+                <div class="preview-body">
+                  <p class="preview-description"><!-- Dynamically populated --></p>
+                  
+                  <div class="preview-features">
+                    <h4>Your customized features:</h4>
+                    <ul class="feature-list">
+                      <!-- Dynamically populated -->
+                    </ul>
+                  </div>
+                  
+                  <div class="preview-catalog">
+                    <h4>Your curated catalog:</h4>
+                    <p class="catalog-info"><strong class="product-count"><!-- # --></strong> products selected specifically for your needs</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="terms-acceptance">
+              <label class="checkbox-label">
+                <input type="checkbox" id="terms" name="terms" required>
+                <span>I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a></span>
+              </label>
+            </div>
+            
+            <div class="button-group">
+              <button type="button" class="btn btn-outline back-btn">Back</button>
+              <button type="button" class="btn btn-cta btn-lg submit-btn">Create My Account</button>
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- Progress Indicator -->
+        <div class="progress-bar">
+          <div class="progress-step active" data-step="1">
+            <div class="step-circle">1</div>
+            <span class="step-label">Account</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2">
+            <div class="step-circle">2</div>
+            <span class="step-label">Business Profile</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3">
+            <div class="step-circle">3</div>
+            <span class="step-label">Confirm</span>
+          </div>
+        </div>
+        
+        <div class="signup-footer">
+          <p>Already have an account? <a href="login.html">Sign in</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer loaded dynamically from blocks/footer/ -->
+  <footer></footer>
+
+  <script type="module" src="../scripts/signup-wizard.js"></script>
+</body>
+</html>
+
