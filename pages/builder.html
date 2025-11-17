@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Builder - BuildRight</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <script type="module" src="/scripts/builder.js"></script>
+</head>
+<body>
+  <!-- Header block -->
+  <div class="header-block" data-block-name="header"></div>
+  
+  <!-- Builder layout: sidebar + main -->
+  <div class="builder-layout">
+    <!-- Wizard progress sidebar -->
+    <aside class="builder-sidebar">
+      <div id="wizard-progress" data-block-name="wizard-vertical-progress"></div>
+    </aside>
+    
+    <!-- Main builder content -->
+    <main class="builder-content">
+      <div id="builder-main">
+        <!-- Loading state -->
+        <div class="loading-overlay">
+          <div class="loading-spinner"></div>
+          <p>Loading builder...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Footer block -->
+  <div class="footer-block" data-block-name="footer"></div>
+</body>
+</html>
+

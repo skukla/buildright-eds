@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - BuildRight</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <script type="module" src="/scripts/dashboard.js"></script>
+</head>
+<body>
+  <!-- Header block -->
+  <div class="header-block" data-block-name="header"></div>
+  
+  <!-- Main content -->
+  <main class="dashboard-container">
+    <!-- Persona-specific content loaded by dashboard.js -->
+    <div id="dashboard-content" class="dashboard-content">
+      <!-- Loading state -->
+      <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Loading dashboard...</p>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer block -->
+  <div class="footer-block" data-block-name="footer"></div>
+</body>
+</html>
+
