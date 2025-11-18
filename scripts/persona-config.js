@@ -355,3 +355,51 @@ export function isValidPersona(personaId) {
   return getPersona(personaId) !== null;
 }
 
+/**
+ * Get role type from persona
+ * Used for role-based fragment loading
+ * @param {string|Object} personaIdOrObject - Persona ID or persona object
+ * @returns {string} Role type (builder, specialty, retail, default)
+ */
+export function getRoleType(personaIdOrObject) {
+  const persona = typeof personaIdOrObject === 'string' 
+    ? getPersona(personaIdOrObject) 
+    : personaIdOrObject;
+  
+  if (!persona) return 'default';
+  
+  const roleMap = {
+    'sarah': 'builder',
+    'marcus': 'builder',
+    'lisa': 'builder',
+    'david': 'specialty',
+    'kevin': 'retail'
+  };
+  
+  return roleMap[persona.id] || 'default';
+}
+
+/**
+ * Get use case from persona
+ * Used for use-case-specific fragment loading (CTAs, etc.)
+ * @param {string|Object} personaIdOrObject - Persona ID or persona object
+ * @returns {string} Use case (templates, projects, packages, diy, restock, default)
+ */
+export function getUseCase(personaIdOrObject) {
+  const persona = typeof personaIdOrObject === 'string' 
+    ? getPersona(personaIdOrObject) 
+    : personaIdOrObject;
+  
+  if (!persona) return 'default';
+  
+  const useCaseMap = {
+    'sarah': 'templates',
+    'marcus': 'projects',
+    'lisa': 'packages',
+    'david': 'diy',
+    'kevin': 'restock'
+  };
+  
+  return useCaseMap[persona.id] || 'default';
+}
+
