@@ -99,6 +99,11 @@ body:not(.ready) .cta-container {
   display: none;
 }
 
+/* Hide unauthenticated-only sections by default (prevent FOUC) */
+body:not(.ready) .unauthenticated-only {
+  display: none;
+}
+
 /* ========================================
    Fragment Container Styles
    ======================================== */

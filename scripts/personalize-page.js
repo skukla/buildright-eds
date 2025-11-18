@@ -34,6 +34,12 @@ export async function personalizeHomepage() {
     
     console.log(`[Personalize] Loading fragments for role: ${roleType}, use-case: ${useCase}`);
     
+    // Hide unauthenticated-only sections
+    const unauthSections = document.querySelectorAll('.unauthenticated-only');
+    unauthSections.forEach(section => {
+      section.style.display = 'none';
+    });
+    
     // Load role-based fragments in parallel
     await loadFragments([
       {
@@ -66,6 +72,12 @@ export async function personalizeHomepage() {
     const ctaContainer = document.querySelector('.cta-container');
     if (featuresContainer) featuresContainer.innerHTML = '';
     if (ctaContainer) ctaContainer.innerHTML = '';
+    
+    // Show unauthenticated-only sections
+    const unauthSections = document.querySelectorAll('.unauthenticated-only');
+    unauthSections.forEach(section => {
+      section.style.display = 'block';
+    });
     
     await loadFragments([
       {
