@@ -372,8 +372,8 @@ export function getRoleType(personaIdOrObject) {
     'sarah': 'builder',
     'marcus': 'builder',
     'lisa': 'builder',
-    'david': 'specialty',
-    'kevin': 'retail'
+    'david': 'retail',  // DIY homeowner - retail customer
+    'kevin': 'retail'   // Retail operations manager
   };
   
   return roleMap[persona.id] || 'default';
