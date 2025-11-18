@@ -94,7 +94,9 @@
   overflow: hidden;
 }
 
-.product-card-image::before {
+/* Only show placeholder pattern when no image is set */
+.product-card-image:not([style*="background-image"])::before,
+.product-card-image-placeholder::before {
   content: '';
   position: absolute;
   width: 60%;
