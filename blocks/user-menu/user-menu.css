@@ -154,10 +154,8 @@
 
 .user-menu-logout {
   color: var(--color-danger, #dc2626);
-  margin-top: 0.5rem;
-  border-top: 1px solid var(--color-border);
-  padding-top: 1rem;
-  border-radius: 0;
+  margin-top: 0.75rem;
+  border-radius: 8px;
 }
 
 .user-menu-logout:hover {
