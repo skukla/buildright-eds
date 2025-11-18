@@ -1,0 +1,129 @@
+/**
+ * Fragment Loading States and Styles
+ * Provides loading skeletons, error states, and FOUC prevention
+ */
+
+/* ========================================
+   Loading Skeletons
+   ======================================== */
+
+.skeleton-loader {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 1.5rem;
+  background: var(--color-neutral-200);
+  border-radius: var(--shape-border-radius-2);
+  margin-bottom: var(--spacing-small);
+}
+
+.skeleton-text:last-child {
+  width: 60%; /* Vary width for more realistic appearance */
+}
+
+.skeleton-card {
+  height: 200px;
+  background: var(--color-neutral-200);
+  border-radius: var(--shape-border-radius-3);
+  margin-bottom: var(--spacing-medium);
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.5; 
+  }
+}
+
+/* ========================================
+   Fragment Error State
+   ======================================== */
+
+.fragment-error {
+  padding: var(--spacing-large);
+  text-align: center;
+  color: var(--color-neutral-600);
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--shape-border-radius-2);
+}
+
+.fragment-error p {
+  margin: 0;
+  font-size: var(--type-body-2-font-size);
+}
+
+/* ========================================
+   FOUC Prevention
+   Ensures fragments are hidden until loaded
+   ======================================== */
+
+/* Hide body until fragments are loaded */
+body:not(.ready) {
+  opacity: 0;
+}
+
+body.ready {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Ensure fragment containers have minimum height while loading */
+body:not(.ready) .hero-container,
+body:not(.ready) .features-container,
+body:not(.ready) .cta-container {
+  min-height: 400px;
+}
+
+/* Hide empty fragment containers */
+.hero-container:empty,
+.features-container:empty,
+.cta-container:empty,
+.footer-fragment:empty {
+  display: none;
+}
+
+/* Ensure footer fragment extends full width */
+.footer-fragment {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hide containers with only loading skeletons that weren't replaced */
+.features-container:has(.skeleton-loader:only-child),
+.cta-container:has(.skeleton-loader:only-child) {
+  display: none;
+}
+
+/* ========================================
+   Fragment Container Styles
+   ======================================== */
+
+.hero-container,
+.features-container,
+.cta-container,
+.footer-container {
+  /* Containers are styled by their fragment content */
+  /* These are just placeholders */
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+
+@media (max-width: 768px) {
+  body:not(.ready) .hero-container,
+  body:not(.ready) .features-container,
+  body:not(.ready) .cta-container {
+    min-height: 300px;
+  }
+  
+  .skeleton-card {
+    height: 150px;
+  }
+}
+
