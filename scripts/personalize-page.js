@@ -89,10 +89,11 @@ export async function personalizeHomepage() {
  * @param {Object} persona - Persona object
  */
 function personalizeWithDynamicData(persona) {
-  // Example: Update name dynamically
+  // Example: Update name dynamically (first name only)
   const nameElements = document.querySelectorAll('[data-persona-name]');
   nameElements.forEach(el => {
-    el.textContent = persona.name;
+    const firstName = persona.name.split(' ')[0];
+    el.textContent = firstName;
   });
   
   // Example: Update company dynamically
