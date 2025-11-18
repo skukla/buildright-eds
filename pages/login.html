@@ -151,14 +151,14 @@
           // Small delay to ensure localStorage is saved before redirect
           await new Promise(resolve => setTimeout(resolve, 100));
           
-          // Redirect to intended page or dashboard
+          // Redirect to intended page or homepage
           if (redirect) {
             console.log('[Login] Redirecting to:', decodeURIComponent(redirect));
             window.location.href = decodeURIComponent(redirect);
           } else {
-            // Redirect to persona-specific dashboard
-            console.log('[Login] Redirecting to dashboard:', defaultRoute);
-            window.location.href = defaultRoute;
+            // Redirect to homepage to test fragment personalization
+            console.log('[Login] Redirecting to homepage for fragment testing');
+            window.location.href = '/';
           }
         } else {
           throw new Error('Login failed');
