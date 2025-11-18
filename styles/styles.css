@@ -11,9 +11,16 @@
 /* Import block styles */
 @import url('../blocks/product-grid/product-grid.css');
 @import url('../blocks/filters-sidebar/filters-sidebar.css');
+@import url('../blocks/footer/footer.css');
 
 /* Import page-specific styles */
 @import url('page-specific.css');
+
+/* Import fragment styles */
+@import url('fragments.css');
+
+/* Import signup wizard styles */
+@import url('signup-wizard.css');
 
 /* EDS Standard: Page reveal animation */
 body {
