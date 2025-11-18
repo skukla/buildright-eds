@@ -15,6 +15,9 @@ import { loadFragment, loadFragments } from './fragment-loader.js';
  * @returns {Promise<void>}
  */
 export async function personalizeHomepage() {
+  // Wait for auth service to initialize before checking authentication
+  await authService.initialize();
+  
   const isAuth = authService.isAuthenticated();
   
   if (isAuth) {
