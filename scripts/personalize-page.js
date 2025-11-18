@@ -22,7 +22,11 @@ export async function personalizeHomepage() {
   
   if (isAuth) {
     const user = authService.getCurrentUser();
-    const persona = getPersona(user.personaId);
+    console.log('[Personalize] User:', user);
+    
+    // Use user.id (not user.personaId) to get the persona
+    const persona = getPersona(user.id);
+    console.log('[Personalize] Persona:', persona);
     
     // Get role-based attributes
     const roleType = getRoleType(persona);    // e.g., 'builder', 'specialty', 'retail'
