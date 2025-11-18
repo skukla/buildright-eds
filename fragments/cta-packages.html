@@ -7,18 +7,30 @@
   <main>
     <section class="section" style="padding: 4rem 0; background: var(--color-surface);">
       <div class="container">
-        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-          <h2 style="margin-bottom: 1rem; font-size: 1.75rem; font-weight: 700;">Explore Our Remodeling Packages</h2>
-          <p style="margin-bottom: 2rem; color: var(--color-text-secondary); font-size: 1.125rem;">
-            Pre-configured material packages for kitchen, bathroom, and whole-home remodels. Choose your quality tier and customize to match your vision.
-          </p>
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="/pages/dashboard.html?view=packages" class="btn btn-cta btn-lg">
-              Browse Packages
-            </a>
-            <a href="/pages/catalog.html" class="btn btn-outline btn-lg">
-              View All Materials
-            </a>
+        <div style="display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; max-width: 1000px; margin: 0 auto;">
+          <!-- Left: Icon -->
+          <div style="text-align: center;">
+            <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--color-accent-500) 0%, var(--color-accent-600) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(249, 115, 22, 0.25);">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Right: Content -->
+          <div>
+            <h2 style="margin-bottom: 1rem; font-size: 1.75rem; font-weight: 700;">Explore Our Remodeling Packages</h2>
+            <p style="margin-bottom: 2rem; color: var(--color-text-secondary); font-size: 1.125rem; line-height: 1.6;">
+              Pre-configured material packages for kitchen, bathroom, and whole-home remodels. Choose your quality tier and customize to match your vision.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <a href="/pages/dashboard.html?view=packages" class="btn btn-cta btn-lg">
+                Browse Packages
+              </a>
+              <a href="/pages/catalog.html" class="btn btn-outline btn-lg">
+                View All Materials
+              </a>
+            </div>
           </div>
         </div>
       </div>
