@@ -323,6 +323,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(15, 91, 167, 0.1); /* --color-brand-500 with 10% opacity */
+  border: 2px solid var(--color-border);
   border-radius: 50%;
   transition: background-color var(--transition-base), transform var(--transition-base);
   padding: 0;
