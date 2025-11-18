@@ -30,14 +30,15 @@ export default async function decorate(block) {
   
   // Listen for login state changes (e.g., after login/logout)
   window.addEventListener('storage', (e) => {
-    if (e.key === 'buildright_logged_in') {
+    if (e.key === 'buildright_auth') {
       updateAuthenticatedElements();
     }
   });
   
   // Also check on custom login/logout events
-  window.addEventListener('userLoggedIn', updateAuthenticatedElements);
-  window.addEventListener('userLoggedOut', updateAuthenticatedElements);
+  window.addEventListener('auth:login', updateAuthenticatedElements);
+  window.addEventListener('auth:logout', updateAuthenticatedElements);
+  window.addEventListener('auth:signup-complete', updateAuthenticatedElements);
   
   // Use absolute URL to avoid path resolution issues with dynamic imports
   const basePath = window.BASE_PATH || '/';
