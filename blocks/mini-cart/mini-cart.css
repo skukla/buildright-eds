@@ -260,8 +260,8 @@
 }
 
 .mini-cart-item-remove:hover {
-  background-color: var(--color-error-50);
-  color: var(--color-error);
+  background-color: var(--color-negative-100);
+  color: var(--color-negative-500);
 }
 
 .mini-cart-item-remove svg {

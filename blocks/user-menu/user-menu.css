@@ -153,13 +153,13 @@
 }
 
 .user-menu-logout {
-  color: var(--color-danger, #dc2626);
+  color: var(--color-negative-500);
   margin-top: 0.5rem;
   border-radius: 8px;
 }
 
 .user-menu-logout:hover {
-  background-color: #FEF2F2;
+  background-color: var(--color-negative-100);
   border-color: transparent;
   transform: translateX(2px);
   box-shadow: 0 2px 4px rgba(220, 38, 38, 0.08);
@@ -167,6 +167,6 @@
 }
 
 .user-menu-logout svg {
-  color: var(--color-danger, #dc2626);
+  color: var(--color-negative-500);
 }
 

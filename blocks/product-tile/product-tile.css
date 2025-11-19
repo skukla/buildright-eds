@@ -1,20 +1,20 @@
 .product-tile {
   background: white;
-  border: 2px solid var(--color-neutral-200, #e5e7eb);
-  border-radius: var(--shape-border-radius-3, 0.5rem);
-  padding: var(--spacing-medium, 1rem);
+  border: 2px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-medium);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
 
 .product-tile:hover {
-  border-color: var(--color-brand-300, #93c5fd);
+  border-color: var(--color-brand-300);
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
 .product-tile.selected {
-  border-color: var(--color-brand-500, #3b82f6);
-  background: var(--color-brand-50, #eff6ff);
+  border-color: var(--color-brand-500);
+  background: var(--color-surface);
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
@@ -22,10 +22,10 @@
   position: relative;
   width: 100%;
   padding-top: 100%; /* Square aspect ratio */
-  background: var(--color-neutral-50, #f9fafb);
-  border-radius: var(--shape-border-radius-2, 0.375rem);
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-2);
   overflow: hidden;
-  margin-bottom: var(--spacing-small, 0.5rem);
+  margin-bottom: var(--spacing-small);
 }
 
 .product-tile-image img {
@@ -40,16 +40,15 @@
 
 .product-tile-inventory {
   position: absolute;
-  top: var(--spacing-small, 0.5rem);
-  right: var(--spacing-small, 0.5rem);
+  top: var(--spacing-small);
+  right: var(--spacing-small);
   display: flex;
   align-items: center;
   gap: 0.25rem;
   padding: 0.25rem 0.5rem;
   background: white;
-  border-radius: var(--shape-border-radius-2, 0.375rem);
-  font-size: var(--type-body-2-font-size, 0.875rem);
-  font-weight: var(--type-body-1-strong-font-weight, 600);
+  border-radius: var(--shape-border-radius-2);
+  font: var(--type-body-2-strong-font);
 }
 
 .product-tile-inventory .icon {
@@ -58,49 +57,47 @@
 }
 
 .product-tile-inventory.in-stock {
-  color: var(--color-positive-600, #059669);
+  color: var(--color-positive-600);
 }
 
 .product-tile-inventory.low-stock {
-  color: var(--color-warning-600, #d97706);
+  color: var(--color-warning-600);
 }
 
 .product-tile-inventory.out-of-stock {
-  color: var(--color-negative-600, #dc2626);
+  color: var(--color-negative-600);
 }
 
 .product-tile-title {
-  font-size: var(--type-body-1-font-size, 1rem);
-  font-weight: var(--type-body-1-strong-font-weight, 600);
-  color: var(--color-neutral-900, #111827);
+  font: var(--type-body-1-strong-font);
+  color: var(--color-text);
   margin: 0 0 0.25rem;
 }
 
 .product-tile-sku {
-  font-size: var(--type-body-2-font-size, 0.875rem);
-  color: var(--color-neutral-600, #4b5563);
-  margin: 0 0 var(--spacing-small, 0.5rem);
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-small);
 }
 
 .product-tile-price {
-  font-size: var(--type-heading-4-font-size, 1.25rem);
-  font-weight: var(--type-heading-4-font-weight, 600);
-  color: var(--color-brand-600, #2563eb);
-  margin-bottom: var(--spacing-small, 0.5rem);
+  font: var(--type-headline-2-font);
+  color: var(--color-brand-600);
+  margin-bottom: var(--spacing-small);
 }
 
 .product-tile-actions {
   display: flex;
-  gap: var(--spacing-small, 0.5rem);
+  gap: var(--spacing-small);
 }
 
 .product-tile-select-indicator {
   position: absolute;
-  top: var(--spacing-small, 0.5rem);
-  left: var(--spacing-small, 0.5rem);
+  top: var(--spacing-small);
+  left: var(--spacing-small);
   width: 32px;
   height: 32px;
-  background: var(--color-brand-500, #3b82f6);
+  background: var(--color-brand-500);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -120,4 +117,3 @@
   height: 20px;
   color: white;
 }
-

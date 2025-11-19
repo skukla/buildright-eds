@@ -1,12 +1,16 @@
 // Product grid block decoration
 import { parseCatalogPath } from '../../scripts/url-router.js';
 import { parseHTMLFragment, parseHTML, safeAddEventListener, cleanupEventListeners, cleanElementListeners } from '../../scripts/utils.js';
+import { acoService } from '../../scripts/aco-service.js';
+import { authService } from '../../scripts/auth.js';
+import { getPersona } from '../../scripts/persona-config.js';
 
 export default async function decorate(block) {
   // Ensure idempotent - if already decorated, cleanup first
   if (block._decorated) {
     cleanupEventListeners(window, 'projectFilterChanged');
     cleanupEventListeners(window, 'kitModeExited');
+    cleanupEventListeners(window, 'filtersChanged');
   }
   block._decorated = true;
   
@@ -14,26 +18,44 @@ export default async function decorate(block) {
   const countEl = block.querySelector('.product-count');
   if (!container) return;
 
-  // Import data functions
-  const { getProducts, getProductsByProjectType, getProductsByCategory, getPrice, getInventoryStatus, getPrimaryWarehouse, getProductImageUrl } = await import('../../scripts/data-mock.js');
+  // Store current filters and persona context
+  let currentFilters = {};
+  let userContext = null;
 
-  // Render products using HTML templates (reduces DOM manipulation)
-  // Track if rendering is in progress to prevent concurrent execution
+  // Show loading state
+  function showLoading() {
+    if (!container) return;
+    container.innerHTML = `
+      <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xlarge);">
+        <div class="loading-spinner"></div>
+        <p>Loading products...</p>
+      </div>
+    `;
+  }
+  
+  // Render products using product-tile blocks
   let isRendering = false;
-  async function renderProducts(products) {
+  async function renderProducts(products, pricing = {}) {
     if (!container) return;
     
     // Prevent concurrent execution
-    if (isRendering) {
-      return;
-    }
+    if (isRendering) return;
     isRendering = true;
     
     try {
       container.innerHTML = '';
 
       if (products.length === 0) {
-        const emptyMessage = parseHTML('<p class="text-center py-5" style="grid-column: 1 / -1;">No products found matching your criteria.</p>');
+        const emptyMessage = parseHTML(`
+          <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xxlarge);">
+            <p>No products found matching your criteria.</p>
+            <p style="margin-top: var(--spacing-medium);">
+              <button class="btn btn-secondary" onclick="window.dispatchEvent(new CustomEvent('filtersChanged', { detail: { reset: true }}))">
+                Clear Filters
+              </button>
+            </p>
+          </div>
+        `);
         container.appendChild(emptyMessage);
         if (countEl) countEl.textContent = '0 products';
         return;
@@ -43,180 +65,237 @@ export default async function decorate(block) {
         countEl.textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
       }
 
-      const primaryWarehouse = getPrimaryWarehouse();
       const basePath = window.BASE_PATH || '/';
       
-      // Check if kit mode is active (show "Add to Kit" if kit has items and user chose to edit)
-      const { getWizardState, hasKitItems } = await import('../../scripts/project-builder.js');
-      const wizardState = getWizardState();
-      const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
-      // Show "Add to Kit" buttons only if user explicitly chose to edit kit and kit has items
-      const hasActiveKit = resumeChoice === 'edit' && hasKitItems();
-
-      // Escape HTML helper
-      const escapeHtml = (text) => {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-      };
-
-      // Build HTML template for all products
-      const productsHTML = products.map(product => {
-        const price = getPrice(product, 1);
-        const status = getInventoryStatus(product, primaryWarehouse);
-        const inventory = product.inventory[primaryWarehouse] || 0;
-        const imageUrl = getProductImageUrl(product);
-        const imageStyle = imageUrl ? `style="background-image: url('${imageUrl.replace(/'/g, "\\'")}')"` : '';
+      // Create product cards using modern card layout
+      products.forEach(product => {
+        // Create product card wrapper with link
+        const card = document.createElement('a');
+        card.className = 'product-card';
+        card.href = `${basePath}pages/product-detail.html?sku=${product.sku}`;
         
-        const statusText = status === 'in-stock' ? `${inventory} available` : 
-                          status === 'low-stock' ? `Low stock (${inventory})` : 
-                          'Out of stock';
+        // Create image container with background image (same as home page)
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'product-card-image';
         
-        const actionButton = hasActiveKit 
-          ? `<button class="btn btn-primary btn-sm" data-action="add-to-kit" data-sku="${escapeHtml(product.sku)}">Add to Kit</button>`
-          : `<button class="btn btn-primary btn-sm" data-action="add-to-cart" data-sku="${escapeHtml(product.sku)}" data-product-name="${escapeHtml(product.name)}">Add to Cart</button>`;
-
-        const productUrl = `${basePath}pages/product-detail.html?sku=${escapeHtml(product.sku)}`;
+        // Only set background image if we have a valid image URL
+        const imageUrl = product.image || '';
+        if (imageUrl && imageUrl.trim() !== '' && imageUrl !== `${basePath}/images/products/placeholder.png`) {
+          imageContainer.style.backgroundImage = `url('${imageUrl}')`;
+          imageContainer.style.backgroundSize = 'cover';
+          imageContainer.style.backgroundPosition = 'center';
+          imageContainer.style.backgroundRepeat = 'no-repeat';
+        } else {
+          // Add placeholder class if no image
+          imageContainer.classList.add('product-card-image-placeholder');
+        }
         
-        return `
-          <a class="product-card" href="${productUrl}">
-          <div class="product-card-image bg-image" ${imageStyle}></div>
-            <div class="product-card-header">
-              <div class="product-card-sku">${escapeHtml(product.sku)}</div>
-              <div class="product-card-name">${escapeHtml(product.name)}</div>
-            </div>
-            <div class="product-card-body">
-              <div class="product-card-description">${escapeHtml(product.description || '')}</div>
-            </div>
-            <div class="product-card-footer">
-              <div class="product-card-pricing">
-                <span class="product-card-price">$${price.toFixed(2)}</span>
-                <span class="product-card-price-label">per unit</span>
-              </div>
-              <div class="product-card-inventory">
-                <span class="status ${status}">${escapeHtml(statusText)}</span>
-              </div>
-              <div class="product-card-actions">
-                ${actionButton}
-              </div>
-            </div>
-          </a>
-        `;
-      }).join('');
-
-      // Parse and append all products at once
-      const fragment = parseHTMLFragment(productsHTML);
-      container.appendChild(fragment);
-
-      // Setup event listeners for action buttons
-      container.querySelectorAll('[data-action="add-to-kit"]').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
+        // Create header section (SKU + Name)
+        const header = document.createElement('div');
+        header.className = 'product-card-header';
+        
+        const sku = document.createElement('div');
+        sku.className = 'product-card-sku';
+        sku.textContent = product.sku;
+        
+        const name = document.createElement('div');
+        name.className = 'product-card-name';
+        name.textContent = product.name;
+        
+        header.appendChild(sku);
+        header.appendChild(name);
+        
+        // Create body section (description - currently empty)
+        const body = document.createElement('div');
+        body.className = 'product-card-body';
+        
+        // Create footer section (pricing + actions)
+        const footer = document.createElement('div');
+        footer.className = 'product-card-footer';
+        
+        // Pricing section
+        const pricingContainer = document.createElement('div');
+        pricingContainer.className = 'product-card-pricing';
+        
+        const productPricing = pricing[product.sku];
+        if (productPricing) {
+          console.log('Product pricing for', product.sku, productPricing);
+          
+          // Show list price if customer has a discount
+          if (productPricing.savings > 0 && productPricing.retailPrice) {
+            const listPrice = document.createElement('div');
+            listPrice.className = 'product-card-list-price';
+            listPrice.textContent = `List: $${productPricing.retailPrice.toFixed(2)}`;
+            pricingContainer.appendChild(listPrice);
+          }
+          
+          const priceValue = document.createElement('div');
+          priceValue.className = 'product-card-price';
+          priceValue.textContent = `$${productPricing.unitPrice.toFixed(2)}`;
+          
+          const priceLabel = document.createElement('div');
+          priceLabel.className = 'product-card-price-label';
+          priceLabel.textContent = 'per unit';
+          
+          pricingContainer.appendChild(priceValue);
+          pricingContainer.appendChild(priceLabel);
+          
+          // Show savings if customer has discount
+          if (productPricing.savings > 0) {
+            console.log('Creating savings badge for', product.sku, productPricing.savingsPercent);
+            const savings = document.createElement('div');
+            savings.className = 'product-card-savings';
+            savings.textContent = `Save ${productPricing.savingsPercent}%`;
+            pricingContainer.appendChild(savings);
+            console.log('Savings badge appended', savings);
+          }
+        } else if (product.price) {
+          const priceValue = document.createElement('div');
+          priceValue.className = 'product-card-price';
+          priceValue.textContent = `$${product.price.toFixed(2)}`;
+          
+          const priceLabel = document.createElement('span');
+          priceLabel.className = 'product-card-price-label';
+          priceLabel.textContent = 'per unit';
+          
+          pricingContainer.appendChild(priceValue);
+          pricingContainer.appendChild(priceLabel);
+        }
+        
+        // Add to cart button
+        const actions = document.createElement('div');
+        actions.className = 'product-card-actions';
+        
+        const addToCartBtn = document.createElement('button');
+        addToCartBtn.className = 'btn btn-primary';
+        addToCartBtn.textContent = 'Add to Cart';
+        addToCartBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          const sku = btn.getAttribute('data-sku');
-          
-          // Check if item already exists before adding
-          const { getFullKit } = await import('../../scripts/project-builder.js');
-          const fullKit = getFullKit();
-          const itemExists = fullKit?.items?.some(item => item.sku === sku) || false;
-          
-          // Add item and update sidebar
-          const { addCustomItemToKit } = await import('../../scripts/project-builder.js');
-          await addCustomItemToKit(sku, 1, `Added from catalog`);
-          
-          // Update kit sidebar - scroll and highlight if existing, fade in if new
-          const { updateKitSidebar } = await import('../../scripts/kit-sidebar.js');
-          await updateKitSidebar(true, itemExists ? sku : null);
-        });
-      });
-
-      // Clean buttons before adding listeners (idempotent - safe even if called multiple times)
-      container.querySelectorAll('[data-action="add-to-cart"]').forEach(btn => {
-        // Clean any existing listeners by cloning the button
-        const cleanBtn = cleanElementListeners(btn);
-        cleanBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const sku = cleanBtn.getAttribute('data-sku');
-          const productName = cleanBtn.getAttribute('data-product-name') || 'Product';
           window.dispatchEvent(new CustomEvent('addToCart', {
-            detail: { sku, quantity: 1, productName }
+            detail: { sku: product.sku, quantity: 1, productName: product.name }
           }));
         });
+        actions.appendChild(addToCartBtn);
+        
+        footer.appendChild(pricingContainer);
+        footer.appendChild(actions);
+        
+        // Assemble the card
+        card.appendChild(imageContainer);
+        card.appendChild(header);
+        card.appendChild(body);
+        card.appendChild(footer);
+        
+        container.appendChild(card);
       });
     } finally {
-      // Always reset rendering flag, even if an error occurs
       isRendering = false;
     }
   }
 
   // Load and filter products
   async function loadProducts() {
+    showLoading();
+    
     try {
-      // Check if we're on the catalog page and parse the path
-      // First check if we were redirected via 404 (sessionStorage will have the original path)
-      const redirectPath = sessionStorage.getItem('spa_redirect_path');
-      const currentPath = redirectPath || window.location.pathname;
+      // Initialize auth to get user context
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
       
-      // Clear the redirect path now that we've used it
-      if (redirectPath) {
-        sessionStorage.removeItem('spa_redirect_path');
+      // Get user context for ACO filtering
+      if (currentUser && currentUser.persona) {
+        const persona = currentUser.persona;
+        userContext = {
+          userId: currentUser.id || currentUser.email,
+          customerGroup: persona.customerGroup,
+          personaId: persona.id,
+          attributes: persona.attributes
+        };
+        console.log('[Product Grid] User context:', userContext);
+      } else {
+        // Unauthenticated or no persona - use retail customer group
+        userContext = {
+          userId: null,
+          customerGroup: 'US-Retail',
+          personaId: null,
+          attributes: {}
+        };
+        console.log('[Product Grid] Using default customer group (US-Retail)');
       }
       
-      const catalogInfo = parseCatalogPath(currentPath);
+      // Parse URL params for category filtering
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get('category');
+      const policy = urlParams.get('policy'); // CCDM policy to apply
       
-      let products;
-
-      // Filter by category from path if on catalog page
-      if (catalogInfo.type === 'category') {
-        console.log(`Loading products for category: ${catalogInfo.value}`);
-        products = await getProductsByCategory(catalogInfo.value);
-      } else if (catalogInfo.type === 'division') {
-        console.log(`Loading products for division: ${catalogInfo.value}`);
-        // For now, divisions show all products (could be enhanced later)
-        products = await getProducts();
-      } else {
-        // Check for project type from localStorage as fallback
-        const projectType = localStorage.getItem('buildright_project_type') || '';
-      if (projectType) {
-        products = await getProductsByProjectType(projectType);
-      } else {
-        products = await getProducts();
-        }
+      // Build filters object
+      const filters = { ...currentFilters };
+      if (category) {
+        filters.category = category;
       }
-
-      if (!products || products.length === 0) {
-        console.warn('No products found');
-        if (container) {
-          const emptyMessage = parseHTML('<p class="text-center py-5" style="grid-column: 1 / -1;">No products found.</p>');
-          container.innerHTML = '';
-          container.appendChild(emptyMessage);
-        }
+      
+      // Query ACO service for products
+      console.log('[Product Grid] Fetching products:', { filters, policy, userContext });
+      const result = await acoService.getProducts({
+        filters,
+        userContext,
+        policy,
+        limit: 100,
+        offset: 0
+      });
+      
+      const products = result.products || [];
+      console.log(`[Product Grid] Loaded ${products.length} products`);
+      
+      if (products.length === 0) {
+        renderProducts([]);
         return;
       }
-
-      // If this is the featured products container, limit to 4
-      if (container.id === 'featured-products' || container.classList.contains('featured-products')) {
-        products = products.slice(0, 4);
+      
+      // Get pricing for all products
+      const productIds = products.map(p => p.sku);
+      const pricingResult = await acoService.getPricing({
+        productIds,
+        customerGroup: userContext.customerGroup,
+        quantity: 1
+      });
+      
+      console.log('[Product Grid] Got pricing for', Object.keys(pricingResult.pricing).length, 'products');
+      
+      // Render products with pricing
+      renderProducts(products, pricingResult.pricing);
+      
+      // Emit facets for filter sidebar
+      if (result.facets) {
+        window.dispatchEvent(new CustomEvent('facetsUpdated', {
+          detail: { facets: result.facets }
+        }));
       }
-
-      renderProducts(products);
+      
     } catch (error) {
-      console.error('Error loading products:', error);
-      if (container) {
-        const errorMessage = parseHTML('<p class="text-center py-5 text-error" style="grid-column: 1 / -1;">Error loading products. Please refresh the page.</p>');
-        container.innerHTML = '';
-        container.appendChild(errorMessage);
-      }
+      console.error('[Product Grid] Error loading products:', error);
+      container.innerHTML = `
+        <div class="error-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xxlarge);">
+          <h3>Error Loading Products</h3>
+          <p>${error.message || 'Failed to load products. Please try again.'}</p>
+          <button class="btn btn-primary" onclick="window.location.reload()">Reload Page</button>
+        </div>
+      `;
     }
   }
 
   // Listen for filter changes using safe listener management
-  // This ensures only one listener exists even if decorate() is called multiple times
-  safeAddEventListener(window, 'projectFilterChanged', loadProducts, 'product-grid-filter');
-  
-  // Listen for kit mode exit to update "Add to Kit" → "Add to Cart" buttons
-  safeAddEventListener(window, 'kitModeExited', loadProducts, 'product-grid-kit-exit');
+  safeAddEventListener(window, 'filtersChanged', (event) => {
+    if (event.detail?.reset) {
+      // Reset filters
+      currentFilters = {};
+    } else if (event.detail?.filters) {
+      // Update filters
+      currentFilters = event.detail.filters;
+    }
+    loadProducts();
+  }, 'product-grid-filters');
 
   // Initial load
   loadProducts();

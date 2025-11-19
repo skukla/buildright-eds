@@ -1,7 +1,7 @@
 .wizard-vertical-progress {
-  background: var(--color-neutral-50, #f9fafb);
-  border-right: 1px solid var(--color-neutral-200, #e5e7eb);
-  padding: var(--spacing-large, 1.5rem);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--spacing-large);
   min-height: 100vh;
   position: sticky;
   top: 0;
@@ -10,25 +10,25 @@
 .wizard-steps {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-medium, 1rem);
+  gap: var(--spacing-medium);
 }
 
 .wizard-step {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-small, 0.5rem);
+  gap: var(--spacing-small);
   cursor: pointer;
-  padding: var(--spacing-small, 0.5rem);
-  border-radius: var(--shape-border-radius-2, 0.375rem);
+  padding: var(--spacing-small);
+  border-radius: var(--shape-border-radius-2);
   transition: background 0.2s ease;
 }
 
 .wizard-step:hover {
-  background: var(--color-neutral-100, #f3f4f6);
+  background: var(--color-surface-hover);
 }
 
 .wizard-step.active {
-  background: var(--color-brand-50, #eff6ff);
+  background: var(--color-surface);
 }
 
 .wizard-step.completed {
@@ -55,15 +55,15 @@
 }
 
 .wizard-step-icon.pending {
-  color: var(--color-neutral-400, #9ca3af);
+  color: var(--color-text-disabled);
 }
 
 .wizard-step-icon.active {
-  color: var(--color-brand-500, #3b82f6);
+  color: var(--color-brand-500);
 }
 
 .wizard-step-icon.completed {
-  color: var(--color-positive-500, #10b981);
+  color: var(--color-positive-500);
 }
 
 .wizard-step-content {
@@ -71,15 +71,14 @@
 }
 
 .wizard-step-title {
-  font-size: var(--type-body-1-font-size, 1rem);
-  font-weight: var(--type-body-1-strong-font-weight, 600);
-  color: var(--color-neutral-900, #111827);
+  font: var(--type-body-1-strong-font);
+  color: var(--color-text);
   margin: 0;
 }
 
 .wizard-step-description {
-  font-size: var(--type-body-2-font-size, 0.875rem);
-  color: var(--color-neutral-600, #4b5563);
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
   margin: 0.25rem 0 0;
 }
 
@@ -89,7 +88,7 @@
     position: static;
     min-height: auto;
     border-right: none;
-    border-bottom: 1px solid var(--color-neutral-200, #e5e7eb);
+    border-bottom: 1px solid var(--color-border);
   }
   
   .wizard-steps {
@@ -107,4 +106,3 @@
     display: none;
   }
 }
-

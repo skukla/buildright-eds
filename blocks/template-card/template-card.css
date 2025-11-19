@@ -1,6 +1,6 @@
 .template-card {
   background: white;
-  border-radius: var(--shape-border-radius-3, 0.5rem);
+  border-radius: var(--shape-border-radius-3);
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -16,7 +16,7 @@
   position: relative;
   width: 100%;
   padding-top: 66.67%; /* 3:2 aspect ratio */
-  background: var(--color-neutral-100, #f3f4f6);
+  background: var(--color-surface-hover);
   overflow: hidden;
 }
 
@@ -30,51 +30,48 @@
 }
 
 .template-card-content {
-  padding: var(--spacing-medium, 1rem);
+  padding: var(--spacing-medium);
 }
 
 .template-card-title {
-  font-size: var(--type-heading-4-font-size, 1.25rem);
-  font-weight: var(--type-heading-4-font-weight, 600);
-  color: var(--color-neutral-900, #111827);
-  margin: 0 0 var(--spacing-small, 0.5rem);
+  font: var(--type-headline-2-font);
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-small);
 }
 
 .template-card-specs {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-small, 0.5rem);
-  margin-bottom: var(--spacing-medium, 1rem);
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-medium);
 }
 
 .template-spec {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  font-size: var(--type-body-2-font-size, 0.875rem);
-  color: var(--color-neutral-600, #4b5563);
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
 }
 
 .template-spec .icon {
   width: 16px;
   height: 16px;
-  color: var(--color-neutral-500, #6b7280);
+  color: var(--color-text-secondary);
 }
 
 .template-card-actions {
   display: flex;
-  gap: var(--spacing-small, 0.5rem);
+  gap: var(--spacing-small);
 }
 
 .template-card-badge {
   position: absolute;
-  top: var(--spacing-small, 0.5rem);
-  right: var(--spacing-small, 0.5rem);
-  background: var(--color-brand-500, #3b82f6);
+  top: var(--spacing-small);
+  right: var(--spacing-small);
+  background: var(--color-brand-500);
   color: white;
   padding: 0.25rem 0.75rem;
-  border-radius: var(--shape-border-radius-2, 0.375rem);
-  font-size: var(--type-body-2-font-size, 0.875rem);
-  font-weight: var(--type-body-1-strong-font-weight, 600);
+  border-radius: var(--shape-border-radius-2);
+  font: var(--type-body-2-strong-font);
 }
-
