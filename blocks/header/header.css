@@ -51,7 +51,7 @@ header .header {
   align-items: center;
   gap: var(--spacing-small);
   position: relative;
-  min-height: 36px; /* CLS prevention - matches header-top height */
+  /* min-height inherited from child .location-selector (40px) */
 }
 
 .location-label {
@@ -153,28 +153,33 @@ header .header {
 
 /* Location Dropdown Menu */
 .location-menu {
-  display: none;
-  position: fixed;
+  /* Adobe Best Practice: Pure CSS positioning, no JavaScript */
+  position: absolute;
+  top: 100%; /* Position directly below button, seamless connection */
+  left: 0; /* Align to left edge of location-selector-wrapper */
+  width: 100%; /* Match button width */
   background: white;
   border: 1px solid var(--color-border);
   border-top: none; /* No top border - connects to button */
-  /* CLS Prevention - positioned absolutely so it doesn't affect layout */
+  /* FOUC & CLS Prevention - hidden initially, positioned absolutely so it doesn't affect layout */
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s, visibility 0.2s;
+  transform: translateY(-10px);
+  transition: opacity var(--transition-base), 
+              visibility var(--transition-base),
+              transform var(--transition-base);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
   border-radius: 0 0 8px 8px; /* Larger radius for softer appearance */
   z-index: 10000;
   max-height: 400px;
   overflow-y: auto;
   box-sizing: border-box; /* Include border in width calculation */
-  /* Position set via JavaScript */
 }
 
 .location-menu.active {
-  display: block;
   opacity: 1;
   visibility: visible;
+  transform: translateY(0);
 }
 
 .location-menu-content {

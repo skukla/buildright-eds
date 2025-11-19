@@ -42,8 +42,8 @@ export function showCartNotification(productName, quantity = 1) {
     </button>
   `;
   
-  // Position notification near cart icon
-  positionNotification(notification);
+  // Adobe Best Practice: Positioning handled by pure CSS (top-right corner)
+  // No JavaScript positioning needed
   
   // Add to DOM
   document.body.appendChild(notification);
@@ -65,50 +65,14 @@ export function showCartNotification(productName, quantity = 1) {
     dismissNotification(notification);
   }, 2500);
   
-  // Reposition on window resize
-  const handleResize = () => positionNotification(notification);
-  window.addEventListener('resize', handleResize);
-  
-  // Clean up resize listener when notification is removed
-  notification.addEventListener('transitionend', (e) => {
-    if (e.propertyName === 'opacity' && !notification.classList.contains('active')) {
-      window.removeEventListener('resize', handleResize);
-    }
-  });
+  // Adobe Best Practice: No resize listener needed
+  // CSS positioning is viewport-independent
 }
 
 /**
- * Position notification relative to cart icon (to the right, not below)
+ * Adobe Best Practice: Position notification function removed
+ * Positioning now handled by pure CSS - see styles/components.css
  */
-function positionNotification(notification) {
-  const cartButton = document.querySelector('#cart-link-toggle');
-  
-  if (!cartButton) {
-    // Fallback to top-right if cart button not found
-    notification.style.top = '80px';
-    notification.style.right = '20px';
-    return;
-  }
-  
-  const rect = cartButton.getBoundingClientRect();
-  
-  // Position to the right of cart icon with 12px gap
-  // This prevents overlap with the mini cart dropdown that appears below
-  const leftPosition = rect.right + 12;
-  
-  // If notification would go off-screen right, position to left of cart instead
-  const notificationWidth = 280; // Approximate width from CSS
-  if (leftPosition + notificationWidth > window.innerWidth) {
-    notification.style.left = 'auto';
-    notification.style.right = `${window.innerWidth - rect.left + 12}px`;
-  } else {
-    notification.style.left = `${leftPosition}px`;
-    notification.style.right = 'auto';
-  }
-  
-  // Vertically align with top of cart icon
-  notification.style.top = `${rect.top}px`;
-}
 
 /**
  * Dismiss notification with animation

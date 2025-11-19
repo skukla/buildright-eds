@@ -222,19 +222,13 @@ export default async function decorate(block) {
         }
       }
       
-      positionMiniCart();
+      // CSS handles positioning automatically
     }
   }
 
-  // Position mini cart dropdown
-  function positionMiniCart() {
-    if (!miniCart || !cartLinkToggle) return;
-    
-    const rect = cartLinkToggle.getBoundingClientRect();
-    miniCart.style.top = `${rect.bottom + 8}px`;
-    miniCart.style.right = `${window.innerWidth - rect.right}px`;
-  }
-
+  // Adobe Best Practice: Mini-cart positioning now handled by pure CSS
+  // No JavaScript positioning needed - see mini-cart.css
+  
   // Setup cart link toggle (called after mini-cart is loaded)
   // Setup user menu toggle
   function setupUserMenuToggle() {
@@ -292,9 +286,8 @@ export default async function decorate(block) {
       }
     });
 
-    // Update position on scroll/resize
-    window.addEventListener('scroll', positionMiniCart, { passive: true });
-    window.addEventListener('resize', positionMiniCart);
+    // Adobe Best Practice: No scroll/resize listeners needed
+    // CSS positioning handles this automatically
   }
 
   // Listen for cart updates
@@ -446,17 +439,8 @@ export default async function decorate(block) {
     // Populate dropdown on load
     populateLocationDropdown();
     
-    // Update dropdown positioning
-    function positionDropdown() {
-      if (!locationMenu.classList.contains('active')) return;
-      
-      const rect = locationSelector.getBoundingClientRect();
-      
-      // Position dropdown below button - no gap, seamless connection
-      locationMenu.style.top = `${rect.bottom}px`;
-      locationMenu.style.left = `${rect.left}px`;
-      locationMenu.style.width = `${rect.width}px`; /* Exact width, not min-width */
-    }
+    // Adobe Best Practice: Location menu positioning now handled by pure CSS
+    // No JavaScript positioning needed - see header.css
     
     // Toggle dropdown on click
     locationSelector.addEventListener('click', (e) => {
@@ -465,10 +449,7 @@ export default async function decorate(block) {
       locationSelector.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       // Refresh dropdown content in case company changed
       populateLocationDropdown();
-      // Position dropdown after toggle
-      if (isActive) {
-        positionDropdown();
-      }
+      // CSS handles positioning automatically
     });
     
     // Handle location selection
@@ -530,19 +511,8 @@ export default async function decorate(block) {
       e.stopPropagation();
     }, { passive: false });
     
-    // Update position on scroll
-    window.addEventListener('scroll', () => {
-      if (locationMenu.classList.contains('active')) {
-        positionDropdown();
-      }
-    }, { passive: true });
-    
-    // Update position on resize
-    window.addEventListener('resize', () => {
-      if (locationMenu.classList.contains('active')) {
-        positionDropdown();
-      }
-    });
+    // Adobe Best Practice: No scroll/resize listeners needed for positioning
+    // CSS positioning handles this automatically
   }
 
   // Industry menu toggle

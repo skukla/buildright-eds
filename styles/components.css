@@ -1,5 +1,40 @@
 /* BuildRight Solutions - Component Styles */
 
+/* ========== Utility Classes ========== */
+/* Adobe Best Practice: CSS classes for show/hide instead of inline JavaScript */
+
+.hidden {
+  display: none !important;
+}
+
+.show-block {
+  display: block !important;
+}
+
+.show-flex {
+  display: flex !important;
+}
+
+.show-inline-block {
+  display: inline-block !important;
+}
+
+/* Body scroll lock utility */
+.no-scroll {
+  overflow: hidden;
+}
+
+/* Visibility utilities (for FOUC prevention) */
+.invisible {
+  visibility: hidden !important;
+}
+
+.visible {
+  visibility: visible !important;
+}
+
+/* ========== End Utility Classes ========== */
+
 /* Buttons */
 .btn {
   display: inline-block;
@@ -2056,7 +2091,10 @@
 
 /* Cart Notification */
 .cart-notification {
+  /* Adobe Best Practice: Pure CSS positioning, no JavaScript */
   position: fixed;
+  top: 80px; /* Below header */
+  right: 20px; /* Consistent right edge position */
   display: flex;
   align-items: center;
   gap: 0.75rem;

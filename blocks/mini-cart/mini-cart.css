@@ -1,7 +1,10 @@
 /* Mini Cart Block */
 
 .mini-cart {
-  position: fixed;
+  /* Adobe Best Practice: Pure CSS positioning, no JavaScript */
+  position: absolute;
+  top: calc(100% + 8px); /* 8px gap below cart button */
+  right: 0; /* Align to right edge of cart-link-wrapper */
   background: white;
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -14,9 +17,9 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: opacity var(--transition-normal), 
-              visibility var(--transition-normal),
-              transform var(--transition-normal);
+  transition: opacity var(--transition-base), 
+              visibility var(--transition-base),
+              transform var(--transition-base);
   overflow: hidden;
 }
 
@@ -313,7 +316,7 @@
 }
 
 .mini-cart-footer {
-  padding: 1.25rem 1.5rem;
+  padding: 1.5rem 1.5rem;
   background: linear-gradient(to top, #EBF4FB 0%, white 100%);
   border-top: 2px solid var(--color-border);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
@@ -327,7 +330,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .mini-cart-subtotal-label {
@@ -347,11 +350,28 @@
 
 .mini-cart-actions {
   display: flex;
-  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.mini-cart-view-cart-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-brand-500);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.mini-cart-view-cart-link:hover {
+  color: var(--color-brand-600);
+  text-decoration: underline;
 }
 
 .mini-cart-actions .btn {
-  flex: 1;
+  /* Checkout button takes natural width, not full width */
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 /* Bundle item styling */
