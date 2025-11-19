@@ -1,35 +1,13 @@
 // Utility Functions
 
-// Get URL parameter
+/**
+ * Get URL parameter value
+ * @param {string} name - Parameter name
+ * @returns {string|null} Parameter value or null
+ */
 function getUrlParameter(name) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
-}
-
-// Format currency
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(amount);
-}
-
-// Format number with commas
-function formatNumber(num) {
-  return new Intl.NumberFormat('en-US').format(num);
-}
-
-// Debounce function
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
 }
 
 // Get base URL for resolving relative paths - EDS-compatible approach
@@ -53,7 +31,11 @@ const getScriptBaseUrl = (() => {
   }
 })();
 
-// Load block HTML
+/**
+ * Load block HTML template
+ * @param {string} blockName - Name of the block to load
+ * @returns {Promise<string|null>} HTML content or null
+ */
 async function loadBlockHTML(blockName) {
   try {
     const blockPath = `${getScriptBaseUrl}blocks/${blockName}/${blockName}.html`;
@@ -63,40 +45,6 @@ async function loadBlockHTML(blockName) {
   } catch (error) {
     console.error(`Error loading block ${blockName}:`, error);
     return null;
-  }
-}
-
-// Load block CSS
-function loadBlockCSS(blockName) {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = `${getScriptBaseUrl}blocks/${blockName}/${blockName}.css`;
-  document.head.appendChild(link);
-}
-
-// Load block JS
-async function loadBlockJS(blockName) {
-  try {
-    // Use relative path from scripts/ directory
-    // From scripts/utils.js -> blocks/product-grid/product-grid.js
-    const blockPath = `../blocks/${blockName}/${blockName}.js`;
-    const module = await import(blockPath);
-    return module.default;
-  } catch (error) {
-    console.error(`Error loading block JS ${blockName}:`, error);
-    return null;
-  }
-}
-
-// Decorate block (EDS pattern)
-async function decorateBlock(blockElement, blockName) {
-  // Load CSS
-  loadBlockCSS(blockName);
-
-  // Load and execute JS
-  const decorate = await loadBlockJS(blockName);
-  if (decorate && typeof decorate === 'function') {
-    decorate(blockElement);
   }
 }
 
@@ -155,23 +103,6 @@ function safeAddEventListener(target, event, handler, key, options = {}) {
 }
 
 /**
- * Remove a safely tracked event listener
- * @param {EventTarget} target - Element or object
- * @param {string} event - Event name
- * @param {string} key - Unique key for the listener
- */
-function safeRemoveEventListener(target, event, key) {
-  const storageKey = `_safeListeners_${event}`;
-  if (!target[storageKey]) return;
-  
-  const listener = target[storageKey].get(key);
-  if (listener) {
-    target.removeEventListener(event, listener.handler, listener.options);
-    target[storageKey].delete(key);
-  }
-}
-
-/**
  * Remove all safely tracked listeners for a specific event
  * @param {EventTarget} target - Element or object
  * @param {string} event - Event name (optional, removes all if not provided)
@@ -197,35 +128,6 @@ function cleanupEventListeners(target, event = null) {
 }
 
 /**
- * Make a function idempotent - safe to call multiple times
- * Uses a flag to prevent re-execution until cleanup
- * @param {Function} fn - Function to make idempotent
- * @param {string} key - Unique key for tracking initialization state
- * @param {Function} cleanupFn - Optional cleanup function to call before re-initialization
- * @returns {Function} Idempotent version of the function
- */
-function makeIdempotent(fn, key = 'default', cleanupFn = null) {
-  return function(...args) {
-    const initKey = `_initialized_${key}`;
-    const context = this;
-    
-    // If already initialized and no cleanup, skip
-    if (context[initKey] && !cleanupFn) {
-      return;
-    }
-    
-    // If cleanup function provided, call it before re-initializing
-    if (context[initKey] && cleanupFn) {
-      cleanupFn.call(context, ...args);
-    }
-    
-    // Mark as initialized and execute
-    context[initKey] = true;
-    return fn.apply(context, args);
-  };
-}
-
-/**
  * Replace an element's event listeners by cloning it
  * Useful when you can't track individual listeners
  * @param {HTMLElement} element - Element to clean
@@ -238,22 +140,14 @@ function cleanElementListeners(element) {
   return newElement;
 }
 
-// ES6 exports
+// ES6 exports - only actively used utilities
 export {
   getUrlParameter,
-  formatCurrency,
-  formatNumber,
-  debounce,
   loadBlockHTML,
-  loadBlockCSS,
-  loadBlockJS,
-  decorateBlock,
   parseHTML,
   parseHTMLFragment,
   safeAddEventListener,
-  safeRemoveEventListener,
   cleanupEventListeners,
-  makeIdempotent,
   cleanElementListeners
 };
 
@@ -261,19 +155,11 @@ export {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     getUrlParameter,
-    formatCurrency,
-    formatNumber,
-    debounce,
     loadBlockHTML,
-    loadBlockCSS,
-    loadBlockJS,
-    decorateBlock,
     parseHTML,
     parseHTMLFragment,
     safeAddEventListener,
-    safeRemoveEventListener,
     cleanupEventListeners,
-    makeIdempotent,
     cleanElementListeners
   };
 }
