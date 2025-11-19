@@ -464,7 +464,7 @@ async function loadLazy(doc) {
     await loadBlocks(main);
   }
   
-  // Load header and footer (only for non-personalized pages)
+  // Load header and footer
   const header = doc.querySelector('header');
   const footer = doc.querySelector('footer');
   
@@ -472,14 +472,8 @@ async function loadLazy(doc) {
     await loadHeader(header);
   }
   
-  // Skip footer loading if it's already been loaded by fragments (has site-footer child)
-  // or if it's a footer element with site-footer class (from fragment injection)
-  const footerElement = footer && footer.classList && footer.classList.contains('site-footer') 
-    ? null 
-    : footer;
-    
-  if (footerElement && !footerElement.querySelector('.site-footer')) {
-    await loadFooter(footerElement);
+  if (footer && !footer.querySelector('.site-footer')) {
+    await loadFooter(footer);
   }
   
   // Initialize cart manager (BuildRight-specific)
@@ -525,9 +519,6 @@ async function loadPage() {
   loadDelayed();
 }
 
-// Only auto-start page load if this is the main script (not imported as a module)
-// When imported as a module for individual functions, don't run the full page load
-if (typeof window !== 'undefined' && !document.querySelector('script[type="module"]')?.textContent?.includes('personalizeHomepage')) {
-  loadPage();
-}
+// Start page load
+loadPage();
 
