@@ -28,8 +28,14 @@
     <section class="section section-compact">
       <div class="container">
         <div class="catalog-layout" id="catalog-layout">
+          <!-- Catalog Loading Overlay -->
+          <div class="catalog-loading-overlay" id="catalog-loading">
+            <div class="loading-spinner"></div>
+            <p style="margin-top: var(--spacing-medium); color: var(--color-text-secondary);">Loading catalog...</p>
+          </div>
+          
           <!-- Filters Sidebar -->
-          <aside id="filters-aside">
+          <aside id="filters-aside" style="visibility: hidden;">
             <div class="filters-sidebar" data-block-name="filters-sidebar" data-block-status="loading">
               <div>
                 <div>
@@ -147,7 +153,7 @@
           </aside>
 
           <!-- Product Grid -->
-          <div>
+          <div style="visibility: hidden;" id="product-grid-wrapper">
             <div class="product-grid" data-block-name="product-grid" data-block-status="loading">
               <div>
                 <div>
@@ -196,6 +202,28 @@
         filtersAside.style.display = filtersAside.style.display === 'none' ? 'block' : 'none';
       });
     }
+  </script>
+  
+  <script>
+    // Handle catalog loading overlay
+    (function() {
+      const overlay = document.getElementById('catalog-loading');
+      const filtersAside = document.getElementById('filters-aside');
+      const productGridWrapper = document.getElementById('product-grid-wrapper');
+      
+      // Listen for catalog loaded event
+      window.addEventListener('catalogLoaded', () => {
+        if (overlay) {
+          overlay.classList.add('hidden');
+        }
+        if (filtersAside) {
+          filtersAside.style.visibility = 'visible';
+        }
+        if (productGridWrapper) {
+          productGridWrapper.style.visibility = 'visible';
+        }
+      });
+    })();
   </script>
 </body>
 </html>

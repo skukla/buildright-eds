@@ -12,7 +12,7 @@ import { getProducts as loadMockProducts } from './data-mock.js';
 import { CUSTOMER_GROUPS } from './persona-config.js';
 
 // Simulate network latency for realistic loading states
-const MOCK_LATENCY_MS = 300;
+const MOCK_LATENCY_MS = 500;
 
 class MockACOService {
   constructor() {
@@ -74,10 +74,23 @@ class MockACOService {
     
     // Apply attribute filters
     Object.entries(filters).forEach(([attr, value]) => {
+      // Map UI filter keys to product attribute keys
+      const attrKey = attr === 'category' ? 'product_category' : attr;
+      
       filteredProducts = filteredProducts.filter(product => {
-        const attrValue = product.attributes?.[attr];
+        const attrValue = product.attributes?.[attrKey];
         
-        // Handle array attributes
+        // Handle array filter values (e.g., multiple categories selected)
+        if (Array.isArray(value)) {
+          // If the product attribute is also an array, check for intersection
+          if (Array.isArray(attrValue)) {
+            return value.some(v => attrValue.includes(v));
+          }
+          // If product attribute is single value, check if it's in the filter array
+          return value.includes(attrValue);
+        }
+        
+        // Handle array attributes (e.g., project_types)
         if (Array.isArray(attrValue)) {
           return attrValue.includes(value);
         }
@@ -390,14 +403,14 @@ class MockACOService {
     };
     
     products.forEach(product => {
-      // Category facet
-      if (product.category) {
-        facets.categories[product.category] = 
-          (facets.categories[product.category] || 0) + 1;
-      }
-      
       // Attribute facets
       if (product.attributes) {
+        // Category facet (from product_category attribute)
+        if (product.attributes.product_category) {
+          facets.categories[product.attributes.product_category] = 
+            (facets.categories[product.attributes.product_category] || 0) + 1;
+        }
+        
         const singleValueAttrs = [
           'construction_phase',
           'quality_tier',

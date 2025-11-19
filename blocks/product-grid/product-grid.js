@@ -24,13 +24,10 @@ export default async function decorate(block) {
 
   // Show loading state
   function showLoading() {
+    // Note: Catalog-level loading spinner is shown instead (if on catalog page)
+    // This function is kept for compatibility but does minimal work
     if (!container) return;
-    container.innerHTML = `
-      <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xlarge);">
-        <div class="loading-spinner loading-spinner-sm"></div>
-        <p style="margin-top: var(--spacing-medium);">Loading products...</p>
-      </div>
-    `;
+    container.innerHTML = ''; // Clear any existing content
   }
   
   // Render products using product-tile blocks
@@ -276,6 +273,9 @@ export default async function decorate(block) {
           detail: { facets: result.facets }
         }));
       }
+      
+      // Emit catalog loaded event (for catalog page loading overlay)
+      window.dispatchEvent(new CustomEvent('catalogLoaded'));
       
     } catch (error) {
       console.error('[Product Grid] Error loading products:', error);
