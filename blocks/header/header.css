@@ -29,6 +29,7 @@ header .header {
   gap: var(--spacing-xsmall);
   position: relative;
   flex-shrink: 0;
+  margin-left: var(--spacing-medium);
 }
 
 .location-icon-prefix {
@@ -255,7 +256,7 @@ header .header {
 .header-main-content {
   display: grid;
   grid-template-columns: auto auto 1fr auto;
-  gap: var(--spacing-large);
+  gap: var(--spacing-xlarge);
   align-items: center;
   max-width: var(--container-max-width);
   margin: 0 auto;
