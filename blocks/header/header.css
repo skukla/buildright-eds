@@ -16,27 +16,45 @@ header .header {
   z-index: 100;
 }
 
+/* Top Utility Bar */
+.header-top {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.6875rem 0; /* 11px - adjusted for 63px total height */
+  font: var(--type-body-2-default-font);
+  min-height: 40px;
+}
+
+/* CLS Prevention - Location selector */
+.location-selector {
+  min-height: 40px;
+  min-width: 280px;
+}
+
 /* CLS Prevention - Active nav state */
 .nav-link.active,
 .nav-link[aria-current="page"] {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Location in Main Header (Option A) */
+.header-top-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-horizontal);
+}
+
 .header-location {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xsmall);
+  gap: var(--spacing-small);
   position: relative;
-  flex-shrink: 0;
-  margin-left: var(--spacing-medium);
 }
 
-.location-icon-prefix {
-  display: flex;
-  align-items: center;
-  color: var(--color-brand-500);
-  flex-shrink: 0;
+.location-label {
+  color: var(--color-text-secondary);
 }
 
 .location-selector-wrapper {
@@ -61,46 +79,49 @@ header .header {
 
 
 .location-selector {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  font-weight: 500;
+  background: none;
+  border: 1px solid transparent; /* Reserve border space to prevent layout shift on hover */
+  border-bottom: none; /* No bottom border - prevents flash when dropdown closes */
+  color: var(--color-brand-500);
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: var(--spacing-small);
-  padding: var(--spacing-small) var(--spacing-medium);
+  gap: var(--spacing-xsmall);
+  padding: var(--spacing-small) var(--spacing-medium); /* Proportional to text size (8px x 16px) */
   font: var(--type-body-2-default-font);
-  text-decoration: none !important;
-  transition: all 0.2s ease;
+  text-decoration: none !important; /* Prevent underline flash on hover */
+  transition: box-shadow 0.05s ease, border-radius 0.05s ease, border-color 0.05s ease; /* Tiny transition for smooth feel */
   position: relative;
   z-index: 10001;
-  border-radius: 6px;
-  white-space: nowrap;
-  max-width: 280px;
+  border-radius: 2px; /* Minimal rounding - industrial/sharp */
 }
 
-/* Hover state */
+/* Hover state - raised button, stays grey, slightly rounder corners */
 .location-selector:hover,
 .location-selector:focus,
 .location-selector:active {
-  text-decoration: none !important;
+  text-decoration: none !important; /* Prevent underline flash in all states */
 }
 
 .location-selector:hover {
-  background-color: white;
-  border-color: var(--color-brand-500);
-  box-shadow: 0 2px 8px rgba(15, 91, 167, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 4px; /* Slightly rounder on hover */
+  border-top: 1px solid rgba(0, 0, 0, 0.12); /* Prominent top outline for more draw */
+  border-left: 1px solid rgba(0, 0, 0, 0.08); /* Subtle side outline */
+  border-right: 1px solid rgba(0, 0, 0, 0.08); /* Subtle side outline */
+  /* No bottom border - seamless connection to hint below */
 }
 
-/* Active/clicked state - connects to dropdown */
+/* Active/clicked state - white background, connects seamlessly to dropdown */
 .location-selector[aria-expanded="true"] {
   background-color: white;
-  border-color: var(--color-brand-500);
-  color: var(--color-text);
-  border-radius: 6px 6px 0 0;
-  border-bottom: none;
-  box-shadow: 0 -2px 8px rgba(15, 91, 167, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) inset;
+  color: var(--color-brand-600);
+  border-radius: 4px 4px 0 0; /* Match hover rounding, no bottom radius - seamless connection */
+  border: 1px solid var(--color-border); /* Match dropdown border */
+  border-bottom: none; /* No bottom border - seamless connection */
+  padding: var(--spacing-small) var(--spacing-medium); /* Same padding as default - border already accounted for */
 }
 
 .location-name {
@@ -134,18 +155,18 @@ header .header {
   display: none;
   position: fixed;
   background: white;
-  border: 1px solid var(--color-brand-500);
-  border-top: none;
+  border: 1px solid var(--color-border);
+  border-top: none; /* No top border - connects to button */
+  /* CLS Prevention - positioned absolutely so it doesn't affect layout */
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s, visibility 0.2s;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 8px 8px; /* Larger radius for softer appearance */
   z-index: 10000;
   max-height: 400px;
   overflow-y: auto;
-  box-sizing: border-box;
-  min-width: 320px;
+  box-sizing: border-box; /* Include border in width calculation */
   /* Position set via JavaScript */
 }
 
@@ -250,13 +271,12 @@ header .header {
 /* Main Header */
 .header-main {
   padding: var(--spacing-medium) 0;
-  border-bottom: 1px solid var(--color-border);
 }
 
 .header-main-content {
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
-  gap: var(--spacing-xlarge);
+  grid-template-columns: auto 1fr auto;
+  gap: var(--spacing-large);
   align-items: center;
   max-width: var(--container-max-width);
   margin: 0 auto;
