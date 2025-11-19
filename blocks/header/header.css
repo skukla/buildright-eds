@@ -16,51 +16,55 @@ header .header {
   z-index: 100;
 }
 
-/* Top Utility Bar */
-.header-top {
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  padding: 0.6875rem 0; /* 11px - adjusted for 63px total height */
-  font: var(--type-body-2-default-font);
-  min-height: 40px;
-}
-
-/* CLS Prevention - Location selector */
-.location-selector {
-  min-height: 40px;
-  min-width: 280px;
-}
-
 /* CLS Prevention - Active nav state */
 .nav-link.active,
 .nav-link[aria-current="page"] {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.header-top-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 0 var(--section-padding-horizontal);
+/* Location in Header Actions (Option B) */
+.header-location-wrapper {
+  position: relative;
 }
 
-.header-location {
+.location-link {
   display: flex;
   align-items: center;
   gap: var(--spacing-small);
-  position: relative;
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  padding: var(--spacing-small) var(--spacing-3);
+  border-radius: var(--shape-border-radius-3);
+  transition: background-color var(--transition-fast);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.location-link:hover {
+  background-color: var(--color-surface);
+}
+
+.location-icon {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-brand-500);
 }
 
 .location-label {
-  color: var(--color-text-secondary);
+  font: var(--type-body-2-default-font);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.location-selector-wrapper {
-  position: relative;
-  display: inline-block;
-  z-index: 1;
+.location-name {
+  font-weight: 500;
+  color: var(--color-text);
 }
 
 /* Visual hint at top of dropdown area on hover */
@@ -153,21 +157,21 @@ header .header {
 /* Location Dropdown Menu */
 .location-menu {
   display: none;
-  position: fixed;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
   background: white;
   border: 1px solid var(--color-border);
-  border-top: none; /* No top border - connects to button */
-  /* CLS Prevention - positioned absolutely so it doesn't affect layout */
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s, visibility 0.2s;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
-  border-radius: 0 0 8px 8px; /* Larger radius for softer appearance */
+  border-radius: 8px;
   z-index: 10000;
   max-height: 400px;
   overflow-y: auto;
-  box-sizing: border-box; /* Include border in width calculation */
-  /* Position set via JavaScript */
+  box-sizing: border-box;
+  min-width: 280px;
 }
 
 .location-menu.active {
