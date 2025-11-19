@@ -17,11 +17,12 @@ export default async function decorate(block) {
     
     const loggedIn = authService.isAuthenticated();
     
-    // Find location wrapper in header actions
-    const locationSection = block.querySelector('#header-location');
+    // Find location section - try ID first, then fallback to class
+    const locationSection = block.querySelector('#header-location') || 
+                           block.querySelector('.header-location');
       
     if (loggedIn) {
-      if (locationSection) locationSection.style.display = 'block';
+      if (locationSection) locationSection.style.display = '';
     } else {
       if (locationSection) locationSection.style.display = 'none';
     }
@@ -371,10 +372,10 @@ export default async function decorate(block) {
     }
     const location = company.locations.find(loc => loc.id === currentLocationId) || company.locations[0];
     
-    // Set display - just city name for header actions
+    // Set display
     const locationNameEl = block.querySelector('.location-name');
     if (locationNameEl) {
-      locationNameEl.textContent = location.city;
+      locationNameEl.textContent = `${company.name} - ${location.city}, ${location.state}`;
     }
     
     // Ensure context is saved
@@ -490,10 +491,10 @@ export default async function decorate(block) {
           context.region = location.region;
           localStorage.setItem('buildright_customer_context', JSON.stringify(context));
           
-          // Update display - just city name for header actions
+          // Update display
           const locationNameEl = locationSelector.querySelector('.location-name');
           if (locationNameEl) {
-            locationNameEl.textContent = location.city;
+            locationNameEl.textContent = `${company.name} - ${location.city}, ${location.state}`;
           }
           
           // Close dropdown

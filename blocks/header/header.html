@@ -1,4 +1,27 @@
 <div class="header">
+  <!-- Top Utility Bar -->
+  <div class="header-top">
+    <div class="header-top-content">
+      <div class="header-location" id="header-location" style="display: none;">
+        <span class="location-label">You're Shopping</span>
+        <div class="location-selector-wrapper">
+          <button class="location-selector" id="location-selector">
+            <span class="location-name">Premium Commercial Builders - Los Angeles, CA</span>
+            <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <!-- Location Dropdown -->
+          <div class="location-menu" id="location-menu">
+            <div class="location-menu-content">
+              <ul class="location-menu-list" id="location-menu-list">
+                <!-- Locations will be populated by JavaScript -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main Header -->
   <div class="header-main">
     <div class="header-main-content">
@@ -18,29 +41,6 @@
       </div>
 
       <div class="header-actions">
-        <!-- Location Selector (Option B: In header actions, left of Account) -->
-        <div class="header-location-wrapper" id="header-location" style="display: none;">
-          <button class="location-link" id="location-selector" aria-expanded="false" aria-label="Location selector">
-            <span class="location-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-            </span>
-            <span class="location-label">
-              <span class="location-name">Los Angeles</span>
-            </span>
-          </button>
-          <!-- Location Dropdown -->
-          <div class="location-menu" id="location-menu">
-            <div class="location-menu-content">
-              <ul class="location-menu-list" id="location-menu-list">
-                <!-- Locations will be populated by JavaScript -->
-              </ul>
-            </div>
-          </div>
-        </div>
-        
         <div class="user-menu-wrapper">
           <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
             <span class="user-icon">
