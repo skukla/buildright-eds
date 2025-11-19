@@ -27,8 +27,8 @@ export default async function decorate(block) {
     if (!container) return;
     container.innerHTML = `
       <div class="loading-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xlarge);">
-        <div class="loading-spinner"></div>
-        <p>Loading products...</p>
+        <div class="loading-spinner loading-spinner-sm"></div>
+        <p style="margin-top: var(--spacing-medium);">Loading products...</p>
       </div>
     `;
   }

@@ -356,7 +356,7 @@ function showSuccessMessage() {
       <h2>Welcome to BuildRight, ${formData.firstname}!</h2>
       <p>Your account has been created successfully.</p>
       <p class="redirect-message">Redirecting you to your personalized dashboard...</p>
-      <div class="loading-spinner"></div>
+      <div class="loading-spinner loading-spinner-sm"></div>
     </div>
   `;
 }
