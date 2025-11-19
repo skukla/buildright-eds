@@ -372,10 +372,10 @@ export default async function decorate(block) {
     }
     const location = company.locations.find(loc => loc.id === currentLocationId) || company.locations[0];
     
-    // Set display
+    // Set display - compact format for main header
     const locationNameEl = block.querySelector('.location-name');
     if (locationNameEl) {
-      locationNameEl.textContent = `${company.name} - ${location.city}, ${location.state}`;
+      locationNameEl.textContent = `${location.city}, ${location.state}`;
     }
     
     // Ensure context is saved
@@ -491,10 +491,10 @@ export default async function decorate(block) {
           context.region = location.region;
           localStorage.setItem('buildright_customer_context', JSON.stringify(context));
           
-          // Update display
+          // Update display - compact format for main header
           const locationNameEl = locationSelector.querySelector('.location-name');
           if (locationNameEl) {
-            locationNameEl.textContent = `${company.name} - ${location.city}, ${location.state}`;
+            locationNameEl.textContent = `${location.city}, ${location.state}`;
           }
           
           // Close dropdown
