@@ -51,6 +51,7 @@ header .header {
   align-items: center;
   gap: var(--spacing-small);
   position: relative;
+  min-height: 40px; /* CLS prevention - reserve space even when hidden */
 }
 
 .location-label {

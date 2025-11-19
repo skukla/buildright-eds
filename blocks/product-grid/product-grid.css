@@ -52,13 +52,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--spacing-large);
-  min-height: 400px; /* CLS prevention */
+  min-height: 1200px; /* CLS prevention - accommodates typical catalog product count */
 }
 
 /* Featured products - single row of 4 cards */
 .products-container.featured-products {
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-medium);
+  min-height: 400px; /* Smaller min-height for single row */
 }
 
 .product-card {

@@ -22,9 +22,9 @@ export default async function decorate(block) {
                            block.querySelector('.header-location');
       
     if (loggedIn) {
-      if (locationSection) locationSection.style.display = '';
+      if (locationSection) locationSection.style.visibility = 'visible';
     } else {
-      if (locationSection) locationSection.style.display = 'none';
+      if (locationSection) locationSection.style.visibility = 'hidden';
     }
   }
   
