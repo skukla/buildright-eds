@@ -77,7 +77,7 @@ header .header {
   z-index: 10001;
   border-radius: 6px;
   white-space: nowrap;
-  min-width: 180px;
+  max-width: 280px;
 }
 
 /* Hover state */
