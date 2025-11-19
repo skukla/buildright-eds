@@ -27,6 +27,12 @@ header .header {
   position: relative;
 }
 
+/* Reserve space even when hidden to prevent layout shift */
+.header-location-wrapper[style*="display: none"] {
+  visibility: hidden;
+  display: block !important;
+}
+
 .location-link {
   display: flex;
   align-items: center;
@@ -347,6 +353,7 @@ header .header {
   align-items: center;
   gap: var(--spacing-3);
   white-space: nowrap;
+  min-width: 0; /* Prevent flex shrinking */
 }
 
 .header-action-link {
