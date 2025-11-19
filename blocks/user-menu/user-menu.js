@@ -24,8 +24,8 @@ export default async function decorate(block) {
     const loggedIn = authService.isAuthenticated();
     
     if (loggedIn) {
-      loggedOutState.style.display = 'none';
-      loggedInState.style.display = 'block';
+      loggedOutState.classList.add('hidden');
+      loggedInState.classList.remove('hidden');
       
       // Update user info
       const user = authService.getCurrentUser();
@@ -44,8 +44,8 @@ export default async function decorate(block) {
       block.querySelector('.user-name').textContent = userName;
       block.querySelector('.user-company').textContent = companyName;
     } else {
-      loggedOutState.style.display = 'block';
-      loggedInState.style.display = 'none';
+      loggedOutState.classList.remove('hidden');
+      loggedInState.classList.add('hidden');
     }
   }
 

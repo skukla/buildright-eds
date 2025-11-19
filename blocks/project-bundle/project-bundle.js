@@ -90,7 +90,11 @@ export default async function decorate(block) {
       bundleToggle.setAttribute('aria-expanded', !isExpanded);
       
       if (bundleItemsContainer) {
-        bundleItemsContainer.style.display = isExpanded ? 'none' : 'flex';
+        if (isExpanded) {
+          bundleItemsContainer.classList.add('hidden');
+        } else {
+          bundleItemsContainer.classList.remove('hidden');
+        }
       }
     });
   }

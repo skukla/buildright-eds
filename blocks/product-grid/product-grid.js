@@ -24,8 +24,8 @@ export default async function decorate(block) {
 
   // Show loading state
   function showLoading() {
-    // Note: Catalog-level loading spinner is shown instead (if on catalog page)
-    // This function is kept for compatibility but does minimal work
+    // Show catalog-level loading overlay (if on catalog page)
+    window.dispatchEvent(new CustomEvent('catalogLoading'));
     if (!container) return;
     container.innerHTML = ''; // Clear any existing content
   }
@@ -140,7 +140,7 @@ export default async function decorate(block) {
           
           pricingContainer.appendChild(priceValue);
           pricingContainer.appendChild(priceLabel);
-          
+
           // Show savings if customer has discount
           if (productPricing.savings > 0) {
             console.log('Creating savings badge for', product.sku, productPricing.savingsPercent);
@@ -253,7 +253,7 @@ export default async function decorate(block) {
         renderProducts([]);
         return;
       }
-      
+
       // Get pricing for all products
       const productIds = products.map(p => p.sku);
       const pricingResult = await acoService.getPricing({
@@ -273,7 +273,7 @@ export default async function decorate(block) {
           detail: { facets: result.facets }
         }));
       }
-      
+
       // Emit catalog loaded event (for catalog page loading overlay)
       window.dispatchEvent(new CustomEvent('catalogLoaded'));
       

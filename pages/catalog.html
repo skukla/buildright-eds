@@ -224,8 +224,26 @@
       const overlay = document.getElementById('catalog-loading');
       const filtersAside = document.getElementById('filters-aside');
       const productGridWrapper = document.getElementById('product-grid-wrapper');
+      const productCount = document.querySelector('.product-count');
       
-      // Listen for catalog loaded event
+      // Listen for catalog loading event (show spinner, hide content)
+      window.addEventListener('catalogLoading', () => {
+        if (overlay) {
+          overlay.classList.remove('hidden');
+        }
+        // Hide filters, products, and count during reload
+        if (filtersAside) {
+          filtersAside.style.visibility = 'hidden';
+        }
+        if (productGridWrapper) {
+          productGridWrapper.style.visibility = 'hidden';
+        }
+        if (productCount) {
+          productCount.style.visibility = 'hidden';
+        }
+      });
+      
+      // Listen for catalog loaded event (hide spinner, show content)
       window.addEventListener('catalogLoaded', () => {
         if (overlay) {
           overlay.classList.add('hidden');
@@ -236,6 +254,7 @@
         if (productGridWrapper) {
           productGridWrapper.style.visibility = 'visible';
         }
+        // Product count visibility is managed by product-grid.js
       });
     })();
   </script>

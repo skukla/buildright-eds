@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Check Auth</title></head>
+<body>
+<script>
+const persona = localStorage.getItem('currentPersona');
+const auth = localStorage.getItem('buildright_auth');
+console.log('currentPersona:', persona);
+console.log('buildright_auth:', auth);
+if (persona) {
+  document.write('<h1>Current Persona: ' + persona + '</h1>');
+}
+if (auth) {
+  document.write('<h1>Auth Data: ' + auth + '</h1>');
+}
+</script>
+</body>
+</html>

@@ -33,7 +33,7 @@ export default async function decorate(block) {
       // Handle image load error - show placeholder
       mainImageEl.addEventListener('error', () => {
         mainImageEl.src = '';
-        mainImageEl.style.display = 'none';
+        mainImageEl.classList.add('hidden');
         const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
         if (wrapper) {
           wrapper.classList.add('product-gallery-placeholder', 'image-placeholder-pattern');
@@ -41,7 +41,7 @@ export default async function decorate(block) {
       });
     } else {
       // No image - show CSS placeholder
-      mainImageEl.style.display = 'none';
+      mainImageEl.classList.add('hidden');
       const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
       if (wrapper) {
         wrapper.classList.add('product-gallery-placeholder');
@@ -63,7 +63,7 @@ export default async function decorate(block) {
       
       // Handle image load error - show placeholder
       img.addEventListener('error', () => {
-        img.style.display = 'none';
+        img.classList.add('hidden');
         thumbnail.classList.add('product-gallery-thumbnail-placeholder', 'image-placeholder-pattern');
       });
       
@@ -76,10 +76,10 @@ export default async function decorate(block) {
         }
         
         // Update main image
-        if (mainImageEl && img.src && img.style.display !== 'none') {
+        if (mainImageEl && img.src && !img.classList.contains('hidden')) {
           mainImageEl.src = imgUrl;
           mainImageEl.alt = img.alt;
-          mainImageEl.style.display = 'block';
+          mainImageEl.classList.remove('hidden');
           
           // Remove placeholder class from wrapper if it exists
           const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
@@ -99,14 +99,14 @@ export default async function decorate(block) {
     });
   } else if (thumbnailsContainer && images.length === 1) {
     // Hide thumbnails if only one image
-    thumbnailsContainer.style.display = 'none';
+    thumbnailsContainer.classList.add('hidden');
   }
 
   // Zoom button click - open lightbox
   if (zoomBtn && mainImageEl) {
     zoomBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (mainImageEl.src && mainImageEl.style.display !== 'none') {
+      if (mainImageEl.src && !mainImageEl.classList.contains('hidden')) {
         openLightbox(mainImageEl.src, mainImageEl.alt);
       }
     });
@@ -115,7 +115,7 @@ export default async function decorate(block) {
   // Main image click - open lightbox (only if image exists)
   if (mainImageEl) {
     mainImageEl.addEventListener('click', () => {
-      if (mainImageEl.src && mainImageEl.style.display !== 'none') {
+      if (mainImageEl.src && !mainImageEl.classList.contains('hidden')) {
         openLightbox(mainImageEl.src, mainImageEl.alt);
       }
     });
@@ -157,14 +157,14 @@ export default async function decorate(block) {
       lightboxImage.src = imageSrc;
       lightboxImage.alt = imageAlt;
       lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('no-scroll');
     }
   }
 
   function closeLightbox() {
     if (lightbox) {
       lightbox.classList.remove('active');
-      document.body.style.overflow = '';
+      document.body.classList.remove('no-scroll');
     }
   }
 }

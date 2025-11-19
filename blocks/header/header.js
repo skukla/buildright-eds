@@ -228,7 +228,7 @@ export default async function decorate(block) {
 
   // Adobe Best Practice: Mini-cart positioning now handled by pure CSS
   // No JavaScript positioning needed - see mini-cart.css
-  
+
   // Setup cart link toggle (called after mini-cart is loaded)
   // Setup user menu toggle
   function setupUserMenuToggle() {

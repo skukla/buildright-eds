@@ -44,12 +44,12 @@ export default async function decorate(block) {
     // Hide volume pricing section for base pricing (no volume discounts)
     if (tier === 'base' && typeof tierPricing === 'number') {
       if (volumePricingSection) {
-        volumePricingSection.style.display = 'none';
+        volumePricingSection.classList.add('hidden');
       }
       return; // Don't populate the table
     } else {
       if (volumePricingSection) {
-        volumePricingSection.style.display = 'block';
+        volumePricingSection.classList.remove('hidden');
       }
     }
     

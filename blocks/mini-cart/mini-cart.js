@@ -87,13 +87,13 @@ export default async function decorate(block) {
       // Show empty state or items
       if (cart.length === 0) {
         block.classList.add('mini-cart-empty-state');
-        if (miniCartItems) miniCartItems.style.display = 'none';
-        if (miniCartEmpty) miniCartEmpty.style.display = 'block';
+        if (miniCartItems) miniCartItems.classList.add('hidden');
+        if (miniCartEmpty) miniCartEmpty.classList.remove('hidden');
       } else {
         block.classList.remove('mini-cart-empty-state');
-        if (miniCartEmpty) miniCartEmpty.style.display = 'none';
+        if (miniCartEmpty) miniCartEmpty.classList.add('hidden');
         if (miniCartItems) {
-          miniCartItems.style.display = 'block';
+          miniCartItems.classList.remove('hidden');
           
           // Clear existing items completely
           while (miniCartItems.firstChild) {
@@ -204,7 +204,7 @@ export default async function decorate(block) {
     return `
       <a href="${basePath}pages/product-detail.html?sku=${item.sku}" class="mini-cart-item mini-cart-item-link" data-sku="${item.sku}">
         <div class="mini-cart-item-image ${!hasImage ? 'mini-cart-item-image-placeholder image-placeholder-pattern' : ''}">
-          ${hasImage ? `<img src="${imageUrl}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.classList.add('mini-cart-item-image-placeholder', 'image-placeholder-pattern'); this.style.display='none';">` : ''}
+          ${hasImage ? `<img src="${imageUrl}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.classList.add('mini-cart-item-image-placeholder', 'image-placeholder-pattern'); this.classList.add('hidden');">` : ''}
         </div>
         <div class="mini-cart-item-info">
           <div class="mini-cart-item-header-row">
