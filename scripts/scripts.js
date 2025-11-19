@@ -4,6 +4,23 @@
  */
 
 /**
+ * Preload critical data synchronously to prevent FOUC/layout shifts
+ * This runs immediately before any blocks load
+ */
+(function preloadCriticalData() {
+  // Preload cart count
+  try {
+    const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+    window.__INITIAL_CART_COUNT__ = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+  } catch (e) {
+    window.__INITIAL_CART_COUNT__ = 0;
+  }
+  
+  // Preload location
+  window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
+})();
+
+/**
  * Setup base tag for path resolution (GitHub Pages + localhost support)
  */
 function setupBasePath() {

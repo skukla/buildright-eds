@@ -3,18 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Load critical data synchronously to prevent layout shift -->
-  <script>
-    window.__INITIAL_CART_COUNT__ = (() => {
-      try {
-        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
-        return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-      } catch (e) {
-        return 0;
-      }
-    })();
-    window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
-  </script>
   <title>Product Catalog - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
@@ -168,7 +156,7 @@
                       <button class="btn btn-outline btn-sm" id="mobile-filter-toggle">Filters</button>
                       <h2>Products</h2>
                     </div>
-                    <div class="product-count">0 products</div>
+                    <div class="product-count" style="visibility: hidden;">0 products</div>
                   </div>
                   <div class="products-container">
                     <!-- Products will be populated by JavaScript -->

@@ -686,4 +686,7 @@ export default async function decorate(block) {
     const { productName, quantity } = e.detail;
     showCartNotification(productName, quantity);
   });
+  
+  // Mark header as loaded to prevent FOUC
+  document.body.classList.add('header-loaded');
 }

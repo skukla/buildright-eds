@@ -57,12 +57,16 @@ export default async function decorate(block) {
           </div>
         `);
         container.appendChild(emptyMessage);
-        if (countEl) countEl.textContent = '0 products';
+        if (countEl) {
+          countEl.textContent = '0 products';
+          countEl.style.visibility = 'visible';
+        }
         return;
       }
 
       if (countEl) {
         countEl.textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
+        countEl.style.visibility = 'visible';
       }
 
       const basePath = window.BASE_PATH || '/';
