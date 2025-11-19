@@ -345,6 +345,14 @@ export default async function decorate(block) {
         { id: 'charlotte', city: 'Charlotte', state: 'NC', isPrimary: true, region: 'eastern' },
         { id: 'atlanta', city: 'Atlanta', state: 'GA', isPrimary: false, region: 'eastern' }
       ]
+    },
+    'precision_lumber': {
+      name: 'Precision Lumber & Supply',
+      locations: [
+        { id: 'austin', city: 'Austin', state: 'TX', isPrimary: true, region: 'central' },
+        { id: 'san_antonio', city: 'San Antonio', state: 'TX', isPrimary: false, region: 'central' },
+        { id: 'houston', city: 'Houston', state: 'TX', isPrimary: false, region: 'central' }
+      ]
     }
   };
 
