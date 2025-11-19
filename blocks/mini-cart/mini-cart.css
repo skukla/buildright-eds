@@ -162,20 +162,7 @@
   cursor: default;
 }
 
-.mini-cart-item-image-placeholder::before {
-  content: '';
-  position: absolute;
-  width: 60%;
-  height: 60%;
-  background: repeating-linear-gradient(
-    45deg,
-    var(--color-text-disabled),
-    var(--color-text-disabled) 2px,
-    transparent 2px,
-    transparent 8px
-  );
-  opacity: 0.4;
-}
+/* Pattern from .image-placeholder-pattern */
 
 .mini-cart-item-info {
   flex: 1;

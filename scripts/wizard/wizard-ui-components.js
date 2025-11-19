@@ -20,7 +20,7 @@ export function createSimpleProductRow(item) {
   return `
     <div class="simple-list-row" data-sku="${itemSku}">
       <div class="simple-list-col-item">
-        <div class="simple-list-item-image simple-list-item-image-placeholder">
+        <div class="simple-list-item-image simple-list-item-image-placeholder image-placeholder-pattern">
         </div>
         <div class="simple-list-item-info">
           <div class="simple-list-item-name-row">
@@ -78,7 +78,7 @@ export function createProductCard(item, mode = 'list') {
   // Compact list mode - table row style
   return `
     <div class="product-card-list" data-sku="${itemSku}">
-      <div class="product-card-list-image product-card-list-image-placeholder">
+      <div class="product-card-list-image product-card-list-image-placeholder image-placeholder-pattern">
       </div>
       <div class="product-card-list-info">
         <h5 class="product-card-list-name">${itemName}</h5>
@@ -359,7 +359,7 @@ export function createProductRow(item) {
   const html = `
     <tr>
       <td>
-        <div class="product-thumbnail-wrapper product-thumbnail-placeholder">
+        <div class="product-thumbnail-wrapper product-thumbnail-placeholder image-placeholder-pattern">
         </div>
       </td>
       <td>

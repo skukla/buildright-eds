@@ -43,6 +43,7 @@
   cursor: default;
 }
 
+/* Pattern from .image-placeholder-pattern */
 .product-gallery-image-wrapper.product-gallery-placeholder::before {
   content: '';
   position: absolute;
@@ -149,6 +150,7 @@
   justify-content: center;
 }
 
+/* Pattern from .image-placeholder-pattern */
 .product-gallery-thumbnail-placeholder::before {
   content: '';
   position: absolute;

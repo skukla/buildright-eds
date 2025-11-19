@@ -17,19 +17,10 @@
 }
 
 .signup-step {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeInSlide 0.3s ease-in-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Animation now in styles/components.css */
 
 .signup-step h2 {
   font-size: 1.5rem;

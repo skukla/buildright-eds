@@ -7,36 +7,7 @@
    Loading Skeletons
    ======================================== */
 
-.skeleton-loader {
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-text {
-  height: 1.5rem;
-  background: var(--color-neutral-200);
-  border-radius: var(--shape-border-radius-2);
-  margin-bottom: var(--spacing-small);
-}
-
-.skeleton-text:last-child {
-  width: 60%; /* Vary width for more realistic appearance */
-}
-
-.skeleton-card {
-  height: 200px;
-  background: var(--color-neutral-200);
-  border-radius: var(--shape-border-radius-3);
-  margin-bottom: var(--spacing-medium);
-}
-
-@keyframes pulse {
-  0%, 100% { 
-    opacity: 1; 
-  }
-  50% { 
-    opacity: 0.5; 
-  }
-}
+/* Skeleton loading styles now in styles/components.css */
 
 /* ========================================
    Fragment Error State

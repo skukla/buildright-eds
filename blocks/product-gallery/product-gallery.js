@@ -36,7 +36,7 @@ export default async function decorate(block) {
         mainImageEl.style.display = 'none';
         const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
         if (wrapper) {
-          wrapper.classList.add('product-gallery-placeholder');
+          wrapper.classList.add('product-gallery-placeholder', 'image-placeholder-pattern');
         }
       });
     } else {
@@ -64,7 +64,7 @@ export default async function decorate(block) {
       // Handle image load error - show placeholder
       img.addEventListener('error', () => {
         img.style.display = 'none';
-        thumbnail.classList.add('product-gallery-thumbnail-placeholder');
+        thumbnail.classList.add('product-gallery-thumbnail-placeholder', 'image-placeholder-pattern');
       });
       
       thumbnail.appendChild(img);
@@ -84,7 +84,7 @@ export default async function decorate(block) {
           // Remove placeholder class from wrapper if it exists
           const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
           if (wrapper) {
-            wrapper.classList.remove('product-gallery-placeholder');
+            wrapper.classList.remove('product-gallery-placeholder', 'image-placeholder-pattern');
           }
         }
         

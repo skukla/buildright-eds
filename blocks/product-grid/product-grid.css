@@ -94,7 +94,12 @@
   overflow: hidden;
 }
 
-/* Only show placeholder pattern when no image is set */
+/* Only show placeholder pattern when no image is set - pattern from .image-placeholder-pattern */
+.product-card-image:not([style*="background-image"]),
+.product-card-image-placeholder {
+  position: relative;
+}
+
 .product-card-image:not([style*="background-image"])::before,
 .product-card-image-placeholder::before {
   content: '';
@@ -103,12 +108,12 @@
   height: 60%;
   background: repeating-linear-gradient(
     45deg,
-    var(--color-text-disabled),  /* Darker gray for lines to contrast with darker background */
+    var(--color-text-disabled),
     var(--color-text-disabled) 2px,
     transparent 2px,
     transparent 8px
   );
-  opacity: 0.4;  /* Slightly increased opacity for better visibility */
+  opacity: 0.4;
 }
 
 /* Smaller cards for featured products */

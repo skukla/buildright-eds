@@ -535,7 +535,7 @@ async function createKitSidebarItem(item) {
   
   return `
     <div class="kit-sidebar-item ${inventoryStatus === 'out-of-stock' ? 'kit-sidebar-item-out-of-stock' : ''}" data-sku="${itemSku}" data-inventory-status="${inventoryStatus}">
-      <div class="kit-sidebar-item-image kit-sidebar-item-image-placeholder">
+      <div class="kit-sidebar-item-image kit-sidebar-item-image-placeholder image-placeholder-pattern">
       </div>
       <div class="kit-sidebar-item-info">
         <div class="kit-sidebar-item-header-row">

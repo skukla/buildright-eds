@@ -203,8 +203,8 @@ export default async function decorate(block) {
 
     return `
       <a href="${basePath}pages/product-detail.html?sku=${item.sku}" class="mini-cart-item mini-cart-item-link" data-sku="${item.sku}">
-        <div class="mini-cart-item-image ${!hasImage ? 'mini-cart-item-image-placeholder' : ''}">
-          ${hasImage ? `<img src="${imageUrl}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.classList.add('mini-cart-item-image-placeholder'); this.style.display='none';">` : ''}
+        <div class="mini-cart-item-image ${!hasImage ? 'mini-cart-item-image-placeholder image-placeholder-pattern' : ''}">
+          ${hasImage ? `<img src="${imageUrl}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.classList.add('mini-cart-item-image-placeholder', 'image-placeholder-pattern'); this.style.display='none';">` : ''}
         </div>
         <div class="mini-cart-item-info">
           <div class="mini-cart-item-header-row">
