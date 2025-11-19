@@ -472,7 +472,9 @@ async function loadLazy(doc) {
     await loadHeader(header);
   }
   
-  if (footer && !footer.querySelector('.site-footer')) {
+  // Only load footer if it's not already a .site-footer element (from fragments) 
+  // and doesn't contain a .site-footer child (already loaded)
+  if (footer && !footer.classList.contains('site-footer') && !footer.querySelector('.site-footer')) {
     await loadFooter(footer);
   }
   
