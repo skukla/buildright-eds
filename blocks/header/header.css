@@ -71,6 +71,8 @@ header .header {
 .location-name {
   font-weight: 500;
   color: var(--color-text);
+  min-width: 100px;
+  text-align: left;
 }
 
 /* Visual hint at top of dropdown area on hover */
