@@ -11,21 +11,24 @@ export default async function decorate(block) {
   // URLs are now handled by base tag - no path fixing needed
   
   // Show/hide location selector based on login status
-  function updateAuthenticatedElements() {
+  async function updateAuthenticatedElements() {
+    // Wait for auth to initialize
+    await authService.initialize();
+    
     const loggedIn = authService.isAuthenticated();
     
     // Find location section - try ID first, then fallback to class
     const locationSection = block.querySelector('#header-location') || 
                            block.querySelector('.header-location');
       
-      if (loggedIn) {
+    if (loggedIn) {
       if (locationSection) locationSection.style.display = '';
-          } else {
+    } else {
       if (locationSection) locationSection.style.display = 'none';
     }
   }
   
-  // Check login state on load
+  // Check login state on load (async)
   updateAuthenticatedElements();
   
   // Listen for login state changes (e.g., after login/logout)
