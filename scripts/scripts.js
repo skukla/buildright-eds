@@ -5,19 +5,13 @@
 
 /**
  * Preload critical data synchronously to prevent FOUC/layout shifts
+ * Note: Scroll restoration and initial data preloading now happen in <head> for better timing
  * This runs immediately before any blocks load
  */
 (function preloadCriticalData() {
-  // Preload cart count
-  try {
-    const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
-    window.__INITIAL_CART_COUNT__ = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-  } catch (e) {
-    window.__INITIAL_CART_COUNT__ = 0;
-  }
-  
-  // Preload location
-  window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
+  // Scroll restoration is now handled in <head> for immediate effect
+  // Cart count and location are preloaded in <head>
+  // This function is kept for future critical data needs
 })();
 
 /**
@@ -113,6 +107,11 @@ export async function loadBlockJS(blockName) {
  * @param {string} blockName - Optional block name (if not in dataset/class)
  */
 export async function decorateBlock(block, blockName = null) {
+  // Skip if already loaded
+  if (block.dataset.blockStatus === 'loaded') {
+    return;
+  }
+  
   // Determine block name from dataset, class, or parameter
   let name = blockName || block.dataset.blockName;
   
@@ -201,7 +200,17 @@ export async function loadHeader(header) {
   const basePath = window.BASE_PATH || '/';
   
   try {
-    // Load header HTML
+    // Check if header HTML is already present (inlined)
+    const existingHeader = header.querySelector('.header');
+    
+    if (existingHeader) {
+      // Adobe Best Practice: Header already inlined for instant visibility
+      // Just decorate the existing block
+      await decorateBlock(existingHeader);
+      return;
+    }
+    
+    // Fallback: Load header HTML dynamically (for pages without inlined header)
     const response = await fetch(`${basePath}blocks/header/header.html`);
     const html = await response.text();
     
@@ -473,12 +482,22 @@ async function loadLazy(doc) {
   // Initialize kit sidebar (BuildRight-specific)
   await initializeKitSidebar();
   
-  // Handle URL hash navigation
+  // Adobe Best Practice: Handle URL hash navigation after layout is stable
+  // Delay scroll to prevent jumps during initial page render
   const { hash } = window.location;
-  const element = hash ? doc.getElementById(hash.substring(1)) : false;
-  if (hash && element) {
-    element.scrollIntoView();
+  if (hash) {
+    // Use requestAnimationFrame to ensure layout is complete
+    requestAnimationFrame(() => {
+      // Double RAF for better reliability
+      requestAnimationFrame(() => {
+        const element = doc.getElementById(hash.substring(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
   }
+  // Note: Initial scroll to top is handled in <head> for immediate effect
 }
 
 /**
