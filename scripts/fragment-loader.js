@@ -53,11 +53,33 @@ export async function loadFragment(container, fragmentPath) {
     // Force a reflow to ensure styles are applied
     void containerEl.offsetHeight;
     
-    // Decorate any blocks within the fragment
+    // Decorate any blocks within the fragment (skip for footer to prevent duplication)
+    const isFooterFragment = fragmentPath.includes('footer');
     const blocks = containerEl.querySelectorAll('[data-block-name]');
-    if (blocks.length > 0) {
+    if (blocks.length > 0 && !isFooterFragment) {
       const { decorateBlocks } = await import('./scripts.js');
       await decorateBlocks(containerEl);
+    }
+    
+    // For footer fragments, just fix the links and mark as already loaded
+    if (isFooterFragment) {
+      const basePath = window.BASE_PATH || '/';
+      const pageLinks = containerEl.querySelectorAll('a[href^="pages/"], a[href^="/pages/"]');
+      pageLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href.startsWith('/pages/')) {
+          link.setAttribute('href', href.replace(/^\/pages\//, `${basePath}pages/`));
+        } else if (href.startsWith('pages/')) {
+          link.setAttribute('href', `${basePath}${href}`);
+        }
+      });
+      
+      // Mark the footer as already loaded to prevent re-decoration
+      const footerElement = containerEl.querySelector('.site-footer');
+      if (footerElement) {
+        footerElement.dataset.blockStatus = 'loaded';
+        footerElement.dataset.blockName = 'footer';
+      }
     }
     
     console.log(`[Fragment Loader] Loaded: ${fragmentPath}`);

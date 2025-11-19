@@ -16,7 +16,7 @@
     window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
   </script>
   <title>BuildRight Solutions - Building Materials Distributor</title>
-  <script src="./scripts/scripts.js" type="module"></script>
+  <!-- Note: scripts.js NOT loaded here - this page uses personalization system instead -->
   <link rel="stylesheet" href="./styles/styles.css">
   <!-- Critical CSS for inlined header -->
   <link rel="stylesheet" href="./blocks/header/header.css">
@@ -375,11 +375,33 @@
   <div class="footer-fragment"></div>
 
   <script type="module">
-    // Import personalization system
+    // Import required modules
     import { personalizeHomepage } from './scripts/personalize-page.js';
+    import { decorateBlock } from './scripts/scripts.js';
     
-    // Personalize page on load
-    await personalizeHomepage();
+    // Initialize the page
+    async function initPage() {
+      // 1. Personalize page with fragments
+      await personalizeHomepage();
+      
+      // 2. Initialize header interactivity
+      const header = document.querySelector('.header');
+      if (header) {
+        await decorateBlock(header, 'header');
+      }
+      
+      // 3. Load and decorate featured products block
+      const featuredBlock = document.querySelector('[data-block-name="featured-products"]');
+      if (featuredBlock) {
+        await decorateBlock(featuredBlock, 'featured-products');
+      }
+      
+      // 4. Initialize cart manager
+      await import('./scripts/cart-manager.js');
+    }
+    
+    // Start page initialization
+    await initPage();
   </script>
 </body>
 </html>
