@@ -3,10 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Load critical data synchronously to prevent layout shift -->
+  <script>
+    // Preload cart count to prevent FOUC
+    window.__INITIAL_CART_COUNT__ = (() => {
+      try {
+        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+        return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+      } catch (e) {
+        return 0;
+      }
+    })();
+    window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
+  </script>
   <title>Product Catalog - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
   <link rel="stylesheet" href="../blocks/project-filter/project-filter.css">
+  <!-- Note: Header CLS prevention now in styles/base.css -->
 </head>
 <body>
   <!-- Header loaded dynamically from blocks/header/ -->
