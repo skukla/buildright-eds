@@ -1,70 +1,78 @@
 // Inventory status block decoration
 import { parseHTMLFragment } from '../../scripts/utils.js';
+import { acoService } from '../../scripts/aco-service.js';
+import { authService } from '../../scripts/auth.js';
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
-  const companyId = block.getAttribute('data-company');
   if (!sku) return;
 
-  // Import data functions
-  const { getProductBySKU, getInventory, getInventoryStatus, getWarehouses, getPrimaryWarehouse, getCustomerContext } = await import('../../scripts/data-mock.js');
+  // Get user context
+  const userContext = authService.isAuthenticated() 
+    ? authService.getAcoContext() 
+    : null;
 
-  // Load product and update inventory using HTML templates
+  // Load product and update inventory
   async function updateInventory() {
-    const product = await getProductBySKU(sku);
-    if (!product) return;
+    try {
+      const product = await acoService.getProduct(sku, userContext);
+      if (!product) return;
 
-    const context = getCustomerContext();
-    const allWarehouses = await getWarehouses();
-    const primaryWarehouse = getPrimaryWarehouse();
-    
-    // Filter warehouses based on user's company/region
-    let warehouses;
-    if (context.isLoggedIn && context.company) {
-      // For logged-in users, show warehouses relevant to their company
-      // In a real implementation, this would filter based on company's service area
-      warehouses = allWarehouses.filter(wh => wh.priority === 1);
-    } else {
-      // For non-logged-in users, show primary distribution centers
-      warehouses = allWarehouses.filter(wh => wh.id === primaryWarehouse);
-    }
-    
-    const warehouseList = block.querySelector('.warehouse-list');
+      const warehouseList = block.querySelector('.warehouse-list');
+      if (!warehouseList) return;
 
-    if (!warehouseList) return;
+      // Escape HTML helper
+      const escapeHtml = (text) => {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      };
 
-    // Escape HTML helper
-    const escapeHtml = (text) => {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    };
+      // Mock warehouse data - in production this would come from inventory API
+      const warehouses = [
+        { id: 'wh-001', name: 'Los Angeles Distribution Center', priority: 1 },
+        { id: 'wh-002', name: 'Phoenix Regional Hub', priority: 2 }
+      ];
 
-    // Build HTML template for all warehouse items
-    const warehousesHTML = warehouses.map(warehouse => {
-      const quantity = getInventory(product, warehouse.id);
-      const status = getInventoryStatus(product, warehouse.id);
-      const isPrimary = warehouse.id === primaryWarehouse;
-      const priorityClass = isPrimary ? 'priority' : '';
-      const warehouseName = isPrimary ? `${warehouse.name} (Primary)` : warehouse.name;
-      
-      // Combine quantity and status into one line
-      const stockInfo = status === 'in-stock' ? `${quantity} available` : 
-                        status === 'low-stock' ? `${quantity} (Low stock)` : 
-                        'Out of stock';
+      // Build HTML template for warehouse items
+      const warehousesHTML = warehouses.map((warehouse, index) => {
+        const isPrimary = index === 0;
+        const priorityClass = isPrimary ? 'priority' : '';
+        const warehouseName = isPrimary ? `${warehouse.name} (Primary)` : warehouse.name;
+        
+        // Use product's inStock value (mock distribution across warehouses)
+        const quantity = isPrimary 
+          ? Math.floor(product.inStock * 0.7) 
+          : Math.floor(product.inStock * 0.3);
+        
+        // Determine status based on quantity
+        let status, stockInfo;
+        if (quantity === 0) {
+          status = 'out-of-stock';
+          stockInfo = 'Out of stock';
+        } else if (quantity < 10) {
+          status = 'low-stock';
+          stockInfo = `${quantity} (Low stock)`;
+        } else {
+          status = 'in-stock';
+          stockInfo = `${quantity} available`;
+        }
 
-      return `
-        <div class="warehouse-item ${priorityClass}">
+        return `
+          <div class="warehouse-item ${priorityClass}">
             <div class="warehouse-name">${escapeHtml(warehouseName)}</div>
-          <div class="warehouse-quantity">${escapeHtml(stockInfo)}</div>
-        </div>
-      `;
-    }).join('');
+            <div class="warehouse-quantity ${status}">${escapeHtml(stockInfo)}</div>
+          </div>
+        `;
+      }).join('');
 
-    // Parse and append all warehouse items at once
-    warehouseList.innerHTML = '';
-    const fragment = parseHTMLFragment(warehousesHTML);
-    warehouseList.appendChild(fragment);
+      // Parse and append all warehouse items at once
+      warehouseList.innerHTML = '';
+      const fragment = parseHTMLFragment(warehousesHTML);
+      warehouseList.appendChild(fragment);
+    } catch (error) {
+      console.error('Error updating inventory:', error);
+    }
   }
 
   // Initial load

@@ -1,89 +1,96 @@
 // Pricing display block decoration
+import { acoService } from '../../scripts/aco-service.js';
+import { authService } from '../../scripts/auth.js';
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
   if (!sku) return;
 
-  // Import data functions
-  const { getProductBySKU, getPrice, getCustomerContext } = await import('../../scripts/data-mock.js');
+  // Get user context from data attribute or auth service
+  let userContext = block.getAttribute('data-user-context');
+  if (userContext) {
+    try {
+      userContext = JSON.parse(userContext);
+    } catch (e) {
+      userContext = null;
+    }
+  }
+
+  if (!userContext && authService.isAuthenticated()) {
+    userContext = authService.getAcoContext();
+  }
 
   // Load product and update pricing
   async function updatePricing(quantity = 1) {
-    const product = await getProductBySKU(sku);
-    if (!product || !product.pricing) return;
-
-    const context = getCustomerContext();
-    const tier = context.tier || 'base';
-    let tierPricing = product.pricing[tier] || product.pricing.base;
-
-    // Update current price
-    const currentPriceEl = block.querySelector('.current-price');
-    const tierIndicatorEl = block.querySelector('.tier-indicator');
-    // Look for pricing tiers table in the page (may be outside the block)
-    const tiersBody = document.querySelector('.pricing-tiers');
-
-    if (currentPriceEl) {
-      const price = getPrice(product, quantity);
-      currentPriceEl.textContent = `$${price.toFixed(2)}`;
-    }
-
-    if (tierIndicatorEl) {
-      const tierNames = {
-        'commercial_tier1': 'Commercial Tier 1',
-        'commercial_tier2': 'Commercial Tier 2',
-        'residential_builder': 'Residential Builder',
-        'pro_specialty': 'Pro Specialty',
-        'base': 'Base Pricing'
-      };
-      tierIndicatorEl.textContent = tierNames[tier] || 'Standard Pricing';
-    }
-
-    // Update volume pricing table using HTML templates
-    const volumePricingSection = document.getElementById('volume-pricing-section');
-    
-    // Hide volume pricing section for base pricing (no volume discounts)
-    if (tier === 'base' && typeof tierPricing === 'number') {
-      if (volumePricingSection) {
-        volumePricingSection.classList.add('hidden');
-      }
-      return; // Don't populate the table
-    } else {
-      if (volumePricingSection) {
-        volumePricingSection.classList.remove('hidden');
-      }
-    }
-    
-    if (tiersBody && typeof tierPricing === 'object') {
-      const breakpoints = Object.keys(tierPricing).sort((a, b) => {
-        const aNum = parseInt(a.split('-')[0]) || parseInt(a.split('+')[0]);
-        const bNum = parseInt(b.split('-')[0]) || parseInt(b.split('+')[0]);
-        return aNum - bNum; // Sort ascending
+    try {
+      // Get pricing from ACO service
+      const pricingResult = await acoService.getPricing({
+        productIds: [sku],
+        customerGroup: userContext?.customerGroup || 'US-Retail',
+        quantity: quantity
       });
 
-      // Build HTML template for all pricing tier rows
-      const rowsHTML = breakpoints.map(breakpoint => {
-        const price = tierPricing[breakpoint];
-        const isActive = (breakpoint.includes('+') && quantity >= parseInt(breakpoint)) ||
-                        (breakpoint.includes('-') && (() => {
-                          const [min, max] = breakpoint.split('-').map(Number);
-                          return quantity >= min && quantity <= max;
-                        })());
+      const pricing = pricingResult.pricing[sku];
+      if (!pricing) return;
 
-        const activeClass = isActive ? 'active' : '';
-        const rangeText = breakpoint.includes('+') 
-          ? `${breakpoint.replace('+', '')}+ units`
-          : `${breakpoint} units`;
+      // Update current price
+      const currentPriceEl = block.querySelector('.current-price');
+      const tierIndicatorEl = block.querySelector('.tier-indicator');
+      
+      if (currentPriceEl) {
+        currentPriceEl.textContent = `$${pricing.unitPrice.toFixed(2)}`;
+      }
 
-        return `
-          <tr class="${activeClass}">
-            <td>${rangeText}</td>
-            <td>$${price.toFixed(2)}</td>
-          </tr>
-        `;
-      }).join('');
+      if (tierIndicatorEl) {
+        const groupNames = {
+          'US-Retail': 'Retail Pricing',
+          'Retail-Registered': 'Registered Customer',
+          'Trade-Professional': 'Trade Professional',
+          'Production-Builder': 'Production Builder',
+          'Wholesale-Reseller': 'Wholesale Pricing'
+        };
+        tierIndicatorEl.textContent = groupNames[pricing.customerGroup] || 'Standard Pricing';
+      }
 
-      // Parse and append all rows at once
-      tiersBody.innerHTML = rowsHTML;
+      // Update volume pricing table
+      const volumePricingSection = document.getElementById('volume-pricing-section');
+      const tiersBody = document.querySelector('.pricing-tiers');
+      
+      // Show/hide volume pricing section
+      if (!pricing.volumeTiers || pricing.volumeTiers.length === 0) {
+        if (volumePricingSection) {
+          volumePricingSection.style.display = 'none';
+        }
+        return;
+      } else {
+        if (volumePricingSection) {
+          volumePricingSection.style.display = 'block';
+        }
+      }
+      
+      if (tiersBody) {
+        // Build HTML for volume pricing tiers
+        const rowsHTML = pricing.volumeTiers.map(tier => {
+          const isActive = quantity >= tier.minQuantity && 
+                          (tier.maxQuantity ? quantity <= tier.maxQuantity : true);
+          const activeClass = isActive ? 'active' : '';
+          
+          const rangeText = tier.maxQuantity 
+            ? `${tier.minQuantity}-${tier.maxQuantity} units`
+            : `${tier.minQuantity}+ units`;
+
+          return `
+            <tr class="${activeClass}">
+              <td>${rangeText}</td>
+              <td>$${tier.unitPrice.toFixed(2)}</td>
+            </tr>
+          `;
+        }).join('');
+
+        tiersBody.innerHTML = rowsHTML;
+      }
+    } catch (error) {
+      console.error('Error updating pricing:', error);
     }
   }
 

@@ -178,7 +178,8 @@
 
   <script type="module">
     import { getUrlParameter, cleanElementListeners } from '../scripts/utils.js';
-    import { getProductBySKU } from '../scripts/data-mock.js';
+    import { acoService } from '../scripts/aco-service.js';
+    import { authService } from '../scripts/auth.js';
     import { decorateBlock } from '../scripts/scripts.js';
     
     // Load product detail - idempotent function
@@ -190,139 +191,167 @@
       }
       window[initKey] = true;
       
+      // Get SKU from URL
       const sku = getUrlParameter('sku');
       if (!sku) {
         window.location.href = 'catalog';
         return;
       }
 
-      const product = await getProductBySKU(sku);
-      if (!product) {
-        window.location.href = 'catalog';
-        return;
-      }
+      // Initialize auth service
+      await authService.initialize();
 
-      // Update product info
-      document.getElementById('product-name').textContent = product.name;
-      document.getElementById('product-sku').textContent = `SKU: ${product.sku}`;
-      
-      // Full description in left column
-      document.getElementById('product-description-full').textContent = product.description || 'No description available.';
+      // Get user context for pricing
+      const userContext = authService.isAuthenticated() 
+        ? authService.getAcoContext() 
+        : null;
 
-      // Update product gallery
-      const productGallery = document.getElementById('product-gallery');
-      productGallery.setAttribute('data-sku', sku);
-      await decorateBlock(productGallery, 'product-gallery');
-
-      // Update pricing display
-      const pricingDisplay = document.getElementById('pricing-display');
-      pricingDisplay.setAttribute('data-sku', sku);
-      await decorateBlock(pricingDisplay, 'pricing-display');
-
-      // Update inventory status
-      const inventoryStatus = document.getElementById('inventory-status');
-      inventoryStatus.setAttribute('data-sku', sku);
-      await decorateBlock(inventoryStatus, 'inventory-status');
-
-      // Update specifications
-      const specsContainer = document.getElementById('product-specs');
-      if (product.attributes && Object.keys(product.attributes).length > 0) {
-        const table = document.createElement('table');
-        const tbody = document.createElement('tbody');
+      try {
+        // Fetch product from ACO service
+        const product = await acoService.getProduct(sku, userContext || undefined);
         
-        Object.entries(product.attributes).forEach(([key, value]) => {
-          const row = document.createElement('tr');
-          const keyCell = document.createElement('td');
-          keyCell.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-          row.appendChild(keyCell);
-          
-          const valueCell = document.createElement('td');
-          valueCell.textContent = Array.isArray(value) ? value.join(', ') : value;
-          row.appendChild(valueCell);
-          
-          tbody.appendChild(row);
-        });
-        
-        table.appendChild(tbody);
-        specsContainer.innerHTML = '';
-        specsContainer.appendChild(table);
-      } else {
-        specsContainer.innerHTML = '<p style="color: var(--color-text-secondary); font-style: italic; margin: 0;">No specifications available for this product.</p>';
-      }
-
-      // Add to cart handler - use utility to clean listeners (idempotent)
-      const addToCartBtn = document.getElementById('add-to-cart-btn');
-      const cleanBtn = cleanElementListeners(addToCartBtn);
-      
-      cleanBtn.addEventListener('click', () => {
-        const quantity = parseInt(document.getElementById('quantity').value) || 1;
-        window.dispatchEvent(new CustomEvent('addToCart', {
-          detail: { sku, quantity, productName: product.name }
-        }));
-      });
-
-      // Quantity change handler
-      const quantityInput = document.getElementById('quantity');
-      quantityInput.addEventListener('change', (e) => {
-        const quantity = parseInt(e.target.value) || 1;
-        window.dispatchEvent(new CustomEvent('quantityChanged', {
-          detail: { sku, quantity }
-        }));
-      });
-
-      // Quantity +/- button handlers
-      document.querySelectorAll('.product-detail-qty-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const action = btn.getAttribute('data-action');
-          let currentQty = parseInt(quantityInput.value) || 1;
-          
-          if (action === 'decrease') {
-            currentQty = Math.max(1, currentQty - 1);
-          } else if (action === 'increase') {
-            currentQty = Math.min(9999, currentQty + 1);
-          }
-          
-          quantityInput.value = currentQty;
-          
-          // Trigger change event to update pricing
-          window.dispatchEvent(new CustomEvent('quantityChanged', {
-            detail: { sku, quantity: currentQty }
-          }));
-        });
-      });
-
-      // Clear input on focus, restore on blur if invalid
-      let originalValue = quantityInput.value;
-      quantityInput.addEventListener('focus', (e) => {
-        originalValue = e.target.value;
-        e.target.value = '';
-      });
-      
-      quantityInput.addEventListener('blur', (e) => {
-        let qty = parseInt(e.target.value);
-        
-        if (!e.target.value || isNaN(qty) || qty < 1) {
-          e.target.value = originalValue;
+        if (!product) {
+          console.error('Product not found:', sku);
+          window.location.href = 'catalog';
           return;
         }
-        
-        if (qty > 9999) {
-          qty = 9999;
-          e.target.value = qty;
-        }
-        
-        if (qty !== parseInt(originalValue)) {
-          window.dispatchEvent(new CustomEvent('quantityChanged', {
-            detail: { sku, quantity: qty }
-          }));
-          originalValue = qty.toString();
-        }
-      });
 
-      // Prevent scroll when hovering over input
-      quantityInput.addEventListener('wheel', (e) => {
-        e.preventDefault();
-      });
+        // Update product info
+        document.getElementById('product-name').textContent = product.name;
+        document.getElementById('product-sku').textContent = `SKU: ${product.sku}`;
+        
+        // Full description in left column
+        document.getElementById('product-description-full').textContent = product.description || 'No description available.';
+
+        // Update product gallery
+        const productGallery = document.getElementById('product-gallery');
+        productGallery.setAttribute('data-sku', sku);
+        await decorateBlock(productGallery, 'product-gallery');
+
+        // Update pricing display
+        const pricingDisplay = document.getElementById('pricing-display');
+        pricingDisplay.setAttribute('data-sku', sku);
+        if (userContext) {
+          pricingDisplay.setAttribute('data-user-context', JSON.stringify(userContext));
+        }
+        await decorateBlock(pricingDisplay, 'pricing-display');
+
+        // Update inventory status
+        const inventoryStatus = document.getElementById('inventory-status');
+        inventoryStatus.setAttribute('data-sku', sku);
+        await decorateBlock(inventoryStatus, 'inventory-status');
+
+        // Update specifications
+        const specsContainer = document.getElementById('product-specs');
+        if (product.attributes && Object.keys(product.attributes).length > 0) {
+          const table = document.createElement('table');
+          const tbody = document.createElement('tbody');
+          
+          Object.entries(product.attributes).forEach(([key, value]) => {
+            const row = document.createElement('tr');
+            const keyCell = document.createElement('td');
+            keyCell.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            row.appendChild(keyCell);
+            
+            const valueCell = document.createElement('td');
+            valueCell.textContent = Array.isArray(value) ? value.join(', ') : value;
+            row.appendChild(valueCell);
+            
+            tbody.appendChild(row);
+          });
+          
+          table.appendChild(tbody);
+          specsContainer.innerHTML = '';
+          specsContainer.appendChild(table);
+        } else {
+          specsContainer.innerHTML = '<p style="color: var(--color-text-secondary); font-style: italic; margin: 0;">No specifications available for this product.</p>';
+        }
+
+        // Add to cart handler - use utility to clean listeners (idempotent)
+        const addToCartBtn = document.getElementById('add-to-cart-btn');
+        const cleanBtn = cleanElementListeners(addToCartBtn);
+        
+        cleanBtn.addEventListener('click', () => {
+          const quantity = parseInt(document.getElementById('quantity').value) || 1;
+          window.dispatchEvent(new CustomEvent('addToCart', {
+            detail: { sku, quantity, productName: product.name }
+          }));
+        });
+
+        // Quantity change handler
+        const quantityInput = document.getElementById('quantity');
+        quantityInput.addEventListener('change', (e) => {
+          const quantity = parseInt(e.target.value) || 1;
+          window.dispatchEvent(new CustomEvent('quantityChanged', {
+            detail: { sku, quantity }
+          }));
+        });
+
+        // Quantity +/- button handlers
+        document.querySelectorAll('.product-detail-qty-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const action = btn.getAttribute('data-action');
+            let currentQty = parseInt(quantityInput.value) || 1;
+            
+            if (action === 'decrease') {
+              currentQty = Math.max(1, currentQty - 1);
+            } else if (action === 'increase') {
+              currentQty = Math.min(9999, currentQty + 1);
+            }
+            
+            quantityInput.value = currentQty;
+            
+            // Trigger change event to update pricing
+            window.dispatchEvent(new CustomEvent('quantityChanged', {
+              detail: { sku, quantity: currentQty }
+            }));
+          });
+        });
+
+        // Clear input on focus, restore on blur if invalid
+        let originalValue = quantityInput.value;
+        quantityInput.addEventListener('focus', (e) => {
+          originalValue = e.target.value;
+          e.target.value = '';
+        });
+        
+        quantityInput.addEventListener('blur', (e) => {
+          let qty = parseInt(e.target.value);
+          
+          if (!e.target.value || isNaN(qty) || qty < 1) {
+            e.target.value = originalValue;
+            return;
+          }
+          
+          if (qty > 9999) {
+            qty = 9999;
+            e.target.value = qty;
+          }
+          
+          if (qty !== parseInt(originalValue)) {
+            window.dispatchEvent(new CustomEvent('quantityChanged', {
+              detail: { sku, quantity: qty }
+            }));
+            originalValue = qty.toString();
+          }
+        });
+
+        // Prevent scroll when hovering over input
+        quantityInput.addEventListener('wheel', (e) => {
+          e.preventDefault();
+        });
+
+      } catch (error) {
+        console.error('Error loading product:', error);
+        // Show error state
+        document.querySelector('.product-detail-container').innerHTML = `
+          <div class="error-state" style="text-align: center; padding: var(--spacing-xxlarge);">
+            <h2>Error Loading Product</h2>
+            <p style="color: var(--color-text-secondary);">Unable to load product details. Please try again.</p>
+            <a href="catalog" class="btn btn-primary" style="margin-top: var(--spacing-medium);">Back to Catalog</a>
+          </div>
+        `;
+      }
     }
 
     document.addEventListener('DOMContentLoaded', loadProductDetail);
