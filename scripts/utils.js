@@ -32,6 +32,17 @@ const getScriptBaseUrl = (() => {
 })();
 
 /**
+ * Load block CSS file
+ * @param {string} blockName - Name of the block
+ */
+function loadBlockCSS(blockName) {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = `${getScriptBaseUrl}blocks/${blockName}/${blockName}.css`;
+  document.head.appendChild(link);
+}
+
+/**
  * Load block HTML template
  * @param {string} blockName - Name of the block to load
  * @returns {Promise<string|null>} HTML content or null
@@ -143,6 +154,7 @@ function cleanElementListeners(element) {
 // ES6 exports - only actively used utilities
 export {
   getUrlParameter,
+  loadBlockCSS,
   loadBlockHTML,
   parseHTML,
   parseHTMLFragment,
@@ -155,6 +167,7 @@ export {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     getUrlParameter,
+    loadBlockCSS,
     loadBlockHTML,
     parseHTML,
     parseHTMLFragment,
