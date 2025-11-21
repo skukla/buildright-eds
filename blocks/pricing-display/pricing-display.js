@@ -23,14 +23,21 @@ export default async function decorate(block) {
   // Load product and update pricing
   async function updatePricing(quantity = 1) {
     try {
-      // Get pricing from ACO service
-      const pricingResult = await acoService.getPricing({
-        productIds: [sku],
-        customerGroup: userContext?.customerGroup || 'US-Retail',
-        quantity: quantity
-      });
-
-      const pricing = pricingResult.pricing[sku];
+      let pricing;
+      
+      // Use pre-fetched data if available (for initial load)
+      if (quantity === 1 && block.pricingData) {
+        pricing = block.pricingData;
+      } else {
+        // Fetch fresh pricing for quantity changes
+        const pricingResult = await acoService.getPricing({
+          productIds: [sku],
+          customerGroup: userContext?.customerGroup || 'US-Retail',
+          quantity: quantity
+        });
+        pricing = pricingResult.pricing[sku];
+      }
+      
       if (!pricing) return;
 
       // Update current price
@@ -69,7 +76,7 @@ export default async function decorate(block) {
       }
       
       if (tiersBody) {
-        // Build HTML for volume pricing tiers
+        // Build HTML for volume pricing tiers with total savings
         const rowsHTML = pricing.volumeTiers.map(tier => {
           const isActive = quantity >= tier.minQuantity && 
                           (tier.maxQuantity ? quantity <= tier.maxQuantity : true);
@@ -78,11 +85,15 @@ export default async function decorate(block) {
           const rangeText = tier.maxQuantity 
             ? `${tier.minQuantity}-${tier.maxQuantity} units`
             : `${tier.minQuantity}+ units`;
+          
+          const savingsText = tier.savingsPercent > 0 
+            ? ` <span class="tier-savings">(${tier.savingsPercent}% off)</span>`
+            : '';
 
           return `
             <tr class="${activeClass}">
               <td>${rangeText}</td>
-              <td>$${tier.unitPrice.toFixed(2)}</td>
+              <td>$${tier.unitPrice.toFixed(2)}${savingsText}</td>
             </tr>
           `;
         }).join('');

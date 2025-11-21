@@ -12,7 +12,8 @@ import { getProducts as loadMockProducts } from './data-mock.js';
 import { CUSTOMER_GROUPS } from './persona-config.js';
 
 // Simulate network latency for realistic loading states
-const MOCK_LATENCY_MS = 500;
+// Reduced to 100ms for snappier demo experience (production APIs are typically fast)
+const MOCK_LATENCY_MS = 100;
 
 class MockACOService {
   constructor() {
@@ -345,8 +346,8 @@ class MockACOService {
     // Volume tier multipliers (stacks with customer tier)
     const volumeMultipliers = {
       '1-99': 1.0,
-      '100-293': 0.97,  // 3% volume discount
-      '294+': 0.92      // 8% volume discount
+      '100-293': 0.95,  // 5% volume discount
+      '294+': 0.88      // 12% volume discount (combined with customer group = up to 25% total)
     };
     
     // Determine volume tier
@@ -370,12 +371,35 @@ class MockACOService {
     const savings = retailPrice - customerPrice;
     const savingsPercent = (savings / retailPrice) * 100;
     
+    // Build volume tiers array for display with savings percentages
+    const volumeTiers = [
+      {
+        minQuantity: 1,
+        maxQuantity: 99,
+        unitPrice: parseFloat((basePrice * groupMultiplier * 1.0).toFixed(2)),
+        savingsPercent: Math.round((1 - (groupMultiplier * 1.0)) * 100)
+      },
+      {
+        minQuantity: 100,
+        maxQuantity: 293,
+        unitPrice: parseFloat((basePrice * groupMultiplier * 0.95).toFixed(2)),
+        savingsPercent: Math.round((1 - (groupMultiplier * 0.95)) * 100)
+      },
+      {
+        minQuantity: 294,
+        maxQuantity: null,
+        unitPrice: parseFloat((basePrice * groupMultiplier * 0.88).toFixed(2)),
+        savingsPercent: Math.round((1 - (groupMultiplier * 0.88)) * 100)
+      }
+    ];
+    
     return {
       basePrice: parseFloat(basePrice.toFixed(2)),
       unitPrice: parseFloat(unitPrice.toFixed(2)),
       totalPrice: parseFloat(totalPrice.toFixed(2)),
       customerGroup,
       volumeTier,
+      volumeTiers,  // Add volume tiers array for PDP display
       quantity,
       retailPrice: parseFloat(retailPrice.toFixed(2)),
       savings: parseFloat(savings.toFixed(2)),

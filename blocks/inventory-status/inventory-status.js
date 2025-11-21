@@ -2,6 +2,7 @@
 import { parseHTMLFragment } from '../../scripts/utils.js';
 import { acoService } from '../../scripts/aco-service.js';
 import { authService } from '../../scripts/auth.js';
+import { getWarehouses } from '../../scripts/warehouse-config.js';
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
@@ -15,7 +16,8 @@ export default async function decorate(block) {
   // Load product and update inventory
   async function updateInventory() {
     try {
-      const product = await acoService.getProduct(sku, userContext);
+      // Use pre-fetched product data if available
+      const product = block.productData || await acoService.getProduct(sku, userContext);
       if (!product) return;
 
       const warehouseList = block.querySelector('.warehouse-list');
@@ -28,15 +30,12 @@ export default async function decorate(block) {
         return div.innerHTML;
       };
 
-      // Mock warehouse data - in production this would come from inventory API
-      const warehouses = [
-        { id: 'wh-001', name: 'Los Angeles Distribution Center', priority: 1 },
-        { id: 'wh-002', name: 'Phoenix Regional Hub', priority: 2 }
-      ];
+      // Get warehouses from centralized configuration
+      const warehouses = getWarehouses();
 
       // Build HTML template for warehouse items
-      const warehousesHTML = warehouses.map((warehouse, index) => {
-        const isPrimary = index === 0;
+      const warehousesHTML = warehouses.map((warehouse) => {
+        const isPrimary = warehouse.isPrimary;
         const priorityClass = isPrimary ? 'priority' : '';
         const warehouseName = isPrimary ? `${warehouse.name} (Primary)` : warehouse.name;
         

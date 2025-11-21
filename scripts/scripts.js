@@ -107,12 +107,7 @@ export async function loadBlockJS(blockName) {
  * @param {string} blockName - Optional block name (if not in dataset/class)
  */
 export async function decorateBlock(block, blockName = null) {
-  // Skip if already loaded
-  if (block.dataset.blockStatus === 'loaded') {
-    return;
-  }
-  
-  // Determine block name from dataset, class, or parameter
+  // Determine block name first
   let name = blockName || block.dataset.blockName;
   
   if (!name) {
@@ -141,6 +136,15 @@ export async function decorateBlock(block, blockName = null) {
     } else {
       name = classList[0];
     }
+  }
+  
+  // For data-dependent blocks (pricing, inventory), allow re-decoration if data attribute changes
+  const dataDependentBlocks = ['pricing-display', 'inventory-status'];
+  const isDataDependent = dataDependentBlocks.includes(name);
+  
+  // Skip if already loaded (unless it's a data-dependent block with new data)
+  if (block.dataset.blockStatus === 'loaded' && !isDataDependent) {
+    return;
   }
   
   if (!name) return;

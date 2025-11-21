@@ -1,13 +1,18 @@
 // Product Gallery Block Decoration
-import { getProductImageUrl } from '../../scripts/data-mock.js';
+import { acoService } from '../../scripts/aco-service.js';
+import { authService } from '../../scripts/auth.js';
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
   if (!sku) return;
 
-  // Import product data
-  const { getProductBySKU } = await import('../../scripts/data-mock.js');
-  const product = await getProductBySKU(sku);
+  // Get user context for ACO
+  const userContext = authService.isAuthenticated() 
+    ? authService.getAcoContext() 
+    : null;
+
+  // Get product from ACO service
+  const product = await acoService.getProduct(sku, userContext || undefined);
   if (!product) return;
 
   const mainImageEl = block.querySelector('#product-gallery-main-image');
@@ -17,8 +22,8 @@ export default async function decorate(block) {
   const lightboxImage = block.querySelector('#product-gallery-lightbox-image');
   const lightboxClose = block.querySelector('#product-gallery-lightbox-close');
 
-  // Get product image URL
-  const imageUrl = getProductImageUrl(product);
+  // Get product image URL from ACO service product data
+  const imageUrl = product.image;
   
   // For now, use single image. In future, could support multiple images
   // When multiple images are available, they would be passed here

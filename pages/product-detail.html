@@ -31,9 +31,17 @@
   <!-- Product Detail -->
   <main>
     <section class="section">
-    <div class="container" style="max-width: 1400px;">
-      <!-- Product Detail Container -->
-      <div class="product-detail-container">
+    <div class="container" style="max-width: 1400px; position: relative; min-height: 600px;">
+      <!-- Loading Overlay -->
+      <div class="product-detail-loading-overlay" id="pdp-loading-overlay">
+        <div class="loading-spinner-container">
+          <div class="loading-spinner"></div>
+          <p class="loading-text">Loading product details...</p>
+        </div>
+      </div>
+      
+      <!-- Product Detail Container - hidden until data is ready -->
+      <div class="product-detail-container" style="visibility: hidden;">
         <!-- Product Header -->
         <div class="product-detail-header">
           <!-- Product Name Badge - Full Width -->
@@ -191,6 +199,8 @@
       }
       window[initKey] = true;
       
+      const loadingOverlay = document.getElementById('pdp-loading-overlay');
+      
       // Get SKU from URL
       const sku = getUrlParameter('sku');
       if (!sku) {
@@ -207,8 +217,16 @@
         : null;
 
       try {
-        // Fetch product from ACO service
-        const product = await acoService.getProduct(sku, userContext || undefined);
+        // PRE-FETCH ALL DATA IN PARALLEL - prevents staggered loading
+        const customerGroup = userContext?.customerGroup || 'US-Retail';
+        const [product, pricingResult] = await Promise.all([
+          acoService.getProduct(sku, userContext || undefined),
+          acoService.getPricing({
+            productIds: [sku],
+            customerGroup,
+            quantity: 1
+          })
+        ]);
         
         if (!product) {
           console.error('Product not found:', sku);
@@ -216,9 +234,17 @@
           return;
         }
 
-        // Update product info
+        const pricing = pricingResult.pricing[sku];
+
+        // Update product name and SKU immediately (pre-loaded data)
         document.getElementById('product-name').textContent = product.name;
         document.getElementById('product-sku').textContent = `SKU: ${product.sku}`;
+        
+        // Update price immediately with pre-fetched data
+        const currentPriceEl = document.querySelector('.current-price');
+        if (currentPriceEl && pricing) {
+          currentPriceEl.textContent = `$${pricing.unitPrice.toFixed(2)}`;
+        }
         
         // Full description in left column
         document.getElementById('product-description-full').textContent = product.description || 'No description available.';
@@ -228,17 +254,19 @@
         productGallery.setAttribute('data-sku', sku);
         await decorateBlock(productGallery, 'product-gallery');
 
-        // Update pricing display
+        // Update pricing display - pass pre-fetched data
         const pricingDisplay = document.getElementById('pricing-display');
         pricingDisplay.setAttribute('data-sku', sku);
+        pricingDisplay.pricingData = pricing; // Pass data directly to block
         if (userContext) {
           pricingDisplay.setAttribute('data-user-context', JSON.stringify(userContext));
         }
         await decorateBlock(pricingDisplay, 'pricing-display');
 
-        // Update inventory status
+        // Update inventory status - pass pre-fetched data
         const inventoryStatus = document.getElementById('inventory-status');
         inventoryStatus.setAttribute('data-sku', sku);
+        inventoryStatus.productData = product; // Pass data directly to block
         await decorateBlock(inventoryStatus, 'inventory-status');
 
         // Update specifications
@@ -341,8 +369,23 @@
           e.preventDefault();
         });
 
+        // Show content and hide spinner - all data loaded and rendered
+        const container = document.querySelector('.product-detail-container');
+        if (container) {
+          container.style.visibility = 'visible';
+        }
+        if (loadingOverlay) {
+          loadingOverlay.classList.add('hidden');
+        }
+
       } catch (error) {
         console.error('Error loading product:', error);
+        
+        // Hide loading overlay on error
+        if (loadingOverlay) {
+          loadingOverlay.classList.add('hidden');
+        }
+        
         // Show error state
         document.querySelector('.product-detail-container').innerHTML = `
           <div class="error-state" style="text-align: center; padding: var(--spacing-xxlarge);">

@@ -10,21 +10,24 @@ export default async function decorate(block) {
   
   // URLs are now handled by base tag - no path fixing needed
   
-  // Show/hide location selector based on login status
+  // Show/hide location selector based on login status AND persona
   async function updateAuthenticatedElements() {
     // Wait for auth to initialize
     await authService.initialize();
     
     const loggedIn = authService.isAuthenticated();
+    const currentUser = authService.getCurrentUser();
     
     // Find location section - try ID first, then fallback to class
     const locationSection = block.querySelector('#header-location') || 
                            block.querySelector('.header-location');
+    
+    // Only show location selector for Kevin (Store Manager persona)
+    // Location management is specific to his multi-store use case
+    const hasLocationFeature = loggedIn && currentUser?.persona?.id === 'kevin';
       
-    if (loggedIn) {
-      if (locationSection) locationSection.style.visibility = 'visible';
-    } else {
-      if (locationSection) locationSection.style.visibility = 'hidden';
+    if (locationSection) {
+      locationSection.style.visibility = hasLocationFeature ? 'visible' : 'hidden';
     }
   }
   
@@ -319,29 +322,9 @@ export default async function decorate(block) {
     }
   });
 
-  // Define company locations (not warehouses)
+  // Define store locations for Kevin's persona (Store Manager at Precision Lumber)
+  // Other personas don't use the location selector
   const companyLocations = {
-    'premium_commercial': {
-      name: 'Premium Commercial Builders',
-      locations: [
-        { id: 'los_angeles', city: 'Los Angeles', state: 'CA', isPrimary: true, region: 'western' },
-        { id: 'phoenix', city: 'Phoenix', state: 'AZ', isPrimary: false, region: 'western' }
-      ]
-    },
-    'coastal_residential': {
-      name: 'Coastal Residential Builders',
-      locations: [
-        { id: 'dallas', city: 'Dallas', state: 'TX', isPrimary: true, region: 'central' },
-        { id: 'denver', city: 'Denver', state: 'CO', isPrimary: false, region: 'central' }
-      ]
-    },
-    'elite_trade': {
-      name: 'Elite Trade Contractors',
-      locations: [
-        { id: 'charlotte', city: 'Charlotte', state: 'NC', isPrimary: true, region: 'eastern' },
-        { id: 'atlanta', city: 'Atlanta', state: 'GA', isPrimary: false, region: 'eastern' }
-      ]
-    },
     'precision_lumber': {
       name: 'Precision Lumber & Supply',
       locations: [
@@ -355,8 +338,8 @@ export default async function decorate(block) {
   // Initialize location display from customer context
   function initializeLocationDisplay() {
     const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-    const currentCompany = context.company || 'premium_commercial';
-    const currentLocationId = context.location_id || 'los_angeles';
+    const currentCompany = context.company || 'precision_lumber';
+    const currentLocationId = context.location_id || 'austin';
     
     const company = companyLocations[currentCompany];
     if (!company) {
@@ -386,7 +369,7 @@ export default async function decorate(block) {
   // Populate location dropdown using HTML templates
   function populateLocationDropdown() {
     const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-    const currentCompany = context.company || 'premium_commercial';
+    const currentCompany = context.company || 'precision_lumber';
     const company = companyLocations[currentCompany];
     
     if (!company) {
@@ -461,7 +444,7 @@ export default async function decorate(block) {
         
         const locationId = button.getAttribute('data-location-id');
         const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-        const currentCompany = context.company || 'premium_commercial';
+        const currentCompany = context.company || 'precision_lumber';
         const company = companyLocations[currentCompany];
         const location = company.locations.find(loc => loc.id === locationId);
         
