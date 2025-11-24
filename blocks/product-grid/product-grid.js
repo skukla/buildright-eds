@@ -1,6 +1,6 @@
 // Product grid block decoration
 import { parseCatalogPath } from '../../scripts/url-router.js';
-import { parseHTMLFragment, parseHTML, safeAddEventListener, cleanupEventListeners, cleanElementListeners } from '../../scripts/utils.js';
+import { parseHTMLFragment, parseHTML, safeAddEventListener, cleanupEventListeners, cleanElementListeners, resolveImagePath } from '../../scripts/utils.js';
 import { acoService } from '../../scripts/aco-service.js';
 import { authService } from '../../scripts/auth.js';
 import { getPersona } from '../../scripts/persona-config.js';
@@ -80,12 +80,8 @@ export default async function decorate(block) {
         imageContainer.className = 'product-card-image';
         
         // Only set background image if we have a valid image URL
-        let imageUrl = product.image || '';
-        // Prepend BASE_PATH if the image URL starts with /images/
-        if (imageUrl.startsWith('/images/')) {
-          imageUrl = `${basePath}${imageUrl.substring(1)}`;
-        }
-        if (imageUrl && imageUrl.trim() !== '' && imageUrl !== `${basePath}/images/products/placeholder.png`) {
+        const imageUrl = resolveImagePath(product.image || '');
+        if (imageUrl && imageUrl.trim() !== '' && !imageUrl.includes('placeholder.png')) {
           imageContainer.style.backgroundImage = `url('${imageUrl}')`;
           imageContainer.style.backgroundSize = 'cover';
           imageContainer.style.backgroundPosition = 'center';

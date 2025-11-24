@@ -1,6 +1,48 @@
 // Utility Functions
 
 /**
+ * Get the base path for the application
+ * Uses window.BASE_PATH set by critical-init.js
+ * @returns {string} Base path (e.g., '/' or '/buildright-eds/')
+ */
+export function getBasePath() {
+  return window.BASE_PATH || '/';
+}
+
+/**
+ * Resolve a path with BASE_PATH
+ * Handles both root-relative (/path) and relative (path) paths
+ * @param {string} path - Path to resolve
+ * @returns {string} Full path with BASE_PATH prepended
+ */
+export function resolvePath(path) {
+  if (!path) return '';
+  const basePath = getBasePath();
+  
+  // If path already has basePath, return as-is
+  if (path.startsWith(basePath)) {
+    return path;
+  }
+  
+  // If path is root-relative (/...), prepend basePath minus the /
+  if (path.startsWith('/')) {
+    return `${basePath}${path.substring(1)}`;
+  }
+  
+  // If path is relative, prepend basePath
+  return `${basePath}${path}`;
+}
+
+/**
+ * Resolve an image path (convenience wrapper)
+ * @param {string} imagePath - Image path from data
+ * @returns {string} Full image URL
+ */
+export function resolveImagePath(imagePath) {
+  return resolvePath(imagePath);
+}
+
+/**
  * Get URL parameter value
  * @param {string} name - Parameter name
  * @returns {string|null} Parameter value or null
@@ -160,13 +202,20 @@ export {
   parseHTMLFragment,
   safeAddEventListener,
   cleanupEventListeners,
-  cleanElementListeners
+  cleanElementListeners,
+  // Path resolution utilities already exported above as named exports
+  // getBasePath,
+  // resolvePath,
+  // resolveImagePath
 };
 
 // CommonJS exports (for compatibility)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     getUrlParameter,
+    getBasePath,
+    resolvePath,
+    resolveImagePath,
     loadBlockCSS,
     loadBlockHTML,
     parseHTML,
