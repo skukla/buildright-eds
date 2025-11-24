@@ -3,20 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Set BASE_PATH for GitHub Pages compatibility (must load before modules) -->
-  <script src="./scripts/base-path-init.js"></script>
-  <!-- Load critical data synchronously to prevent layout shift -->
-  <script>
-    window.__INITIAL_CART_COUNT__ = (() => {
-      try {
-        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
-        return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-      } catch (e) {
-        return 0;
-      }
-    })();
-    window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
-  </script>
+  <!-- Critical initialization: BASE_PATH, cart preload, variant detection -->
+  <script src="./scripts/critical-init.js"></script>
   <title>BuildRight Solutions - Building Materials Distributor</title>
   <!-- Note: scripts.js NOT loaded here - this page uses personalization system instead -->
   <link rel="stylesheet" href="./styles/styles.css">

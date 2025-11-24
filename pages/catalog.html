@@ -3,21 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Set BASE_PATH for GitHub Pages compatibility (must load before modules) -->
-  <script src="../scripts/base-path-init.js"></script>
-  <!-- Load critical data synchronously to prevent layout shift -->
-  <script>
-    // Preload cart count to prevent FOUC
-    window.__INITIAL_CART_COUNT__ = (() => {
-      try {
-        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
-        return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-      } catch (e) {
-        return 0;
-      }
-    })();
-    window.__INITIAL_LOCATION__ = localStorage.getItem('buildright_selected_location') || null;
-  </script>
+  <!-- Critical initialization: BASE_PATH, cart preload, variant detection -->
+  <script src="../scripts/critical-init.js"></script>
   <title>Product Catalog - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
@@ -25,12 +12,6 @@
   <!-- Note: Header CLS prevention now in styles/base.css -->
 </head>
 <body class="page-catalog">
-  <script>
-    // Apply white variant if URL parameter is set
-    if (new URLSearchParams(window.location.search).get('variant') === 'white') {
-      document.body.classList.add('white-variant');
-    }
-  </script>
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
