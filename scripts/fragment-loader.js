@@ -30,9 +30,11 @@ export async function loadFragment(container, fragmentPath) {
   try {
     // Fetch the fragment HTML
     // In production EDS, use .plain.html (rendered without header/footer)
-    // In local dev, use .html directly
-    const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const extension = isLocalDev ? '.html' : '.plain.html';
+    // In prototype/demo mode (localhost, GitHub Pages), use .html directly
+    const isPrototypeMode = window.location.hostname === 'localhost' 
+      || window.location.hostname === '127.0.0.1'
+      || window.location.hostname.includes('github.io');
+    const extension = isPrototypeMode ? '.html' : '.plain.html';
     const fullPath = resolvePath(fragmentPath);
     const response = await fetch(`${fullPath}${extension}`);
     
