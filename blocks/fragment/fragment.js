@@ -1,16 +1,26 @@
 /**
  * Fragment Block (EDS Native Pattern)
  * 
- * Loads reusable content sections from separate HTML files.
- * This follows the Adobe EDS fragment pattern:
+ * ⚠️ PROTOTYPE MODE ONLY ⚠️
+ * This decorator is ONLY needed for local development and GitHub Pages.
+ * In production EDS, fragments are processed SERVER-SIDE automatically.
  * 
- * HTML markup:
- * <div class="fragment">
+ * DELETION INSTRUCTIONS:
+ * When migrating to production Adobe Edge Delivery Services:
+ * 1. Delete this entire blocks/fragment/ directory
+ * 2. Keep the HTML markup unchanged - EDS will process it server-side
+ * 3. No other code changes needed
+ * 
+ * WHAT THIS DOES (Prototype Only):
+ * Mimics EDS server-side fragment behavior on the client-side:
+ * - Fetches fragment HTML files
+ * - Injects content into the page
+ * - Decorates any blocks within fragments
+ * 
+ * HTML markup (same in prototype and production):
+ * <div class="fragment" data-block-name="fragment">
  *   <div>/fragments/hero-default</div>
  * </div>
- * 
- * In production EDS, fragments are automatically processed server-side.
- * In prototype mode, we process them client-side with the same behavior.
  * 
  * @param {HTMLElement} block - The fragment block element
  */
