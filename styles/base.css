@@ -174,10 +174,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Gray background only for catalog and PDP pages */
+/* Gray background variant for catalog and PDP pages */
 body.page-catalog,
 body.page-product-detail {
   background-color: var(--color-surface); /* Gray background for product browsing */
+}
+
+/* White background variant - add .white-variant class to body to override */
+body.white-variant.page-catalog,
+body.white-variant.page-product-detail {
+  background-color: var(--color-background); /* Force white background */
 }
 
 /* ============================================

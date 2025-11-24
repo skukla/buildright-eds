@@ -23,6 +23,12 @@
   <!-- Note: Header CLS prevention now in styles/base.css -->
 </head>
 <body class="page-catalog">
+  <script>
+    // Apply white variant if URL parameter is set
+    if (new URLSearchParams(window.location.search).get('variant') === 'white') {
+      document.body.classList.add('white-variant');
+    }
+  </script>
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 

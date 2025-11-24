@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="/blocks/product-detail/product-detail.css">
 </head>
 <body class="page-product-detail">
+  <script>
+    // Apply white variant if URL parameter is set
+    if (new URLSearchParams(window.location.search).get('variant') === 'white') {
+      document.body.classList.add('white-variant');
+    }
+  </script>
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
@@ -18,7 +24,8 @@
         <div><a href="/">Home</a></div>
       </div>
       <div id="category-breadcrumb">
-        <div><a href="/pages/catalog.html">All Products</a></div>
+        <!-- Link will be updated by JavaScript to preserve variant parameter -->
+        <div><a href="/pages/catalog.html" id="catalog-link">All Products</a></div>
       </div>
     </div>
 
@@ -225,6 +232,13 @@
         document.getElementById('product-name').textContent = product.name;
         document.getElementById('product-sku').textContent = product.sku;
         
+        // Update catalog link to preserve variant parameter
+        const catalogLink = document.getElementById('catalog-link');
+        const variantParam = new URLSearchParams(window.location.search).get('variant');
+        if (catalogLink && variantParam) {
+          catalogLink.href = `/pages/catalog.html?variant=${variantParam}`;
+        }
+        
         // Category name mapping (matches navigation sections)
         const CATEGORY_NAMES = {
           'structural_materials': 'Structural Materials',
@@ -243,8 +257,12 @@
           const categoryName = CATEGORY_NAMES[productCategory] || 'Products';
           const categorySlug = productCategory.replace(/_/g, '-'); // Convert to URL-friendly format
           
+          // Preserve variant parameter if present
+          const variantParam = new URLSearchParams(window.location.search).get('variant');
+          const variantQuery = variantParam ? `&variant=${variantParam}` : '';
+          
           if (categoryBreadcrumb) {
-            categoryBreadcrumb.innerHTML = `<div><a href="/pages/catalog.html?category=${categorySlug}">${categoryName}</a></div>`;
+            categoryBreadcrumb.innerHTML = `<div><a href="/pages/catalog.html?category=${categorySlug}${variantQuery}">${categoryName}</a></div>`;
           }
         }
         
