@@ -332,7 +332,7 @@ class AuthService {
       
       // Redirect to login
       console.log('[Auth] Not authenticated, redirecting to login');
-      window.location.href = '/pages/login.html';
+      window.location.href = `${window.BASE_PATH || '/'}pages/login.html`;
       return false;
     }
     
