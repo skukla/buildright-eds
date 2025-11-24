@@ -82,7 +82,11 @@ export default async function decorate(block) {
       const imageContainer = document.createElement('div');
       imageContainer.className = 'product-card-image';
       
-      const imageUrl = product.image || '';
+      let imageUrl = product.image || '';
+      // Prepend BASE_PATH if the image URL starts with /images/
+      if (imageUrl.startsWith('/images/')) {
+        imageUrl = `${basePath}${imageUrl.substring(1)}`;
+      }
       if (imageUrl && imageUrl.trim() !== '' && imageUrl !== `${basePath}/images/products/placeholder.png`) {
         imageContainer.style.backgroundImage = `url('${imageUrl}')`;
         imageContainer.style.backgroundSize = 'cover';

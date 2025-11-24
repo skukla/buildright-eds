@@ -31,7 +31,10 @@ export async function loadFragment(container, fragmentPath) {
     // In local dev, use .html directly
     const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const extension = isLocalDev ? '.html' : '.plain.html';
-    const response = await fetch(`${fragmentPath}${extension}`);
+    const basePath = window.BASE_PATH || '/';
+    // Prepend BASE_PATH if fragmentPath starts with /
+    const fullPath = fragmentPath.startsWith('/') ? `${basePath}${fragmentPath.substring(1)}` : fragmentPath;
+    const response = await fetch(`${fullPath}${extension}`);
     
     if (!response.ok) {
       throw new Error(`Fragment not found: ${fragmentPath} (${response.status})`);
