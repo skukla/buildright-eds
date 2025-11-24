@@ -114,6 +114,11 @@
   border-bottom: 2px solid var(--color-border);
 }
 
+/* White variant: invert table header to white */
+body.white-variant .volume-pricing-table-full thead {
+  background: var(--color-background);
+}
+
 .volume-pricing-table-full thead th {
   padding: 1rem;
   text-align: left;
@@ -366,6 +371,11 @@
   background: var(--color-surface);
 }
 
+/* White variant: invert to white background */
+body.white-variant .product-detail-content {
+  background: var(--color-background);
+}
+
 .product-tabs {
   display: flex;
   gap: 2rem;
@@ -407,6 +417,11 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+/* White variant: invert tab panels to gray */
+body.white-variant .product-tab-panel {
+  background: var(--color-surface);
+}
+
 .product-tab-panel[hidden] {
   display: none;
 }
@@ -440,7 +455,7 @@
 }
 
 .product-specs-table tbody td:first-child {
-  font-weight: 500;
+  font-weight: 600; /* Enhanced for better distinction from values */
   color: var(--color-text-secondary);
   width: 40%;
 }
@@ -463,6 +478,11 @@
   background: var(--color-surface);
 }
 
+/* White variant: invert section to white */
+body.white-variant .section-pdp {
+  background: var(--color-background);
+}
+
 .volume-pricing-table {
   width: 100%;
   border-collapse: collapse;
@@ -471,6 +491,11 @@
   border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
+}
+
+/* White variant: invert volume pricing table to gray */
+body.white-variant .volume-pricing-table {
+  background: var(--color-surface);
 }
 
 .volume-pricing-table thead th {
@@ -572,6 +597,11 @@
   flex-direction: column;
 }
 
+/* White variant: invert modal to gray */
+body.white-variant .volume-pricing-modal-content {
+  background: var(--color-surface);
+}
+
 /* Arrow pointing left toward the sidebar - desktop only */
 .volume-pricing-modal-content::before {
   content: '';
@@ -585,6 +615,11 @@
   border-bottom: 1px solid var(--color-border);
   transform: rotate(45deg);
   z-index: 1;
+}
+
+/* White variant: invert arrow to gray */
+body.white-variant .volume-pricing-modal-content::before {
+  background: var(--color-surface);
 }
 
 /* Hide arrow on mobile/tablet where it's inline */

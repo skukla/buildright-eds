@@ -5,6 +5,11 @@
   padding: var(--spacing-small) 0;
 }
 
+/* Gray breadcrumbs for white-variant pages (inverted contrast) */
+body.white-variant .breadcrumbs {
+  background: var(--color-surface); /* Gray background for separation on white pages */
+}
+
 .breadcrumbs nav {
   max-width: var(--container-max-width);
   margin: 0 auto;

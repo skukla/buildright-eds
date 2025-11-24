@@ -15,6 +15,11 @@
   min-height: 300px; /* CLS prevention */
 }
 
+/* White variant: invert sidebar to gray */
+body.white-variant .filters-sidebar {
+  background-color: var(--color-surface);
+}
+
 /* Filter Price Apply Button */
 .filter-price-apply {
   width: 100%;
