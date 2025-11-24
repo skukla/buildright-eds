@@ -172,3 +172,38 @@
   color: var(--color-negative-500);
 }
 
+/* Tablet - right-aligned under Account button */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .user-menu {
+    right: 0; /* Right-align under Account */
+    left: auto;
+    width: 280px;
+  }
+}
+
+/* Mobile - left-aligned to fit in viewport */
+@media (max-width: 480px) {
+  .user-menu {
+    left: 0; /* Left-align to stay in viewport */
+    right: auto;
+    width: 240px;
+  }
+  
+  .user-menu-header {
+    padding: 1rem 0.875rem;
+  }
+  
+  .user-menu-content {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .user-menu-logged-out .user-menu-content {
+    padding: 1rem;
+  }
+  
+  .user-menu-link {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+

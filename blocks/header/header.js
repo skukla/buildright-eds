@@ -2,6 +2,7 @@
 import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyRedirect } from '../../scripts/url-router.js';
 import { authService } from '../../scripts/auth.js';
 import { parseHTMLFragment } from '../../scripts/utils.js';
+import { getCompany } from '../../scripts/company-config.js';
 import { showCartNotification } from '../../scripts/cart-notification.js';
 
 export default async function decorate(block) {
@@ -28,6 +29,12 @@ export default async function decorate(block) {
       
     if (locationSection) {
       locationSection.style.visibility = hasLocationFeature ? 'visible' : 'hidden';
+      
+      // If location feature is enabled, refresh location display and dropdown
+      if (hasLocationFeature) {
+        initializeLocationDisplay();
+        populateLocationDropdown();
+      }
     }
   }
   
@@ -322,44 +329,28 @@ export default async function decorate(block) {
     }
   });
 
-  // Define store locations for Kevin's persona (Store Manager at Precision Lumber)
-  // Other personas don't use the location selector
-  const companyLocations = {
-    'precision_lumber': {
-      name: 'Precision Lumber & Supply',
-      locations: [
-        { id: 'austin', city: 'Austin', state: 'TX', isPrimary: true, region: 'central' },
-        { id: 'san_antonio', city: 'San Antonio', state: 'TX', isPrimary: false, region: 'central' },
-        { id: 'houston', city: 'Houston', state: 'TX', isPrimary: false, region: 'central' }
-      ]
-    }
-  };
-
   // Initialize location display from customer context
   function initializeLocationDisplay() {
     const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-    const currentCompany = context.company || 'precision_lumber';
-    const currentLocationId = context.location_id || 'austin';
     
-    const company = companyLocations[currentCompany];
+    // Get company from context
+    if (!context.company) {
+      return; // No company context, nothing to display
+    }
+    
+    const company = getCompany(context.company);
     if (!company) {
-      console.warn('Company not found in companyLocations:', currentCompany);
+      console.warn('Company not found:', context.company);
       return;
     }
+    
+    const currentLocationId = context.location_id;
     const location = company.locations.find(loc => loc.id === currentLocationId) || company.locations[0];
     
     // Set display
     const locationNameEl = block.querySelector('.location-name');
     if (locationNameEl) {
       locationNameEl.textContent = `${company.name} - ${location.city}, ${location.state}`;
-    }
-    
-    // Ensure context is saved
-    if (!context.company || !context.location_id) {
-      context.company = currentCompany;
-      context.location_id = location.id;
-      context.region = location.region;
-      localStorage.setItem('buildright_customer_context', JSON.stringify(context));
     }
   }
 
@@ -369,11 +360,15 @@ export default async function decorate(block) {
   // Populate location dropdown using HTML templates
   function populateLocationDropdown() {
     const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-    const currentCompany = context.company || 'precision_lumber';
-    const company = companyLocations[currentCompany];
     
+    // Get company from context
+    if (!context.company) {
+      return; // No company context, nothing to populate
+    }
+    
+    const company = getCompany(context.company);
     if (!company) {
-      console.warn('Company not found in companyLocations:', currentCompany);
+      console.warn('Company not found:', context.company);
       return;
     }
     
@@ -444,8 +439,12 @@ export default async function decorate(block) {
         
         const locationId = button.getAttribute('data-location-id');
         const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
-        const currentCompany = context.company || 'precision_lumber';
-        const company = companyLocations[currentCompany];
+        
+        if (!context.company) return;
+        
+        const company = getCompany(context.company);
+        if (!company) return;
+        
         const location = company.locations.find(loc => loc.id === locationId);
         
         if (location) {
