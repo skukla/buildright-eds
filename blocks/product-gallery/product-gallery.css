@@ -27,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  aspect-ratio: 1 / 1;
   min-height: 300px;
   max-height: 600px;
 }

@@ -1,6 +1,7 @@
 // Product Gallery Block Decoration
 import { acoService } from '../../scripts/aco-service.js';
 import { authService } from '../../scripts/auth.js';
+import { resolveImagePath } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
@@ -32,7 +33,7 @@ export default async function decorate(block) {
   // Set main image or show placeholder
   if (mainImageEl) {
     if (images[0]) {
-      mainImageEl.src = images[0];
+      mainImageEl.src = resolveImagePath(images[0]);
       mainImageEl.alt = product.name || 'Product image';
       
       // Handle image load error - show placeholder
@@ -64,7 +65,7 @@ export default async function decorate(block) {
       if (index === 0) thumbnail.classList.add('active');
       
       const img = document.createElement('img');
-      img.src = imgUrl;
+      img.src = resolveImagePath(imgUrl);
       img.alt = `${product.name || 'Product'} - Image ${index + 1}`;
       img.loading = index === 0 ? 'eager' : 'lazy';
       
@@ -84,7 +85,7 @@ export default async function decorate(block) {
         
         // Update main image
         if (mainImageEl && img.src && !img.classList.contains('hidden')) {
-          mainImageEl.src = imgUrl;
+          mainImageEl.src = resolveImagePath(imgUrl);
           mainImageEl.alt = img.alt;
           mainImageEl.classList.remove('hidden');
           
