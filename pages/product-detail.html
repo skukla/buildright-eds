@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/styles/styles.css">
   <link rel="stylesheet" href="/blocks/product-detail/product-detail.css">
 </head>
-<body>
+<body class="page-product-detail">
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
@@ -17,8 +17,8 @@
       <div>
         <div><a href="/">Home</a></div>
       </div>
-      <div>
-        <div><a href="/pages/catalog.html">Products</a></div>
+      <div id="category-breadcrumb">
+        <div><a href="/pages/catalog.html">All Products</a></div>
       </div>
     </div>
 
@@ -224,6 +224,44 @@
 
         document.getElementById('product-name').textContent = product.name;
         document.getElementById('product-sku').textContent = product.sku;
+        
+        // Category name mapping (matches navigation sections)
+        const CATEGORY_NAMES = {
+          'structural_materials': 'Structural Materials',
+          'windows_doors': 'Windows & Doors',
+          'fasteners_hardware': 'Fasteners & Hardware',
+          'roofing': 'Roofing',
+          'drywall': 'Drywall',
+          'lumber': 'Lumber',
+          'plywood': 'Plywood & Sheathing'
+        };
+        
+        // Update category breadcrumb if product has a category
+        const productCategory = product.attributes?.product_category;
+        if (productCategory) {
+          const categoryBreadcrumb = document.getElementById('category-breadcrumb');
+          const categoryName = CATEGORY_NAMES[productCategory] || 'Products';
+          const categorySlug = productCategory.replace(/_/g, '-'); // Convert to URL-friendly format
+          
+          if (categoryBreadcrumb) {
+            categoryBreadcrumb.innerHTML = `<div><a href="/pages/catalog.html?category=${categorySlug}">${categoryName}</a></div>`;
+          }
+        }
+        
+        // Update breadcrumbs with product name
+        const breadcrumbsNav = document.querySelector('.breadcrumbs nav');
+        if (breadcrumbsNav) {
+          // Add separator
+          const separator = document.createElement('span');
+          separator.textContent = '/';
+          breadcrumbsNav.appendChild(separator);
+          
+          // Add product name as current page (not a link)
+          // No inline styles - inherits from .breadcrumbs nav color
+          const productBreadcrumb = document.createElement('span');
+          productBreadcrumb.textContent = product.name;
+          breadcrumbsNav.appendChild(productBreadcrumb);
+        }
         
         const currentPriceEl = document.querySelector('.current-price-clean');
         if (currentPriceEl && pricing) {
