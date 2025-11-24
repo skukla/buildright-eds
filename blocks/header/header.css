@@ -777,6 +777,11 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
     align-items: flex-start;
   }
 
+  /* Hide "You're Shopping" label on mobile to prevent wrapping */
+  .location-label {
+    display: none;
+  }
+
   /* Keep horizontal layout on mobile */
   .header-main-content {
     grid-template-columns: auto 1fr auto; /* Logo, spacer, icons */

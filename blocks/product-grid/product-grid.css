@@ -342,13 +342,17 @@
   }
 
   .grid-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--spacing-small);
+    flex-direction: row; /* Keep inline */
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .grid-header h2 {
+    font-size: 1.5rem; /* Slightly smaller on mobile */
   }
   
   .product-count {
-    text-align: right;
+    white-space: nowrap; /* Prevent wrapping */
   }
 }
 
