@@ -67,7 +67,7 @@ export default async function decorate(block) {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // Redirect to homepage
-    window.location.href = '/';
+    window.location.href = window.BASE_PATH || '/';
   }
 
   // Attach logout handler
