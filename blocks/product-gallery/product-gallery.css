@@ -27,9 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 6 / 5;
-  min-height: 300px;
-  max-height: 600px;
+  min-height: 400px;
 }
 
 .product-gallery-main-image {
