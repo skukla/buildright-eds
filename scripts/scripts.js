@@ -117,6 +117,7 @@ export async function decorateBlock(block, blockName = null) {
       cls.includes('header') || 
       cls.includes('footer') ||
       cls.includes('site-footer') ||
+      cls.includes('breadcrumbs') ||
       cls.includes('project-filter') || 
       cls.includes('pricing-display') || 
       cls.includes('inventory-status') || 
@@ -173,6 +174,7 @@ export function decorateBlocks(main) {
     'div.header',
     'div.footer',
     'div.site-footer',
+    '.breadcrumbs',
     '[data-block-name]',
     '.product-grid',
     '.project-filter',
@@ -285,6 +287,7 @@ export async function loadBlocks(main) {
   const blockPatterns = [
     'header',
     'site-footer',
+    'breadcrumbs',
     'project-filter',
     'pricing-display',
     'inventory-status',

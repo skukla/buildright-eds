@@ -169,7 +169,7 @@ html {
 body {
   font: var(--type-body-1-default-font);
   color: var(--color-text);
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -254,7 +254,13 @@ a:hover {
 
 /* Section */
 .section {
-  padding: 2.5rem var(--section-padding-horizontal) var(--section-padding-vertical);
+  padding: 2.5rem 0 var(--section-padding-vertical);
+}
+
+/* Section without container needs horizontal padding */
+.section:not(:has(.container)) {
+  padding-left: var(--section-padding-horizontal);
+  padding-right: var(--section-padding-horizontal);
 }
 
 /* Utility Classes */
@@ -318,7 +324,12 @@ a:hover {
   }
   
   .section {
-    padding: 2rem var(--section-padding-horizontal) var(--section-padding-vertical);
+    padding: 2rem 0 var(--section-padding-vertical);
+  }
+  
+  .section:not(:has(.container)) {
+    padding-left: var(--section-padding-horizontal);
+    padding-right: var(--section-padding-horizontal);
   }
 
   h1 {
