@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "serve": "npx http-server -p 8000 -c-1",
-    "build": "node scripts/build.js",
+    "build": "node scripts/tools/build.js",
     "prebuild": "echo 'Injecting blocks...'"
   },
   "keywords": [
