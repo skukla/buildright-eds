@@ -137,16 +137,28 @@ GitHub Pages:  /styles/styles.css ❌ (should be /buildright-eds/styles/styles.c
 
 ## Automated Validation
 
-Run this before committing:
-
+### Manual Validation
 ```bash
 npm run validate-paths
 ```
 
-This checks:
+### Automatic Pre-Commit Hook
+This project uses **Husky** to automatically validate paths before every commit.
+
+**Setup** (automatic on `npm install`):
+```bash
+npm install  # Husky installs hooks automatically
+```
+
+**What it checks:**
 - No absolute paths in HTML `<head>` sections
 - critical-init.js loads first
 - Relative paths match file depth
+
+**Bypass** (emergencies only):
+```bash
+git commit --no-verify
+```
 
 ---
 
