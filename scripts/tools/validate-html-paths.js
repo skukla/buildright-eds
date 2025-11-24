@@ -74,6 +74,45 @@ function validateHTMLFile(filePath, relativePath) {
     }
   }
   
+  // Check inline <script type="module"> for import paths (CRITICAL: catches the PDP bug!)
+  const moduleScriptPattern = /<script[^>]*type=["']module["'][^>]*>([\s\S]*?)<\/script>/gi;
+  const moduleScripts = [...content.matchAll(moduleScriptPattern)];
+  
+  moduleScripts.forEach(scriptMatch => {
+    const scriptContent = scriptMatch[1];
+    const scriptStartIndex = scriptMatch.index;
+    
+    // Check for too many "../" (e.g., ../../scripts/ when ../scripts/ is correct)
+    const tooManyDotsPattern = /from\s+['"](\.\.(\/\.\.)+)(\/scripts\/[^'"]+)['"]/g;
+    const badImports = [...scriptContent.matchAll(tooManyDotsPattern)];
+    
+    badImports.forEach(importMatch => {
+      const fullPath = importMatch[1] + importMatch[3]; // ../../scripts/...
+      const importStartIndex = scriptContent.indexOf(importMatch[0]);
+      const line = content.substring(0, scriptStartIndex + importStartIndex).split('\n').length;
+      
+      errors.push(
+        `${relativePath}:${line} - Too many "../" in module import\n` +
+        `  Found: import from '${fullPath}'\n` +
+        `  Expected: import from '${expectedPrefix}${importMatch[3].substring(1)}'`
+      );
+    });
+    
+    // Check for absolute path imports (e.g., /scripts/ instead of ../scripts/)
+    const absoluteImportPattern = /from\s+['"](\/scripts\/[^'"]+)['"]/g;
+    const absoluteImports = [...scriptContent.matchAll(absoluteImportPattern)];
+    
+    absoluteImports.forEach(importMatch => {
+      const importStartIndex = scriptContent.indexOf(importMatch[0]);
+      const line = content.substring(0, scriptStartIndex + importStartIndex).split('\n').length;
+      
+      errors.push(
+        `${relativePath}:${line} - Absolute path in module import\n` +
+        `  Found: import from '${importMatch[1]}'\n` +
+        `  Expected: import from '${expectedPrefix}${importMatch[1].substring(1)}'`
+      );
+    });
+  });
 }
 
 /**
