@@ -75,7 +75,7 @@
 
 /* Subtle warehouse items - less prominent, more informational */
 .inventory-status-subtle .warehouse-item {
-  padding: var(--spacing-small) var(--spacing-3);
+  padding: 0.75rem 0; /* Match specifications table padding */
   background-color: transparent;
   border: none;
   border-bottom: 1px solid var(--color-border);
@@ -99,15 +99,17 @@
 
 .inventory-status-subtle .warehouse-name {
   font-size: 1rem; /* Match other tab content - --type-body-1-default */
-  font-weight: 500;
-  flex: 1;
+  font-weight: 600; /* Match specifications labels */
+  color: var(--color-text-secondary); /* Match specifications labels */
+  flex: 0 0 40%; /* Match specifications label width */
 }
 
 .inventory-status-subtle .warehouse-quantity {
   font-size: 1rem; /* Match other tab content - --type-body-1-default */
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  text-align: right;
+  font-weight: 400; /* Match specifications values (regular weight) */
+  color: var(--color-text); /* Match specifications values (dark text) */
+  text-align: left; /* Align left like specifications values */
+  flex: 1;
 }
 
 .warehouse-info {
