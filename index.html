@@ -3,15 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Set BASE_PATH for GitHub Pages compatibility (must load before modules) -->
+  <script src="./scripts/base-path-init.js"></script>
   <!-- Load critical data synchronously to prevent layout shift -->
   <script>
-    // Set BASE_PATH immediately for GitHub Pages compatibility
-    (function() {
-      const pathname = window.location.pathname;
-      const isGitHubPages = pathname.startsWith('/buildright-eds/');
-      window.BASE_PATH = isGitHubPages ? '/buildright-eds/' : '/';
-    })();
-    
     window.__INITIAL_CART_COUNT__ = (() => {
       try {
         const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
