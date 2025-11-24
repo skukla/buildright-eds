@@ -1,6 +1,10 @@
 /**
  * Fragment Block Styles
  * 
+ * ⚠️ PROTOTYPE MODE ONLY ⚠️
+ * This file can be DELETED when migrating to production EDS.
+ * Production EDS processes fragments server-side - no client-side styling needed.
+ * 
  * Minimal styling - fragments inherit their content's styles
  */
 
