@@ -143,7 +143,7 @@ export default async function decorate(block) {
         // Show savings if customer has discount
         if (productPricing.savings > 0) {
           const savings = document.createElement('div');
-          savings.className = 'product-card-savings';
+          savings.className = 'product-card-savings savings-pill'; // Use shared component
           savings.textContent = `Save ${productPricing.savingsPercent}%`;
           pricingContainer.appendChild(savings);
         }

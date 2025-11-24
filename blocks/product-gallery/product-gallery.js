@@ -54,9 +54,11 @@ export default async function decorate(block) {
     }
   }
 
-  // Create thumbnails
-  if (thumbnailsContainer && images.length > 1) {
-    images.forEach((imgUrl, index) => {
+  // Create thumbnails (only if multiple images)
+  if (thumbnailsContainer) {
+    if (images.length > 1) {
+      thumbnailsContainer.style.display = 'flex';
+      images.forEach((imgUrl, index) => {
       const thumbnail = document.createElement('div');
       thumbnail.className = 'product-gallery-thumbnail';
       if (index === 0) thumbnail.classList.add('active');
@@ -101,7 +103,11 @@ export default async function decorate(block) {
       });
       
       thumbnailsContainer.appendChild(thumbnail);
-    });
+      });
+    } else {
+      // Hide thumbnails container when only one image
+      thumbnailsContainer.style.display = 'none';
+    }
   } else if (thumbnailsContainer && images.length === 1) {
     // Hide thumbnails if only one image
     thumbnailsContainer.classList.add('hidden');

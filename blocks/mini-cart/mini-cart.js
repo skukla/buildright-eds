@@ -115,18 +115,18 @@ export default async function decorate(block) {
             }
           }
 
-          // Then render regular items
-          const regularItemsToDisplay = itemsToDisplay.filter(item => !item.bundleId);
-          for (const item of regularItemsToDisplay) {
-            const product = await getProductBySKU(item.sku);
-            if (product) {
-              const itemHTML = await createItemHTML(item, product);
-              if (itemHTML) {
-                const fragment = parseHTMLFragment(itemHTML);
-                miniCartItems.appendChild(fragment);
-              }
-            }
+      // Then render regular items
+      const regularItemsToDisplay = itemsToDisplay.filter(item => !item.bundleId);
+      for (const item of regularItemsToDisplay) {
+        const product = await getProductBySKU(item.sku);
+        if (product) {
+          const itemHTML = await createItemHTML(item, product);
+          if (itemHTML) {
+            const fragment = parseHTMLFragment(itemHTML);
+            miniCartItems.appendChild(fragment);
           }
+        }
+      }
 
           // Show "more items" indicator
           if (cart.length > maxDisplayItems) {
