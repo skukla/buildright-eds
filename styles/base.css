@@ -169,9 +169,15 @@ html {
 body {
   font: var(--type-body-1-default-font);
   color: var(--color-text);
-  background-color: var(--color-surface);
+  background-color: var(--color-background); /* White background by default */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gray background only for catalog and PDP pages */
+body.page-catalog,
+body.page-product-detail {
+  background-color: var(--color-surface); /* Gray background for product browsing */
 }
 
 /* ============================================
