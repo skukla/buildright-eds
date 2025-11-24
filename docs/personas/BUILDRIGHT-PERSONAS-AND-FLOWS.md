@@ -1,5 +1,21 @@
 # BuildRight Personas, Use Cases & User Flows
 
+**📊 Document Type**: Reference (Persona Profiles)  
+**📖 Reading Time**: 30-40 minutes (all personas)  
+**👥 Audience**: Everyone (product, UX, developers)
+
+**🔗 Related Docs**:
+- **Implementation Plans**: [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md)
+- **Quick Start**: [quick-reference/implement-persona.md](../quick-reference/implement-persona.md)
+- **Meta Strategy**: [PERSONA-META-PLAN.md](./PERSONA-META-PLAN.md)
+- **UX Patterns**: [PERSONA-UX-MAP.md](./PERSONA-UX-MAP.md)
+
+**📍 Use This Doc When**:
+- Understanding who our users are
+- Learning persona goals and pain points
+- Planning user flows
+- Implementing persona-specific features
+
 ---
 
 ## Persona 1: Production Home Builder

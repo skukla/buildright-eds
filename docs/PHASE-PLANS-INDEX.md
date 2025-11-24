@@ -231,6 +231,25 @@ Contains detailed plans for:
 ### 📄 PHASE-PLANS-SUMMARY.md
 Quick reference guide listing all phases with brief descriptions
 
+### 📄 DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md ⭐ **NEW**
+**Complete step-by-step migration from demo mode to production**
+- API Mesh setup and deployment
+- Authentication migration (mock → @dropins/storefront-auth)
+- Product data migration (static JSON → Adobe Commerce GraphQL)
+- Pricing migration (mock → ACO Price Books)
+- Cart/Checkout migration (localStorage → Commerce APIs)
+- Persona features migration
+- Testing & validation checklists
+- EDS deployment procedures
+- Rollback plan
+
+### 📄 DATA-SOURCE-MATRIX.md
+**Hybrid data architecture: Adobe Commerce PaaS + ACO**
+- What data comes from Commerce vs ACO
+- SaaS Data Export sync flow
+- ACO-only features (Price Books, Policies, Catalog Views)
+- Script strategy (Commerce vs ACO APIs)
+
 ### 📄 CSS-ARCHITECTURE.md
 Existing design system documentation
 

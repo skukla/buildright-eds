@@ -1,5 +1,23 @@
 # Phase 8: Adobe Commerce Backend Setup (UPDATED)
 
+**📊 Document Type**: Implementation Plan (Backend Setup)  
+**📖 Reading Time**: 30-40 minutes  
+**🎯 Status**: 📋 **PLANNED - NOT STARTED**  
+**👥 Audience**: Backend developers, Commerce admins
+
+**🔗 Related Docs**:
+- **Quick Reference**: [quick-reference/architecture-overview.md](../quick-reference/architecture-overview.md)
+- **ACO Guides**: [phase-8-backend/](../phase-8-backend/) (19 files on ACO setup)
+- **Migration Guide**: [phase-9-deployment/DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md](../phase-9-deployment/DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md)
+- **Data Source Matrix**: [DATA-SOURCE-MATRIX.md](./DATA-SOURCE-MATRIX.md)
+- **Architectural Decisions**: [adr/ADR-001](../adr/ADR-001-use-dropins-for-commerce.md), [adr/ADR-003](../adr/ADR-003-mock-aco-service.md)
+
+**📍 Use This Doc When**:
+- Setting up Adobe Commerce backend
+- Configuring ACO (pricing, policies, catalog views)
+- Preparing for production deployment
+- Understanding Commerce + ACO integration
+
 ## Overview
 
 **Duration**: 2-3 weeks  

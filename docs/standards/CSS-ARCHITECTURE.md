@@ -1,5 +1,20 @@
 # CSS Architecture - EDS Best Practices
 
+**📊 Document Type**: Standards & Patterns  
+**📖 Reading Time**: 15-20 minutes  
+**👥 Audience**: Developers writing CSS
+
+**🔗 Related Docs**:
+- **Coding Principles**: [CODING-PRINCIPLES.md](./CODING-PRINCIPLES.md)
+- **Component Library**: [COMPONENT-DESIGN-LIBRARY.md](./COMPONENT-DESIGN-LIBRARY.md)
+- **Implementation Files**: `styles/base.css`, `styles/components.css`
+
+**📍 Use This Doc When**:
+- Writing any CSS
+- Creating new components
+- Styling blocks or pages
+- Understanding the design system
+
 ## Overview
 This document outlines the CSS organization following Adobe Edge Delivery Services (EDS) best practices.
 

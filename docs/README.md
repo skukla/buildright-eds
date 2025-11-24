@@ -2,6 +2,82 @@
 
 A functional HTML/CSS/JavaScript prototype for BuildRight Solutions, demonstrating personalized B2B commerce use cases for building materials distribution. This prototype is structured with Adobe Edge Delivery Services (EDS) block patterns for easy migration to the EDS Commerce boilerplate.
 
+---
+
+## 🎯 Quick Start: Documentation Navigation
+
+### 🚀 For Developers: Implementing Features
+
+**You're implementing personas or features?** 
+
+**Start here**: **[IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md)** ⭐ **YOUR MAIN ENTRY POINT**
+
+This guide routes you directly to what you need:
+- Implementing personas (Marcus, Lisa, David, Kevin)
+- Understanding what's already built
+- Setting up backend
+- Deploying to production
+
+**Fast lookups**: Check [quick-reference/](./quick-reference/) for 1-page guides on common tasks.
+
+---
+
+### 📚 For Everyone: Understanding the Project
+
+| What You Need | Start Here |
+|---------------|------------|
+| **Persona profiles** | [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md) |
+| **Implementation plans** | [PHASES-6B-TO-7-CONSOLIDATED.md](./PHASES-6B-TO-7-CONSOLIDATED.md) 🚧 **CURRENT WORK** |
+| **Complete roadmap** | [PHASE-PLANS-INDEX.md](./PHASE-PLANS-INDEX.md) |
+| **Architecture overview** | [quick-reference/architecture-overview.md](./quick-reference/architecture-overview.md) |
+| **Visual navigation** | [NAVIGATION-MAP.md](./NAVIGATION-MAP.md) |
+
+---
+
+### 📂 Quick Links by Role
+
+| Role | You Need | Go Here |
+|------|----------|---------|
+| **Developer (implementing)** | Implementation entry point | [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md) ⭐ |
+| **Developer (reference)** | What exists, APIs | [quick-reference/what-exists.md](./quick-reference/what-exists.md) |
+| **Product/UX** | Personas & flows | [personas/](./personas/) |
+| **Architect** | Architectural decisions | [adr/](./adr/) |
+| **Frontend Dev** | CSS & coding standards | [standards/](./standards/) |
+| **Backend Dev** | Commerce + ACO setup | [phase-8-backend/](./phase-8-backend/) |
+| **QA/Testing** | Testing strategies | [testing/](./testing/) |
+| **DevOps** | Production deployment | [phase-9-deployment/](./phase-9-deployment/) |
+
+**Not sure where to start?** 
+- **Implementing?** → [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md)
+- **Learning?** → [quick-reference/architecture-overview.md](./quick-reference/architecture-overview.md)
+
+---
+
+## 📁 Documentation Organization
+
+This documentation is organized by implementation phase and topic:
+
+### Root Level (Master Planning & Current Work)
+- **Master Planning** - Navigation, phase plans, core docs index
+- **Current Work** - Phases 6-7 (active implementation)
+
+### Cross-Phase Reference Folders ⭐ **USED THROUGHOUT**
+- **[personas/](./personas/)** - All 5 personas, flows, UX patterns, implementation plans
+- **[standards/](./standards/)** - CSS architecture, coding principles, components, animations
+- **[testing/](./testing/)** - Testing strategies, QA checklists
+- **[adr/](./adr/)** - Architectural Decision Records (ADR-001 through ADR-006)
+
+### Phase Folders (Organized by When Needed)
+- **[phase-0-5-foundation/](./phase-0-5-foundation/)** - ✅ Completed foundation work (reference)
+- **[phase-8-backend/](./phase-8-backend/)** - 📋 Backend setup docs (ACO, Commerce, Dropins, EDS)
+- **[phase-9-deployment/](./phase-9-deployment/)** - 📋 Production deployment & migration
+- **[phase-10-authoring/](./phase-10-authoring/)** - 📋 Content authoring transition
+
+### Archive
+- **[archive/](./archive/)** - Historical/superseded documentation
+
+---
+
 ## Overview
 
 BuildRight Solutions is a national building materials distributor serving professional contractors across three divisions: Commercial, Residential, and Pro. This website prototype demonstrates:

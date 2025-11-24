@@ -1,5 +1,26 @@
 # Phases 6B-7: Remaining Implementation Plans
 
+**📊 Document Type**: Implementation Plan  
+**📖 Reading Time**: 60-90 minutes (comprehensive)  
+**🎯 Current Status**: 🚧 **ACTIVE IMPLEMENTATION**  
+**👥 Audience**: Developers implementing personas
+
+**🔗 Related Docs**:
+- **Quick Start**: [quick-reference/implement-persona.md](./quick-reference/implement-persona.md)
+- **What Exists**: [quick-reference/what-exists.md](./quick-reference/what-exists.md)
+- **Persona Profiles**: [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)
+- **Completion Summaries**: [phase-0-5-foundation/](./phase-0-5-foundation/)
+- **Architectural Decisions**: [adr/ADR-004](./adr/ADR-004-custom-attributes-for-personas.md), [adr/ADR-006](./adr/ADR-006-multi-location-store-manager.md)
+
+**📍 Reading Path**:
+1. Read persona profile in personas/ (15 min)
+2. Read this doc's phase section for your persona (20 min)
+3. Check quick-reference/what-exists.md for reusable components (5 min)
+4. Start implementing tasks
+5. Reference completion summaries as needed
+
+---
+
 This document consolidates the remaining persona implementations (Marcus, Lisa, David, Kevin) and final integration phase. For full implementation details, each section below should be expanded into its own dedicated phase plan document.
 
 ---
@@ -644,26 +665,70 @@ Updates at each step showing the progressive filtering.
 
 ## Phase 6E: Kevin Rodriguez (Store Manager)
 
-**Duration**: 1 week  
+**Duration**: 1-1.5 weeks  
 **Dependencies**: Phase 4, Phase 5  
-**Persona**: Kevin Rodriguez - Store Manager
+**Persona**: Kevin Rodriguez - Store Manager  
+**Architecture**: Multi-location (see ADR-006)
 
 ### Overview
 
-Kevin needs a velocity-based restock dashboard to manage store inventory efficiently.
+Kevin manages 3 locations of Precision Lumber & Supply (Austin, San Antonio, Houston) and needs a velocity-based restock dashboard to manage inventory across his stores. He uses the header location selector to switch between stores, and the dashboard displays location-specific inventory data.
+
+**Key Architecture** (see [ADR-006](../adr/ADR-006-multi-location-store-manager.md)):
+- **Kevin's Stores** (Frontend): 3 Texas retail locations he manages
+- **BuildRight Warehouses** (Backend/MSI): 6 distribution centers that fulfill orders to Kevin's stores
+- **Location Selector**: Header dropdown to switch between Austin/San Antonio/Houston
+- **Customer Context**: `{ company: 'precision_lumber', location_id: 'austin', region: 'central' }`
 
 ### Key Objectives
 
-1. Create restock dashboard
-2. Implement velocity calculations
+1. Create multi-location restock dashboard
+2. Implement velocity calculations per location
 3. Add priority indicators
 4. Create smart restock suggestions
 5. Support bulk ordering
 6. Category-based view
+7. **Handle location switching** ⭐ NEW
+8. **Demonstrate MSI fulfillment** ⭐ NEW
+
+### Two-Layer Architecture
+
+**Layer 1: Kevin's Retail Stores** (Frontend - Customer Context)
+- **Company**: Precision Lumber & Supply
+- **Type**: Retail building supply stores Kevin manages
+- **Locations**: Austin (001), San Antonio (002), Houston (003)
+- **Purpose of Location Selector**: 
+  - Kevin selects which store he's restocking
+  - Sets shipping destination
+  - Displays that store's inventory data
+  - Updates customer context: `{ company: 'precision_lumber', location_id: 'san_antonio' }`
+
+**Layer 2: BuildRight Warehouses** (Backend - MSI Fulfillment)
+- **Company**: BuildRight (the vendor/supplier)
+- **Type**: Distribution centers and regional warehouses
+- **Primary Sources for Texas**: 
+  - `warehouse_phoenix` (Phoenix, AZ) - closest major RDC
+  - `warehouse_denver` (Denver, CO) - central region backup
+- **Purpose**: 
+  - Fulfill orders TO Kevin's stores
+  - MSI determines optimal warehouse based on proximity and availability
+  - Ships from BuildRight warehouse → Kevin's selected store
+
+**Complete Flow**:
+```
+Kevin selects "San Antonio" → 
+  Dashboard shows San Antonio inventory → 
+    Kevin adds items to cart → 
+      Checkout address: San Antonio store → 
+        Order placed → 
+          MSI selects warehouse_phoenix → 
+            Shipment: Phoenix warehouse → San Antonio store
+```
 
 ### Dashboard Sections
 
-**1. Inventory Health Overview**
+**1. Inventory Health Overview** (per selected location)
+- Store name and location
 - Total SKUs tracked
 - Low stock count
 - Out of stock count
@@ -675,7 +740,7 @@ Kevin needs a velocity-based restock dashboard to manage store inventory efficie
 - Color-coded priority (High/Medium/Low)
 
 **3. Smart Suggestions**
-- Velocity-based calculations
+- Velocity-based calculations (location-specific)
 - Seasonal adjustments
 - Promotional considerations
 - Recommended restock quantities
@@ -685,51 +750,221 @@ Kevin needs a velocity-based restock dashboard to manage store inventory efficie
 - View velocity by category
 - Quick restock by category
 
+**5. Location Indicator** ⭐ NEW
+- Clearly shows which store's data is displayed
+- Synced with header location selector
+- Updates when location changes
+
 ### Data Requirements
 
-**File**: `data/store-inventory.json`
+**IMPORTANT**: Phase 6E implements **Demo Mode** only. Production mode (Adobe Commerce API integration) is a future enhancement.
+
+#### Demo Mode Data Structure
+
+**File**: `data/store-inventory.json` (Static JSON file for offline demos)
+
+**Multi-Location Structure** (3 stores):
 
 ```json
 {
-  "storeInfo": {
-    "storeId": "247",
-    "location": "Phoenix, AZ",
-    "manager": "Kevin Rodriguez"
-  },
-  "inventory": [
+  "company": "precision_lumber",
+  "companyName": "Precision Lumber & Supply",
+  "stores": [
     {
-      "sku": "FAST-001",
-      "name": "2\" Deck Screws (1lb box)",
-      "category": "Fasteners",
-      "currentStock": 8,
-      "recommendedStock": 25,
-      "daysSupply": 3,
-      "velocityCategory": "high",
-      "avgDailySales": 2.5,
-      "restockPriority": "high",
-      "recommendedOrder": 20,
-      "unitCost": 8.99,
-      "lastRestocked": "2024-10-28"
+      "location_id": "austin",
+      "storeNumber": "001",
+      "city": "Austin",
+      "state": "TX",
+      "region": "central",
+      "manager": "Kevin Rodriguez",
+      "isPrimary": true,
+      "address": "1234 Commerce St, Austin, TX 78701",
+      "phone": "512-555-0100",
+      "inventory": [
+        {
+          "sku": "FAST-001",
+          "name": "2\" Deck Screws (1lb box)",
+          "category": "Fasteners",
+          "currentStock": 8,
+          "recommendedStock": 25,
+          "daysSupply": 3,
+          "velocityCategory": "high",
+          "avgDailySales": 2.5,
+          "restockPriority": "high",
+          "recommendedOrder": 20,
+          "unitCost": 8.99,
+          "lastRestocked": "2024-11-20"
+        }
+        // ... more items for Austin
+      ]
+    },
+    {
+      "location_id": "san_antonio",
+      "storeNumber": "002",
+      "city": "San Antonio",
+      "state": "TX",
+      "region": "central",
+      "manager": "Kevin Rodriguez",
+      "isPrimary": false,
+      "address": "5678 Industrial Blvd, San Antonio, TX 78216",
+      "phone": "210-555-0200",
+      "inventory": [
+        // ... inventory for San Antonio (similar structure, different quantities)
+      ]
+    },
+    {
+      "location_id": "houston",
+      "storeNumber": "003",
+      "city": "Houston",
+      "state": "TX",
+      "region": "central",
+      "manager": "Kevin Rodriguez",
+      "isPrimary": false,
+      "address": "9012 Distribution Way, Houston, TX 77002",
+      "phone": "713-555-0300",
+      "inventory": [
+        // ... inventory for Houston (similar structure, different quantities)
+      ]
     }
-    // ... more items
   ]
 }
 ```
 
+**Data Strategy**:
+- Use same base inventory template for all 3 stores
+- Vary stock quantities (±20%) per location
+- Vary velocity metrics to create different priorities
+- Austin (primary) has most complete inventory
+- San Antonio and Houston may have some items out of stock
+
+---
+
+#### Production Mode Data Sources (Future Enhancement)
+
+**NOT IMPLEMENTED IN PHASE 6E** - Documented for future reference
+
+**Data Flow**:
+```
+Restock Dashboard
+    ↓
+┌───────────────────────────────────────────┐
+│  Adobe Commerce PaaS (via REST/GraphQL)   │
+├───────────────────────────────────────────┤
+│  • Products: /rest/V1/products            │
+│  • Inventory: /rest/V1/inventory/...      │
+│  • Customer: /rest/V1/customers/me        │
+│  • Company: /rest/V1/company/:id          │
+│  • Teams: /rest/V1/company/:id/team       │
+└───────────────────────────────────────────┘
+    ↓
+┌───────────────────────────────────────────┐
+│  ACO (via GraphQL)                        │
+├───────────────────────────────────────────┤
+│  • Pricing: Price Books API               │
+│  • Catalog: Filtered assortment           │
+│  • Policies: CCDM rules (if applicable)   │
+└───────────────────────────────────────────┘
+    ↓
+Customer Context + Location
+{ company: 'precision_lumber',
+  location_id: 'austin',
+  group: 'Wholesale-Reseller' }
+```
+
+**Key Production APIs**:
+
+1. **Inventory Data** (replaces `store-inventory.json`):
+   ```javascript
+   // Adobe Commerce Inventory API
+   GET /rest/V1/inventory/source-items
+   GET /rest/V1/inventory/stock-resolver
+   // Returns: Stock levels from BuildRight warehouses
+   ```
+
+2. **Product Catalog**:
+   ```javascript
+   // Adobe Commerce Product API
+   GET /rest/V1/products
+   // Returns: Synced from Commerce, enhanced by ACO
+   ```
+
+3. **Pricing**:
+   ```javascript
+   // ACO Catalog Service GraphQL
+   query {
+     products(customerGroup: "Wholesale-Reseller") {
+       sku, price
+     }
+   }
+   // Returns: Wholesale pricing from ACO price books
+   ```
+
+4. **Customer Context**:
+   ```javascript
+   // Adobe Commerce Customer API
+   GET /rest/V1/customers/me
+   // Returns: Company, team (location), customer group
+   ```
+
+**Upgrade Path** (Post Phase 6E):
+1. Create Adobe Commerce API service layer (`scripts/services/commerce-api.js`)
+2. Add ACO GraphQL client (`scripts/services/aco-client.js`)
+3. Replace static JSON loads with API calls
+4. Add authentication/session management
+5. Implement real-time inventory updates
+6. Calculate velocity from order history API
+
 ### Implementation Files
 
 **Dashboard**: `scripts/dashboards/restock-dashboard.js`
-- Overview widgets
+- Overview widgets (per location)
 - Priority list
 - Smart suggestions
 - Quick-add to cart
 - Bulk actions
+- **Location change listener** ⭐ NEW
+- **Load inventory for current location** ⭐ NEW
+- **Update dashboard when location changes** ⭐ NEW
+
+**Data**: `data/store-inventory.json`
+- Multi-location structure (3 stores)
+- Per-store inventory data
+- Velocity metrics per location
 
 **Styles**: `styles/dashboards/restock-dashboard.css`
 
+**Existing Foundation** (from Phase 1-5):
+- `scripts/company-config.js` - Company and location definitions
+- `blocks/header/header.js` - Location selector (already implemented)
+- `scripts/auth.js` - Customer context with location
+
+### Deliverables
+
+**Phase 6E Deliverables - DEMO MODE** (NEW):
+- [ ] `data/store-inventory.json` - Multi-location static inventory data (3 stores)
+- [ ] `scripts/dashboards/restock-dashboard.js` - Location-aware dashboard (loads static JSON)
+- [ ] `styles/dashboards/restock-dashboard.css` - Dashboard styling
+- [ ] Updated testing checklist for all 3 locations
+- [ ] Demo script with location switching
+
+**Already Implemented** (Phase 1-5):
+- [x] `scripts/company-config.js` - Company and location definitions
+- [x] `blocks/header/header.js` - Location selector in header
+- [x] `blocks/header/header.css` - Location dropdown styling
+- [x] `scripts/auth.js` - Customer context with location support
+- [x] `scripts/persona-config.js` - Kevin persona with multi-location features
+
+**Future Enhancement - PRODUCTION MODE** (Not in Phase 6E):
+- [ ] `scripts/services/commerce-api.js` - Adobe Commerce REST/GraphQL client
+- [ ] `scripts/services/aco-client.js` - ACO Catalog Service GraphQL client
+- [ ] Replace static JSON with API queries
+- [ ] Implement velocity calculation from order history
+- [ ] Add real-time inventory updates
+- [ ] Add authentication/session management
+
 ### Success Criteria
 
-✅ Dashboard displays inventory health  
+✅ Dashboard displays inventory health **per location**  
 ✅ Velocity calculations accurate  
 ✅ Priority indicators clear  
 ✅ Smart suggestions reasonable  
@@ -737,6 +972,11 @@ Kevin needs a velocity-based restock dashboard to manage store inventory efficie
 ✅ Bulk actions work  
 ✅ Category filtering works  
 ✅ Data visualization clear  
+✅ **Location selector works in header** (already implemented)  
+✅ **Dashboard updates when location changes** ⭐ NEW  
+✅ **All 3 locations (Austin, San Antonio, Houston) tested** ⭐ NEW  
+✅ **Customer context reflects selected location** (already implemented)  
+✅ **Checkout shipping address matches selected location** ⭐ NEW
 
 ---
 
@@ -867,12 +1107,17 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
    - Review complete kit
    - Show DIY guidance
 
-5. **Kevin Rodriguez** (4 min)
+5. **Kevin Rodriguez** (4-5 min)
    - Login as Kevin
-   - View restock dashboard
+   - **Header shows: "Precision Lumber & Supply - Austin, TX"** ⭐
+   - View restock dashboard (Austin store)
+   - **Click location dropdown, select "San Antonio"** ⭐
+   - **Dashboard updates to San Antonio inventory** ⭐
    - Show velocity-based suggestions
-   - Priority indicators
-   - Quick restock action
+   - Priority indicators (high/medium/low)
+   - Quick restock action (bulk add to cart)
+   - **Checkout shows San Antonio shipping address** ⭐
+   - **Explain: "Order fulfilled from BuildRight's Phoenix warehouse via MSI"** ⭐
 
 ### Task 6: Bug Tracking & Fixes
 
@@ -934,12 +1179,16 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
 | 6B: Marcus | 2 weeks | Phase 4, 5 | Not Started |
 | 6C: Lisa | 2 weeks | Phase 4, 5 | Not Started |
 | 6D: David | 2-3 weeks | Phase 4, 5 | Not Started |
-| 6E: Kevin | 1 week | Phase 4, 5 | Not Started |
+| 6E: Kevin | **1-1.5 weeks** | Phase 4, 5 | Not Started |
 | 7: Integration | 2 weeks | All Phase 6 | Not Started |
 
 **Note**: Phases 6B-6E can be partially parallelized (2-3 at a time)
 
-**Total Time**: 8-10 weeks for Phases 6B through 7
+**Phase 6E Update**: Duration extended from 1 week to 1-1.5 weeks due to multi-location architecture (see [ADR-006](../adr/ADR-006-multi-location-store-manager.md)). Foundation already implemented in Phase 1-5 (location selector, company config, customer context).
+
+**Phase 6E Data Architecture**: Demo mode only (static files). See [DATA-SOURCE-MATRIX](../DATA-SOURCE-MATRIX.md) for full hybrid Commerce PaaS + ACO architecture. Production API integration is a future enhancement.
+
+**Total Time**: 8-10.5 weeks for Phases 6B through 7
 
 ---
 

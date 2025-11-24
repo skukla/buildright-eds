@@ -15,6 +15,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [ADR-003](./ADR-003-mock-aco-service.md) | Mock ACO Service with CCDM Simulation | Accepted | 2024-11-15 |
 | [ADR-004](./ADR-004-custom-attributes-for-personas.md) | Use Custom Attributes for Persona Assignment | Accepted | 2024-11-15 |
 | [ADR-005](./ADR-005-dual-mode-authentication.md) | Dual-Mode Authentication (Demo + Production) | Accepted | 2024-11-15 |
+| [ADR-006](./ADR-006-multi-location-store-manager.md) | Multi-Location Store Manager Architecture | Accepted | 2025-11-24 |
 
 ## ADR Status Definitions
 
@@ -66,5 +67,5 @@ What are the positive and negative outcomes?
 
 ---
 
-**Last Updated**: November 15, 2024
+**Last Updated**: November 24, 2025
 

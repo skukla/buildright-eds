@@ -1,5 +1,22 @@
 # ADR-004: Use Custom Attributes for Persona Assignment
 
+**📊 Document Type**: Architectural Decision Record (ADR)  
+**📖 Reading Time**: 10-15 minutes  
+**⚖️ Status**: Accepted  
+**👥 Audience**: Architects, backend developers
+
+**🔗 Related Docs**:
+- **Implementation**: `scripts/persona-config.js`, `scripts/auth.js`
+- **Auth Summary**: [phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
+- **Related ADR**: [ADR-005](./ADR-005-dual-mode-authentication.md)
+- **Backend Setup**: [phase-8-backend/AUTH-STRATEGY.md](../phase-8-backend/AUTH-STRATEGY.md)
+
+**📍 Use This Doc When**:
+- Understanding how personas are assigned
+- Setting up Commerce backend for personas
+- Implementing persona detection
+- Making decisions about customer data structure
+
 **Status**: Accepted
 
 **Date**: 2024-11-15

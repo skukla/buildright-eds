@@ -1,5 +1,21 @@
 # EDS Fragment Implementation Summary
 
+**📊 Document Type**: Completion Summary (Implementation Result)  
+**📖 Reading Time**: 10-15 minutes  
+**✅ Status**: Complete  
+**👥 Audience**: Anyone using fragments
+
+**🔗 Related Docs**:
+- **Quick Reference**: [quick-reference/what-exists.md](../quick-reference/what-exists.md) (lists all 15 fragments)
+- **Implementation Files**: `scripts/fragment-loader.js`, `/fragments/*.html`
+- **Authoring Guide**: [phase-10-authoring/FRAGMENT-AUTHORING-GUIDE.md](../phase-10-authoring/FRAGMENT-AUTHORING-GUIDE.md)
+
+**📍 Use This Doc When**:
+- Loading fragments in your code
+- Understanding what fragments exist
+- Creating new fragments
+- Managing author-editable content
+
 **Date**: November 17, 2025  
 **Status**: ✅ Added to Phase 5  
 **Impact**: High - Enables author-managed personalized content

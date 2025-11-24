@@ -81,22 +81,23 @@ This directory contains documentation that is no longer relevant to the current 
 
 ## Current Active Documentation
 
-The following documents remain in the main `docs/` folder and are relevant to the current implementation:
+**Start Here**: [PERSONA-PLAN-CORE-DOCS.md](../PERSONA-PLAN-CORE-DOCS.md) - Curated index of the most critical persona plan documents
 
-### Core Planning Documents
-- **`PERSONA-IMPLEMENTATION-PLAN.md`** - Main implementation plan for persona-based architecture
-- **`BUILDRIGHT-PERSONAS-AND-FLOWS.md`** - Persona definitions and user flows
-- **`PERSONA-UX-MAP.md`** - Visual UX flows and component mapping
-- **`UX-AUDIT-AND-VISION.md`** - UX audit and vision for persona experiences
+The documentation is now organized by implementation phase:
 
-### Architecture & Design
-- **`CSS-ARCHITECTURE.md`** - EDS-compliant CSS organization and design system
-- **`EDS-MIGRATION-GUIDE.md`** - Edge Delivery Services best practices
-- **`COMPONENT-DESIGN-LIBRARY.md`** - UI component specifications
+### Root Level (Active Planning)
+- **[PERSONA-PLAN-CORE-DOCS.md](../PERSONA-PLAN-CORE-DOCS.md)** ⭐ **START HERE**
+- **[PHASE-PLANS-INDEX.md](../PHASE-PLANS-INDEX.md)** - Complete roadmap
+- **[BUILDRIGHT-PERSONAS-AND-FLOWS.md](../BUILDRIGHT-PERSONAS-AND-FLOWS.md)** - All 5 personas
+- **[PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md)** - Current work (Phases 6B-7)
+- **[CSS-ARCHITECTURE.md](../CSS-ARCHITECTURE.md)**, **[CODING-PRINCIPLES.md](../CODING-PRINCIPLES.md)** - Architecture
+- **[docs/adr/](../adr/)** - Architectural Decision Records
 
-### Reference
-- **`image-guidelines.md`** - Image standards and guidelines
-- **`README.md`** - General documentation overview
+### Phase Folders
+- **[phase-0-5-foundation/](../phase-0-5-foundation/)** - ✅ Completed foundation phases (reference)
+- **[phase-8-backend/](../phase-8-backend/)** - 📋 Backend setup (ACO, Commerce, Dropins, EDS)
+- **[phase-9-deployment/](../phase-9-deployment/)** - 📋 Production deployment & migration
+- **[phase-10-authoring/](../phase-10-authoring/)** - 📋 Content authoring transition
 
 ---
 
@@ -110,5 +111,23 @@ If you need to reference or restore any archived documents:
 
 ---
 
-**Last Updated:** November 15, 2025
+## Recently Archived (November 24, 2025)
+
+### Superseded Documents
+- **PHASE-8-BACKEND-SETUP.md** - Replaced by PHASE-8-BACKEND-SETUP-UPDATED.md (now in phase-8-backend/)
+- **IMPLEMENTATION-ROADMAP.md** - Replaced by phase-specific plans
+
+### Historical Planning Documents
+- **DOCS-ROTATION-PLAN.md** - Planning doc for documentation reorganization
+- **DOCS-ROTATION-PLAN-V2.md** - Planning doc for documentation reorganization
+- **DOCUMENTATION-ORGANIZATION-SUMMARY.md** - Summary of previous organization
+
+### Historical Research & Assessments
+- **UX-AUDIT-AND-VISION.md** - Pre-dates current persona plan
+- **IMPLEMENTATION-IMPACT-ANALYSIS.md** - Historical assessment
+- **ADOBE_BEST_PRACTICES_COMPARISON.md** - Research document
+
+---
+
+**Last Updated:** November 24, 2025
 
