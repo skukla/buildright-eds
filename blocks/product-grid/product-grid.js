@@ -80,7 +80,11 @@ export default async function decorate(block) {
         imageContainer.className = 'product-card-image';
         
         // Only set background image if we have a valid image URL
-        const imageUrl = product.image || '';
+        let imageUrl = product.image || '';
+        // Prepend BASE_PATH if the image URL starts with /images/
+        if (imageUrl.startsWith('/images/')) {
+          imageUrl = `${basePath}${imageUrl.substring(1)}`;
+        }
         if (imageUrl && imageUrl.trim() !== '' && imageUrl !== `${basePath}/images/products/placeholder.png`) {
           imageContainer.style.backgroundImage = `url('${imageUrl}')`;
           imageContainer.style.backgroundSize = 'cover';
