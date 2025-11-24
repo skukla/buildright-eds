@@ -283,7 +283,7 @@
           if (redirect) {
             window.location.href = decodeURIComponent(redirect);
           } else {
-            window.location.href = '/';
+            window.location.href = window.BASE_PATH || '/';
           }
         } else {
           throw new Error('Login failed');
@@ -362,7 +362,7 @@
           } else {
             // Redirect to homepage to test fragment personalization
             console.log('[Login] Redirecting to homepage for fragment testing');
-            window.location.href = '/';
+            window.location.href = window.BASE_PATH || '/';
           }
         } else {
           throw new Error('Login failed');
