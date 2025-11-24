@@ -70,23 +70,14 @@
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
-  <!-- Hero Section (Fragment Container) -->
-  <div class="hero-container">
-    <!-- Loading skeleton -->
-    <div class="skeleton-loader">
-      <div class="skeleton-text"></div>
-      <div class="skeleton-text"></div>
-    </div>
+  <!-- Hero Section (EDS Fragment) -->
+  <div class="fragment hero-fragment" data-block-name="fragment" data-block-status="loading">
+    <div>/fragments/hero-default</div>
   </div>
 
-  <!-- Features Section (Fragment Container) -->
-  <div class="features-container">
-    <!-- Loading skeleton -->
-    <div class="skeleton-loader">
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card"></div>
-    </div>
+  <!-- Features Section (EDS Fragment) -->
+  <div class="fragment features-fragment" data-block-name="fragment" data-block-status="loading">
+    <div>/fragments/features-retail</div>
   </div>
 
   <!-- Featured Products - Main Content -->
@@ -109,12 +100,9 @@
       </div>
     </section>
 
-  <!-- CTA Section (Fragment Container) -->
-  <div class="cta-container">
-    <!-- Loading skeleton -->
-    <div class="skeleton-loader">
-      <div class="skeleton-text"></div>
-    </div>
+  <!-- CTA Section (EDS Fragment) -->
+  <div class="fragment cta-fragment" data-block-name="fragment" data-block-status="loading">
+    <div>/fragments/cta-projects</div>
   </div>
 
     <!-- Featured Categories (Unauthenticated Users Only) -->
@@ -233,8 +221,10 @@
 
   </main>
 
-  <!-- Footer (Fragment Container) -->
-  <div class="footer-fragment"></div>
+  <!-- Footer (EDS Fragment) -->
+  <div class="fragment footer-fragment" data-block-name="fragment" data-block-status="loading">
+    <div>/fragments/footer-buildright</div>
+  </div>
 
   <script type="module">
     // Import required modules

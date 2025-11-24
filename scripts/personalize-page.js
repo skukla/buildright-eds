@@ -4,14 +4,17 @@
  * 
  * This system uses role-based fragments (builder, specialty, retail)
  * rather than persona-specific fragments for better maintainability
+ * 
+ * Updated to use EDS-native fragment blocks instead of custom loader
  */
 
 import { authService } from './auth.js';
 import { getPersona, getRoleType, getUseCase } from './persona-config.js';
-import { loadFragment, loadFragments } from './fragment-loader.js';
+import { decorateBlock } from './scripts.js';
 
 /**
  * Personalize the homepage with role-based fragments
+ * Uses EDS-native fragment blocks
  * @returns {Promise<void>}
  */
 export async function personalizeHomepage() {
@@ -40,38 +43,37 @@ export async function personalizeHomepage() {
       section.style.display = 'none';
     });
     
-    // Load role-based fragments in parallel
-    await loadFragments([
-      {
-        container: '.hero-container',
-        path: `/fragments/hero-${roleType}`
-      },
-      {
-        container: '.features-container',
-        path: `/fragments/features-${roleType}`
-      },
-      {
-        container: '.cta-container',
-        path: `/fragments/cta-${useCase}`
-      },
-      {
-        container: '.footer-fragment',
-        path: '/fragments/footer-buildright'
-      }
-    ]);
+    // Update fragment blocks with personalized paths
+    const heroFragment = document.querySelector('.hero-fragment');
+    const featuresFragment = document.querySelector('.features-fragment');
+    const ctaFragment = document.querySelector('.cta-fragment');
     
-    // Optionally: Add dynamic personalization on top of fragments
+    if (heroFragment) {
+      heroFragment.innerHTML = `<div>/fragments/hero-${roleType}</div>`;
+    }
+    if (featuresFragment) {
+      featuresFragment.innerHTML = `<div>/fragments/features-${roleType}</div>`;
+    }
+    if (ctaFragment) {
+      ctaFragment.innerHTML = `<div>/fragments/cta-${useCase}</div>`;
+    }
+    
+    // Decorate all fragment blocks
+    const fragments = document.querySelectorAll('.fragment');
+    await Promise.all(Array.from(fragments).map(fragment => decorateBlock(fragment, 'fragment')));
+    
+    // Add dynamic personalization on top of fragments
     personalizeWithDynamicData(persona);
     
   } else {
-    // Load unauthenticated fragments
+    // Unauthenticated: fragments already have default paths in HTML
     console.log('[Personalize] Loading default fragments (unauthenticated)');
     
-    // Clear features and CTA containers for unauthenticated users
-    const featuresContainer = document.querySelector('.features-container');
-    const ctaContainer = document.querySelector('.cta-container');
-    if (featuresContainer) featuresContainer.innerHTML = '';
-    if (ctaContainer) ctaContainer.innerHTML = '';
+    // Hide features and CTA fragments for unauthenticated users
+    const featuresFragment = document.querySelector('.features-fragment');
+    const ctaFragment = document.querySelector('.cta-fragment');
+    if (featuresFragment) featuresFragment.style.display = 'none';
+    if (ctaFragment) ctaFragment.style.display = 'none';
     
     // Show unauthenticated-only sections
     const unauthSections = document.querySelectorAll('.unauthenticated-only');
@@ -79,16 +81,14 @@ export async function personalizeHomepage() {
       section.style.display = 'block';
     });
     
-    await loadFragments([
-      {
-        container: '.hero-container',
-        path: '/fragments/hero-default'
-      },
-      {
-        container: '.footer-fragment',
-        path: '/fragments/footer-buildright'
+    // Decorate fragment blocks (hero and footer)
+    const fragments = document.querySelectorAll('.fragment');
+    await Promise.all(Array.from(fragments).map(fragment => {
+      if (fragment.style.display !== 'none') {
+        return decorateBlock(fragment, 'fragment');
       }
-    ]);
+      return Promise.resolve();
+    }));
   }
   
   // Show content after personalization (prevents FOUC)
@@ -122,70 +122,17 @@ function personalizeWithDynamicData(persona) {
 }
 
 /**
- * Personalize any page with fragment support
- * Generic function for pages that need custom fragment configurations
+ * NOTE: For EDS-native fragment implementation, use the fragment block pattern:
  * 
- * @param {Object} config - Configuration object
- * @param {Array<{container: string, path: string, useRole?: boolean, useUseCase?: boolean}>} config.fragments - Array of fragment configs
- * @param {Function} config.onComplete - Callback after personalization
- * @returns {Promise<void>}
+ * HTML:
+ * <div class="fragment" data-block-name="fragment">
+ *   <div>/fragments/hero-default</div>
+ * </div>
  * 
- * @example
- * await personalizePage({
- *   fragments: [
- *     { container: '.hero', path: '/fragments/hero-{role}', useRole: true },
- *     { container: '.cta', path: '/fragments/cta-{useCase}', useUseCase: true }
- *   ],
- *   onComplete: (persona) => console.log('Personalized for', persona.name)
- * });
+ * Then personalize by updating the inner content before decorating:
+ * fragmentBlock.innerHTML = `<div>/fragments/hero-${roleType}</div>`;
+ * await decorateBlock(fragmentBlock, 'fragment');
+ * 
+ * See personalizeHomepage() for a complete example.
  */
-export async function personalizePage(config = {}) {
-  const isAuth = authService.isAuthenticated();
-  
-  if (!config.fragments || config.fragments.length === 0) {
-    console.warn('[Personalize] No fragments configured');
-    return;
-  }
-  
-  const user = isAuth ? authService.getCurrentUser() : null;
-  const persona = user ? getPersona(user.personaId) : null;
-  
-  // Resolve fragment paths based on persona
-  const resolvedFragments = config.fragments.map(fragment => {
-    let path = fragment.path;
-    
-    // Replace {role} placeholder
-    if (fragment.useRole && path.includes('{role}')) {
-      const roleType = persona ? getRoleType(persona) : 'default';
-      path = path.replace('{role}', roleType);
-    }
-    
-    // Replace {useCase} placeholder
-    if (fragment.useUseCase && path.includes('{useCase}')) {
-      const useCase = persona ? getUseCase(persona) : 'default';
-      path = path.replace('{useCase}', useCase);
-    }
-    
-    // Replace {persona} placeholder (for backward compatibility)
-    if (path.includes('{persona}')) {
-      path = path.replace('{persona}', persona ? persona.id : 'default');
-    }
-    
-    return {
-      container: fragment.container,
-      path
-    };
-  });
-  
-  // Load all fragments
-  await loadFragments(resolvedFragments);
-  
-  // Run callback if provided
-  if (config.onComplete && persona) {
-    config.onComplete(persona);
-  }
-  
-  // Show content
-  document.body.classList.add('ready');
-}
 
