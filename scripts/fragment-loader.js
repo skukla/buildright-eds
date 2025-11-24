@@ -9,6 +9,8 @@
  * - Updated without code changes
  */
 
+import { resolvePath } from './utils.js';
+
 /**
  * Load a fragment and inject it into a container
  * @param {string|HTMLElement} container - CSS selector or DOM element for container
@@ -31,9 +33,7 @@ export async function loadFragment(container, fragmentPath) {
     // In local dev, use .html directly
     const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const extension = isLocalDev ? '.html' : '.plain.html';
-    const basePath = window.BASE_PATH || '/';
-    // Prepend BASE_PATH if fragmentPath starts with /
-    const fullPath = fragmentPath.startsWith('/') ? `${basePath}${fragmentPath.substring(1)}` : fragmentPath;
+    const fullPath = resolvePath(fragmentPath);
     const response = await fetch(`${fullPath}${extension}`);
     
     if (!response.ok) {

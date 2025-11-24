@@ -6,6 +6,7 @@
 
 import { authService } from '../../scripts/auth.js';
 import { acoService } from '../../scripts/aco-service.js';
+import { resolveImagePath } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
   const container = block.querySelector('.products-container');
@@ -82,12 +83,8 @@ export default async function decorate(block) {
       const imageContainer = document.createElement('div');
       imageContainer.className = 'product-card-image';
       
-      let imageUrl = product.image || '';
-      // Prepend BASE_PATH if the image URL starts with /images/
-      if (imageUrl.startsWith('/images/')) {
-        imageUrl = `${basePath}${imageUrl.substring(1)}`;
-      }
-      if (imageUrl && imageUrl.trim() !== '' && imageUrl !== `${basePath}/images/products/placeholder.png`) {
+      const imageUrl = resolveImagePath(product.image || '');
+      if (imageUrl && imageUrl.trim() !== '' && !imageUrl.includes('placeholder.png')) {
         imageContainer.style.backgroundImage = `url('${imageUrl}')`;
         imageContainer.style.backgroundSize = 'cover';
         imageContainer.style.backgroundPosition = 'center';
