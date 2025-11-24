@@ -4,55 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail - BuildRight Solutions</title>
-  <script src="../scripts/scripts.js" type="module"></script>
-  <link rel="stylesheet" href="../styles/styles.css">
-  <link rel="stylesheet" href="../blocks/product-gallery/product-gallery.css">
-  <link rel="stylesheet" href="../blocks/pricing-display/pricing-display.css">
-  <link rel="stylesheet" href="../blocks/inventory-status/inventory-status.css">
-  <link rel="stylesheet" href="../blocks/product-detail/product-detail.css">
+  <link rel="stylesheet" href="/styles/styles.css">
+  <link rel="stylesheet" href="/blocks/product-detail/product-detail.css">
 </head>
 <body>
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
-  <!-- Breadcrumbs -->
-  <div style="background: var(--color-surface); padding: var(--spacing-small) 0; border-bottom: 1px solid var(--color-border);">
-    <div class="container">
-      <nav style="font: var(--type-body-2-default-font); color: var(--color-text-secondary);">
-        <a href="../index.html" style="color: var(--color-brand-500); text-decoration: none;">Home</a>
-        <span style="margin: 0 var(--spacing-small);">/</span>
-        <a href="../catalog" style="color: var(--color-brand-500); text-decoration: none;">Products</a>
-        <span style="margin: 0 var(--spacing-small);">/</span>
-        <span>Product Detail</span>
-      </nav>
-    </div>
-  </div>
-
-  <!-- Product Detail -->
   <main>
-    <section class="section">
-    <div class="container" style="max-width: 1400px; position: relative; min-height: 600px;">
-      <!-- Loading Overlay -->
-      <div class="product-detail-loading-overlay" id="pdp-loading-overlay">
-        <div class="loading-spinner-container">
-          <div class="loading-spinner"></div>
-          <p class="loading-text">Loading product details...</p>
-        </div>
+    <!-- Breadcrumbs Block -->
+    <div class="breadcrumbs">
+      <div>
+        <div><a href="/">Home</a></div>
       </div>
-      
-      <!-- Product Detail Container - hidden until data is ready -->
-      <div class="product-detail-container" style="visibility: hidden;">
-        <!-- Product Header -->
-        <div class="product-detail-header">
-          <!-- Product Name Badge - Full Width -->
-          <div class="product-name-badge">
-            <h1 id="product-name" class="product-detail-name">Loading...</h1>
-            <p id="product-sku" class="product-detail-sku">SKU: Loading...</p>
-          </div>
+      <div>
+        <div><a href="/pages/catalog.html">Products</a></div>
+      </div>
+    </div>
 
-          <!-- Two Column Layout: Gallery + Purchase -->
-          <div class="product-detail-header-content">
-            <div class="product-detail-image-section">
+  <section class="section-pdp">
+    <div class="pdp-loading-overlay" id="pdp-loading-overlay">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <div class="product-detail-container" id="product-detail-container" style="visibility: hidden;">
+      <div class="product-detail">
+        <!-- Cookware-Inspired Layout -->
+        <div class="product-detail-header">
+          <div class="product-cookware-layout">
+            <!-- Left: Product Image (55%) -->
+            <div class="product-image-hero">
               <div class="product-gallery" id="product-gallery" data-sku="">
                 <div>
                   <div>
@@ -69,7 +50,7 @@
                       </div>
                     </div>
                     <div class="product-gallery-thumbnails" id="product-gallery-thumbnails">
-                      <!-- Thumbnails will be populated by JavaScript -->
+                      <!-- Thumbnails -->
                     </div>
                   </div>
                 </div>
@@ -85,191 +66,207 @@
               </div>
             </div>
 
-            <div class="product-detail-purchase-section">
+            <!-- Right: Clean Sidebar (45%) -->
+            <div class="product-sidebar-clean">
+              <!-- Unit 1: Title + SKU -->
+              <div class="product-header-clean">
+                <h1 id="product-name" class="product-name-clean">Loading...</h1>
+                <p id="product-sku" class="product-sku-clean">SKU: Loading...</p>
+              </div>
 
-              <!-- Pricing & Purchase Card -->
-              <div class="product-detail-purchase-card">
-                <!-- Left Column: Pricing, Quantity, Add to Cart -->
-                <div class="product-detail-purchase-left">
-                  <div class="pricing-display" id="pricing-display" data-sku="">
-                    <div>
-                      <div>
-                        <div class="current-price-section">
-                          <span class="current-price">$0.00</span>
-                          <span class="tier-indicator">Loading...</span>
+              <!-- Unit 2: Price + Pill -->
+              <div class="pricing-display pricing-clean-sidebar" id="pricing-display" data-sku="">
+                <div class="current-price-clean">$0.00</div>
+                <div class="tier-badge-clean">Loading...</div>
+              </div>
+
+              <!-- Unit 3: Quantity + Add to Cart -->
+              <div class="purchase-actions-clean">
+                <div class="quantity-section-clean">
+                  <div class="quantity-label-row">
+                    <label for="quantity" class="quantity-label-clean">Quantity</label>
+                    <button id="volume-pricing-trigger" class="volume-pricing-trigger" style="display: none;">
+                      View Volume Pricing
+                    </button>
+                  </div>
+                  <div class="product-detail-qty-controls">
+                    <button class="product-detail-qty-btn" data-action="decrease" aria-label="Decrease quantity">-</button>
+                    <input type="number" id="quantity" class="product-detail-quantity-input" value="1" min="1" max="9999">
+                    <button class="product-detail-qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
+                  </div>
+                </div>
+                <button id="add-to-cart-btn" class="add-to-cart-clean">Add to Cart</button>
+              </div>
+
+              <!-- Volume Pricing Modal - child of sidebar for correct desktop positioning, inline on mobile via CSS -->
+              <div id="volume-pricing-modal" class="volume-pricing-modal" style="display: none;">
+                <div class="volume-pricing-modal-backdrop"></div>
+                <div class="volume-pricing-modal-content">
+                  <div class="volume-pricing-modal-header">
+                    <h3>Volume Pricing</h3>
+                    <button id="volume-pricing-modal-close" class="volume-pricing-modal-close" aria-label="Close modal">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="volume-pricing-modal-body">
+                    <table class="volume-pricing-table-modal">
+                      <thead>
+                        <tr>
+                          <th>Quantity</th>
+                          <th>Unit Price</th>
+                          <th>Savings</th>
+                        </tr>
+                      </thead>
+                      <tbody class="pricing-tiers-modal">
+                        <!-- Populated by JS -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+                <div class="product-detail-content">
+                  <div class="product-tabs" role="tablist">
+                    <button class="product-tab active" role="tab" aria-selected="true" data-tab="description">Description</button>
+                    <button class="product-tab" role="tab" aria-selected="false" data-tab="specifications">Specifications</button>
+                    <button class="product-tab" role="tab" aria-selected="false" data-tab="availability">Availability</button>
+                    <button class="product-tab" role="tab" aria-selected="false" data-tab="volume-pricing" id="volume-pricing-tab" style="display: none;">Volume Pricing</button>
+                  </div>
+
+                  <div class="product-tab-panels">
+                    <div class="product-tab-panel active" id="tab-description">
+                      <p id="product-description-full" class="product-detail-description-text">Loading...</p>
+                    </div>
+                    <div class="product-tab-panel" id="tab-specifications" hidden>
+                      <div id="product-specs" class="product-specs-table"></div>
+                    </div>
+                    <div class="product-tab-panel" id="tab-availability" hidden>
+                      <div class="inventory-status inventory-status-subtle" id="inventory-status" data-sku="">
+                        <div>
+                          <div>
+                            <div class="warehouse-list"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <!-- Quantity & Add to Cart -->
-                  <div class="product-detail-purchase-controls">
-                    <div class="product-detail-quantity">
-                      <label for="quantity" class="product-detail-label">Quantity</label>
-                      <div class="product-detail-qty-controls">
-                        <button class="product-detail-qty-btn" data-action="decrease" aria-label="Decrease quantity">-</button>
-                        <input type="number" id="quantity" class="product-detail-quantity-input" value="1" min="1" max="9999">
-                        <button class="product-detail-qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
-                      </div>
-                    </div>
-                    <button id="add-to-cart-btn" class="product-detail-add-to-cart">Add to Cart</button>
-                  </div>
-                </div>
-
-                <!-- Right Column: Volume Pricing -->
-                <div class="product-detail-volume-pricing" id="volume-pricing-section">
-                  <h3 class="volume-pricing-title">Volume Pricing</h3>
-                  <table class="volume-pricing-table">
-                    <thead>
-                      <tr>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                      </tr>
-                    </thead>
-                    <tbody class="pricing-tiers">
-                      <!-- Pricing tiers will be populated by JavaScript -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Main Content -->
-        <div class="product-detail-main">
-          <!-- Left Column: Details -->
-          <div class="product-detail-left">
-            <!-- Product Description -->
-            <div class="product-detail-section" id="description-section">
-              <h2 class="product-detail-section-title">Description</h2>
-              <div class="product-detail-card">
-                <p id="product-description-full" class="product-detail-description-text">Loading...</p>
-              </div>
-            </div>
-
-            <!-- Product Specifications -->
-            <div class="product-detail-section">
-              <h2 class="product-detail-section-title">Specifications</h2>
-              <div class="product-detail-card">
-                <div id="product-specs" class="product-specs-table">
-                  <!-- Specifications will be populated by JavaScript -->
-                </div>
-              </div>
-            </div>
-
-            <!-- Regional Availability -->
-            <div class="product-detail-section">
-              <h2 class="product-detail-section-title">Regional Availability</h2>
-              <div class="product-detail-card">
-                <div class="inventory-status inventory-status-subtle" id="inventory-status" data-sku="">
-                  <div>
-                    <div>
-                      <div class="warehouse-list">
-                        <!-- Warehouse items will be populated by JavaScript -->
-                      </div>
+                    <div class="product-tab-panel" id="tab-volume-pricing" hidden>
+                      <table class="volume-pricing-table-full">
+                        <thead>
+                          <tr>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Savings</th>
+                          </tr>
+                        </thead>
+                        <tbody class="pricing-tiers">
+                          <!-- Populated by JS -->
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   </section>
 
   </main>
 
-  <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
 
   <script type="module">
-    import { getUrlParameter, cleanElementListeners } from '../scripts/utils.js';
-    import { acoService } from '../scripts/aco-service.js';
-    import { authService } from '../scripts/auth.js';
-    import { decorateBlock } from '../scripts/scripts.js';
-    
-    // Load product detail - idempotent function
+    import { decorateBlock } from '../../scripts/scripts.js';
+    import { acoService } from '../../scripts/aco-service.js';
+    import { authService } from '../../scripts/auth.js';
+    import { cleanElementListeners } from '../../scripts/utils.js';
+
     async function loadProductDetail() {
-      // Track initialization to prevent duplicate execution
-      const initKey = '_productDetailInitialized';
-      if (window[initKey]) {
-        return; // Already initialized, skip
-      }
-      window[initKey] = true;
-      
-      const loadingOverlay = document.getElementById('pdp-loading-overlay');
-      
-      // Get SKU from URL
-      const sku = getUrlParameter('sku');
-      if (!sku) {
-        window.location.href = 'catalog';
-        return;
-      }
-
-      // Initialize auth service
-      await authService.initialize();
-
-      // Get user context for pricing
-      const userContext = authService.isAuthenticated() 
-        ? authService.getAcoContext() 
-        : null;
-
       try {
-        // PRE-FETCH ALL DATA IN PARALLEL - prevents staggered loading
-        const customerGroup = userContext?.customerGroup || 'US-Retail';
-        const [product, pricingResult] = await Promise.all([
-          acoService.getProduct(sku, userContext || undefined),
+        const urlParams = new URLSearchParams(window.location.search);
+        const sku = urlParams.get('sku') || 'LBR-D0414F1E';
+
+        // CRITICAL: Wait for auth to initialize before getting user context
+        console.log('[PDP] Waiting for auth to initialize...');
+        await authService.initialize();
+        console.log('[PDP] Auth initialized!');
+
+        // Get user context for pricing
+        const currentUser = authService.getCurrentUser();
+        console.log('[PDP] Current user object:', currentUser);
+        console.log('[PDP] Current user customerGroup:', currentUser?.customerGroup);
+        
+        const customerGroup = currentUser?.customerGroup || 'US-Retail';
+        
+        console.log('[PDP] Loading product with user context:', {
+          authenticated: authService.isAuthenticated(),
+          user: currentUser?.name,
+          customerGroup: customerGroup,
+          fallbackUsed: !currentUser?.customerGroup
+        });
+
+        const [productResult, pricingResult] = await Promise.all([
+          acoService.getProduct(sku),
           acoService.getPricing({
             productIds: [sku],
-            customerGroup,
+            customerGroup: customerGroup,
             quantity: 1
           })
         ]);
-        
-        if (!product) {
-          console.error('Product not found:', sku);
-          window.location.href = 'catalog';
-          return;
-        }
 
+        const product = productResult;
         const pricing = pricingResult.pricing[sku];
 
-        // Update product name and SKU immediately (pre-loaded data)
         document.getElementById('product-name').textContent = product.name;
-        document.getElementById('product-sku').textContent = `SKU: ${product.sku}`;
+        document.getElementById('product-sku').textContent = product.sku;
         
-        // Update price immediately with pre-fetched data
-        const currentPriceEl = document.querySelector('.current-price');
+        const currentPriceEl = document.querySelector('.current-price-clean');
         if (currentPriceEl && pricing) {
           currentPriceEl.textContent = `$${pricing.unitPrice.toFixed(2)}`;
         }
         
-        // Full description in left column
         document.getElementById('product-description-full').textContent = product.description || 'No description available.';
 
-        // Update product gallery
         const productGallery = document.getElementById('product-gallery');
         productGallery.setAttribute('data-sku', sku);
+        productGallery.productData = product;
         await decorateBlock(productGallery, 'product-gallery');
 
-        // Update pricing display - pass pre-fetched data
         const pricingDisplay = document.getElementById('pricing-display');
+        console.log('[PDP] Pricing display element:', pricingDisplay);
+        console.log('[PDP] Pricing data being passed:', pricing);
+        
         pricingDisplay.setAttribute('data-sku', sku);
-        pricingDisplay.pricingData = pricing; // Pass data directly to block
-        if (userContext) {
-          pricingDisplay.setAttribute('data-user-context', JSON.stringify(userContext));
+        pricingDisplay.pricingData = pricing;
+        if (currentUser) {
+          pricingDisplay.setAttribute('data-user-context', JSON.stringify({
+            customerGroup: currentUser.customerGroup
+          }));
         }
+        
+        console.log('[PDP] About to decorate pricing-display block...');
         await decorateBlock(pricingDisplay, 'pricing-display');
+        console.log('[PDP] Pricing-display block decorated!');
+        
+        // Check if volume toggle exists and what its display is
+        const volumeToggle = document.getElementById('volume-pricing-toggle');
+        console.log('[PDP] Volume toggle after decoration:', {
+          element: volumeToggle,
+          exists: !!volumeToggle,
+          display: volumeToggle?.style.display,
+          computedDisplay: volumeToggle ? window.getComputedStyle(volumeToggle).display : 'N/A'
+        });
 
-        // Update inventory status - pass pre-fetched data
         const inventoryStatus = document.getElementById('inventory-status');
         inventoryStatus.setAttribute('data-sku', sku);
-        inventoryStatus.productData = product; // Pass data directly to block
+        inventoryStatus.productData = product;
         await decorateBlock(inventoryStatus, 'inventory-status');
 
-        // Update specifications
         const specsContainer = document.getElementById('product-specs');
         if (product.attributes && Object.keys(product.attributes).length > 0) {
           const table = document.createElement('table');
@@ -295,18 +292,23 @@
           specsContainer.innerHTML = '<p style="color: var(--color-text-secondary); font-style: italic; margin: 0;">No specifications available for this product.</p>';
         }
 
-        // Add to cart handler - use utility to clean listeners (idempotent)
         const addToCartBtn = document.getElementById('add-to-cart-btn');
         const cleanBtn = cleanElementListeners(addToCartBtn);
         
         cleanBtn.addEventListener('click', () => {
           const quantity = parseInt(document.getElementById('quantity').value) || 1;
+          
+          // Close volume pricing modal when adding to cart
+          const volumePricingModal = document.getElementById('volume-pricing-modal');
+          if (volumePricingModal && volumePricingModal.style.display === 'block') {
+            volumePricingModal.style.display = 'none';
+          }
+          
           window.dispatchEvent(new CustomEvent('addToCart', {
             detail: { sku, quantity, productName: product.name }
           }));
         });
 
-        // Quantity change handler
         const quantityInput = document.getElementById('quantity');
         quantityInput.addEventListener('change', (e) => {
           const quantity = parseInt(e.target.value) || 1;
@@ -315,7 +317,6 @@
           }));
         });
 
-        // Quantity +/- button handlers
         document.querySelectorAll('.product-detail-qty-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             const action = btn.getAttribute('data-action');
@@ -329,14 +330,12 @@
             
             quantityInput.value = currentQty;
             
-            // Trigger change event to update pricing
             window.dispatchEvent(new CustomEvent('quantityChanged', {
               detail: { sku, quantity: currentQty }
             }));
           });
         });
 
-        // Clear input on focus, restore on blur if invalid
         let originalValue = quantityInput.value;
         quantityInput.addEventListener('focus', (e) => {
           originalValue = e.target.value;
@@ -356,143 +355,131 @@
             e.target.value = qty;
           }
           
-          if (qty !== parseInt(originalValue)) {
-            window.dispatchEvent(new CustomEvent('quantityChanged', {
-              detail: { sku, quantity: qty }
-            }));
-            originalValue = qty.toString();
+          window.dispatchEvent(new CustomEvent('quantityChanged', {
+            detail: { sku, quantity: qty }
+          }));
+        });
+
+        // Tab functionality
+        const tabs = document.querySelectorAll('.product-tab');
+        const panels = document.querySelectorAll('.product-tab-panel');
+
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            tabs.forEach(t => {
+              t.classList.remove('active');
+              t.setAttribute('aria-selected', 'false');
+            });
+            panels.forEach(p => {
+              p.classList.remove('active');
+              p.setAttribute('hidden', '');
+            });
+
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            
+            const targetPanel = document.getElementById(`tab-${tab.dataset.tab}`);
+            if (targetPanel) {
+              targetPanel.classList.add('active');
+              targetPanel.removeAttribute('hidden');
+            }
+          });
+        });
+
+        // Volume Pricing Popover functionality
+        const volumePricingModal = document.getElementById('volume-pricing-modal');
+        const volumePricingTrigger = document.getElementById('volume-pricing-trigger');
+        const volumePricingModalClose = document.getElementById('volume-pricing-modal-close');
+
+        function openVolumePricingModal() {
+          if (volumePricingModal) {
+            volumePricingModal.style.display = 'block';
+          }
+        }
+
+        function closeVolumePricingModal() {
+          if (volumePricingModal) {
+            volumePricingModal.style.display = 'none';
+          }
+        }
+
+        if (volumePricingTrigger) {
+          volumePricingTrigger.addEventListener('click', (event) => {
+            event.stopPropagation();
+            
+            // Check screen size
+            if (window.innerWidth <= 2066) {
+              // Mobile/Tablet: Activate the Volume Pricing tab and scroll to it
+              const volumePricingTab = document.getElementById('volume-pricing-tab');
+              const tabsSection = document.querySelector('.product-detail-content');
+              
+              if (volumePricingTab) {
+                // Trigger the tab click to activate it
+                volumePricingTab.click();
+                
+                // Scroll to the tabs section
+                if (tabsSection) {
+                  tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }
+            } else {
+              // Desktop: Open the modal popover
+              openVolumePricingModal();
+            }
+          });
+        }
+
+        if (volumePricingModalClose) {
+          volumePricingModalClose.addEventListener('click', closeVolumePricingModal);
+        }
+
+        // Close modal when clicking outside, except on quantity controls
+        document.addEventListener('click', (e) => {
+          if (volumePricingModal && volumePricingModal.style.display === 'block') {
+            const modalBackdrop = document.querySelector('.volume-pricing-modal-backdrop');
+            const modalContent = document.querySelector('.volume-pricing-modal-content');
+            
+            // Close if clicking on backdrop (for centered modal in mid-range)
+            if (modalBackdrop && e.target === modalBackdrop) {
+              closeVolumePricingModal();
+              return;
+            }
+            
+            // For popover mode: Check if click is on quantity controls or modal itself
+            const quantityInput = document.getElementById('quantity');
+            const quantityButtons = document.querySelectorAll('.product-detail-qty-btn');
+            const quantitySection = document.querySelector('.quantity-section-clean');
+            
+            const isClickOnModalContent = modalContent && modalContent.contains(e.target);
+            const isClickOnTrigger = volumePricingTrigger && volumePricingTrigger.contains(e.target);
+            const isClickOnQuantityInput = quantityInput && quantityInput.contains(e.target);
+            const isClickOnQuantityButtons = Array.from(quantityButtons).some(btn => btn.contains(e.target));
+            const isClickOnQuantitySection = quantitySection && quantitySection.contains(e.target);
+            
+            // Close if clicking outside all these elements
+            if (!isClickOnModalContent && !isClickOnTrigger && !isClickOnQuantityInput && !isClickOnQuantityButtons && !isClickOnQuantitySection) {
+              closeVolumePricingModal();
+            }
           }
         });
 
-        // Prevent scroll when hovering over input
-        quantityInput.addEventListener('wheel', (e) => {
-          e.preventDefault();
+        // Close popover on Escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && volumePricingModal && volumePricingModal.style.display === 'block') {
+            closeVolumePricingModal();
+          }
         });
 
-        // Show content and hide spinner - all data loaded and rendered
-        const container = document.querySelector('.product-detail-container');
-        if (container) {
-          container.style.visibility = 'visible';
-        }
-        if (loadingOverlay) {
-          loadingOverlay.classList.add('hidden');
-        }
+        document.getElementById('product-detail-container').style.visibility = 'visible';
+        document.getElementById('pdp-loading-overlay').style.display = 'none';
 
       } catch (error) {
         console.error('Error loading product:', error);
-        
-        // Hide loading overlay on error
-        if (loadingOverlay) {
-          loadingOverlay.classList.add('hidden');
-        }
-        
-        // Show error state
-        document.querySelector('.product-detail-container').innerHTML = `
-          <div class="error-state" style="text-align: center; padding: var(--spacing-xxlarge);">
-            <h2>Error Loading Product</h2>
-            <p style="color: var(--color-text-secondary);">Unable to load product details. Please try again.</p>
-            <a href="catalog" class="btn btn-primary" style="margin-top: var(--spacing-medium);">Back to Catalog</a>
-          </div>
-        `;
+        document.getElementById('pdp-loading-overlay').innerHTML = '<p>Error loading product details.</p>';
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadProductDetail);
+    loadProductDetail();
   </script>
 </body>
 </html>
-    <div class="footer-container">
-      <div class="footer-content">
-        <!-- Products Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Products</h3>
-          <ul class="footer-links">
-            <li><a href="catalog">All Products</a></li>
-            <li><a href="pages/catalog.html?category=structural_materials">Structural Materials</a></li>
-            <li><a href="pages/catalog.html?category=windows_doors">Windows & Doors</a></li>
-            <li><a href="pages/catalog.html?category=fasteners_hardware">Fasteners & Hardware</a></li>
-            <li><a href="pages/catalog.html?category=roofing">Roofing</a></li>
-            <li><a href="pages/catalog.html?category=framing_drywall">Framing & Drywall</a></li>
-          </ul>
-        </div>
-
-        <!-- Services Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Services</h3>
-          <ul class="footer-links">
-            <li><a href="pages/project-builder.html">Project Builder</a></li>
-            <li><a href="pages/login.html">Apply for Credit</a></li>
-            <li><a href="pages/account.html#orders">Order History</a></li>
-            <li><a href="pages/account.html">My Account</a></li>
-          </ul>
-        </div>
-
-        <!-- Resources Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Resources</h3>
-          <ul class="footer-links">
-            <li><a href="index.html#ideas-center">Ideas Center</a></li>
-            <li><a href="pages/account.html#help">Help Center</a></li>
-            <li><a href="#">Product Guides</a></li>
-            <li><a href="#">Installation Tips</a></li>
-            <li><a href="#">Safety Resources</a></li>
-          </ul>
-        </div>
-
-        <!-- Company Column -->
-        <div class="footer-column">
-          <h3 class="footer-heading">Company</h3>
-          <ul class="footer-links">
-            <li><a href="#">About BuildRight</a></li>
-            <li><a href="#">Locations</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Become a Partner</a></li>
-            <li><a href="#">News & Updates</a></li>
-          </ul>
-        </div>
-
-        <!-- Contact Column -->
-        <div class="footer-column footer-contact">
-          <h3 class="footer-heading">Contact Us</h3>
-          <div class="footer-contact-info">
-            <div class="footer-contact-item">
-              <svg class="footer-contact-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-              </svg>
-              <div class="footer-contact-content">
-                <a href="tel:1800285437748">1-800-BUILDRIGHT</a>
-              </div>
-            </div>
-            <div class="footer-contact-item">
-              <svg class="footer-contact-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-              </svg>
-              <div class="footer-contact-content">
-                <a href="mailto:support@buildright.com">support@buildright.com</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Bottom -->
-      <div class="footer-bottom">
-        <div class="footer-bottom-content">
-          <div class="footer-copyright">
-            <p>&copy; 2025 BuildRight Solutions. All rights reserved.</p>
-          </div>
-          <div class="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <span class="footer-separator">|</span>
-            <a href="#">Terms of Service</a>
-            <span class="footer-separator">|</span>
-            <a href="#">Accessibility</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-</body>
-</html>
-
