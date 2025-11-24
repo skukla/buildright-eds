@@ -135,7 +135,15 @@ function setCustomerContext(context) {
 
 // Get price for product based on customer tier and quantity
 function getPrice(product, quantity = 1) {
-  if (!product || !product.pricing) return null;
+  if (!product) return null;
+  
+  // If product has simple price (no volume pricing), return it
+  if (!product.pricing && product.price) {
+    return product.price;
+  }
+  
+  // If no pricing structure exists, return null
+  if (!product.pricing) return null;
   
   const context = getCustomerContext();
   const tier = context.tier || 'base';
@@ -190,11 +198,21 @@ function getPrimaryWarehouse() {
 function getProductImageUrl(product) {
   if (!product) return null;
   
-  // First, check if product has image_url directly in the data
+  // First, check if product has image_url or image directly in the data
   if (product.image_url) {
     // Use base path-aware path for GitHub Pages compatibility
     const basePath = window.BASE_PATH || '/';
-    return `${basePath}${product.image_url}`;
+    // Remove leading slash from image_url if basePath already has one
+    const imagePath = product.image_url.startsWith('/') ? product.image_url.slice(1) : product.image_url;
+    return `${basePath}${imagePath}`;
+  }
+  
+  // Check for simple 'image' property
+  if (product.image) {
+    const basePath = window.BASE_PATH || '/';
+    // Remove leading slash from image if basePath already has one
+    const imagePath = product.image.startsWith('/') ? product.image.slice(1) : product.image;
+    return `${basePath}${imagePath}`;
   }
   
   // Fallback to category/name-based mapping
