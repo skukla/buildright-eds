@@ -98,13 +98,13 @@
 }
 
 .inventory-status-subtle .warehouse-name {
-  font-size: 0.875rem;
+  font-size: 1rem; /* Match other tab content - --type-body-1-default */
   font-weight: 500;
   flex: 1;
 }
 
 .inventory-status-subtle .warehouse-quantity {
-  font-size: 0.875rem;
+  font-size: 1rem; /* Match other tab content - --type-body-1-default */
   font-weight: 500;
   color: var(--color-text-secondary);
   text-align: right;
