@@ -8,7 +8,7 @@
     "build": "node scripts/tools/build.js",
     "prebuild": "echo 'Injecting blocks...'",
     "validate-paths": "node scripts/tools/validate-html-paths.js",
-    "precommit": "npm run validate-paths"
+    "prepare": "husky"
   },
   "keywords": [
     "buildright",
@@ -20,5 +20,8 @@
   "license": "ISC",
   "dependencies": {
     "glob": "^10.4.5"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
   }
 }
