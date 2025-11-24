@@ -1,5 +1,2 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Validate HTML path patterns
+# Validate HTML path patterns before commit
 npm run validate-paths
