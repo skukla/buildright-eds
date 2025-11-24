@@ -145,7 +145,7 @@ export default async function decorate(block) {
           if (productPricing.savings > 0) {
             console.log('Creating savings badge for', product.sku, productPricing.savingsPercent);
             const savings = document.createElement('div');
-            savings.className = 'product-card-savings';
+            savings.className = 'product-card-savings savings-pill'; // Use shared component
             savings.textContent = `Save ${productPricing.savingsPercent}%`;
             pricingContainer.appendChild(savings);
             console.log('Savings badge appended', savings);
