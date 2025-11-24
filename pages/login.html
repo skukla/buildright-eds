@@ -6,6 +6,37 @@
   <title>Login - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
+  <style>
+    .login-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: stretch; /* Make both columns equal height */
+    }
+    
+    .login-grid > div {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .login-grid .card {
+      flex: 1; /* Card stretches to fill container */
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .login-grid .card-body {
+      flex: 1; /* Card body expands to fill available space */
+      display: flex;
+      flex-direction: column;
+    }
+    
+    @media (max-width: 768px) {
+      .login-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header loaded dynamically from blocks/header/ -->
@@ -14,11 +45,20 @@
   <!-- Main Content -->
   <main>
     <section class="section">
-      <div class="container" style="max-width: 500px;">
+      <div class="container" style="max-width: 1200px;">
+        
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <h1>Login</h1>
+          <p style="color: var(--color-text-light);">Access your personalized catalog and pricing</p>
+        </div>
+
+        <div class="login-grid">
+        
+        <!-- Traditional Login Form -->
+        <div>
         <div class="card">
-          <div class="card-header" style="text-align: center;">
-            <h1>Login</h1>
-            <p style="color: var(--color-text-light); margin-top: 0.5rem;">Access your personalized catalog and pricing</p>
+          <div class="card-header" style="text-align: center; border-bottom: 1px solid var(--color-border);">
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Email Login</h2>
           </div>
           <div class="card-body">
             <form id="login-form">
@@ -48,6 +88,44 @@
             </p>
           </div>
         </div>
+        </div>
+
+        <!-- Quick Persona Login (Demo) -->
+        <div>
+          <div class="card">
+            <div class="card-header" style="text-align: center; border-bottom: 1px solid var(--color-border);">
+              <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Quick Login (Demo)</h2>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="persona-select" class="form-label" style="font-weight: 600;">Choose a Persona</label>
+                <select id="persona-select" class="form-input" style="cursor: pointer; font-size: 1rem;">
+                  <option value="">-- Select a persona --</option>
+                </select>
+              </div>
+              
+              <div id="persona-info" style="display: none; padding: 1rem; background: var(--color-background-light, #f9fafb); border-radius: 6px; margin-bottom: 1.25rem;">
+                <!-- Persona details will be shown here -->
+              </div>
+              
+              <!-- Spacer to match left form fields when persona info is hidden -->
+              <div id="persona-spacer" style="min-height: 158px;"></div>
+              
+              <div class="form-group">
+                <button id="quick-login-btn" class="btn btn-primary btn-lg" style="width: 100%;" disabled>
+                  Login as Selected Persona
+                </button>
+              </div>
+            </div>
+            <div class="card-footer" style="text-align: center; visibility: hidden;">
+              <p style="color: var(--color-text-light); margin: 0;">
+                Placeholder for alignment
+              </p>
+            </div>
+          </div>
+        </div>
+
+        </div> <!-- End grid -->
       </div>
     </section>
   </main>
@@ -57,6 +135,7 @@
 
   <script type="module">
     import { authService } from '../scripts/auth.js';
+    import { PERSONAS } from '../scripts/persona-config.js';
     
     // Demo account mapping: Company → Persona
     const DEMO_ACCOUNTS = {
@@ -91,6 +170,129 @@
         personaId: 'kevin'
       }
     };
+    
+    // Populate persona dropdown
+    function populatePersonaDropdown() {
+      const select = document.getElementById('persona-select');
+      if (!select) return;
+      
+      // Define persona display order
+      const personaOrder = ['sarah', 'marcus', 'lisa', 'david', 'kevin'];
+      
+      // Create options for each persona
+      personaOrder.forEach(personaId => {
+        const persona = Object.values(PERSONAS).find(p => p.id === personaId);
+        if (!persona) return;
+        
+        const option = document.createElement('option');
+        option.value = persona.id;
+        option.textContent = `${persona.name} - ${persona.role}`;
+        select.appendChild(option);
+      });
+    }
+    
+    // Show persona details when selected
+    function showPersonaDetails(personaId) {
+      const persona = Object.values(PERSONAS).find(p => p.id === personaId);
+      const infoDiv = document.getElementById('persona-info');
+      const spacer = document.getElementById('persona-spacer');
+      const loginBtn = document.getElementById('quick-login-btn');
+      
+      if (!persona || !infoDiv || !loginBtn) return;
+      
+      // Show persona details and hide spacer
+      infoDiv.style.display = 'block';
+      if (spacer) spacer.style.display = 'none';
+      
+      infoDiv.innerHTML = `
+        <div style="display: flex; align-items: start; gap: 1rem;">
+          <div style="flex: 1;">
+            <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: var(--color-text);">
+              ${persona.name}
+            </p>
+            <p style="margin: 0 0 0.25rem 0; font-size: 0.875rem; color: var(--color-text-secondary);">
+              <strong>Company:</strong> ${persona.company}
+            </p>
+            <p style="margin: 0 0 0.25rem 0; font-size: 0.875rem; color: var(--color-text-secondary);">
+              <strong>Role:</strong> ${persona.role}
+            </p>
+            <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-light); margin-top: 0.5rem;">
+              ${persona.description}
+            </p>
+          </div>
+        </div>
+      `;
+      
+      // Enable login button and update text
+      loginBtn.disabled = false;
+      loginBtn.textContent = `Login as ${persona.name.split(' ')[0]}`;
+    }
+    
+    // Hide persona details
+    function hidePersonaDetails() {
+      const infoDiv = document.getElementById('persona-info');
+      const spacer = document.getElementById('persona-spacer');
+      const loginBtn = document.getElementById('quick-login-btn');
+      
+      if (infoDiv) infoDiv.style.display = 'none';
+      if (spacer) spacer.style.display = 'block'; // Show spacer when details hidden
+      if (loginBtn) {
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Login as Selected Persona';
+      }
+    }
+    
+    // Handle quick persona login
+    async function handleQuickLogin() {
+      const select = document.getElementById('persona-select');
+      const loginBtn = document.getElementById('quick-login-btn');
+      
+      if (!select || !loginBtn) return;
+      
+      const personaId = select.value;
+      if (!personaId) {
+        alert('Please select a persona');
+        return;
+      }
+      
+      const originalText = loginBtn.textContent;
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in...';
+      
+      try {
+        console.log('[Quick Login] Logging in as persona:', personaId);
+        const success = await authService.loginWithPersona(personaId);
+        
+        if (success) {
+          console.log('[Quick Login] Successfully authenticated as:', personaId);
+          
+          // Check for redirect parameter
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirect = urlParams.get('redirect');
+          
+          // Get default route for persona
+          const defaultRoute = authService.getDefaultRoute();
+          console.log('[Quick Login] Default route:', defaultRoute);
+          
+          // Small delay to ensure localStorage is saved
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          // Redirect
+          if (redirect) {
+            window.location.href = decodeURIComponent(redirect);
+          } else {
+            window.location.href = '/';
+          }
+        } else {
+          throw new Error('Login failed');
+        }
+      } catch (error) {
+        console.error('[Quick Login] Error:', error);
+        alert('Login failed. Please try again.');
+        loginBtn.disabled = false;
+        loginBtn.textContent = originalText;
+      }
+    }
     
     async function handleLogin(event) {
       console.log('[Login] Form submitted');
@@ -173,6 +375,29 @@
     
     // Attach event listener when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
+      // Populate persona dropdown
+      populatePersonaDropdown();
+      
+      // Handle persona selection change
+      const personaSelect = document.getElementById('persona-select');
+      if (personaSelect) {
+        personaSelect.addEventListener('change', (e) => {
+          const personaId = e.target.value;
+          if (personaId) {
+            showPersonaDetails(personaId);
+          } else {
+            hidePersonaDetails();
+          }
+        });
+      }
+      
+      // Handle quick login button click
+      const quickLoginBtn = document.getElementById('quick-login-btn');
+      if (quickLoginBtn) {
+        quickLoginBtn.addEventListener('click', handleQuickLogin);
+      }
+      
+      // Attach traditional login form handler
       const loginForm = document.getElementById('login-form');
       if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
