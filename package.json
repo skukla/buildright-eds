@@ -6,7 +6,9 @@
     "start": "node server.js",
     "serve": "npx http-server -p 8000 -c-1",
     "build": "node scripts/tools/build.js",
-    "prebuild": "echo 'Injecting blocks...'"
+    "prebuild": "echo 'Injecting blocks...'",
+    "validate-paths": "node scripts/tools/validate-html-paths.js",
+    "precommit": "npm run validate-paths"
   },
   "keywords": [
     "buildright",
