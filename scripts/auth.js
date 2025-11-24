@@ -9,6 +9,7 @@
 
 import { getPersona, PERSONAS, isValidPersona } from './persona-config.js';
 import { acoService } from './aco-service.js';
+import { getCompanyForPersona, getDefaultLocation } from './company-config.js';
 
 const AUTH_STORAGE_KEY = 'buildright_auth';
 const PERSONA_STORAGE_KEY = 'currentPersona';
@@ -136,6 +137,25 @@ class AuthService {
       persona,
       acoContext
     };
+    
+    // Set customer context for location and pricing
+    const customerContext = {
+      tier: persona.customerGroup || 'base',
+      isLoggedIn: true
+    };
+    
+    // If persona has a company with locations, add company and location data
+    const company = getCompanyForPersona(persona);
+    if (company) {
+      const defaultLocation = getDefaultLocation(company.id);
+      if (defaultLocation) {
+        customerContext.company = company.id;
+        customerContext.location_id = defaultLocation.id;
+        customerContext.region = defaultLocation.region;
+      }
+    }
+    
+    localStorage.setItem('buildright_customer_context', JSON.stringify(customerContext));
     
     // Dispatch login event for UI updates
     window.dispatchEvent(new CustomEvent('auth:login', {
