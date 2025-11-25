@@ -3,13 +3,16 @@
   padding: var(--spacing-large);
   max-width: 1400px;
   margin: 0 auto;
+  min-height: 60vh;
 }
 
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--spacing-large);
+  margin-bottom: var(--spacing-x-large);
+  padding-bottom: var(--spacing-large);
+  border-bottom: 1px solid var(--color-neutral-200);
 }
 
 .dashboard-title h1 {
@@ -31,11 +34,13 @@
 
 .dashboard-filters {
   display: flex;
-  gap: var(--spacing-medium);
-  margin-bottom: var(--spacing-large);
-  padding: var(--spacing-medium);
-  background: var(--color-neutral-50);
+  gap: var(--spacing-large);
+  margin-bottom: var(--spacing-x-large);
+  padding: var(--spacing-medium) var(--spacing-large);
+  background: white;
+  border: 1px solid var(--color-neutral-200);
   border-radius: var(--shape-border-radius-3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .filter-group {
@@ -51,11 +56,17 @@
 }
 
 .filter-group select {
-  padding: 0.5rem 0.75rem;
+  min-width: 180px;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
   border: 1px solid var(--color-neutral-300);
   border-radius: var(--shape-border-radius-2);
   font-size: var(--type-body-2-font-size);
   background: white;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23666" d="M6 9L1 4h10z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px;
+  appearance: none;
   cursor: pointer;
 }
 
