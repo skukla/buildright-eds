@@ -8,7 +8,7 @@
 
 ## 📚 Documentation Structure
 
-This planning document has been organized into **7 focused files** for easier navigation:
+This planning document has been organized into **8 focused files** for easier navigation:
 
 ### 1. [00-OVERVIEW.md](./00-OVERVIEW.md) ← **START HERE**
 **Reading Time**: 10-15 minutes  
@@ -99,6 +99,20 @@ This planning document has been organized into **7 focused files** for easier na
 
 ---
 
+### 8. [07-PRODUCT-DATA-REQUIREMENTS.md](./07-PRODUCT-DATA-REQUIREMENTS.md) ⭐ NEW
+**Reading Time**: 15-20 minutes  
+**Purpose**: Product data preparation for Phase 6 implementation
+
+**Key Content**:
+- Product inventory audit checklist (buildright-aco)
+- Selection package definitions (3 packages with SKU mappings)
+- Product data enhancement requirements
+- Product images specifications
+- templates.json update guide
+- Validation & testing procedures
+
+---
+
 ## 🚀 Quick Start
 
 ### For First-Time Readers
@@ -112,8 +126,9 @@ This planning document has been organized into **7 focused files** for easier na
    - **Others?** → [04-OTHER-PERSONAS.md](./04-OTHER-PERSONAS.md) (15-20 min)
 5. [05-IMPLEMENTATION-PLAN.md](./05-IMPLEMENTATION-PLAN.md) - Tasks & timeline (10-15 min)
 6. [06-COLLABORATIVE-REVIEW.md](./06-COLLABORATIVE-REVIEW.md) - Decision log (5-10 min)
+7. [07-PRODUCT-DATA-REQUIREMENTS.md](./07-PRODUCT-DATA-REQUIREMENTS.md) ⭐ Product data (15-20 min)
 
-**Total Reading Time**: ~60-90 minutes
+**Total Reading Time**: ~75-105 minutes
 
 ---
 
