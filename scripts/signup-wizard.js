@@ -193,7 +193,6 @@ function generateExperiencePreview() {
   // Persona-specific preview content
   const personaDetails = {
     'sarah': {
-      icon: '🏗️',
       title: 'Production Builder Experience',
       subtitle: 'Optimized for high-volume residential construction',
       description: 'Streamlined for production builders with template-based ordering, bulk material management, and volume-based pricing.',
@@ -207,7 +206,6 @@ function generateExperiencePreview() {
       productCount: '~156 products'
     },
     'marcus': {
-      icon: '📋',
       title: 'General Contractor Experience',
       subtitle: 'Comprehensive tools for commercial projects',
       description: 'Complete project management tools for general contractors with multi-phase planning, custom BOMs, and job site coordination.',
@@ -221,7 +219,6 @@ function generateExperiencePreview() {
       productCount: '~168 products'
     },
     'lisa': {
-      icon: '✨',
       title: 'Remodeling Contractor Experience',
       subtitle: 'Premium materials for renovation projects',
       description: 'Curated packages and premium materials for remodeling contractors with room-by-room planning and quality tier selection.',
@@ -235,7 +232,6 @@ function generateExperiencePreview() {
       productCount: '~142 products'
     },
     'david': {
-      icon: '🪵',
       title: 'Specialty Contractor Experience',
       subtitle: 'Guided workflow for specialty projects',
       description: 'Interactive project wizards for deck builders and specialty contractors with material calculators and DIY-friendly guidance.',
@@ -249,7 +245,6 @@ function generateExperiencePreview() {
       productCount: '~35-80 products (filtered by project)'
     },
     'kevin': {
-      icon: '🏪',
       title: 'Retail Operations Experience',
       subtitle: 'Quick restock and inventory management',
       description: 'Streamlined ordering for retail and wholesale operations with quick restock, inventory alerts, and scheduled deliveries.',

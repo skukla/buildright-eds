@@ -757,7 +757,7 @@ export function populateResourceLinks(container) {
         }).join('');
         
         const html = `
-          <div class="resource-links-title">📚 Related Resources</div>
+          <div class="resource-links-title">Related Resources</div>
           <ul class="resource-links-list">${linksHTML}</ul>
         `;
         

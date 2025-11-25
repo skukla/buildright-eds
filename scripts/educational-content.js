@@ -6,35 +6,31 @@
 export const TOOLTIPS = {
   projectType: {
     new_construction: {
-      text: 'Building new structures from foundation up. Includes framing, roofing, exterior finishing.',
-      icon: '🏗️'
+      text: 'Building new structures from foundation up. Includes framing, roofing, exterior finishing.'
     },
     remodel: {
-      text: 'Renovating existing spaces. Includes demo, reconstruction, finishing work.',
-      icon: '🔨'
+      text: 'Renovating existing spaces. Includes demo, reconstruction, finishing work.'
     },
     repair: {
-      text: 'Fixing or maintaining existing structures. Targeted material lists for specific issues.',
-      icon: '🔧'
+      text: 'Fixing or maintaining existing structures. Targeted material lists for specific issues.'
     }
   },
   complexity: {
     basic: {
       text: 'DIY-friendly, standard materials. Simple layouts. Est. completion: 1-2 weeks.',
-      icon: '⭐'
+      level: '1 star'
     },
     moderate: {
       text: 'Some pro help recommended. Mid-range materials. Est. completion: 2-4 weeks.',
-      icon: '⭐⭐'
+      level: '2 stars'
     },
     complex: {
       text: 'Professional required. Premium materials. Custom work. Est. completion: 4+ weeks.',
-      icon: '⭐⭐⭐'
+      level: '3 stars'
     }
   },
   budget: {
-    text: 'Material costs only. Labor and permits not included.',
-    icon: '💰'
+    text: 'Material costs only. Labor and permits not included.'
   }
 };
 

@@ -94,13 +94,8 @@ export function handleError(error, context) {
  */
 export function showToast(type, title, message) {
   try {
-    const icons = {
-      success: '✅',
-      error: '❌',
-      info: 'ℹ️'
-    };
-    
-    const icon = icons[type] || icons.info;
+    // Icon will be handled by CSS with ::before pseudo-element
+    const icon = ''; // Removed emoji icons
     const titleEscaped = escapeHtml(title);
     const messageEscaped = escapeHtml(message);
     
