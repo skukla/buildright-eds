@@ -22,6 +22,10 @@
 /* Import signup wizard styles */
 @import url('signup-wizard.css');
 
+/* Import dashboard styles */
+@import url('dashboards/template-dashboard.css');
+@import url('dashboards/template-builder.css');
+
 /* EDS Standard: Page reveal animation */
 body {
   visibility: hidden;

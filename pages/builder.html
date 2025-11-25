@@ -3,35 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Builder - BuildRight</title>
+  <title>Template Builder | BuildRight</title>
+  <meta name="description" content="Order materials for your floor plan template">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Design System -->
   <link rel="stylesheet" href="../styles/styles.css">
-  <script type="module" src="../scripts/builder.js"></script>
+  
+  <!-- Base Path -->
+  <script type="module">
+    window.BASE_PATH = '..';
+  </script>
 </head>
 <body>
-  <!-- Header block -->
-  <div class="header-block" data-block-name="header"></div>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
   
-  <!-- Builder layout: sidebar + main -->
-  <div class="builder-layout">
-    <!-- Wizard progress sidebar -->
-    <aside class="builder-sidebar">
-      <div id="wizard-progress" data-block-name="wizard-vertical-progress"></div>
-    </aside>
+  <!-- Main Content -->
+  <main>
+    <div id="builder-container"></div>
+  </main>
+  
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  
+  <!-- Scripts -->
+  <script type="module">
+    import { initialize as initializeBuilder } from '../scripts/builders/template-builder.js';
+    import { authService } from '../scripts/auth.js';
     
-    <!-- Main builder content -->
-    <main class="builder-content">
-      <div id="builder-main">
-        <!-- Loading state -->
-        <div class="loading-overlay">
-          <div class="loading-spinner"></div>
-          <p>Loading builder...</p>
-        </div>
-      </div>
-    </main>
-  </div>
-  
-  <!-- Footer block -->
-  <div class="footer-block" data-block-name="footer"></div>
+    // Check authentication
+    if (!authService.isAuthenticated()) {
+      window.location.href = './login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+    }
+    
+    // Load header
+    fetch('../fragments/header.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        // Initialize header functionality
+        import('../scripts/header.js').then(module => {
+          if (module.initialize) {
+            module.initialize();
+          }
+        });
+      });
+    
+    // Load footer
+    fetch('../fragments/footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      });
+    
+    // Initialize builder
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('builder-container');
+      try {
+        await initializeBuilder(container);
+      } catch (error) {
+        console.error('Error initializing builder:', error);
+        container.innerHTML = `
+          <div class="error-state">
+            <h2>Error Loading Builder</h2>
+            <p>Unable to load the template builder. Please try again.</p>
+            <a href="./dashboard.html" class="btn btn-primary">Back to Dashboard</a>
+          </div>
+        `;
+      }
+      
+      // Reveal page
+      document.body.classList.add('appear');
+    });
+  </script>
 </body>
 </html>
-

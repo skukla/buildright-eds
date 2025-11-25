@@ -1,0 +1,386 @@
+{
+  "templates": [
+    {
+      "id": "sedona",
+      "name": "The Sedona",
+      "description": "Popular two-story family home with open floor plan",
+      "sqft": 2450,
+      "stories": 2,
+      "bedrooms": 4,
+      "bathrooms": 2.5,
+      "foundation": "Slab",
+      "exteriorFinish": "Stucco",
+      "roofType": "Tile",
+      "image": "/images/floor-plans/sedona.png",
+      "finishedImage": "/images/finished-homes/sedona.jpg",
+      "variants": [
+        {
+          "id": "sedona-standard",
+          "name": "Standard",
+          "sqft": 2450,
+          "addedCost": 0,
+          "description": "Standard configuration"
+        },
+        {
+          "id": "sedona-bonus",
+          "name": "Bonus Room",
+          "sqft": 2650,
+          "addedCost": 15000,
+          "description": "Adds 200 sq ft bonus room over garage"
+        },
+        {
+          "id": "sedona-extended",
+          "name": "Extended Garage",
+          "sqft": 2450,
+          "addedCost": 8000,
+          "description": "Extends garage from 2-car to 3-car"
+        },
+        {
+          "id": "sedona-patio",
+          "name": "Covered Patio",
+          "sqft": 2450,
+          "addedCost": 12000,
+          "description": "Adds 400 sq ft covered patio"
+        }
+      ],
+      "bomSummary": {
+        "foundation_framing": {
+          "categories": ["structural_materials", "fasteners_hardware"],
+          "estimatedCost": 45000,
+          "itemCount": 180
+        },
+        "envelope": {
+          "categories": ["roofing", "windows_doors", "siding"],
+          "estimatedCost": 38000,
+          "itemCount": 95
+        },
+        "interior_finish": {
+          "categories": ["flooring", "paint", "fixtures"],
+          "estimatedCost": 28000,
+          "itemCount": 150
+        }
+      },
+      "statistics": {
+        "timesBuilt": 23,
+        "lastOrdered": "2024-10-15",
+        "averageCost": 111000,
+        "averageDays": 120
+      }
+    },
+    {
+      "id": "prescott",
+      "name": "The Prescott",
+      "description": "Efficient single-story starter home",
+      "sqft": 1875,
+      "stories": 1,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "foundation": "Slab",
+      "exteriorFinish": "Stucco",
+      "roofType": "Shingle",
+      "image": "/images/floor-plans/prescott.png",
+      "finishedImage": "/images/finished-homes/prescott.jpg",
+      "variants": [
+        {
+          "id": "prescott-standard",
+          "name": "Standard",
+          "sqft": 1875,
+          "addedCost": 0,
+          "description": "Standard configuration"
+        },
+        {
+          "id": "prescott-patio",
+          "name": "Covered Patio",
+          "sqft": 1875,
+          "addedCost": 6000,
+          "description": "Adds 300 sq ft covered patio"
+        },
+        {
+          "id": "prescott-garage",
+          "name": "Extended Garage",
+          "sqft": 1875,
+          "addedCost": 7500,
+          "description": "Extends garage from 2-car to 2.5-car"
+        }
+      ],
+      "bomSummary": {
+        "foundation_framing": {
+          "categories": ["structural_materials", "fasteners_hardware"],
+          "estimatedCost": 32000,
+          "itemCount": 145
+        },
+        "envelope": {
+          "categories": ["roofing", "windows_doors", "siding"],
+          "estimatedCost": 28000,
+          "itemCount": 72
+        },
+        "interior_finish": {
+          "categories": ["flooring", "paint", "fixtures"],
+          "estimatedCost": 21000,
+          "itemCount": 110
+        }
+      },
+      "statistics": {
+        "timesBuilt": 41,
+        "lastOrdered": "2024-11-02",
+        "averageCost": 81000,
+        "averageDays": 105
+      }
+    },
+    {
+      "id": "flagstaff",
+      "name": "The Flagstaff",
+      "description": "Luxury two-story estate with premium finishes",
+      "sqft": 3120,
+      "stories": 2,
+      "bedrooms": 5,
+      "bathrooms": 3,
+      "foundation": "Slab",
+      "exteriorFinish": "Stone & Stucco",
+      "roofType": "Tile",
+      "image": "/images/floor-plans/flagstaff.png",
+      "finishedImage": "/images/finished-homes/flagstaff.jpg",
+      "variants": [
+        {
+          "id": "flagstaff-standard",
+          "name": "Standard",
+          "sqft": 3120,
+          "addedCost": 0,
+          "description": "Standard configuration"
+        },
+        {
+          "id": "flagstaff-casita",
+          "name": "Casita Addition",
+          "sqft": 3520,
+          "addedCost": 45000,
+          "description": "Adds 400 sq ft detached casita"
+        },
+        {
+          "id": "flagstaff-outdoor",
+          "name": "Outdoor Living",
+          "sqft": 3120,
+          "addedCost": 25000,
+          "description": "Premium outdoor kitchen and fireplace"
+        }
+      ],
+      "bomSummary": {
+        "foundation_framing": {
+          "categories": ["structural_materials", "fasteners_hardware"],
+          "estimatedCost": 58000,
+          "itemCount": 220
+        },
+        "envelope": {
+          "categories": ["roofing", "windows_doors", "siding"],
+          "estimatedCost": 52000,
+          "itemCount": 125
+        },
+        "interior_finish": {
+          "categories": ["flooring", "paint", "fixtures"],
+          "estimatedCost": 42000,
+          "itemCount": 195
+        }
+      },
+      "statistics": {
+        "timesBuilt": 12,
+        "lastOrdered": "2024-09-22",
+        "averageCost": 152000,
+        "averageDays": 145
+      }
+    },
+    {
+      "id": "tucson",
+      "name": "The Tucson",
+      "description": "Spacious single-story with split floor plan",
+      "sqft": 2680,
+      "stories": 1,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "foundation": "Slab",
+      "exteriorFinish": "Stucco",
+      "roofType": "Tile",
+      "image": "/images/floor-plans/tucson.png",
+      "finishedImage": "/images/finished-homes/tucson.jpg",
+      "variants": [
+        {
+          "id": "tucson-standard",
+          "name": "Standard",
+          "sqft": 2680,
+          "addedCost": 0,
+          "description": "Standard configuration"
+        },
+        {
+          "id": "tucson-office",
+          "name": "Home Office",
+          "sqft": 2780,
+          "addedCost": 10000,
+          "description": "Converts bedroom to dedicated office space"
+        },
+        {
+          "id": "tucson-garage",
+          "name": "Extended Garage",
+          "sqft": 2680,
+          "addedCost": 9500,
+          "description": "Extends garage from 2-car to 3-car"
+        },
+        {
+          "id": "tucson-courtyard",
+          "name": "Courtyard Entry",
+          "sqft": 2680,
+          "addedCost": 18000,
+          "description": "Adds private courtyard entry with gates"
+        }
+      ],
+      "bomSummary": {
+        "foundation_framing": {
+          "categories": ["structural_materials", "fasteners_hardware"],
+          "estimatedCost": 48000,
+          "itemCount": 190
+        },
+        "envelope": {
+          "categories": ["roofing", "windows_doors", "siding"],
+          "estimatedCost": 42000,
+          "itemCount": 105
+        },
+        "interior_finish": {
+          "categories": ["flooring", "paint", "fixtures"],
+          "estimatedCost": 32000,
+          "itemCount": 165
+        }
+      },
+      "statistics": {
+        "timesBuilt": 18,
+        "lastOrdered": "2024-10-28",
+        "averageCost": 122000,
+        "averageDays": 130
+      }
+    },
+    {
+      "id": "phoenix",
+      "name": "The Phoenix",
+      "description": "Modern two-story with contemporary styling",
+      "sqft": 2950,
+      "stories": 2,
+      "bedrooms": 4,
+      "bathrooms": 2.5,
+      "foundation": "Slab",
+      "exteriorFinish": "Modern Stucco",
+      "roofType": "Flat/Parapet",
+      "image": "/images/floor-plans/phoenix.png",
+      "finishedImage": "/images/finished-homes/phoenix.jpg",
+      "variants": [
+        {
+          "id": "phoenix-standard",
+          "name": "Standard",
+          "sqft": 2950,
+          "addedCost": 0,
+          "description": "Standard configuration"
+        },
+        {
+          "id": "phoenix-loft",
+          "name": "Bonus Loft",
+          "sqft": 3150,
+          "addedCost": 16000,
+          "description": "Adds 200 sq ft upstairs loft space"
+        },
+        {
+          "id": "phoenix-rooftop",
+          "name": "Rooftop Deck",
+          "sqft": 2950,
+          "addedCost": 22000,
+          "description": "Adds rooftop deck with cable railing"
+        }
+      ],
+      "bomSummary": {
+        "foundation_framing": {
+          "categories": ["structural_materials", "fasteners_hardware"],
+          "estimatedCost": 52000,
+          "itemCount": 200
+        },
+        "envelope": {
+          "categories": ["roofing", "windows_doors", "siding"],
+          "estimatedCost": 48000,
+          "itemCount": 110
+        },
+        "interior_finish": {
+          "categories": ["flooring", "paint", "fixtures"],
+          "estimatedCost": 38000,
+          "itemCount": 175
+        }
+      },
+      "statistics": {
+        "timesBuilt": 15,
+        "lastOrdered": "2024-11-05",
+        "averageCost": 138000,
+        "averageDays": 135
+      }
+    },
+    {
+      "id": "scottsdale",
+      "name": "The Scottsdale",
+      "description": "Premium two-story estate with resort-style features",
+      "sqft": 3450,
+      "stories": 2,
+      "bedrooms": 5,
+      "bathrooms": 3.5,
+      "foundation": "Slab",
+      "exteriorFinish": "Stone & Stucco",
+      "roofType": "Tile",
+      "image": "/images/floor-plans/scottsdale.png",
+      "finishedImage": "/images/finished-homes/scottsdale.jpg",
+      "variants": [
+        {
+          "id": "scottsdale-standard",
+          "name": "Standard",
+          "sqft": 3450,
+          "addedCost": 0,
+          "description": "Standard configuration"
+        },
+        {
+          "id": "scottsdale-casita",
+          "name": "Guest Casita",
+          "sqft": 3900,
+          "addedCost": 55000,
+          "description": "Adds 450 sq ft detached guest casita"
+        },
+        {
+          "id": "scottsdale-resort",
+          "name": "Resort Package",
+          "sqft": 3450,
+          "addedCost": 38000,
+          "description": "Outdoor kitchen, pool bath, and ramada"
+        },
+        {
+          "id": "scottsdale-theater",
+          "name": "Media Room",
+          "sqft": 3650,
+          "addedCost": 28000,
+          "description": "Converts bonus space to theater room"
+        }
+      ],
+      "bomSummary": {
+        "foundation_framing": {
+          "categories": ["structural_materials", "fasteners_hardware"],
+          "estimatedCost": 65000,
+          "itemCount": 245
+        },
+        "envelope": {
+          "categories": ["roofing", "windows_doors", "siding"],
+          "estimatedCost": 58000,
+          "itemCount": 140
+        },
+        "interior_finish": {
+          "categories": ["flooring", "paint", "fixtures"],
+          "estimatedCost": 48000,
+          "itemCount": 210
+        }
+      },
+      "statistics": {
+        "timesBuilt": 8,
+        "lastOrdered": "2024-09-10",
+        "averageCost": 171000,
+        "averageDays": 155
+      }
+    }
+  ]
+}
+
