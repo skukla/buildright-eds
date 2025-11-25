@@ -365,31 +365,57 @@ class MockACOService {
     const unitPrice = basePrice * groupMultiplier * volumeMultiplier;
     const totalPrice = unitPrice * quantity;
     
-    // Calculate savings
+    // Calculate savings (PROMOTIONS ONLY - not contract pricing)
+    // 
+    // Design Decision: Savings badges should only appear for promotional discounts
+    // that beat the customer's contract price, not for the contract discount itself.
+    // 
+    // Why? Contract pricing is the customer's "normal" - showing "Save 20%" on every
+    // product for Sarah (contractor with 20% discount) creates badge fatigue and
+    // reduces the urgency signal for actual limited-time promotions.
+    // 
+    // Current state: No promotions engine implemented yet, so savings = 0
+    // Future: When adding promotions, calculate as:
+    //   contractPrice = basePrice * groupMultiplier * volumeMultiplier
+    //   promotionalPrice = /* fetch from promotions engine */
+    //   if (promotionalPrice < contractPrice) {
+    //     savings = contractPrice - promotionalPrice
+    //     savingsPercent = (savings / contractPrice) * 100
+    //   }
     const retailPrice = basePrice;
-    const customerPrice = unitPrice;
-    const savings = retailPrice - customerPrice;
-    const savingsPercent = (savings / retailPrice) * 100;
+    const contractPrice = unitPrice; // Customer's normal price
+    const promotionalPrice = null; // TODO: Fetch from promotions engine when implemented
     
-    // Build volume tiers array for display with savings percentages
+    // Only show savings if promotional price beats contract price
+    const savings = promotionalPrice && promotionalPrice < contractPrice 
+      ? contractPrice - promotionalPrice 
+      : 0;
+    const savingsPercent = savings > 0 
+      ? (savings / contractPrice) * 100 
+      : 0;
+    
+    // Build volume tiers array for PDP volume pricing display
+    // Note: These show the volume discount percentages (5%, 12%) relative to
+    // the customer's base contract price, not promotional savings badges.
+    // This is informational pricing structure, not urgency messaging.
     const volumeTiers = [
       {
         minQuantity: 1,
         maxQuantity: 99,
         unitPrice: parseFloat((basePrice * groupMultiplier * 1.0).toFixed(2)),
-        savingsPercent: Math.round((1 - (groupMultiplier * 1.0)) * 100)
+        savingsPercent: 0 // No volume discount at base tier
       },
       {
         minQuantity: 100,
         maxQuantity: 293,
         unitPrice: parseFloat((basePrice * groupMultiplier * 0.95).toFixed(2)),
-        savingsPercent: Math.round((1 - (groupMultiplier * 0.95)) * 100)
+        savingsPercent: 5 // 5% volume discount vs base tier
       },
       {
         minQuantity: 294,
         maxQuantity: null,
         unitPrice: parseFloat((basePrice * groupMultiplier * 0.88).toFixed(2)),
-        savingsPercent: Math.round((1 - (groupMultiplier * 0.88)) * 100)
+        savingsPercent: 12 // 12% volume discount vs base tier
       }
     ];
     

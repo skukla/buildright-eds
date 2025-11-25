@@ -39,17 +39,25 @@
 
 /* Savings Pill - Used across product cards, pricing displays, etc. */
 .savings-pill {
-  display: inline-flex; /* Use inline-flex for better vertical centering */
-  align-items: center; /* Vertically center content */
-  font-size: 0.875rem;
-  font-weight: 600;
+  /* Badge positioned in top-right corner of product cards */
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
   line-height: 1;
-  color: var(--color-positive-600);
-  background-color: transparent; /* No background - just green border and text */
-  border: 1px solid var(--color-positive-600);
-  padding: 0.375rem 0.625rem;
-  border-radius: 999px;
+  color: white;
+  background-color: var(--color-positive-600);
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px; /* Subtle rounding for "sticker" feel */
   white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lift badge off image */
+}
+
+/* Alternative: Full pill shape variant */
+.savings-pill.pill-shape {
+  border-radius: 999px;
+  padding: 0.25rem 0.625rem; /* Slightly more horizontal padding for pill */
 }
 
 /* ========== End Reusable Components ========== */
