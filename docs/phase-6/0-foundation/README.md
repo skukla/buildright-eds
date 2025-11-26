@@ -127,23 +127,199 @@ This planning document has been organized into **9 focused files** for easier na
 
 ---
 
+### 10. [PRODUCT-TAXONOMY-ANALYSIS.md](./PRODUCT-TAXONOMY-ANALYSIS.md) ⭐ **CRITICAL ARCHITECTURE**
+**Reading Time**: 20-25 minutes  
+**Purpose**: Strategic decision on product taxonomy: unified vs. catalog-per-persona
+
+**Key Content**:
+- Detailed persona shopping behavior analysis (all 5 personas)
+- Option A: Unified Multi-Level Taxonomy (RECOMMENDED ✅)
+- Option B: Catalog-Per-Persona approach
+- Attribute schema definition (construction_phase, quality_tier, selection_category, etc.)
+- Pros/cons analysis with real-world implications
+- Implementation strategy for unified approach
+- Success criteria and next steps
+
+**Decision**: ✅ **Unified Multi-Level Taxonomy** - ONE catalog with 15-20 attributes per product
+
+**Related**: See [PRODUCT-CATEGORY-TAXONOMY-MAPPING.md](./PRODUCT-CATEGORY-TAXONOMY-MAPPING.md) for how Phase 0.5 expansion applies this taxonomy
+
+---
+
+### 11. [ACO-CATALOG-ARCHITECTURE.md](./ACO-CATALOG-ARCHITECTURE.md) ⭐ **CRITICAL ARCHITECTURE**
+**Reading Time**: 25-30 minutes  
+**Purpose**: Technical implementation of multi-persona catalog architecture
+
+**Key Content**:
+- How ACO catalogs, categories, views, and policies work together
+- **The 3 Options Explained**: Same everything vs. ACO-only vs. Hybrid (RECOMMENDED ✅)
+- **Option 3 (Hybrid)**: Different top nav + SKUs via policies + views per persona
+- Complete ACO configuration (5 catalog views, 4+ policies)
+- Complete EDS UI adaptation (5 different top navs, persona-specific layouts)
+- Visual comparisons of what each persona sees
+- Implementation checklist with code examples
+
+**Decision**: ✅ **Hybrid Approach** - ACO catalog views + policies + EDS dynamic UI
+
+**🔗 Links to Persona Implementations**:
+- Sarah's catalog view: [03-SARAH-IMPLEMENTATION.md](./03-SARAH-IMPLEMENTATION.md#catalog-experience)
+- Other personas: [04-OTHER-PERSONAS.md](./04-OTHER-PERSONAS.md#catalog-requirements)
+
+---
+
+### 12. [PRODUCT-EXPANSION-SUMMARY.md](./PRODUCT-EXPANSION-SUMMARY.md) ✅ **CATALOG EXPANSION**
+**Reading Time**: 10-15 minutes  
+**Purpose**: Product catalog expansion from 108 to 265 products
+
+**Key Content**:
+- 6 new product categories added (Electrical, Plumbing, HVAC, Concrete, Drywall, Appliances)
+- 6 new Units of Measure (CY, SQ, SY, BUCKET, TON, KIT)
+- 157 new products across construction phases
+- Complete validation results
+
+**Status**: ✅ **265 products in ACO catalog**
+
+**Related**: See [PRODUCT-CATEGORY-TAXONOMY-MAPPING.md](./PRODUCT-CATEGORY-TAXONOMY-MAPPING.md) for how new categories map to taxonomy
+
+---
+
+### 13. [PRODUCT-CATEGORY-TAXONOMY-MAPPING.md](./PRODUCT-CATEGORY-TAXONOMY-MAPPING.md) 🗺️ **TAXONOMY MAPPING**
+**Reading Time**: 15-20 minutes  
+**Purpose**: Maps 6 new product categories to existing unified taxonomy
+
+**Key Content**:
+- How each new category maps to construction_phase, quality_tier, selection_category
+- Persona-specific views (Sarah's selection categories, Marcus's main categories, Lisa's room categories)
+- Validation that all 5 personas can use new categories
+- Updated selection category list (9 total, added Lighting & Appliances)
+- BOM calculator impact
+
+**Important**: This applies the taxonomy defined in PRODUCT-TAXONOMY-ANALYSIS.md (no new attributes created)
+
+---
+
+### 14. [MATERIAL-ESTIMATING-RULES.md](./MATERIAL-ESTIMATING-RULES.md) 📐 **ESTIMATING FORMULAS**
+**Reading Time**: 15-20 minutes  
+**Purpose**: Industry-standard material estimating formulas for BOM generation
+
+**Key Content**:
+- 14 material estimating formulas by construction phase
+- Proper units of measure (CY, EA, SQ, SHEET, etc.)
+- Waste factors and industry benchmarks
+- Estimation methodology
+
+**Use Case**: Foundation for BOM Calculator Service
+
+---
+
+### 15. [BOM-CALCULATOR-SUMMARY.md](./BOM-CALCULATOR-SUMMARY.md) ⭐ **BOM SERVICE**
+**Reading Time**: 20-25 minutes  
+**Purpose**: Complete BOM Calculator Service implementation guide
+
+**Key Content**:
+- Architecture overview (Product Lookup, BOM Calculator, CLI)
+- Material estimating formulas in production code
+- 18 generated reference BOMs (6 templates × 3 packages)
+- Cost validation ($20-24/sqft, within industry benchmarks ✅)
+- Usage examples and integration guide
+
+**Status**: ✅ **Production-ready BOM service**
+
+---
+
+### 16. [PERSONA-PRODUCT-PLANNING-PROCESS.md](./PERSONA-PRODUCT-PLANNING-PROCESS.md) 📋 **PRODUCT PLANNING**
+**Reading Time**: 25-30 minutes  
+**Purpose**: Process for planning products for new personas with maximum reuse
+
+**Key Content**:
+- 6-step process for persona product planning
+- Product reuse analysis methodology
+- Marcus example (92% reuse from Sarah's catalog)
+- Product reuse matrix across all 5 personas
+- Implementation checklist and best practices
+
+**Use Case**: Essential for implementing Marcus, Lisa, David, Kevin personas
+
+---
+
+### 17. [ACO-APP-BUILDER-INTEGRATION.md](./ACO-APP-BUILDER-INTEGRATION.md) 🏗️ **INTEGRATION STRATEGY**
+**Reading Time**: 20-25 minutes  
+**Purpose**: Integration architecture for ACO, App Builder, and EDS
+
+**Key Content**:
+- 3-layer architecture (ACO data, App Builder logic, EDS presentation)
+- Integration patterns (server-side, client-side, hybrid)
+- Authentication & security best practices
+- Deployment architecture (dev, staging, production)
+- Migration roadmap from current to production
+
+**Use Case**: When moving BOM calculator to App Builder backend
+
+---
+
+### 18. [BOM-SERVICE-COMPLETE.md](./BOM-SERVICE-COMPLETE.md) 🎉 **COMPLETION SUMMARY**
+**Reading Time**: 15-20 minutes  
+**Purpose**: Complete summary of BOM Calculator Service deliverables
+
+**Key Content**:
+- All deliverables checklist (product catalog, BOM service, reference BOMs, docs)
+- Success criteria validation (all met ✅)
+- File structure and usage examples
+- Next steps for Phase 6A dashboard implementation
+
+**Status**: ✅ **All Phase 0.5 Foundation work complete**
+
+---
+
+### 19. [PROJECT-STATUS-OVERVIEW.md](./PROJECT-STATUS-OVERVIEW.md) 📊 **PROJECT STATUS**
+**Reading Time**: 20-25 minutes  
+**Purpose**: Comprehensive overview of current project state
+
+**Key Content**:
+- What we accomplished this session
+- ACO cleanup and expansion details
+- Current system state (both repositories)
+- Where we are in the roadmap
+- Ready for next steps
+
+**Use Case**: Session summary and handoff document
+
+---
+
 ## 🚀 Quick Start
 
 ### For First-Time Readers
 
 **Recommended Reading Order**:
-1. [00-OVERVIEW.md](./00-OVERVIEW.md) - Start here! (10-15 min)
-2. [01-PROJECT-ENTITY-SCHEMA.md](./01-PROJECT-ENTITY-SCHEMA.md) - Understand the data (10-15 min)
-3. [02-PROJECT-MANAGER-API.md](./02-PROJECT-MANAGER-API.md) - Learn the API (15-20 min)
-4. Your persona's implementation:
-   - **Sarah?** → [03-SARAH-IMPLEMENTATION.md](./03-SARAH-IMPLEMENTATION.md) (20-25 min)
-   - **Others?** → [04-OTHER-PERSONAS.md](./04-OTHER-PERSONAS.md) (15-20 min)
-5. [05-IMPLEMENTATION-PLAN.md](./05-IMPLEMENTATION-PLAN.md) - Tasks & timeline (10-15 min)
-6. [06-COLLABORATIVE-REVIEW.md](./06-COLLABORATIVE-REVIEW.md) - Decision log (5-10 min)
-7. ✅ ~~[07-PRODUCT-DATA-REQUIREMENTS.md](./07-PRODUCT-DATA-REQUIREMENTS.md)~~ (optional - completed)
-8. ✅ [PRODUCT-DATA-COMPLETION-SUMMARY.md](./PRODUCT-DATA-COMPLETION-SUMMARY.md) - Results (10-15 min)
 
-**Total Reading Time**: ~75-120 minutes
+**Phase 6 Foundation (Taxonomy & Architecture) - READ FIRST**:
+1. [00-OVERVIEW.md](./00-OVERVIEW.md) - Start here! (10-15 min)
+2. ⭐ [PRODUCT-TAXONOMY-ANALYSIS.md](./PRODUCT-TAXONOMY-ANALYSIS.md) - **Taxonomy definition** (20-25 min)
+3. ⭐ [ACO-CATALOG-ARCHITECTURE.md](./ACO-CATALOG-ARCHITECTURE.md) - **ACO implementation** (25-30 min)
+
+**Phase 0.5 Foundation (Product Catalog & BOM Service) - BUILDS ON ABOVE**:
+4. ✅ [PRODUCT-EXPANSION-SUMMARY.md](./PRODUCT-EXPANSION-SUMMARY.md) - What we added (10-15 min)
+5. 🗺️ [PRODUCT-CATEGORY-TAXONOMY-MAPPING.md](./PRODUCT-CATEGORY-TAXONOMY-MAPPING.md) - **How new categories map to taxonomy** (15-20 min)
+6. 📐 [MATERIAL-ESTIMATING-RULES.md](./MATERIAL-ESTIMATING-RULES.md) - Formulas explained (15-20 min)
+7. ⭐ [BOM-CALCULATOR-SUMMARY.md](./BOM-CALCULATOR-SUMMARY.md) - **BOM Service architecture** (20-25 min)
+8. 📋 [PERSONA-PRODUCT-PLANNING-PROCESS.md](./PERSONA-PRODUCT-PLANNING-PROCESS.md) - Product reuse strategy (25-30 min)
+9. 🎉 [BOM-SERVICE-COMPLETE.md](./BOM-SERVICE-COMPLETE.md) - Summary of deliverables (15-20 min)
+10. 📊 [PROJECT-STATUS-OVERVIEW.md](./PROJECT-STATUS-OVERVIEW.md) - Current state overview (20-25 min)
+
+**Phase 6 Foundation (Project Entity) - CONTINUES FROM PHASE 6**:
+11. [01-PROJECT-ENTITY-SCHEMA.md](./01-PROJECT-ENTITY-SCHEMA.md) - Understand the data (10-15 min)
+12. [02-PROJECT-MANAGER-API.md](./02-PROJECT-MANAGER-API.md) - Learn the API (15-20 min)
+13. Your persona's implementation:
+    - **Sarah?** → [03-SARAH-IMPLEMENTATION.md](./03-SARAH-IMPLEMENTATION.md) (20-25 min)
+    - **Others?** → [04-OTHER-PERSONAS.md](./04-OTHER-PERSONAS.md) (15-20 min)
+14. [05-IMPLEMENTATION-PLAN.md](./05-IMPLEMENTATION-PLAN.md) - Tasks & timeline (10-15 min)
+15. [06-COLLABORATIVE-REVIEW.md](./06-COLLABORATIVE-REVIEW.md) - Decision log (5-10 min)
+16. ✅ [PRODUCT-DATA-COMPLETION-SUMMARY.md](./PRODUCT-DATA-COMPLETION-SUMMARY.md) - Phase 6 products (10-15 min)
+
+**Backend Integration (When Needed)**:
+17. 🏗️ [ACO-APP-BUILDER-INTEGRATION.md](./ACO-APP-BUILDER-INTEGRATION.md) - Integration strategy (20-25 min)
+
+**Total Reading Time**: ~240-330 minutes (⭐ = Critical architecture, must read)
 
 ---
 
@@ -221,6 +397,11 @@ const projects = await projectManager.getProjectsByType('your-type');
 
 ## 🔗 External References
 
+### Critical Architecture
+- ⭐ **Product Taxonomy**: [PRODUCT-TAXONOMY-ANALYSIS.md](./PRODUCT-TAXONOMY-ANALYSIS.md) - Unified vs. persona-per-catalog
+- ⭐ **Catalog Architecture**: [ACO-CATALOG-ARCHITECTURE.md](./ACO-CATALOG-ARCHITECTURE.md) - ACO + EDS implementation
+
+### Persona Context
 - **Persona Flows**: [../../personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](../../personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)
 - **Phase 6A Plan**: [../A-sarah-dashboard/PHASE-6A-DASHBOARD-REDESIGN-PLAN.md](../A-sarah-dashboard/PHASE-6A-DASHBOARD-REDESIGN-PLAN.md)
 - **Remaining Phases**: [../B-to-7-consolidated/PHASES-6B-TO-7-CONSOLIDATED.md](../B-to-7-consolidated/PHASES-6B-TO-7-CONSOLIDATED.md)

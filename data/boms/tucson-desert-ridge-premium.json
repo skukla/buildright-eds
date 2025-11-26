@@ -1,0 +1,251 @@
+{
+  "templateId": "tucson",
+  "templateName": "The Tucson",
+  "sqft": 2680,
+  "stories": 1,
+  "bedrooms": 4,
+  "bathrooms": 3,
+  "packageId": "desert-ridge-premium",
+  "packageName": "Desert Ridge Premium",
+  "packageTier": "premium",
+  "generated": "2025-11-26T19:07:11.180Z",
+  "measurements": {
+    "sqft": 2680,
+    "stories": 1,
+    "wallHeight": 8,
+    "perimeter": 166,
+    "roofArea": 3002,
+    "bedrooms": 4,
+    "bathrooms": 3
+  },
+  "phases": {
+    "foundation_framing": {
+      "items": [
+        {
+          "category": "concrete",
+          "description": "Ready-mix concrete for slab foundation",
+          "formula": "sqft × 4 / 324 × 1.05",
+          "calculation": "2680 × 4 / 324 × 1.05 = 35",
+          "quantity": 35,
+          "unit": "CY",
+          "sku": "CONC-323AA8E0",
+          "name": "StructureMaster Ready-Mix Concrete - 4000 PSI",
+          "pricePerUnit": 29.9,
+          "totalCost": 1046.5
+        },
+        {
+          "category": "structural_materials",
+          "description": "2x4 Stud - 8ft (wall framing)",
+          "formula": "sqft × 0.18 × 1.10",
+          "calculation": "2680 × 0.18 × 1.10 = 531",
+          "quantity": 531,
+          "unit": "EA",
+          "sku": "LBR-D0414F1E",
+          "name": "ToughGrip 2x4 Stud - 8ft",
+          "pricePerUnit": 34.48,
+          "totalCost": 18308.879999999997
+        },
+        {
+          "category": "structural_materials",
+          "description": "2x6 Stud - 8ft (exterior walls)",
+          "formula": "perimeter × wallHeight / 1.33 / 8 × 1.10",
+          "calculation": "166 × 8 / 1.33 / 8 × 1.10 = 138",
+          "quantity": 138,
+          "unit": "EA",
+          "sku": "LBR-2EBB314A",
+          "name": "SafeGuard 2x6 Stud - 8ft",
+          "pricePerUnit": 18.72,
+          "totalCost": 2583.3599999999997
+        },
+        {
+          "category": "structural_materials",
+          "description": "OSB Sheathing - 4x8 (walls)",
+          "formula": "perimeter × wallHeight / 32 × 1.10",
+          "calculation": "166 × 8 / 32 × 1.10 = 46",
+          "quantity": 46,
+          "unit": "SHEET",
+          "sku": "PLY-7D58FF99",
+          "name": "ProFrame OSB Sheathing 7/16\" - 4x8",
+          "pricePerUnit": 25.54,
+          "totalCost": 1174.84
+        },
+        {
+          "category": "structural_materials",
+          "description": "Plywood Sheathing - 4x8 (roof)",
+          "formula": "roofArea / 32 × 1.10",
+          "calculation": "3002 / 32 × 1.10 = 104",
+          "quantity": 104,
+          "unit": "SHEET",
+          "sku": "PLY-AF7C8BA7",
+          "name": "FastenPro CDX Plywood 1/2\" - 4x8",
+          "pricePerUnit": 89.49,
+          "totalCost": 9306.96
+        },
+        {
+          "category": "fasteners_hardware",
+          "description": "Framing nails - 16d (5lb box)",
+          "formula": "sqft / 100 / 5 × 1.10",
+          "calculation": "2680 / 100 / 5 × 1.10 = 6",
+          "quantity": 6,
+          "unit": "BOX",
+          "sku": "NAIL-68764C96",
+          "name": "ToughGrip Concrete Nails - 5lb Box",
+          "pricePerUnit": 37.71,
+          "totalCost": 226.26
+        },
+        {
+          "category": "drywall",
+          "description": "Drywall 1/2\" - 4x8 Sheet",
+          "formula": "((perimeter × wallHeight × 2) / 32 + sqft / 32) × 1.10",
+          "calculation": "((166 × 8 × 2) / 32 + 2680 / 32) × 1.10 = 184",
+          "quantity": 184,
+          "unit": "SHEET",
+          "sku": "DRYWALL-67027AF0",
+          "name": "PremiumBuild Moisture Resistant Drywall - 4x8",
+          "pricePerUnit": 20.02,
+          "totalCost": 3683.68
+        }
+      ],
+      "totalCost": 36330.479999999996
+    },
+    "envelope": {
+      "items": [
+        {
+          "category": "windows_doors",
+          "description": "Windows - Double Hung",
+          "formula": "sqft / 200 + bedrooms + 1",
+          "calculation": "2680 / 200 + 4 + 1 = 19",
+          "quantity": 19,
+          "unit": "EA",
+          "sku": "WINDOW-3000F5FA",
+          "name": "PremiumBuild Awning Window - 36\"x24\"",
+          "pricePerUnit": 24.25,
+          "totalCost": 460.75
+        },
+        {
+          "category": "windows_doors",
+          "description": "Entry Door",
+          "formula": "Fixed: 1 per house",
+          "calculation": "1",
+          "quantity": 1,
+          "unit": "EA",
+          "sku": "BUNDLE-146E0C58",
+          "name": "ToughGrip Complete Door Package",
+          "pricePerUnit": 0,
+          "totalCost": 0
+        },
+        {
+          "category": "roofing",
+          "description": "Architectural Shingles",
+          "formula": "roofArea / 100 × 1.10",
+          "calculation": "3002 / 100 × 1.10 = 34",
+          "quantity": 34,
+          "unit": "SQ",
+          "sku": "ROOF-19373607",
+          "name": "PremiumBuild Premium Designer Shingles - Bundle",
+          "pricePerUnit": 60.5,
+          "totalCost": 2057
+        },
+        {
+          "category": "roofing",
+          "description": "Synthetic Underlayment",
+          "formula": "roofArea / 400 × 1.10",
+          "calculation": "3002 / 400 × 1.10 = 9",
+          "quantity": 9,
+          "unit": "ROLL",
+          "sku": "ROOF-9B2122AB",
+          "name": "PremiumBuild Synthetic Underlayment - Roll",
+          "pricePerUnit": 32.74,
+          "totalCost": 294.66
+        },
+        {
+          "category": "siding",
+          "description": "Stucco Finish",
+          "formula": "(perimeter × wallHeight - openings) / 100 × 1.10",
+          "calculation": "(166 × 8 - 346) / 100 × 1.10 = 11",
+          "quantity": 11,
+          "unit": "SQ",
+          "sku": "ROOF-655C24FB",
+          "name": "StructureMaster Premium Stucco System - Acrylic Finish",
+          "pricePerUnit": 126.4,
+          "totalCost": 1390.4
+        },
+        {
+          "category": "insulation",
+          "description": "Fiberglass Batt Insulation R-19",
+          "formula": "perimeter × wallHeight × 0.9 / 45 × 1.10",
+          "calculation": "166 × 8 × 0.9 / 45 × 1.10 = 30",
+          "quantity": 30,
+          "unit": "ROLL",
+          "sku": "INSUL-DBE2F926",
+          "name": "BuildRight Pro Spray Foam Insulation Kit - 600 Board Feet",
+          "pricePerUnit": 92.69,
+          "totalCost": 2780.7
+        }
+      ],
+      "totalCost": 6983.509999999999
+    },
+    "interior_finish": {
+      "items": [
+        {
+          "category": "flooring",
+          "description": "Engineered Hardwood",
+          "formula": "hardwoodArea × 1.10 / 22",
+          "calculation": "1608 × 1.10 / 22 = 81",
+          "quantity": 81,
+          "unit": "CASE",
+          "sku": "INTE-C6D19404",
+          "name": "ProFrame Engineered Hardwood - Red Oak",
+          "pricePerUnit": 86.32,
+          "totalCost": 6991.919999999999
+        },
+        {
+          "category": "paint",
+          "description": "Interior Paint - Satin (5-gal bucket)",
+          "formula": "((perimeter × wallHeight) + sqft) / 350 / 5 × 2 × 1.10",
+          "calculation": "((166 × 8) + 2680) / 350 / 5 × 2 × 1.10 = 6",
+          "quantity": 6,
+          "unit": "BUCKET",
+          "sku": "INTE-0116C5D0",
+          "name": "ToughGrip Interior Paint - Flat White 5 Gallon",
+          "pricePerUnit": 59.87,
+          "totalCost": 359.21999999999997
+        },
+        {
+          "category": "lighting_fixtures",
+          "description": "Recessed LED Light - 6\"",
+          "formula": "(bedrooms + bathrooms) × 4",
+          "calculation": "(4 + 3) × 4 = 28",
+          "quantity": 28,
+          "unit": "EA",
+          "sku": "INTE-5DC3439E",
+          "name": "PremiumBuild Flush Mount Ceiling Light - Basic White",
+          "pricePerUnit": 95.88,
+          "totalCost": 2684.64
+        },
+        {
+          "category": "plumbing_fixtures",
+          "description": "Faucet",
+          "formula": "bathrooms + 1 (kitchen)",
+          "calculation": "3 + 1 = 4",
+          "quantity": 4,
+          "unit": "EA",
+          "sku": "INTE-A3169964",
+          "name": "StructureMaster Bathroom Faucet - Kohler Artifacts Collection",
+          "pricePerUnit": 35.44,
+          "totalCost": 141.76
+        }
+      ],
+      "totalCost": 10177.539999999999
+    }
+  },
+  "summary": {
+    "totalCost": 53491.53,
+    "totalItems": 17,
+    "costByPhase": {
+      "foundation_framing": 36330.479999999996,
+      "envelope": 6983.509999999999,
+      "interior_finish": 10177.539999999999
+    }
+  }
+}
