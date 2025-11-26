@@ -138,10 +138,11 @@ All **6 house templates** linked to compatible packages:
 - **Commit**: `66ff8a5`
 - **Files Changed**: 2
 - **Insertions**: +2,792
-- **ACO Ingestion**: ✅ Complete
-  - 108 products ingested to Adobe Commerce
-  - Batch 1: 100 products ✅
-  - Batch 2: 8 products ✅
+- **ACO Ingestion**: ✅ Complete (All Product Types)
+  - Simple products: 108 ✅
+  - Variant products: 100 (20 parents + 80 children) ✅
+  - Bundle products: 15 ✅
+  - **Total: 223 SKUs in Adobe Commerce**
   - Success rate: 100% (0 failures)
 
 ### buildright-eds
@@ -315,7 +316,10 @@ Product Data Tools:
 - [x] All changes pushed to remote
 - [x] README updated with completion status
 - [x] **Products ingested to Adobe Commerce via ACO** ✅
-  - [x] 108 products successfully ingested
+  - [x] 108 simple products successfully ingested
+  - [x] 100 variant products successfully ingested
+  - [x] 15 bundle products successfully ingested
+  - [x] **Total: 223 SKUs in Commerce**
   - [x] Available in Commerce sandbox
   - [x] 100% success rate
 

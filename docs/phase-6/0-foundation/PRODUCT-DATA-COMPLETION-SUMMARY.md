@@ -125,11 +125,12 @@ Created **3 complete selection packages** with full SKU mappings:
 - `scripts/add-sarah-products.js` (product generation script)
 
 **Ingested to Adobe Commerce:**
-- ✅ All 108 products successfully ingested via ACO
+- ✅ All products successfully ingested via ACO (100% success rate)
+- ✅ Simple products: 108 (70 original + 38 new)
+- ✅ Variant products: 100 (20 parents + 80 children)
+- ✅ Bundle products: 15
+- ✅ **Total in ACO: 223 SKUs**
 - ✅ Products available in Adobe Commerce sandbox
-- ✅ Batch 1: 100 products processed
-- ✅ Batch 2: 8 products processed
-- ✅ Success rate: 100% (0 failures)
 
 ### buildright-eds Repository
 
