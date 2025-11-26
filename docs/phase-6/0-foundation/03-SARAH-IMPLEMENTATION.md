@@ -9,6 +9,10 @@ This is **Part 4 of 6** in the Phase 6-Foundation planning series.
 **← Previous**: [02-PROJECT-MANAGER-API.md](./02-PROJECT-MANAGER-API.md)  
 **→ Next**: [04-OTHER-PERSONAS.md](./04-OTHER-PERSONAS.md)
 
+**🔗 Related Architecture**:
+- ⭐ [PRODUCT-TAXONOMY-ANALYSIS.md](./PRODUCT-TAXONOMY-ANALYSIS.md#sarah-martinez---production-home-builder) - Sarah's mental model & shopping behavior
+- ⭐ [ACO-CATALOG-ARCHITECTURE.md](./ACO-CATALOG-ARCHITECTURE.md#view-1-production-builder-view-sarah) - Sarah's catalog view configuration
+
 ---
 
 ## Overview

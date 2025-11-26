@@ -9,6 +9,10 @@ This is **Part 5 of 6** in the Phase 6-Foundation planning series.
 **← Previous**: [03-SARAH-IMPLEMENTATION.md](./03-SARAH-IMPLEMENTATION.md)  
 **→ Next**: [05-IMPLEMENTATION-PLAN.md](./05-IMPLEMENTATION-PLAN.md)
 
+**🔗 Related Architecture**:
+- ⭐ [PRODUCT-TAXONOMY-ANALYSIS.md](./PRODUCT-TAXONOMY-ANALYSIS.md#persona-shopping-behavior-analysis) - All personas' mental models
+- ⭐ [ACO-CATALOG-ARCHITECTURE.md](./ACO-CATALOG-ARCHITECTURE.md#3-catalog-views-aco-feature) - Catalog views for Marcus, Lisa, David
+
 ---
 
 ## Overview

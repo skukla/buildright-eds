@@ -342,7 +342,7 @@
         {
           "sku": "LBR-D0414F1E",
           "name": "ToughGrip 2x4 Stud - 8ft",
-          "currentStock": 10,
+          "currentStock": 46,
           "recommendedStock": "100",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -351,7 +351,7 @@
         {
           "sku": "PLY-7D58FF99",
           "name": "MaxStrength OSB Sheathing 7/16\" - 4x8",
-          "currentStock": 43,
+          "currentStock": 27,
           "recommendedStock": "Premium quality",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -360,7 +360,7 @@
         {
           "sku": "PLY-AF7C8BA7",
           "name": "PremiumBuild CDX Plywood 1/2\" - 4x8",
-          "currentStock": 46,
+          "currentStock": 47,
           "recommendedStock": "40",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -369,7 +369,7 @@
         {
           "sku": "PLY-E0240635",
           "name": "BuildRight Pro Siding Panel 3/8\" - 4x8",
-          "currentStock": 29,
+          "currentStock": 46,
           "recommendedStock": "25",
           "daysSupply": "14",
           "velocityCategory": "high",
@@ -378,7 +378,7 @@
         {
           "sku": "DRYWALL-8F034793",
           "name": "ProFrame Drywall 1/2\" - 4x8",
-          "currentStock": 8,
+          "currentStock": 43,
           "recommendedStock": "60",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -387,7 +387,7 @@
         {
           "sku": "DRYWALL-A8217B48",
           "name": "ProFrame Drywall 5/8\" - 4x8",
-          "currentStock": 13,
+          "currentStock": 41,
           "recommendedStock": "50",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -396,7 +396,7 @@
         {
           "sku": "DOOR-89357B1F",
           "name": "PremiumBuild Interior Door - Hollow Core 32\"x80\"",
-          "currentStock": 26,
+          "currentStock": 11,
           "recommendedStock": "25",
           "daysSupply": "Professional grade",
           "velocityCategory": "high",
@@ -405,7 +405,7 @@
         {
           "sku": "NAIL-244FD20C",
           "name": "ReliaBuild Framing Nails 16d - 50lb Box",
-          "currentStock": 33,
+          "currentStock": 26,
           "recommendedStock": "30",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -414,7 +414,7 @@
         {
           "sku": "NAIL-9D448DAA",
           "name": "ToughGrip Finish Nails 8d - 5lb Box",
-          "currentStock": 3,
+          "currentStock": 42,
           "recommendedStock": "40",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -423,7 +423,7 @@
         {
           "sku": "NAIL-2DBD44A2",
           "name": "DuraBuilt Roofing Nails - 50lb Box",
-          "currentStock": 22,
+          "currentStock": 34,
           "recommendedStock": "25",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -432,7 +432,7 @@
         {
           "sku": "NAIL-65F44C61",
           "name": "StructureMaster Concrete Nails - 5lb Box",
-          "currentStock": 11,
+          "currentStock": 4,
           "recommendedStock": "20",
           "daysSupply": "14",
           "velocityCategory": "high",
@@ -441,7 +441,7 @@
         {
           "sku": "SCREW-48C3413B",
           "name": "PremiumBuild Deck Screws #8 - 5lb Box",
-          "currentStock": 42,
+          "currentStock": 19,
           "recommendedStock": "35",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -450,7 +450,7 @@
         {
           "sku": "SCREW-704B6626",
           "name": "ToughGrip Drywall Screws - 5lb Box",
-          "currentStock": 3,
+          "currentStock": 38,
           "recommendedStock": "50",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -459,7 +459,7 @@
         {
           "sku": "SCREW-AD274060",
           "name": "ProFrame Wood Screws #10 - 1lb Box",
-          "currentStock": 45,
+          "currentStock": 18,
           "recommendedStock": "Standard",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -468,7 +468,7 @@
         {
           "sku": "SCREW-0DAA49A4",
           "name": "PremiumBuild Lag Screws 1/2\" - 50ct",
-          "currentStock": 25,
+          "currentStock": 29,
           "recommendedStock": "15",
           "daysSupply": "Premium quality",
           "velocityCategory": "high",
@@ -477,7 +477,7 @@
         {
           "sku": "ROOF-23151318",
           "name": "SafeGuard Asphalt Shingles 3-Tab - Bundle",
-          "currentStock": 47,
+          "currentStock": 7,
           "recommendedStock": "40",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -486,7 +486,7 @@
         {
           "sku": "ROOF-D793BF8B",
           "name": "ToughGrip Architectural Shingles - Bundle",
-          "currentStock": 21,
+          "currentStock": 5,
           "recommendedStock": "35",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -495,7 +495,7 @@
         {
           "sku": "ROOF-905BF883",
           "name": "BuildRight Pro Roofing Felt 15lb - Roll",
-          "currentStock": 15,
+          "currentStock": 10,
           "recommendedStock": "30",
           "daysSupply": "7",
           "velocityCategory": "high",
@@ -512,7 +512,7 @@
         {
           "sku": "LBR-26852468",
           "name": "PremiumBuild 2x8 Joist - 10ft",
-          "currentStock": 15,
+          "currentStock": 30,
           "recommendedStock": "50",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -521,7 +521,7 @@
         {
           "sku": "LBR-2D637246",
           "name": "SafeGuard 2x10 Joist - 12ft",
-          "currentStock": 12,
+          "currentStock": 16,
           "recommendedStock": "40",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -530,7 +530,7 @@
         {
           "sku": "LBR-9D32768F",
           "name": "ProFrame 4x4 Post - 8ft",
-          "currentStock": 20,
+          "currentStock": 32,
           "recommendedStock": "30",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -539,7 +539,7 @@
         {
           "sku": "PLY-3C2EC476",
           "name": "ReliaBuild T&G Subfloor 3/4\" - 4x8",
-          "currentStock": 9,
+          "currentStock": 43,
           "recommendedStock": "30",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -548,7 +548,7 @@
         {
           "sku": "STUD-44C79532",
           "name": "SafeGuard Metal Stud 20ga - 3.5\" x 10ft",
-          "currentStock": 3,
+          "currentStock": 2,
           "recommendedStock": "50",
           "daysSupply": "Professional grade",
           "velocityCategory": "medium",
@@ -557,7 +557,7 @@
         {
           "sku": "STUD-B6E3E673",
           "name": "DuraBuilt Metal Stud 20ga - 6\" x 10ft",
-          "currentStock": 11,
+          "currentStock": 19,
           "recommendedStock": "40",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -566,7 +566,7 @@
         {
           "sku": "STUD-95E9D258",
           "name": "FastenPro Metal Track 20ga - 3.5\" x 10ft",
-          "currentStock": 37,
+          "currentStock": 6,
           "recommendedStock": "Standard",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -575,7 +575,7 @@
         {
           "sku": "STUD-984F2EC0",
           "name": "FastenPro Metal Track 20ga - 6\" x 10ft",
-          "currentStock": 23,
+          "currentStock": 32,
           "recommendedStock": "35",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -584,7 +584,7 @@
         {
           "sku": "DRYWALL-67027AF0",
           "name": "BuildRight Pro Moisture Resistant Drywall - 4x8",
-          "currentStock": 1,
+          "currentStock": 45,
           "recommendedStock": "30",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -593,7 +593,7 @@
         {
           "sku": "DRYWALL-038C3C6C",
           "name": "StructureMaster Cement Board 1/2\" - 3x5",
-          "currentStock": 41,
+          "currentStock": 47,
           "recommendedStock": "25",
           "daysSupply": "Standard",
           "velocityCategory": "medium",
@@ -602,7 +602,7 @@
         {
           "sku": "WINDOW-8039584D",
           "name": "BuildRight Pro Single Hung Window - 36\"x48\"",
-          "currentStock": 1,
+          "currentStock": 13,
           "recommendedStock": "15",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -611,7 +611,7 @@
         {
           "sku": "WINDOW-6642736C",
           "name": "StructureMaster Double Hung Window - 36\"x60\"",
-          "currentStock": 12,
+          "currentStock": 45,
           "recommendedStock": "12",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -620,7 +620,7 @@
         {
           "sku": "WINDOW-888AFAE6",
           "name": "FastenPro Sliding Window - 48\"x36\"",
-          "currentStock": 28,
+          "currentStock": 10,
           "recommendedStock": "10",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -629,7 +629,7 @@
         {
           "sku": "DOOR-34C72FD2",
           "name": "FastenPro Entry Door - Steel 36\"x80\"",
-          "currentStock": 38,
+          "currentStock": 7,
           "recommendedStock": "10",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -638,7 +638,7 @@
         {
           "sku": "DOOR-75F9C73D",
           "name": "DuraBuilt Bi-fold Closet Door - 36\"x80\"",
-          "currentStock": 37,
+          "currentStock": 48,
           "recommendedStock": "15",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -647,7 +647,7 @@
         {
           "sku": "NAIL-D27A9BC3",
           "name": "MaxStrength Brad Nails 18ga - 5000ct",
-          "currentStock": 35,
+          "currentStock": 24,
           "recommendedStock": "35",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -656,7 +656,7 @@
         {
           "sku": "NAIL-7AD0771D",
           "name": "ToughGrip Ring Shank Nails - 25lb Box",
-          "currentStock": 4,
+          "currentStock": 11,
           "recommendedStock": "20",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -665,7 +665,7 @@
         {
           "sku": "SCREW-4DC6B336",
           "name": "SafeGuard Self-Drilling Screws - 1lb",
-          "currentStock": 13,
+          "currentStock": 6,
           "recommendedStock": "30",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -674,7 +674,7 @@
         {
           "sku": "SCREW-A3256812",
           "name": "ToughGrip Cabinet Screws - 100ct",
-          "currentStock": 43,
+          "currentStock": 6,
           "recommendedStock": "25",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -683,7 +683,7 @@
         {
           "sku": "ROOF-7B1F4022",
           "name": "SafeGuard Premium Designer Shingles - Bundle",
-          "currentStock": 24,
+          "currentStock": 18,
           "recommendedStock": "20",
           "daysSupply": "14",
           "velocityCategory": "medium",
@@ -700,7 +700,7 @@
         {
           "sku": "LBR-2EBB314A",
           "name": "SafeGuard 2x6 Stud - 8ft",
-          "currentStock": 45,
+          "currentStock": 5,
           "recommendedStock": "75",
           "daysSupply": "7",
           "velocityCategory": "low",
@@ -709,7 +709,7 @@
         {
           "sku": "LBR-96F409FB",
           "name": "PremiumBuild 2x12 Beam - 16ft",
-          "currentStock": 49,
+          "currentStock": 32,
           "recommendedStock": "20",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -718,7 +718,7 @@
         {
           "sku": "PLY-2BA5387B",
           "name": "ReliaBuild Marine Plywood 3/4\" - 4x8",
-          "currentStock": 24,
+          "currentStock": 33,
           "recommendedStock": "10",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -727,7 +727,7 @@
         {
           "sku": "PLY-4C31A6A6",
           "name": "DuraBuilt Hardwood Plywood 1/4\" - 4x8",
-          "currentStock": 27,
+          "currentStock": 38,
           "recommendedStock": "15",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -736,7 +736,7 @@
         {
           "sku": "STUD-8DEC7739",
           "name": "StructureMaster Steel C-Channel - 8ft",
-          "currentStock": 8,
+          "currentStock": 36,
           "recommendedStock": "20",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -745,7 +745,7 @@
         {
           "sku": "STUD-07E7F7E4",
           "name": "ToughGrip Hat Channel - 12ft",
-          "currentStock": 2,
+          "currentStock": 14,
           "recommendedStock": "25",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -754,7 +754,7 @@
         {
           "sku": "DRYWALL-1E512505",
           "name": "DuraBuilt Fire Rated Drywall - 4x8",
-          "currentStock": 49,
+          "currentStock": 21,
           "recommendedStock": "20",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -763,7 +763,7 @@
         {
           "sku": "DRYWALL-439D9A62",
           "name": "MaxStrength Sound Dampening Drywall - 4x8",
-          "currentStock": 3,
+          "currentStock": 37,
           "recommendedStock": "15",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -772,7 +772,7 @@
         {
           "sku": "WINDOW-8F26E917",
           "name": "MaxStrength Casement Window - 30\"x48\"",
-          "currentStock": 49,
+          "currentStock": 27,
           "recommendedStock": "8",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -781,7 +781,7 @@
         {
           "sku": "WINDOW-51CD3FC4",
           "name": "BuildRight Pro Bay Window - 72\"x48\"",
-          "currentStock": 36,
+          "currentStock": 20,
           "recommendedStock": "5",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -790,7 +790,7 @@
         {
           "sku": "WINDOW-5946F85C",
           "name": "FastenPro Awning Window - 36\"x24\"",
-          "currentStock": 37,
+          "currentStock": 43,
           "recommendedStock": "10",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -799,7 +799,7 @@
         {
           "sku": "DOOR-070629C1",
           "name": "ToughGrip French Door - 60\"x80\"",
-          "currentStock": 48,
+          "currentStock": 27,
           "recommendedStock": "5",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -808,7 +808,7 @@
         {
           "sku": "DOOR-E93CC71C",
           "name": "StructureMaster Sliding Patio Door - 72\"x80\"",
-          "currentStock": 25,
+          "currentStock": 32,
           "recommendedStock": "5",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -817,7 +817,7 @@
         {
           "sku": "DOOR-81B579D4",
           "name": "BuildRight Pro Storm Door - 36\"x80\"",
-          "currentStock": 8,
+          "currentStock": 22,
           "recommendedStock": "8",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -826,7 +826,7 @@
         {
           "sku": "ROOF-A8DE0B49",
           "name": "DuraBuilt Self-Adhering Underlayment - Roll",
-          "currentStock": 26,
+          "currentStock": 46,
           "recommendedStock": "10",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -835,7 +835,7 @@
         {
           "sku": "ROOF-05516930",
           "name": "MaxStrength Ventilated Underlayment - Roll",
-          "currentStock": 35,
+          "currentStock": 26,
           "recommendedStock": "10",
           "daysSupply": "30",
           "velocityCategory": "low",
@@ -845,7 +845,7 @@
     }
   ],
   "metadata": {
-    "generated": "2025-11-26T05:23:59.360Z",
+    "generated": "2025-11-26T06:13:23.846Z",
     "version": "2.0",
     "source": "buildright-aco"
   }
