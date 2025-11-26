@@ -1,4 +1,80 @@
 {
+  "packages": [
+    {
+      "id": "builders-choice",
+      "name": "Builder's Choice",
+      "description": "Standard quality materials for value-conscious builders",
+      "tier": "builder_grade",
+      "addedCost": 0,
+      "subdivisionSpecific": false,
+      "skuMappings": {
+        "windows_double_hung": "WINDOW-8039584D",
+        "doors_entry": "DOOR-34C72FD2",
+        "roofing_shingles": "ROOF-23151318",
+        "flooring_carpet": "FLOOR-CARPET-STAND",
+        "flooring_vinyl": "FLOOR-VINYL-LUX-OAK",
+        "fixtures_kitchen_faucet": "PLUMB-FAUCET-KIT-CHROME",
+        "fixtures_bath_faucet": "PLUMB-FAUCET-BATH-CHROME",
+        "fixtures_lighting_ceiling": "LIGHT-CEILING-FLUSH",
+        "fixtures_lighting_recessed": "LIGHT-RECESSED-4IN",
+        "siding": "SIDING-VINYL-STANDARD",
+        "paint_interior": "PAINT-INT-FLAT-WHT",
+        "paint_exterior": "PAINT-INT-EGGSHELL-BG",
+        "insulation": "INSUL-FIBERGLASS-R15",
+        "drywall": "DRYWALL-HALF-4X8"
+      }
+    },
+    {
+      "id": "desert-ridge-premium",
+      "name": "Desert Ridge Premium",
+      "description": "Upgraded finishes and materials for Desert Ridge subdivision",
+      "tier": "premium",
+      "addedCost": 18000,
+      "subdivisionSpecific": "Desert Ridge",
+      "skuMappings": {
+        "windows_casement": "WINDOW-8F26E917",
+        "doors_patio": "DOOR-E93CC71C",
+        "roofing_shingles": "ROOF-7B1F4022",
+        "flooring_hardwood": "FLOOR-HARDWOOD-OAK",
+        "flooring_tile": "FLOOR-TILE-CERAMIC-12",
+        "flooring_carpet": "FLOOR-VINYL-PREMIUM",
+        "fixtures_kitchen_faucet": "PLUMB-FAUCET-KIT-BRUSH",
+        "fixtures_bath_faucet": "PLUMB-FAUCET-BATH-BRUSH",
+        "fixtures_lighting_ceiling": "LIGHT-CEILING-SEMI",
+        "fixtures_lighting_recessed": "LIGHT-RECESSED-6IN-LED",
+        "siding": "SIDING-STUCCO-STANDARD",
+        "paint_interior": "PAINT-INT-SATIN-SW",
+        "paint_exterior": "PAINT-EXT-SATIN-SW",
+        "insulation": "INSUL-FIBERGLASS-R30",
+        "drywall": "DRYWALL-HALF-4X12"
+      }
+    },
+    {
+      "id": "sunset-valley-executive",
+      "name": "Sunset Valley Executive",
+      "description": "Luxury materials and designer finishes for Sunset Valley subdivision",
+      "tier": "luxury",
+      "addedCost": 42000,
+      "subdivisionSpecific": "Sunset Valley",
+      "skuMappings": {
+        "windows_casement": "WINDOW-8F26E917",
+        "doors_patio": "DOOR-E93CC71C",
+        "roofing_shingles": "ROOF-7B1F4022",
+        "flooring_hardwood": "FLOOR-HARDWOOD-WALNUT",
+        "flooring_tile": "FLOOR-TILE-PORCELAIN-24",
+        "flooring_carpet": "FLOOR-CARPET-PREMIUM",
+        "fixtures_kitchen_faucet": "PLUMB-FAUCET-KIT-DELTA",
+        "fixtures_bath_faucet": "PLUMB-FAUCET-BATH-KOHLER",
+        "fixtures_lighting_chandelier": "LIGHT-CHANDELIER-DINING",
+        "fixtures_lighting_pendant": "LIGHT-PENDANT-ISLAND",
+        "siding": "SIDING-STONE-VENEER",
+        "paint_interior": "PAINT-INT-BENJAMIN",
+        "paint_exterior": "PAINT-EXT-BENJAMIN",
+        "insulation": "INSUL-SPRAY-FOAM",
+        "drywall": "DRYWALL-MOISTURE"
+      }
+    }
+  ],
   "templates": [
     {
       "id": "sedona",
@@ -65,7 +141,8 @@
         "lastOrdered": "2024-10-15",
         "averageCost": 111000,
         "averageDays": 120
-      }
+      },
+      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
     },
     {
       "id": "prescott",
@@ -125,7 +202,8 @@
         "lastOrdered": "2024-11-02",
         "averageCost": 81000,
         "averageDays": 105
-      }
+      },
+      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
     },
     {
       "id": "flagstaff",
@@ -185,7 +263,8 @@
         "lastOrdered": "2024-09-22",
         "averageCost": 152000,
         "averageDays": 145
-      }
+      },
+      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
     },
     {
       "id": "tucson",
@@ -252,7 +331,8 @@
         "lastOrdered": "2024-10-28",
         "averageCost": 122000,
         "averageDays": 130
-      }
+      },
+      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
     },
     {
       "id": "phoenix",
@@ -312,7 +392,8 @@
         "lastOrdered": "2024-11-05",
         "averageCost": 138000,
         "averageDays": 135
-      }
+      },
+      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
     },
     {
       "id": "scottsdale",
@@ -379,7 +460,8 @@
         "lastOrdered": "2024-09-10",
         "averageCost": 171000,
         "averageDays": 155
-      }
+      },
+      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
     }
   ]
 }
