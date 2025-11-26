@@ -27,14 +27,17 @@ Phase 6 implements persona-specific dashboards and workflows for all BuildRight 
 - ProjectManager service (CRUD operations, 20+ methods)
 - LocalStorage MVP storage strategy
 - Terminology mapping (Build/Job/Project)
+- ⭐ **Product taxonomy & catalog architecture** (critical!)
 
 **Key Documents**:
 - [README.md](./0-foundation/README.md) - Start here!
+- ⭐ [PRODUCT-TAXONOMY-ANALYSIS.md](./0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md) - **Unified taxonomy decision**
+- ⭐ [ACO-CATALOG-ARCHITECTURE.md](./0-foundation/ACO-CATALOG-ARCHITECTURE.md) - **Multi-persona catalog implementation**
 - [00-OVERVIEW.md](./0-foundation/00-OVERVIEW.md) - Rationale & decisions
 - [02-PROJECT-MANAGER-API.md](./0-foundation/02-PROJECT-MANAGER-API.md) - Complete API
 - [05-IMPLEMENTATION-PLAN.md](./0-foundation/05-IMPLEMENTATION-PLAN.md) - Tasks & timeline
 
-**Why First**: All other persona implementations depend on the Project entity and ProjectManager.
+**Why First**: All other persona implementations depend on the Project entity, ProjectManager, and catalog architecture.
 
 ---
 
@@ -125,6 +128,28 @@ Phase 6 implements persona-specific dashboards and workflows for all BuildRight 
 ---
 
 ## 📋 Key Concepts
+
+### ⭐ Product Taxonomy & Catalog Architecture (CRITICAL)
+
+**Decision**: ONE unified catalog with multi-level attributes (not separate catalogs per persona)
+
+**Implementation**: Hybrid approach combining ACO + EDS
+- **ACO Layer**: ONE catalog, ONE category structure, FIVE catalog views, attribute-based policies
+- **EDS Layer**: DIFFERENT top nav, DIFFERENT category display, persona-specific filters
+
+**Why This Matters**:
+- Each persona sees the SAME products organized DIFFERENTLY
+- Sarah sees materials by construction phase (Foundation → Envelope → Interior)
+- Marcus sees materials by traditional categories (Lumber → Doors/Windows → Roofing)
+- Lisa sees materials by room (Bathroom → Kitchen → Flooring)
+- David sees materials by project type (Deck → Fence → Patio)
+- Kevin sees materials by velocity (High → Medium → Low)
+
+**Full Details**:
+- Strategic Analysis: [0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md](./0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md)
+- Technical Implementation: [0-foundation/ACO-CATALOG-ARCHITECTURE.md](./0-foundation/ACO-CATALOG-ARCHITECTURE.md)
+
+---
 
 ### Project Entity
 

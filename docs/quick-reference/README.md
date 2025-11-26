@@ -14,8 +14,9 @@ These guides provide just enough context to get started quickly, with links to c
 | **[add-demo-account.md](./add-demo-account.md)** | 2 min | How to add a demo login account |
 | **[what-exists.md](./what-exists.md)** | 3 min | Inventory of reusable components, systems, data |
 | **[architecture-overview.md](./architecture-overview.md)** | 5 min | High-level architecture overview |
+| ⭐ **[catalog-architecture-reference.md](./catalog-architecture-reference.md)** | 5 min | Persona-specific catalog views & mental models |
 
-**Total reading time**: ~12 minutes to understand the entire system!
+**Total reading time**: ~17 minutes to understand the entire system!
 
 ---
 
@@ -28,8 +29,16 @@ These guides provide just enough context to get started quickly, with links to c
 
 ### If you're IMPLEMENTING a persona:
 1. Read [implement-persona.md](./implement-persona.md) (2 min)
-2. Check [what-exists.md](./what-exists.md) for reusable components
-3. Go to [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md) for details
+2. ⭐ Read [catalog-architecture-reference.md](./catalog-architecture-reference.md) for your persona (5 min)
+3. Check [what-exists.md](./what-exists.md) for reusable components
+4. Go to [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md) for details
+
+**Quick Links by Persona**:
+- Sarah → [Catalog View](./catalog-architecture-reference.md#sarah-martinez---production-home-builder)
+- Marcus → [Catalog View](./catalog-architecture-reference.md#marcus-johnson---general-contractor)
+- Lisa → [Catalog View](./catalog-architecture-reference.md#lisa-chen---remodeling-contractor)
+- David → [Catalog View](./catalog-architecture-reference.md#david-thompson---diy-homeowner)
+- Kevin → [Catalog View](./catalog-architecture-reference.md#kevin-rodriguez---store-manager)
 
 ### If you're ADDING a demo account:
 1. Read [add-demo-account.md](./add-demo-account.md) (2 min)
