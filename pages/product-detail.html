@@ -135,11 +135,23 @@
 
         <!-- Tabs -->
                 <div class="product-detail-content">
+                  <!-- Mobile Tab Select -->
+                  <div class="product-tabs-mobile">
+                    <label for="product-tab-select" class="product-tabs-mobile-label">View:</label>
+                    <select id="product-tab-select" class="product-tab-select">
+                      <option value="description" selected>Description</option>
+                      <option value="specifications">Specifications</option>
+                      <option value="availability">Availability</option>
+                      <option value="volume-pricing" id="volume-pricing-option" style="display: none;">Volume Pricing</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Desktop Tabs -->
                   <div class="product-tabs" role="tablist">
                     <button class="product-tab active" role="tab" aria-selected="true" data-tab="description">Description</button>
                     <button class="product-tab" role="tab" aria-selected="false" data-tab="specifications">Specifications</button>
                     <button class="product-tab" role="tab" aria-selected="false" data-tab="availability">Availability</button>
-                    <button class="product-tab" role="tab" aria-selected="false" data-tab="volume-pricing" id="volume-pricing-tab" style="display: none;">Volume Pricing</button>
+                    <button class="product-tab" role="tab" aria-selected="false" data-tab="volume-pricing" id="volume-pricing-tab" style="display: none;"><span class="tab-label-long">Volume </span>Pricing</button>
                   </div>
 
                   <div class="product-tab-panels">
@@ -412,31 +424,94 @@
           }));
         });
 
-        // Tab functionality
+        // Tab functionality - shared function to switch tabs
         const tabs = document.querySelectorAll('.product-tab');
         const panels = document.querySelectorAll('.product-tab-panel');
+        const tabSelect = document.getElementById('product-tab-select');
 
+        // Sync mobile select with initially active tab on page load
+        if (tabSelect) {
+          const initialActiveTab = document.querySelector('.product-tab.active');
+          if (initialActiveTab) {
+            tabSelect.value = initialActiveTab.dataset.tab;
+          }
+        }
+
+        function switchTab(tabName) {
+          // Update desktop tabs
+          tabs.forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          
+          // Update panels
+          panels.forEach(p => {
+            p.classList.remove('active');
+            p.setAttribute('hidden', '');
+          });
+
+          // Activate the selected tab/panel
+          const activeTab = document.querySelector(`.product-tab[data-tab="${tabName}"]`);
+          if (activeTab) {
+            activeTab.classList.add('active');
+            activeTab.setAttribute('aria-selected', 'true');
+          }
+          
+          const targetPanel = document.getElementById(`tab-${tabName}`);
+          if (targetPanel) {
+            targetPanel.classList.add('active');
+            targetPanel.removeAttribute('hidden');
+          }
+          
+          // Update mobile select
+          if (tabSelect && tabSelect.value !== tabName) {
+            tabSelect.value = tabName;
+          }
+        }
+
+        // Desktop tabs click handler
         tabs.forEach(tab => {
           tab.addEventListener('click', () => {
-            tabs.forEach(t => {
-              t.classList.remove('active');
-              t.setAttribute('aria-selected', 'false');
-            });
-            panels.forEach(p => {
-              p.classList.remove('active');
-              p.setAttribute('hidden', '');
-            });
-
-            tab.classList.add('active');
-            tab.setAttribute('aria-selected', 'true');
-            
-            const targetPanel = document.getElementById(`tab-${tab.dataset.tab}`);
-            if (targetPanel) {
-              targetPanel.classList.add('active');
-              targetPanel.removeAttribute('hidden');
-            }
+            switchTab(tab.dataset.tab);
           });
         });
+
+        // Mobile select change handler
+        if (tabSelect) {
+          tabSelect.addEventListener('change', (e) => {
+            switchTab(e.target.value);
+          });
+        }
+
+        // Sync Volume Pricing visibility between desktop tab and mobile option
+        // Watch for changes to the desktop tab visibility
+        const volumePricingTab = document.getElementById('volume-pricing-tab');
+        const volumePricingOption = document.getElementById('volume-pricing-option');
+        
+        if (volumePricingTab && volumePricingOption) {
+          // Create a MutationObserver to watch for style changes on the tab
+          const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                const tabDisplay = window.getComputedStyle(volumePricingTab).display;
+                // Sync the option visibility with the tab visibility
+                if (tabDisplay !== 'none') {
+                  volumePricingOption.style.display = '';
+                } else {
+                  volumePricingOption.style.display = 'none';
+                }
+              }
+            });
+          });
+          
+          observer.observe(volumePricingTab, { attributes: true });
+          
+          // Also check initial state
+          const initialDisplay = window.getComputedStyle(volumePricingTab).display;
+          if (initialDisplay !== 'none') {
+            volumePricingOption.style.display = '';
+          }
+        }
 
         // Volume Pricing Popover functionality
         const volumePricingModal = document.getElementById('volume-pricing-modal');
@@ -535,3 +610,4 @@
   </script>
 </body>
 </html>
+
