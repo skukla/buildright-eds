@@ -1,1 +1,6 @@
 .playwright-mcp/
+
+# Temporary files
+logs/
+*.log
+*.backup-*
