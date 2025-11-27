@@ -203,6 +203,47 @@ header:empty {
   border-bottom: 1px solid var(--color-border);
 }
 
+/* FOUC Prevention - Prevent search bar flash */
+.header-search {
+  min-height: 44px;
+}
+
+.search-input {
+  min-height: 44px;
+  background: white;
+  border: 2px solid var(--color-border);
+}
+
+/* FOUC Prevention - Prevent nav bar flash */
+.header-nav-bar {
+  min-height: 50px;
+  background-color: var(--color-brand-500);
+}
+
+.nav-link {
+  color: white;
+  background: none;
+}
+
+/* FOUC Prevention - Prevent cart badge and shop by industry flash */
+.cart-count {
+  background-color: var(--color-brand-500);
+  color: white;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 1.5rem;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.industry-toggle {
+  color: white;
+  background: none;
+}
+
 /* FOUC Prevention - Hide main content until header is loaded */
 body:not(.header-loaded) main,
 body:not(.header-loaded) .breadcrumbs {
