@@ -39,7 +39,7 @@
 .cart-summary-title {
   margin: 0 0 2rem 0;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700; /* Match Shopping Cart h1 weight */
 }
 
 .cart-items-list {
