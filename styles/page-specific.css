@@ -31,8 +31,15 @@
   grid-template-columns: 1fr;
 }
 
-.cart-layout.cart-empty .cart-summary {
+.cart-layout.cart-empty .cart-summary-wrapper {
   display: none;
+}
+
+/* Cart Summary Title (outside card, matching Shopping Cart) */
+.cart-summary-title {
+  margin: 0 0 2rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .cart-items-list {
