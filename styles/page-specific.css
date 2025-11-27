@@ -38,8 +38,7 @@
 /* Cart Summary Title (outside card, matching Shopping Cart) */
 .cart-summary-title {
   margin: 0 0 2rem 0;
-  font-size: 1.5rem;
-  font-weight: 700; /* Match Shopping Cart h1 weight */
+  font: var(--type-display-1-font); /* Match Shopping Cart h1 exactly (2.5rem/700) */
 }
 
 .cart-items-list {
