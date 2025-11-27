@@ -41,21 +41,46 @@
 
           <!-- Order Summary -->
           <div class="cart-summary-wrapper">
-            <h2 class="cart-summary-title">Order Summary</h2>
             <div class="cart-summary" data-block-name="cart-summary" data-block-status="loading">
               <div>
                 <div>
+                <h2 class="cart-summary-title">Order Summary</h2>
                 <div class="summary-items">
                   <!-- Cart items will be populated by JavaScript -->
                 </div>
+                <div class="promo-code-section">
+                  <label for="promo-code" class="promo-label">Promo Code</label>
+                  <div class="promo-input-group">
+                    <input type="text" id="promo-code" class="promo-input" placeholder="Enter code">
+                    <button class="promo-apply-btn">Apply</button>
+                  </div>
+                  <div class="promo-message promo-success" style="display: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    <span>Promo code "SAVE10" applied</span>
+                  </div>
+                </div>
+                
                 <div class="summary-totals">
                   <div class="summary-row">
                     <span>Subtotal</span>
                     <span class="subtotal">$0.00</span>
                   </div>
+                  <div class="summary-row summary-discount" style="display: none;">
+                    <span>
+                      Discount
+                      <span class="discount-badge">SAVE10</span>
+                    </span>
+                    <span class="discount-amount">-$10.00</span>
+                  </div>
                   <div class="summary-row">
                     <span>Estimated Savings</span>
                     <span class="savings">$0.00</span>
+                  </div>
+                  <div class="summary-row summary-shipping">
+                    <span>Shipping</span>
+                    <span class="shipping-amount">Free</span>
                   </div>
                   <div class="summary-row summary-total">
                     <span>Total</span>
