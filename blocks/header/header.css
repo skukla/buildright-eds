@@ -140,7 +140,6 @@ header .header {
 .location-icon {
   font-size: 0.75rem;
   margin-left: 0.25rem;
-  transition: transform var(--transition-fast);
 }
 
 .location-icon svg {
@@ -348,7 +347,6 @@ header .header {
   border-radius: var(--shape-border-radius-3) 0 0 var(--shape-border-radius-3);
   font: var(--type-body-1-default-font);
   outline: none;
-  transition: border-color var(--transition-fast);
 }
 
 .search-input:focus {
@@ -366,7 +364,6 @@ header .header {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color var(--transition-fast);
 }
 
 .search-button:hover {
@@ -387,7 +384,6 @@ header .header {
   text-decoration: none;
   font: var(--type-body-2-default-font);
   font-weight: 500;
-  transition: color var(--transition-fast);
   background: none;
   border: none;
   padding: 0;
@@ -418,7 +414,6 @@ header .header {
   font-weight: 500;
   padding: var(--spacing-small) var(--spacing-3);
   border-radius: var(--shape-border-radius-3);
-  transition: background-color var(--transition-fast);
   position: relative;
   background: none;
   border: none;
@@ -453,7 +448,6 @@ header .header {
   font-weight: 500;
   padding: var(--spacing-small) var(--spacing-3);
   border-radius: var(--shape-border-radius-3);
-  transition: background-color var(--transition-fast);
   position: relative;
   background: none;
   border: none;
@@ -499,6 +493,7 @@ header .header {
 .header-nav-bar {
   background-color: var(--color-brand-500);
   padding: 0;
+  height: 50px;
 }
 
 .header-nav-content {
@@ -507,6 +502,7 @@ header .header {
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--section-padding-horizontal);
+  height: 100%;
 }
 
 .menu-toggle {
@@ -533,12 +529,14 @@ header .header {
   gap: 0;
   flex: 1;
   align-items: stretch;
+  height: 100%;
 }
 
 .nav-item {
   position: relative;
   display: flex;
   align-items: stretch;
+  height: 100%;
 }
 
 .nav-link {
@@ -549,7 +547,6 @@ header .header {
   font: var(--type-body-1-default-font);
   font-weight: 500;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
   text-align: left;
   width: 100%;
   text-decoration: none;
@@ -622,7 +619,6 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
   font: var(--type-body-1-default-font);
   font-weight: 500;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
   display: flex;
   align-items: center;
   gap: var(--spacing-small);
@@ -632,7 +628,6 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 .industry-toggle-icon {
   font-size: 0.75rem;
   display: inline-block;
-  transition: transform var(--transition-fast);
   transform-origin: center;
 }
 
@@ -697,7 +692,6 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
   color: var(--color-text);
   text-decoration: none;
   font: var(--type-body-1-default-font);
-  transition: color var(--transition-fast);
   display: block;
   padding: var(--spacing-xsmall) 0;
 }
