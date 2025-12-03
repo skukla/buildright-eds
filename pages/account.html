@@ -146,28 +146,12 @@
             <!-- My Templates Section (Sarah only) -->
             <div class="account-section" id="section-templates" style="display: none;">
               <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">My Templates</h2>
-              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Overview of your saved templates and recent activity.</p>
+              <p style="margin: 0 0 1.5rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Manage your saved templates and start new builds.</p>
               
-              <!-- Template Stats -->
-              <div class="grid grid-3" style="margin-bottom: 2rem;">
-                <div class="card">
-                  <div class="card-body" style="text-align: center;">
-                    <p style="font-size: 2.5rem; font-weight: 700; color: var(--color-brand-500); margin: 0 0 0.5rem 0;">5</p>
-                    <p style="margin: 0; color: var(--color-text-secondary); font-size: 0.9375rem;">Active Templates</p>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-body" style="text-align: center;">
-                    <p style="font-size: 2.5rem; font-weight: 700; color: var(--color-brand-500); margin: 0 0 0.5rem 0;">12</p>
-                    <p style="margin: 0; color: var(--color-text-secondary); font-size: 0.9375rem;">BOMs Generated</p>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-body" style="text-align: center;">
-                    <p style="font-size: 2.5rem; font-weight: 700; color: var(--color-brand-500); margin: 0 0 0.5rem 0;">2</p>
-                    <p style="margin: 0; color: var(--color-text-secondary); font-size: 0.9375rem;">This Month</p>
-                  </div>
-                </div>
+              <!-- Action Buttons -->
+              <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <a href="/pages/dashboard-templates.html" class="btn btn-cta">Start New Build</a>
+                <button class="btn btn-secondary" onclick="alert('Upload template coming soon!')">Upload New Template</button>
               </div>
 
               <!-- Recent Templates -->
@@ -235,12 +219,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <!-- Action Buttons -->
-              <div style="display: flex; gap: 1rem;">
-                <a href="/pages/dashboard-templates.html" class="btn btn-cta">Start New Build</a>
-                <button class="btn btn-secondary" onclick="alert('Upload template coming soon!')">Upload New Template</button>
               </div>
             </div>
 
