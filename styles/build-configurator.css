@@ -340,7 +340,7 @@
 
 .configurator-sidebar {
   position: sticky;
-  top: var(--spacing-xlarge);
+  top: 210px; /* Header height (143px) + spacing (67px) */
 }
 
 .order-summary-card {
