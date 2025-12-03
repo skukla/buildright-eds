@@ -325,7 +325,7 @@ class BOMReview {
     
     targetElement.innerHTML = `
       <div class="swap-panel-header">
-        <h5>🔄 Select Replacement</h5>
+        <h5>Select Replacement</h5>
         <span class="swap-panel-count">${alternatives.length} alternatives</span>
       </div>
       <div class="swap-panel-options">
