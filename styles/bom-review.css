@@ -339,15 +339,15 @@
 }
 
 .product-row-name {
-  font-weight: 400;
-  font-size: 0.875rem;
+  font-weight: 500;
+  font-size: 0.9375rem;
   color: var(--color-text);
-  line-height: 1.5;
+  line-height: 1.4;
   margin: 0 0 0.25rem 0;
 }
 
 .product-row-meta {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   margin: 0;
 }
@@ -367,14 +367,14 @@
 }
 
 .product-row-qty {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   text-align: right;
   white-space: nowrap;
 }
 
 .product-row-price {
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-text);
   text-align: right;
@@ -394,6 +394,13 @@
 
 .product-row-actions .btn svg {
   flex-shrink: 0;
+}
+
+/* Extra small button size for compact rows */
+.btn-xs {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  gap: 0.25rem;
 }
 
 /* ============================================
