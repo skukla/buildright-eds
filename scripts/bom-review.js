@@ -16,7 +16,6 @@ class BOMReview {
     this.elements = {
       configureBreadcrumb: document.getElementById('breadcrumb-configure'),
       subtitle: document.getElementById('bom-subtitle'),
-      generatedDate: document.getElementById('bom-generated-date'),
       summaryTotal: document.getElementById('summary-total'),
       summaryItems: document.getElementById('summary-items'),
       summaryPhases: document.getElementById('summary-phases'),
@@ -179,9 +178,6 @@ class BOMReview {
     }
     
     this.elements.subtitle.textContent = subtitleParts.join(' • ');
-    
-    const date = new Date(this.bomData.generatedDate);
-    this.elements.generatedDate.textContent = `Generated ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
     
     // Set breadcrumb link for Configure Build
     if (this.elements.configureBreadcrumb) {

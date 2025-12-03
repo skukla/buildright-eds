@@ -107,12 +107,6 @@
   color: var(--color-text-secondary);
 }
 
-.summary-meta {
-  font: var(--type-body-2-default-font);
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
 /* ============================================
    PHASE ACCORDIONS
    ============================================ */
