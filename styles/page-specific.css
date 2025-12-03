@@ -149,18 +149,7 @@ main {
   gap: 1rem;
 }
 
-.loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid var(--color-border);
-  border-top-color: var(--color-brand-500);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+/* Loading spinner styles now centralized in styles/components.css */
 
 .loading-text {
   color: var(--color-text-secondary);
