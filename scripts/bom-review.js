@@ -269,8 +269,8 @@ class BOMReview {
               <span class="accordion-total">${this.formatCurrency(phaseTotal)}</span>
               <span class="accordion-percent">${phasePercent}% of total</span>
             </div>
-            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"/>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="m6 9 6 6 6-6"/>
             </svg>
           </div>
           <div class="bom-accordion-content">
