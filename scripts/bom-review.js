@@ -20,7 +20,6 @@ class BOMReview {
       summaryTotal: document.getElementById('summary-total'),
       summaryItems: document.getElementById('summary-items'),
       summaryPhases: document.getElementById('summary-phases'),
-      summaryBadges: document.getElementById('summary-badges'),
       phasesContainer: document.getElementById('bom-phases'),
       sidebarTotal: document.getElementById('sidebar-total'),
       sidebarItemsCount: document.getElementById('sidebar-items-count'),
@@ -186,33 +185,7 @@ class BOMReview {
     this.elements.sidebarTotal.textContent = this.formatCurrency(total);
     this.elements.sidebarItemsCount.textContent = `${itemCount} items across ${phaseCount} phases`;
     
-    // Package badge
-    const selectedPackage = this.packagesData?.find(p => p.id === this.bomData.selectedPackage);
-    let badgesHtml = '';
-    
-    if (selectedPackage) {
-      badgesHtml += `
-        <span class="package-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-          </svg>
-          ${selectedPackage.name}
-        </span>
-      `;
-    }
-    
-    // Variants badges
-    const variants = this.bomData.selectedVariants || [];
-    if (variants.length > 0) {
-      variants.forEach(vId => {
-        const variant = this.templateData?.variants?.find(v => v.id === vId);
-        if (variant) {
-          badgesHtml += `<span class="package-badge">${variant.name}</span>`;
-        }
-      });
-    }
-    
-    this.elements.summaryBadges.innerHTML = badgesHtml;
+    // Badges section removed - details now in subtitle
   }
   
   renderPhases() {

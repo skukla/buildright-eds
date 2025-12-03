@@ -107,29 +107,6 @@
   color: var(--color-text-secondary);
 }
 
-.summary-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-small);
-  margin-bottom: var(--spacing-medium);
-}
-
-.package-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xsmall);
-  padding: var(--spacing-small) var(--spacing-medium);
-  background: var(--color-brand-500);
-  color: white;
-  border-radius: var(--shape-border-radius-3);
-  font: var(--type-body-2-strong-font);
-}
-
-.package-badge svg {
-  width: 16px;
-  height: 16px;
-}
-
 .summary-meta {
   font: var(--type-body-2-default-font);
   color: var(--color-text-secondary);
