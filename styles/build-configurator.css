@@ -106,6 +106,17 @@
   transition: all var(--transition-fast);
 }
 
+.config-section .form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
 .config-section .form-input:focus,
 .config-section .form-select:focus {
   border-color: var(--color-brand-500);
