@@ -1,50 +1,54 @@
 // Tier badge block decoration
 export default async function decorate(block) {
-  // Import data functions
-  const { getCustomerContext } = await import('../../scripts/data-mock.js');
+  // Import auth service
+  const { authService } = await import('../../scripts/auth.js');
 
   // Update tier badge
-  function updateTierBadge() {
-    const context = getCustomerContext();
-    const tier = context.tier || 'base';
+  async function updateTierBadge() {
+    await authService.initialize();
+    const currentUser = authService.getCurrentUser();
+    
     const tierLabel = block.querySelector('.tier-label');
     const savingsIndicator = block.querySelector('.savings-indicator');
 
+    // Map customer groups to display names
     const tierNames = {
-      'commercial_tier1': 'Commercial Tier 1',
-      'commercial_tier2': 'Commercial Tier 2',
-      'residential_builder': 'Residential Builder',
-      'pro_specialty': 'Pro Specialty',
-      'base': 'Standard Pricing'
+      'Production-Builder': 'Production Builder',
+      'Trade-Professional': 'Trade Professional',
+      'Wholesale-Reseller': 'Wholesale Reseller',
+      'Retail-Registered': 'Registered Customer',
+      'US-Retail': 'Standard Pricing'
     };
 
     const savings = {
-      'commercial_tier1': 'Volume Pricing Benefits',
-      'commercial_tier2': 'Volume Pricing Benefits',
-      'residential_builder': 'Volume Pricing Benefits',
-      'pro_specialty': 'Volume Pricing Benefits',
-      'base': ''
+      'Production-Builder': 'Volume Pricing Benefits',
+      'Trade-Professional': 'Professional Pricing',
+      'Wholesale-Reseller': 'Wholesale Pricing',
+      'Retail-Registered': 'Member Pricing',
+      'US-Retail': ''
     };
 
+    const customerGroup = currentUser?.customerGroup || 'US-Retail';
+
     if (tierLabel) {
-      tierLabel.textContent = tierNames[tier] || 'Standard Pricing';
+      tierLabel.textContent = tierNames[customerGroup] || 'Standard Pricing';
     }
 
     if (savingsIndicator) {
-      savingsIndicator.textContent = savings[tier] || '';
+      savingsIndicator.textContent = savings[customerGroup] || '';
     }
 
     // Add tier class for styling
     block.className = 'tier-badge';
-    if (tier !== 'base') {
-      block.classList.add(tier.replace('_', '-'));
+    if (customerGroup !== 'US-Retail') {
+      block.classList.add(customerGroup.toLowerCase().replace('-', '-'));
     }
   }
 
   // Initial load
-  updateTierBadge();
+  await updateTierBadge();
 
-  // Listen for context changes
-  window.addEventListener('customerContextChanged', updateTierBadge);
+  // Listen for auth changes
+  window.addEventListener('authStateChanged', updateTierBadge);
 }
 
