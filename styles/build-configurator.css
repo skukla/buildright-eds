@@ -418,11 +418,19 @@
   color: var(--color-brand-500);
 }
 
-.summary-phases {
-  font: var(--type-body-2-default-font);
-  color: var(--color-text-secondary);
-  margin: 0;
+.summary-phases-info {
   text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.summary-phases-text {
+  font-size: 0.8125rem;
+  color: var(--color-text-tertiary);
+  margin: 0;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .summary-actions {
