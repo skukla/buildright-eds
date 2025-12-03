@@ -337,7 +337,7 @@ export async function updateKitSidebar(scrollToNewItem = false, existingItemSku 
   if (viewFullBtn) {
     viewFullBtn.textContent = 'Add All to Cart';
     viewFullBtn.disabled = false;
-    viewFullBtn.classList.remove('btn-error');
+    // btn-error class removed from design system
   }
 
   // Hide empty state and show items

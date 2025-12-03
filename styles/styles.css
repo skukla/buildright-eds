@@ -42,6 +42,7 @@ body.appear {
 header {
   visibility: visible !important;
   opacity: 1 !important;
+  background-color: var(--color-background); /* Prevent content from showing through */
 }
 
 main {

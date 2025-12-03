@@ -33,7 +33,7 @@ export const PERSONAS = {
     email: 'sarah.martinez@sunbelthomes.com',
     customerGroup: CUSTOMER_GROUPS.PRODUCTION_BUILDER,
     avatar: '/images/avatars/sarah.jpg',
-    defaultRoute: '/pages/dashboard.html?view=templates',
+    defaultRoute: '/pages/dashboard-templates.html',
     
     // ACO attributes (for policy filtering)
     attributes: {

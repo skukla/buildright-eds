@@ -1275,12 +1275,29 @@
 
 ## Component States & Variants
 
+### Button Types (3-Color System)
+
+BuildRight uses **orange as an accent color** to create visual emphasis and hierarchy:
+
+- **Emphasis (Orange):** `btn-cta` - ONE per section, most important action
+- **Utility (Blue):** `btn-primary` - Repeated actions, navigation, secondary paths
+- **Cancel/Secondary (Slate):** `btn-secondary` - Back, cancel, edit, destructive actions
+
+**Core Principle**: "One Orange Button Per Section"
+- Orange provides focal point and visual energy
+- Blue maintains brand consistency for repeated/utility actions
+- Slate for cancel, back, and destructive actions
+
+**Visual Density Rule**: If an action appears 10+ times on screen (product grids), use blue to avoid overwhelming the design.
+
 ### Button States
-- **Primary:** Solid brand color, white text
-- **Outline:** Transparent with brand border
-- **Ghost:** No border, brand text
+- **Default:** Standard styling per type
+- **Hover:** Darker shade + shadow
+- **Focus:** 2px outline offset
 - **Disabled:** Grayed out, no hover
 - **Loading:** Spinner icon, disabled
+
+See [BUTTON-SYSTEM.md](BUTTON-SYSTEM.md) for complete button documentation, decision trees, and usage examples.
 
 ### Card States
 - **Default:** Border, hover lift

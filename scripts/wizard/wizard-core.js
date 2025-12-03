@@ -367,7 +367,7 @@ function showProjectBuilderResumeBanner(showResults, showStep) {
         </div>
         <div class="project-builder-resume-actions">
           <button class="btn btn-primary btn-md" id="continue-existing-kit-btn">Yes, Edit</button>
-          <button class="btn btn-outline btn-md" id="start-new-kit-btn">No, Start New</button>
+          <button class="btn btn-secondary btn-md" id="start-new-kit-btn">No, Start New</button>
         </div>
       </div>
     </div>

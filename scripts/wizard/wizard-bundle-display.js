@@ -211,7 +211,7 @@ export function displayListView(bundle, itemsByCategory, componentPrices, includ
 
       <div class="simple-list-footer">
         <button class="btn btn-cta btn-lg" id="add-all-to-cart-btn">${bundle.inCart && bundle.isEditing ? 'Update Cart' : 'Add All to Cart'}</button>
-        <button class="btn btn-outline btn-lg" id="browse-catalog-btn">Browse Catalog for More Items</button>
+        <button class="btn btn-secondary btn-lg" id="browse-catalog-btn">Browse Catalog for More Items</button>
       </div>
       
       ${createProjectNotes().outerHTML}

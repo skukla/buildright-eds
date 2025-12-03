@@ -39,7 +39,7 @@ function createKitModeResumeBanner() {
         </div>
         <div class="kit-mode-resume-actions">
           <button class="btn btn-primary btn-md" id="resume-kit-btn">${resumeButtonText}</button>
-          <button class="btn btn-outline btn-md" id="dismiss-banner-btn">${dismissButtonText}</button>
+          <button class="btn btn-secondary btn-md" id="dismiss-banner-btn">${dismissButtonText}</button>
         </div>
       </div>
     </div>

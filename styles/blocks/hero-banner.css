@@ -141,7 +141,7 @@
   color: var(--color-text-inverse);
 }
 
-.hero-banner--dark .hero-banner__cta .btn-outline {
+.hero-banner--dark .hero-banner__cta .btn-secondary {
   background-color: transparent;
   border-color: var(--color-text-inverse);  /* White border for visibility on dark */
   color: var(--color-text-inverse);  /* White text for visibility on dark */
@@ -151,7 +151,7 @@
               border-color 100ms ease-in-out;  /* Faster animation */
 }
 
-.hero-banner--dark .hero-banner__cta .btn-outline:hover {
+.hero-banner--dark .hero-banner__cta .btn-secondary:hover {
   background-color: rgba(255, 255, 255, 0.1);  /* Subtle white overlay on hover */
   border-color: var(--color-text-inverse);
   color: var(--color-text-inverse);
@@ -190,7 +190,7 @@
 }
 
 /* Button styles for light hero background */
-.hero-banner--light .hero-banner__cta .btn-outline {
+.hero-banner--light .hero-banner__cta .btn-secondary {
   transition: background-color 100ms ease-in-out,
               color 100ms ease-in-out,
               box-shadow 100ms ease-in-out,

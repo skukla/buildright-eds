@@ -394,7 +394,7 @@ export function createProductRow(item) {
 export function createBundleActions() {
   const html = `
     <div class="bundle-actions">
-      <a href="catalog" class="btn btn-outline-accent">Customize Kit in Catalog</a>
+      <a href="catalog" class="btn btn-secondary">Customize Kit in Catalog</a>
     </div>
   `;
   return parseHTML(html);

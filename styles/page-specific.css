@@ -35,10 +35,16 @@
   display: none;
 }
 
-/* Cart Summary Title (outside card, matching Shopping Cart) */
+/* Cart Page Title */
+.cart-title {
+  font-weight: 700;
+  margin-bottom: var(--spacing-large);
+}
+
+/* Cart Summary Title */
 .cart-summary-title {
+  /* Use default h2 styling (var(--type-display-2-font)) for consistency with catalog */
   margin: 0 0 2rem 0;
-  font: var(--type-display-1-font); /* Match Shopping Cart h1 exactly (2.5rem/700) */
 }
 
 .cart-items-list {

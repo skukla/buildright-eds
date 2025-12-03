@@ -70,17 +70,11 @@ class DashboardRouter {
     
     this.currentView = view;
     
-    // Show loading
-    this._showLoading();
-    
     try {
       // Dynamic import of dashboard module
       const dashboardModule = await this._getDashboardModule(view);
       
-      // Clear loading
-      this.contentContainer.innerHTML = '';
-      
-      // Initialize dashboard
+      // Initialize dashboard (structure already in HTML)
       await dashboardModule.initialize(this.contentContainer);
       
       // Decorate any blocks in dashboard content

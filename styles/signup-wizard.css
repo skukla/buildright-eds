@@ -132,7 +132,7 @@
   flex: 1;
 }
 
-.button-group .btn-outline {
+.button-group .btn-secondary {
   flex: 0 0 auto;
   min-width: 120px;
 }

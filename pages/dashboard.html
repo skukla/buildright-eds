@@ -4,22 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - BuildRight</title>
-  <link rel="stylesheet" href="../styles/styles.css">
+  
+  <!-- Critical initialization: BASE_PATH, cart preload -->
+  <script src="../scripts/critical-init.js"></script>
+  <script type="module" src="../scripts/scripts.js"></script>
   <script type="module" src="../scripts/dashboard.js"></script>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-  <!-- Header block -->
+  <!-- Header block (loaded by scripts.js) -->
   <header></header>
   
   <!-- Main content -->
   <main class="dashboard-container">
     <!-- Persona-specific content loaded by dashboard.js -->
     <div id="dashboard-content" class="dashboard-content">
-      <!-- Loading state -->
-      <div class="loading-overlay">
-        <div class="loading-spinner"></div>
-        <p>Loading dashboard...</p>
-      </div>
     </div>
   </main>
   

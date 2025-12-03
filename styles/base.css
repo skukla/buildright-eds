@@ -176,13 +176,19 @@ body {
 
 /* Gray background variant for catalog and PDP pages */
 body.page-catalog,
-body.page-product-detail {
+body.page-product-detail,
+body.page-dashboard-templates,
+body.page-build-configurator,
+body.page-bom-review {
   background-color: var(--color-surface); /* Gray background for product browsing */
 }
 
 /* White background variant - add .white-variant class to body to override */
 body.white-variant.page-catalog,
-body.white-variant.page-product-detail {
+body.white-variant.page-product-detail,
+body.white-variant.page-dashboard-templates,
+body.white-variant.page-build-configurator,
+body.white-variant.page-bom-review {
   background-color: var(--color-background); /* Force white background */
 }
 

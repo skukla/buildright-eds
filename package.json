@@ -7,6 +7,7 @@
     "serve": "npx http-server -p 8000 -c-1",
     "build": "node scripts/tools/build.js",
     "prebuild": "echo 'Injecting blocks...'",
+    "get-aco-data": "cd ../buildright-aco && npm run generate:eds-data",
     "validate-paths": "node scripts/tools/validate-html-paths.js",
     "prepare": "husky"
   },
