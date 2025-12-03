@@ -6,7 +6,7 @@
 
 .cart-title {
   font-size: 2rem;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--color-text);
   margin: 0 0 2rem 0;
 }
@@ -88,21 +88,9 @@ body.white-variant .promo-input {
   color: var(--color-text-tertiary);
 }
 
-.promo-apply-btn {
-  padding: 0.625rem 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--color-text);
-  cursor: pointer;
+/* Promo apply button now uses standard btn-primary btn-sm */
+.promo-input-group .btn {
   white-space: nowrap;
-}
-
-.promo-apply-btn:hover {
-  background: var(--color-border);
-  border-color: var(--color-text-tertiary);
 }
 
 .promo-message {
@@ -134,7 +122,7 @@ body.white-variant .promo-input {
 .cart-summary-title {
   margin: 0;
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--color-text);
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
@@ -250,24 +238,11 @@ body.white-variant .summary-actions {
   background: linear-gradient(to top, #EBF4FB 0%, var(--color-surface) 100%);
 }
 
-.btn-checkout {
+/* Full-width checkout button in summary */
+.summary-actions .btn {
   width: 100%;
-  padding: 1rem 2rem;
-  background: var(--color-brand-500);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
-}
-
-.btn-checkout:hover {
-  background: var(--color-brand-600);
-  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
 }
 
 /* Cart Page Layout */
@@ -288,7 +263,7 @@ body.white-variant .cart-section {
 
 .cart-title {
   font-size: 2rem;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--color-text);
   margin: 0 0 2rem 0;
   letter-spacing: -0.02em;

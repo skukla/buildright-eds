@@ -93,33 +93,13 @@
 .btn-secondary {
   background-color: var(--color-secondary-500);
   color: white;
+  font-weight: 700;
 }
 
 .btn-secondary:hover {
   background-color: var(--color-secondary-600);
   color: white;
   box-shadow: var(--shape-shadow-2);
-}
-
-.btn-accent {
-  background-color: var(--color-accent-500);
-  color: white;
-}
-
-.btn-accent:hover {
-  background-color: var(--color-accent-600);
-  color: white;
-  box-shadow: var(--shape-shadow-2);
-}
-
-.btn-error {
-  background-color: var(--color-negative-500);
-  color: white;
-}
-
-.btn-error:hover {
-  background-color: var(--color-negative-600);
-  color: white;
 }
 
 .btn-cta {
@@ -134,33 +114,11 @@
   box-shadow: var(--shape-shadow-2);
 }
 
-.btn-outline {
-  background-color: transparent;
-  border-color: var(--color-brand-500);
-  color: var(--color-brand-500);
-}
-
-.btn-outline:hover {
-  background-color: var(--color-brand-500);
-  color: white;
-  box-shadow: var(--shape-shadow-2);
-}
-
-.btn-outline-accent {
-  background-color: transparent;
-  border-color: var(--color-accent-500);
-  color: var(--color-accent-500);
-}
-
-.btn-outline-accent:hover {
-  background-color: var(--color-accent-500);
-  color: white;
-  box-shadow: var(--shape-shadow-2);
-}
-
 .btn-sm {
   padding: var(--spacing-small) var(--spacing-medium);
-  font: var(--type-body-2-default-font);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  /* font-weight is inherited from .btn (600), .btn-secondary (700), or .btn-cta (700) */
 }
 
 .btn-lg {
@@ -1835,13 +1793,13 @@
   color: var(--color-brand-700);
 }
 
-.kit-mode-resume-banner .btn-outline {
+.kit-mode-resume-banner .btn-secondary {
   border-color: rgba(255, 255, 255, 0.5);
   color: white;
   background: transparent;
 }
 
-.kit-mode-resume-banner .btn-outline:hover {
+.kit-mode-resume-banner .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: white;
 }
@@ -1939,13 +1897,13 @@
   color: var(--color-brand-700);
 }
 
-.project-builder-resume-banner .btn-outline {
+.project-builder-resume-banner .btn-secondary {
   border-color: rgba(255, 255, 255, 0.5);
   color: white;
   background: transparent;
 }
 
-.project-builder-resume-banner .btn-outline:hover {
+.project-builder-resume-banner .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: white;
 }
