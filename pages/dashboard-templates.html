@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Floor Plan Templates - BuildRight</title>
+  
+  <!-- Critical initialization: BASE_PATH, cart preload -->
+  <script src="../scripts/critical-init.js"></script>
+  <script type="module" src="../scripts/scripts.js"></script>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../styles/styles.css">
+  <link rel="stylesheet" href="../styles/dashboards/template-dashboard.css">
+</head>
+<body class="page-dashboard-templates">
+  <!-- Header block (loaded by scripts.js) -->
+  <header></header>
+  
+  <!-- Main content -->
+  <main class="dashboard-container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+      <div>
+        <div><a href="../index.html">Home</a></div>
+      </div>
+      <div>
+        <div>Templates</div>
+      </div>
+    </div>
+    
+    <div class="template-dashboard">
+      <div class="dashboard-header">
+        <div class="dashboard-title">
+          <h1>Floor Plan Templates</h1>
+          <p class="subtitle">Select a template to start a new build</p>
+        </div>
+      </div>
+      
+      <div class="templates-grid" id="templates-grid" style="visibility: hidden;">
+        <!-- Template cards populated by template-dashboard.js -->
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer block -->
+  <footer></footer>
+  
+  <script type="module" src="../scripts/dashboards/template-dashboard.js"></script>
+</body>
+</html>
+

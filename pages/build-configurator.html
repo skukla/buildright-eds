@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configure Build - BuildRight</title>
+  <meta name="description" content="Configure a new build from a floor plan template">
+  
+  <!-- Critical initialization: BASE_PATH, cart preload -->
+  <script src="../scripts/critical-init.js"></script>
+  <script type="module" src="../scripts/scripts.js"></script>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../styles/styles.css">
+  <link rel="stylesheet" href="../styles/build-configurator.css">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://images.unsplash.com">
+</head>
+<body class="page-build-configurator">
+  
+  <!-- Header block (loaded by scripts.js) -->
+  <header></header>
+  
+  <main>
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+      <div>
+        <div><a href="../index.html">Home</a></div>
+      </div>
+      <div>
+        <div><a href="/pages/dashboard-templates.html">Templates</a></div>
+      </div>
+      <div>
+        <div>Configure Build</div>
+      </div>
+    </div>
+    
+    <div class="configurator-container">
+      
+      <!-- Page Header -->
+      <div class="configurator-header">
+        <h1>Configure Build</h1>
+        <p class="subtitle">Set up your build details and select options</p>
+      </div>
+      
+      <!-- Main Content Grid -->
+      <div class="configurator-layout">
+        
+        <!-- Left Column: Configuration Options -->
+        <div class="configurator-main">
+          
+          <!-- Section 1: Build Information -->
+          <section class="config-section" id="build-info-section">
+            <h2 class="section-title">Build Details</h2>
+            
+            <div class="build-info-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="project-name">Project Name</label>
+                  <input type="text" id="project-name" class="form-input" placeholder="House #47" autocomplete="off">
+                  <span class="form-hint">Auto-increments based on your last build</span>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label" for="subdivision">Subdivision <span class="required">*</span></label>
+                  <select id="subdivision" class="form-select" required>
+                    <option value="">Select subdivision...</option>
+                    <option value="desert-ridge">Desert Ridge</option>
+                    <option value="sunset-valley">Sunset Valley</option>
+                    <option value="mountain-view">Mountain View Estates</option>
+                    <option value="other">Other / Custom</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="lot-number">Lot Number</label>
+                  <input type="text" id="lot-number" class="form-input" placeholder="47">
+                </div>
+                
+                <div class="form-group form-group-wide">
+                  <label class="form-label" for="delivery-address">Delivery Address</label>
+                  <input type="text" id="delivery-address" class="form-input" placeholder="Auto-filled from subdivision" readonly>
+                  <span class="form-hint">Address will be populated based on subdivision</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Section 2: Template Summary -->
+          <section class="config-section" id="template-section">
+            <h2 class="section-title">Template</h2>
+            
+            <div class="template-summary-card" id="template-summary">
+              <!-- Populated by JavaScript -->
+              <div class="loading-placeholder">Loading template...</div>
+            </div>
+          </section>
+          
+          <!-- Section 3: Optional Floor Plan Features (Variants) -->
+          <section class="config-section" id="variants-section">
+            <h2 class="section-title">Optional Floor Plan Features</h2>
+            <p class="section-description">Click to add (can select multiple)</p>
+            
+            <div class="selection-grid selection-grid-variants" id="variants-grid">
+              <!-- Populated by JavaScript -->
+              <div class="loading-placeholder">Loading options...</div>
+            </div>
+          </section>
+          
+          <!-- Section 4: Material Package -->
+          <section class="config-section" id="packages-section">
+            <h2 class="section-title">Material Package</h2>
+            <p class="section-description">Select one package (required)</p>
+            
+            <div class="selection-grid selection-grid-packages" id="packages-grid">
+              <!-- Populated by JavaScript -->
+              <div class="loading-placeholder">Loading packages...</div>
+            </div>
+          </section>
+          
+          <!-- Section 5: Construction Phases -->
+          <section class="config-section" id="phases-section">
+            <h2 class="section-title">Construction Phases</h2>
+            <p class="section-description">Select phases to order materials for</p>
+            
+            <div class="selection-grid selection-grid-phases" id="phases-grid">
+              <!-- Populated by JavaScript -->
+              <div class="loading-placeholder">Loading phases...</div>
+            </div>
+          </section>
+          
+        </div>
+        
+        <!-- Right Column: Order Summary (Sticky) -->
+        <aside class="configurator-sidebar">
+          <div class="order-summary-card" id="order-summary">
+            <h3 class="summary-title">Order Summary</h3>
+            
+            <div class="summary-content">
+              <div class="summary-line">
+                <span class="summary-label">Base Template</span>
+                <span class="summary-value" id="summary-base">$0</span>
+              </div>
+              
+              <div class="summary-line" id="summary-package-line">
+                <span class="summary-label">Package</span>
+                <span class="summary-value" id="summary-package">--</span>
+              </div>
+              
+              <div class="summary-line" id="summary-variants-line" style="display: none;">
+                <span class="summary-label">Optional Features</span>
+                <span class="summary-value" id="summary-variants">$0</span>
+              </div>
+              
+              <div class="summary-divider"></div>
+              
+              <div class="summary-line summary-total">
+                <span class="summary-label">Estimated Total</span>
+                <span class="summary-value" id="summary-total">$0</span>
+              </div>
+              
+              <p class="summary-phases" id="summary-phases-text">Select phases to order</p>
+            </div>
+            
+            <div class="summary-actions">
+              <button class="btn btn-cta btn-lg" id="generate-bom-btn" disabled>
+                Generate BOM
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+              
+              <button class="btn btn-secondary btn-lg" id="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </aside>
+        
+      </div>
+      
+    </div>
+  </main>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loading-overlay" data-visible="false">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h3 id="loading-title">Generating Bill of Materials...</h3>
+      <p id="loading-subtitle">This will take just a moment</p>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer></footer>
+  
+  <script type="module" src="../scripts/build-configurator.js"></script>
+</body>
+</html>
+
