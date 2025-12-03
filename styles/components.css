@@ -2093,9 +2093,9 @@
 
 /* Cart Notification */
 .cart-notification {
-  /* Adobe Best Practice: Pure CSS positioning, no JavaScript */
+  /* Centered at top of page, appears over header */
   position: fixed;
-  top: 20px; /* Top center of viewport */
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -2106,17 +2106,19 @@
   border-left: 4px solid var(--color-positive-500);
   border-radius: var(--shape-border-radius-3);
   padding: 0.875rem 1rem;
-  box-shadow: var(--shape-shadow-2);
-  z-index: 10000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 100000;
   min-width: 280px;
   max-width: 400px;
   opacity: 0;
-  transition: opacity 300ms ease-out;
+  transform: translateX(-50%) translateY(-10px);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
   pointer-events: none;
 }
 
 .cart-notification.active {
   opacity: 1;
+  transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
 
