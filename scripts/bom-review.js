@@ -160,7 +160,25 @@ class BOMReview {
     const templateName = this.templateData?.name || 'Unknown Template';
     const packageName = this.packagesData?.find(p => p.id === this.bomData.selectedPackage)?.name || '';
     
-    this.elements.subtitle.textContent = `${templateName} ${packageName ? `• ${packageName}` : ''}`;
+    // Build subtitle with template, package, and variants
+    let subtitleParts = [templateName];
+    
+    if (packageName) {
+      subtitleParts.push(packageName);
+    }
+    
+    // Add variants
+    const variants = this.bomData.selectedVariants || [];
+    if (variants.length > 0) {
+      variants.forEach(vId => {
+        const variant = this.templateData?.variants?.find(v => v.id === vId);
+        if (variant) {
+          subtitleParts.push(variant.name);
+        }
+      });
+    }
+    
+    this.elements.subtitle.textContent = subtitleParts.join(' • ');
     
     const date = new Date(this.bomData.generatedDate);
     this.elements.generatedDate.textContent = `Generated ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
