@@ -76,24 +76,19 @@
   object-fit: cover;
 }
 
-/* Placeholder styles - fills entire aspect ratio container */
-.template-card-thumb-placeholder::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* Placeholder styles - centered pattern (matches other components) */
+.template-card-thumb-placeholder {
   background: var(--color-border);
 }
 
-.template-card-thumb-placeholder::after {
+.template-card-thumb-placeholder::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
   background: repeating-linear-gradient(
     45deg,
     var(--color-text-disabled),
