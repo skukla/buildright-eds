@@ -8,6 +8,48 @@
   <title>Account Dashboard - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
+  <style>
+    .account-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: var(--color-text);
+      text-decoration: none;
+      border-radius: var(--shape-border-radius-3);
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    
+    .account-nav-item:hover {
+      background: var(--color-surface);
+      color: var(--color-brand-500);
+    }
+    
+    .account-nav-item.active {
+      background: var(--color-brand-500);
+      color: white;
+    }
+    
+    .account-nav-item svg {
+      flex-shrink: 0;
+    }
+    
+    .account-section {
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header loaded dynamically from blocks/header/ -->
@@ -25,71 +67,211 @@
       </div>
     </div>
 
-    <!-- Account Dashboard -->
+    <!-- Account Dashboard with Sidebar -->
     <section class="section">
-      <div class="container" style="max-width: 1000px;">
-        <h1 style="margin-bottom: 2rem;">Account Dashboard</h1>
+      <div class="container" style="max-width: 1400px;">
+        <h1 style="margin-bottom: 3rem; font-size: 2rem; font-weight: 700;">Account Dashboard</h1>
 
-        <!-- Tier Badge -->
-        <div class="tier-badge" id="tier-badge" data-block-name="tier-badge" data-block-status="loading" style="margin-bottom: 2rem;">
-          <div>
-            <div>
-              <span class="tier-label">Loading...</span>
-              <span class="savings-indicator"></span>
-            </div>
-          </div>
-        </div>
+        <div style="display: grid; grid-template-columns: 250px 1fr; gap: 3rem;">
+          <!-- Sidebar Navigation -->
+          <nav style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="#dashboard" class="account-nav-item active" data-section="dashboard">
+              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              Dashboard
+            </a>
+            <a href="#profile" class="account-nav-item" data-section="profile">
+              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              Profile
+            </a>
+            <a href="#orders" class="account-nav-item" data-section="orders">
+              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+              </svg>
+              Orders
+            </a>
+            <a href="#locations" class="account-nav-item" data-section="locations" id="locations-nav-item" style="display: none;">
+              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              Store Locations
+            </a>
+            <!-- Persona-specific nav items will be added here -->
+            <div id="persona-nav-items"></div>
+          </nav>
 
-        <!-- Company Information -->
-        <div class="card" style="margin-bottom: 2rem;">
-          <div class="card-header">
-            <h2>Company Information</h2>
-          </div>
-          <div class="card-body">
-            <div id="company-info">
-              <p><strong>Company:</strong> <span id="company-name">Loading...</span></p>
-              <p><strong>Region:</strong> <span id="company-region">Loading...</span></p>
-              <p><strong>Primary Warehouse:</strong> <span id="primary-warehouse">Loading...</span></p>
-              <p><strong>Locations:</strong> <span id="company-locations">Loading...</span></p>
-            </div>
-          </div>
-        </div>
+          <!-- Main Content Area -->
+          <div id="account-content">
+            <!-- Dashboard Section (default) -->
+            <div class="account-section" id="section-dashboard">
+              <!-- Company Information -->
+              <div style="margin-bottom: 3rem;">
+                <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Company Information</h2>
+                <p style="margin: 0 0 1.5rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">View your company details and primary warehouse.</p>
+                <div class="card">
+                  <div class="card-body">
+                    <div id="company-info">
+                      <p style="margin-bottom: 0.75rem;">
+                        <strong>Company:</strong> 
+                        <span id="company-name">Loading...</span>
+                        <span id="tier-badge-pill" style="display: inline-block; margin-left: 0.5rem; padding: 0.25rem 0.75rem; background: var(--color-brand-500); color: white; border-radius: 999px; font-size: 0.75rem; font-weight: 600; vertical-align: middle;">
+                          <span id="tier-label-inline">Loading...</span>
+                        </span>
+                      </p>
+                      <p style="margin-bottom: 0.75rem;"><strong>Region:</strong> <span id="company-region">Loading...</span></p>
+                      <p style="margin-bottom: 0;"><strong>Primary Warehouse:</strong> <span id="primary-warehouse">Loading...</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-        <!-- Quick Actions -->
-        <div class="grid grid-3" style="margin-bottom: 2rem;">
-          <div class="card">
-            <div class="card-header">
-              <h3>Recent Orders</h3>
+              <!-- Quick Actions -->
+              <div>
+                <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Quick Actions</h2>
+                <p style="margin: 0 0 1.5rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Access frequently used features and manage your account.</p>
+                <div class="grid grid-3" id="quick-actions-grid">
+                  <!-- Quick Actions cards loaded dynamically based on persona -->
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <p style="color: var(--color-text-light);">View your order history and track shipments.</p>
-            </div>
-            <div class="card-footer">
-              <a href="order-history.html" class="btn btn-secondary btn-sm">View Orders</a>
-            </div>
-          </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h3>Saved Projects</h3>
-            </div>
-            <div class="card-body">
-              <p style="color: var(--color-text-light);">Quick access to your frequently used project types.</p>
-            </div>
-            <div class="card-footer">
-              <a href="project-selector.html" class="btn btn-secondary btn-sm">Select Project</a>
-            </div>
-          </div>
+            <!-- My Templates Section (Sarah only) -->
+            <div class="account-section" id="section-templates" style="display: none;">
+              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">My Templates</h2>
+              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Overview of your saved templates and recent activity.</p>
+              
+              <!-- Template Stats -->
+              <div class="grid grid-3" style="margin-bottom: 2rem;">
+                <div class="card">
+                  <div class="card-body" style="text-align: center;">
+                    <p style="font-size: 2.5rem; font-weight: 700; color: var(--color-brand-500); margin: 0 0 0.5rem 0;">5</p>
+                    <p style="margin: 0; color: var(--color-text-secondary); font-size: 0.9375rem;">Active Templates</p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body" style="text-align: center;">
+                    <p style="font-size: 2.5rem; font-weight: 700; color: var(--color-brand-500); margin: 0 0 0.5rem 0;">12</p>
+                    <p style="margin: 0; color: var(--color-text-secondary); font-size: 0.9375rem;">BOMs Generated</p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body" style="text-align: center;">
+                    <p style="font-size: 2.5rem; font-weight: 700; color: var(--color-brand-500); margin: 0 0 0.5rem 0;">2</p>
+                    <p style="margin: 0; color: var(--color-text-secondary); font-size: 0.9375rem;">This Month</p>
+                  </div>
+                </div>
+              </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h3>Account Settings</h3>
+              <!-- Recent Templates -->
+              <div style="margin-bottom: 2rem;">
+                <h3 style="margin: 0 0 1rem 0; font-size: 1.125rem; font-weight: 600;">Recent Templates</h3>
+                
+                <div class="simple-list-items">
+                  <div class="simple-list-row">
+                    <div class="simple-list-col-item">
+                      <div class="simple-list-item-image">
+                        <img src="../images/floor-plans/ranch-1800.png" alt="Ranch Style floor plan" onerror="this.parentElement.classList.add('simple-list-item-image-placeholder'); this.style.display='none';">
+                      </div>
+                      <div class="simple-list-item-info">
+                        <div class="simple-list-item-name-row">
+                          <span class="simple-list-item-name">Ranch Style - 1,800 sq ft</span>
+                        </div>
+                        <div class="simple-list-item-sku">BOM generated 2 days ago</div>
+                      </div>
+                    </div>
+                    <div style="text-align: right;">
+                      <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-secondary);">3 bed • 2 bath</p>
+                    </div>
+                    <div style="text-align: right;">
+                      <span class="order-status completed">Active</span>
+                    </div>
+                  </div>
+                  
+                  <div class="simple-list-row">
+                    <div class="simple-list-col-item">
+                      <div class="simple-list-item-image">
+                        <img src="../images/floor-plans/colonial-2200.png" alt="Colonial floor plan" onerror="this.parentElement.classList.add('simple-list-item-image-placeholder'); this.style.display='none';">
+                      </div>
+                      <div class="simple-list-item-info">
+                        <div class="simple-list-item-name-row">
+                          <span class="simple-list-item-name">Colonial - 2,200 sq ft</span>
+                        </div>
+                        <div class="simple-list-item-sku">BOM generated 5 days ago</div>
+                      </div>
+                    </div>
+                    <div style="text-align: right;">
+                      <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-secondary);">4 bed • 2.5 bath</p>
+                    </div>
+                    <div style="text-align: right;">
+                      <span class="order-status completed">Active</span>
+                    </div>
+                  </div>
+                  
+                  <div class="simple-list-row">
+                    <div class="simple-list-col-item">
+                      <div class="simple-list-item-image">
+                        <img src="../images/floor-plans/craftsman-2000.png" alt="Craftsman floor plan" onerror="this.parentElement.classList.add('simple-list-item-image-placeholder'); this.style.display='none';">
+                      </div>
+                      <div class="simple-list-item-info">
+                        <div class="simple-list-item-name-row">
+                          <span class="simple-list-item-name">Craftsman - 2,000 sq ft</span>
+                        </div>
+                        <div class="simple-list-item-sku">Template created 1 week ago</div>
+                      </div>
+                    </div>
+                    <div style="text-align: right;">
+                      <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-secondary);">3 bed • 2 bath</p>
+                    </div>
+                    <div style="text-align: right;">
+                      <span class="order-status pending">Draft</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div style="display: flex; gap: 1rem;">
+                <a href="dashboard-templates.html" class="btn btn-primary">Go to Templates Dashboard</a>
+                <button class="btn btn-secondary" onclick="alert('Upload template coming soon!')">Upload New Template</button>
+              </div>
             </div>
-            <div class="card-body">
-              <p style="color: var(--color-text-light);">Manage your account preferences and company information.</p>
+
+            <!-- Store Locations Section -->
+            <div class="account-section" id="section-locations" style="display: none;">
+              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Store Locations</h2>
+              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Manage your store locations and set your primary warehouse.</p>
+              <div id="company-locations" class="grid grid-3"></div>
             </div>
-            <div class="card-footer">
-              <button class="btn btn-secondary btn-sm" onclick="alert('Account settings coming soon!')">Edit Settings</button>
+
+            <!-- Profile Section -->
+            <div class="account-section" id="section-profile" style="display: none;">
+              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Personal Information</h2>
+              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Update your personal details and contact information.</p>
+              <div class="card">
+                <div class="card-body">
+                  <p style="color: var(--color-text-secondary);">Profile settings coming soon...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div class="account-section" id="section-orders" style="display: none;">
+              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Order History</h2>
+              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">View and track your orders.</p>
+              <div class="card">
+                <div class="card-body" style="text-align: center; padding: 3rem 1rem;">
+                  <p style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--color-text);">No orders yet</p>
+                  <p style="color: var(--color-text-secondary); margin: 0;">When you make a purchase, it will appear here</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -101,26 +283,301 @@
   <footer></footer>
 
   <script type="module">
-    import { getCustomerContext } from '../scripts/data-mock.js';
-    import { decorateBlock } from '../scripts/scripts.js';
+    import { authService } from '../scripts/auth.js';
+    import { getCompanyForPersona } from '../scripts/company-config.js';
+    import { getPersona } from '../scripts/persona-config.js';
     
-    // Load account info
-    function loadAccountInfo() {
-      const context = getCustomerContext();
+    // Load account info from auth service and persona config
+    async function loadAccountInfo() {
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
       
-      document.getElementById('company-name').textContent = context.company || 'Not set';
-      document.getElementById('company-region').textContent = context.region || 'Not set';
-      document.getElementById('primary-warehouse').textContent = context.primary_warehouse || 'Not set';
-      document.getElementById('company-locations').textContent = context.locations?.join(', ') || 'Not set';
+      if (!currentUser) {
+        document.getElementById('company-name').textContent = 'Not logged in';
+        document.getElementById('company-region').textContent = 'N/A';
+        document.getElementById('primary-warehouse').textContent = 'N/A';
+        return;
+      }
+      
+      // Get full persona data from currentUser
+      const persona = currentUser.persona;
+      
+      // Company name
+      document.getElementById('company-name').textContent = persona?.company || 'Individual';
+      
+      // Region - Get from persona
+      document.getElementById('company-region').textContent = persona?.region || 'Not set';
+      
+      // Primary Warehouse - Get from persona
+      document.getElementById('primary-warehouse').textContent = persona?.primaryWarehouse || 'Not set';
+      
+      // Account Tier - Display inline with company name
+      const customerGroup = currentUser?.customerGroup || 'US-Retail';
+      const tierNames = {
+        'Production-Builder': 'Production Builder',
+        'Trade-Professional': 'Trade Professional',
+        'Wholesale-Reseller': 'Wholesale Reseller',
+        'Retail-Registered': 'Registered Customer',
+        'US-Retail': 'Standard'
+      };
+      
+      document.getElementById('tier-label-inline').textContent = tierNames[customerGroup] || 'Standard';
+      
+      // Locations - Only show if persona has multi-location company
+      const company = getCompanyForPersona(persona);
+      const locationsContainer = document.getElementById('company-locations');
+      const locationsNavItem = document.getElementById('locations-nav-item');
+      
+      if (persona?.hasMultipleLocations && company && company.locations && company.locations.length > 1) {
+        // Show locations nav item
+        locationsNavItem.style.display = 'flex';
+        
+        // Create location cards
+        const locationsHTML = company.locations.map(loc => {
+          const primaryCheckmark = loc.isPrimary 
+            ? `<svg style="width: 20px; height: 20px; margin-left: 0.5rem; vertical-align: middle; color: var(--color-success);" fill="currentColor" viewBox="0 0 20 20">
+                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+               </svg>` 
+            : '';
+          
+          const footer = !loc.isPrimary 
+            ? `<div class="card-footer">
+                 <button class="btn btn-secondary btn-sm" onclick="alert('Set ${loc.city} as primary location')">Set as Primary</button>
+               </div>`
+            : '';
+          
+          return `
+            <div class="card">
+              <div class="card-body">
+                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.25rem; font-weight: 600; color: var(--color-text);">
+                  ${loc.city}${primaryCheckmark}
+                </h3>
+                <p style="margin: 0 0 0.25rem 0; font-size: 0.9375rem; color: var(--color-text);">${loc.address}</p>
+                <p style="margin: 0 0 0.25rem 0; font-size: 0.9375rem; color: var(--color-text);">${loc.city}, ${loc.state} ${loc.zip}</p>
+                <p style="margin: 0; font-size: 0.9375rem; color: var(--color-text-secondary);">
+                  <svg style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                  </svg>
+                  ${loc.phone}
+                </p>
+              </div>
+              ${footer}
+            </div>
+          `;
+        }).join('');
+        
+        locationsContainer.innerHTML = locationsHTML;
+      } else {
+        // Hide locations nav item
+        locationsNavItem.style.display = 'none';
+      }
+    }
+    
+    // Navigation handling
+    function initNavigation() {
+      const navItems = document.querySelectorAll('.account-nav-item[data-section], .quick-action-nav-item[data-section]');
+      const sidebarNavItems = document.querySelectorAll('.account-nav-item[data-section]');
+      const sections = document.querySelectorAll('.account-section');
+      
+      navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const sectionId = item.dataset.section;
+          
+          // Only handle if section exists
+          const targetSection = document.getElementById(`section-${sectionId}`);
+          if (!targetSection) return;
+          
+          // Update active state on sidebar only
+          sidebarNavItems.forEach(nav => nav.classList.remove('active'));
+          
+          // If this is a sidebar item, mark it active
+          if (item.classList.contains('account-nav-item')) {
+            item.classList.add('active');
+          } else {
+            // If clicked from quick actions, activate corresponding sidebar item
+            const correspondingSidebar = document.querySelector(`.account-nav-item[data-section="${sectionId}"]`);
+            if (correspondingSidebar) {
+              correspondingSidebar.classList.add('active');
+            }
+          }
+          
+          // Show selected section
+          sections.forEach(section => {
+            section.style.display = 'none';
+          });
+          targetSection.style.display = 'block';
+        });
+      });
+    }
+    
+    // Load Quick Actions cards based on persona
+    async function loadQuickActions() {
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      const quickActionsGrid = document.getElementById('quick-actions-grid');
+      
+      if (!quickActionsGrid) return;
+      
+      const persona = currentUser?.persona;
+      const cards = [];
+      
+      // Persona-specific first card
+      if (persona?.features?.templates) {
+        // Sarah: Templates card - navigates to section within account page
+        cards.push(`
+          <a href="#templates" class="card quick-action-nav-item" data-section="templates" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">My Templates</h3>
+              </div>
+              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">5 active templates, 12 BOMs generated</p>
+            </div>
+          </a>
+        `);
+      } else if (persona?.features?.restockDashboard) {
+        // Kevin: Restock Dashboard card - navigates to external dashboard.html
+        cards.push(`
+          <a href="/pages/dashboard.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                </svg>
+                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Restock Dashboard</h3>
+              </div>
+              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage inventory and view smart suggestions.</p>
+            </div>
+          </a>
+        `);
+      } else {
+        // Marcus/Lisa/David/Others: Saved Projects
+        cards.push(`
+          <a href="project-selector.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Saved Projects</h3>
+              </div>
+              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Access your frequently used project types.</p>
+            </div>
+          </a>
+        `);
+      }
+      
+      // Standard cards for everyone - Orders
+      cards.push(`
+        <a href="order-history.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+              </svg>
+              <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Orders</h3>
+            </div>
+            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Track your orders and view order history.</p>
+          </div>
+        </a>
+      `);
+      
+      // Standard cards for everyone - Account Settings
+      cards.push(`
+        <a href="#" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;" onclick="alert('Account settings coming soon!'); return false;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6m0 6v6m8.66-11.66-4.24 4.24m-4.84 4.84-4.24 4.24M23 12h-6m-6 0H1m20.66 8.66-4.24-4.24m-4.84-4.84-4.24-4.24"/>
+              </svg>
+              <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Account Settings</h3>
+            </div>
+            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage your preferences and information.</p>
+          </div>
+        </a>
+      `);
+      
+      quickActionsGrid.innerHTML = cards.join('');
+    }
+    
+    // Load persona-specific navigation items
+    async function loadPersonaNav() {
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      
+      if (!currentUser) return;
+      
+      const persona = currentUser.persona;
+      const personaNavContainer = document.getElementById('persona-nav-items');
+      const navItems = [];
+      
+      // Sarah: Templates (Phase 6A)
+      if (persona?.features?.templates) {
+        navItems.push(`
+          <a href="#templates" class="account-nav-item" data-section="templates">
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            My Templates
+          </a>
+        `);
+      }
+      
+      // Kevin: Restock Dashboard (links to /pages/dashboard.html)
+      if (persona?.features?.restockDashboard) {
+        navItems.push(`
+          <a href="/pages/dashboard.html" class="account-nav-item">
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            </svg>
+            Restock Dashboard
+          </a>
+        `);
+      }
+      
+      // Marcus/Lisa: Project Builder
+      if (persona?.features?.projectWizard || persona?.features?.packageBuilder) {
+        navItems.push(`
+          <a href="builder.html" class="account-nav-item">
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            Project Builder
+          </a>
+        `);
+      }
+      
+      if (navItems.length > 0) {
+        personaNavContainer.innerHTML = navItems.join('');
+      }
     }
 
-    // Decorate tier badge
+    // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
-      const tierBadge = document.getElementById('tier-badge');
-      if (tierBadge) {
-        await decorateBlock(tierBadge, 'tier-badge');
-      }
-      loadAccountInfo();
+      await loadAccountInfo();
+      await loadQuickActions();
+      await loadPersonaNav();
+      initNavigation();
     });
   </script>
 </body>
