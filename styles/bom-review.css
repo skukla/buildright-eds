@@ -587,13 +587,7 @@
 .order-total {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xsmall);
   margin-bottom: var(--spacing-medium);
-}
-
-.order-total-label {
-  font: var(--type-body-2-default-font);
-  color: var(--color-text-secondary);
 }
 
 .order-total-value {
