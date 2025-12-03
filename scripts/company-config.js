@@ -13,21 +13,30 @@ export const COMPANIES = {
       { 
         id: 'austin', 
         city: 'Austin', 
-        state: 'TX', 
+        state: 'TX',
+        address: '4521 South Congress Avenue',
+        zip: '78745',
+        phone: '(512) 555-0100',
         isPrimary: true, 
         region: 'central' 
       },
       { 
         id: 'san_antonio', 
         city: 'San Antonio', 
-        state: 'TX', 
+        state: 'TX',
+        address: '8900 IH-10 West',
+        zip: '78230',
+        phone: '(210) 555-0200',
         isPrimary: false, 
         region: 'central' 
       },
       { 
         id: 'houston', 
         city: 'Houston', 
-        state: 'TX', 
+        state: 'TX',
+        address: '15200 Northwest Freeway',
+        zip: '77040',
+        phone: '(281) 555-0300',
         isPrimary: false, 
         region: 'central' 
       }
