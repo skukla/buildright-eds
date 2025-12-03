@@ -396,38 +396,29 @@
   flex-shrink: 0;
 }
 
-/* Danger button variant for destructive actions */
-.btn-danger {
+/* Remove button (matches mini-cart pattern) */
+.product-row-remove {
+  background: none;
+  border: none;
+  padding: var(--spacing-xsmall);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--shape-border-radius-2);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.product-row-remove:hover {
+  background-color: var(--color-negative-100);
   color: var(--color-negative-500);
-  border-color: var(--color-negative-500);
 }
 
-.btn-danger:hover {
-  background: var(--color-negative-500);
-  color: white;
-  border-color: var(--color-negative-500);
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-}
-
-.btn-ghost:hover {
-  background: var(--color-surface);
-  border-color: var(--color-text-secondary);
-}
-
-.btn-ghost.btn-danger {
-  color: var(--color-negative-500);
-  border-color: var(--color-border);
-}
-
-.btn-ghost.btn-danger:hover {
-  background: var(--color-negative-500);
-  color: white;
-  border-color: var(--color-negative-500);
+.product-row-remove svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* ============================================
