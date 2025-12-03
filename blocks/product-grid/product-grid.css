@@ -58,7 +58,7 @@
 /* Featured products - single row of 4 cards */
 .products-container.featured-products {
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-medium);
+  gap: var(--spacing-large);
   min-height: 400px; /* Smaller min-height for single row */
   align-items: start; /* Don't stretch cards to full grid height */
 }
