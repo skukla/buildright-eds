@@ -362,26 +362,49 @@
 .product-row-actions {
   display: flex;
   gap: var(--spacing-small);
+  align-items: center;
 }
 
-.btn-text {
-  background: none;
-  border: none;
-  color: var(--color-brand-500);
-  font: var(--type-body-2-default-font);
-  font-weight: 600;
-  cursor: pointer;
-  padding: var(--spacing-xsmall) var(--spacing-small);
-  text-decoration: underline;
-  transition: opacity var(--transition-fast);
+.product-row-actions .btn {
+  white-space: nowrap;
 }
 
-.btn-text:hover {
-  opacity: 0.8;
+.product-row-actions .btn svg {
+  flex-shrink: 0;
 }
 
-.btn-text-danger {
+/* Danger button variant for destructive actions */
+.btn-danger {
   color: var(--color-negative-500);
+  border-color: var(--color-negative-500);
+}
+
+.btn-danger:hover {
+  background: var(--color-negative-500);
+  color: white;
+  border-color: var(--color-negative-500);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-ghost:hover {
+  background: var(--color-surface);
+  border-color: var(--color-text-secondary);
+}
+
+.btn-ghost.btn-danger {
+  color: var(--color-negative-500);
+  border-color: var(--color-border);
+}
+
+.btn-ghost.btn-danger:hover {
+  background: var(--color-negative-500);
+  color: white;
+  border-color: var(--color-negative-500);
 }
 
 /* ============================================
@@ -545,7 +568,7 @@
 
 .bom-sidebar {
   position: sticky;
-  top: var(--spacing-xlarge);
+  top: 210px; /* Header height (143px) + spacing (67px) - matches configurator */
 }
 
 .order-actions-card {
@@ -736,6 +759,11 @@
   .product-row-qty,
   .product-row-actions {
     grid-column: 2 / -1;
+  }
+  
+  .product-row-actions {
+    justify-content: flex-end;
+    margin-top: var(--spacing-xsmall);
   }
 }
 
