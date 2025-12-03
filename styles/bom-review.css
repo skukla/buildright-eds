@@ -396,31 +396,6 @@
   flex-shrink: 0;
 }
 
-/* Remove button (matches mini-cart pattern) */
-.product-row-remove {
-  background: none;
-  border: none;
-  padding: var(--spacing-xsmall);
-  cursor: pointer;
-  color: var(--color-text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--shape-border-radius-2);
-  transition: all var(--transition-fast);
-  flex-shrink: 0;
-}
-
-.product-row-remove:hover {
-  background-color: var(--color-negative-100);
-  color: var(--color-negative-500);
-}
-
-.product-row-remove svg {
-  width: 16px;
-  height: 16px;
-}
-
 /* ============================================
    PRODUCT SWAP PANEL (Visual Selection)
    ============================================ */
