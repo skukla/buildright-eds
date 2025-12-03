@@ -326,7 +326,19 @@
   overflow: hidden;
   background: var(--color-surface);
   flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* Placeholder styles */
+.product-row-image-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+/* Pattern from .image-placeholder-pattern */
 
 .product-row-image img {
   width: 100%;
@@ -516,7 +528,19 @@
   border-radius: var(--shape-border-radius-2);
   margin-bottom: var(--spacing-small);
   overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* Placeholder styles */
+.swap-tile-image-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+/* Pattern from .image-placeholder-pattern */
 
 .swap-tile-image img {
   width: 100%;

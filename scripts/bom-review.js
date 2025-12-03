@@ -295,7 +295,7 @@ class BOMReview {
     return `
       <div class="product-row" data-sku="${item.sku}">
         <div class="product-row-image">
-          <img src="${item.image}" alt="${item.name}" onerror="this.style.display='none'">
+          <img src="${item.image}" alt="${item.name}" onerror="this.parentElement.classList.add('product-row-image-placeholder', 'image-placeholder-pattern'); this.style.display='none';">
         </div>
         <div class="product-row-info">
           <p class="product-row-name">${item.name}</p>
@@ -348,7 +348,7 @@ class BOMReview {
         ${alternatives.map((alt, idx) => `
           <div class="swap-product-tile" data-sku="${alt.sku}" data-selected="${idx === 0}">
             <div class="swap-tile-image">
-              <img src="${alt.image}" alt="${alt.name}" onerror="this.style.display='none'">
+              <img src="${alt.image}" alt="${alt.name}" onerror="this.parentElement.classList.add('swap-tile-image-placeholder', 'image-placeholder-pattern'); this.style.display='none';">
             </div>
             <p class="swap-tile-name">${alt.name}</p>
             <p class="swap-tile-brand">${alt.brand}</p>
