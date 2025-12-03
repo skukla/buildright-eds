@@ -479,14 +479,6 @@ class BuildConfigurator {
     }
     
     document.getElementById('summary-total').textContent = `$${total.toLocaleString()}`;
-    
-    // Update phases text
-    const phasesText = document.getElementById('summary-phases-text');
-    if (this.selectedPhases.size > 0) {
-      phasesText.textContent = `Materials for ${this.selectedPhases.size} of 3 phases selected`;
-    } else {
-      phasesText.textContent = 'Select phases to order';
-    }
   }
   
   updateGenerateButton() {
