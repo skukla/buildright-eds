@@ -329,10 +329,30 @@ The following button classes have been **removed** from the design system:
 |---------|---------------|-------------------|
 | **Hero Section** | Orange - "View Dashboard" | Slate - "Browse Catalog" |
 | **CTA Section** | Orange - "View My Templates" | Slate - "Browse Catalog" |
-| **Product Grid** | Blue - "Add to Cart" (repeated) | None |
+| **Product Grid** | Blue - "Add to Cart" or "View Details" (repeated) | None |
+| **Product Detail** | Blue - "Add to Cart" (consistency with catalog) | None |
 | **Cart Summary** | Orange - "Proceed to Checkout" | None |
 | **Configurator** | Orange - "Generate BOM" | Slate - "Cancel" |
 | **Signup Form** | Orange - "Create Account" (final) | Blue - "Continue", Slate - "Back" |
+
+### Product Catalog Button Logic
+
+**Product buttons vary based on Commerce product type:**
+
+- **Simple & Virtual Products** → `"Add to Cart"` (btn-primary)
+  - Can be added directly to cart
+  - Catalog and PDP both use blue buttons for consistency
+  
+- **Configurable, Bundle, Grouped Products** → `"View Details"` (btn-primary)
+  - Require configuration or selection
+  - Takes user to PDP for more information
+  - Sets proper expectation (not direct add)
+
+**Why PDP uses Blue, not Orange:**
+- Maintains visual consistency from catalog → PDP
+- User clicks blue button in catalog, sees blue button on PDP
+- Orange reserved for true conversion points (Checkout, Generate BOM)
+- Smoother, more coherent product browsing experience
 
 ---
 
