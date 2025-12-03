@@ -140,6 +140,32 @@
   background: var(--color-surface-hover);
 }
 
+.accordion-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 91, 167, 0.1);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all var(--transition-base);
+}
+
+.accordion-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+  color: var(--color-brand-500);
+}
+
+.bom-accordion[data-expanded="true"] .accordion-icon-wrapper {
+  background: var(--color-brand-500);
+}
+
+.bom-accordion[data-expanded="true"] .accordion-icon-wrapper svg {
+  color: white;
+}
+
 .accordion-info {
   flex: 1;
   min-width: 0;
