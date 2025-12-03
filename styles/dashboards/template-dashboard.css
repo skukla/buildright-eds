@@ -65,6 +65,9 @@
   padding-top: 75%; /* 4:3 aspect ratio - balanced proportions */
   background: var(--color-surface);
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .template-card-thumb img {
@@ -75,6 +78,14 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Placeholder styles */
+.template-card-thumb-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+/* Pattern from .image-placeholder-pattern */
 
 /* Active Builds Badge */
 .active-builds-badge {

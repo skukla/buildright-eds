@@ -149,6 +149,10 @@
   border-radius: var(--shape-border-radius-2);
   overflow: hidden;
   background: var(--color-border);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .template-summary-image img {
@@ -156,6 +160,14 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Placeholder styles */
+.template-summary-image-placeholder {
+  background: var(--color-border);
+  cursor: default;
+}
+
+/* Pattern from .image-placeholder-pattern */
 
 .template-summary-info {
   flex: 1;
