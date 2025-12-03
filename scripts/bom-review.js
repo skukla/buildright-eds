@@ -245,9 +245,6 @@ class BOMReview {
       return `
         <div class="bom-accordion" data-phase="${phaseId}" data-expanded="true">
           <div class="bom-accordion-header">
-            <div class="accordion-icon-wrapper">
-              ${phaseIcon}
-            </div>
             <div class="accordion-info">
               <h3 class="accordion-title">${phaseInfo.name}</h3>
               <p class="accordion-subtitle">${phaseItems.length} items • ${phaseInfo.description}</p>
