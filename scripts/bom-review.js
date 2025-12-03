@@ -207,7 +207,7 @@ class BOMReview {
       variants.forEach(vId => {
         const variant = this.templateData?.variants?.find(v => v.id === vId);
         if (variant) {
-          badgesHtml += `<span class="package-badge" style="background: var(--color-accent-500);">${variant.name}</span>`;
+          badgesHtml += `<span class="package-badge">${variant.name}</span>`;
         }
       });
     }
