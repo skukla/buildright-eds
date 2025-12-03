@@ -2095,7 +2095,7 @@
 .cart-notification {
   /* Centered at top of page, appears over header */
   position: fixed;
-  top: 20px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
