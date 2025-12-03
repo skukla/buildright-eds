@@ -298,6 +298,10 @@
   line-height: 1.4;
   padding: 0.625rem var(--spacing-medium);
   letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
 }
 
 /* Featured products use same styling */
@@ -310,6 +314,10 @@
   background-color: var(--color-brand-500);
   color: white;
   border: 1px solid var(--color-brand-500);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
 }
 
 .featured-products .product-card-actions .btn:hover {
