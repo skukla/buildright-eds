@@ -5,10 +5,10 @@
 ### BOM Review Page
 
 **Primary Actions (Sidebar):**
-- ✅ **Add All to Cart** - Has shopping cart icon
-  - Justification: Primary conversion action, icon reinforces cart metaphor
-- ✅ **Edit Configuration** - Has pencil/edit icon
-  - Justification: Secondary action, icon clarifies "edit" vs other actions
+- ❌ **Add All to Cart** - NO icon (removed for consistency)
+  - Justification: Matches Configure Build sidebar pattern, text is clear
+- ❌ **Edit Configuration** - NO icon (removed for consistency)
+  - Justification: Matches Configure Build sidebar pattern, text is clear
 
 **Product Row Actions:**
 - ✅ **Swap** (btn-primary btn-xs) - Has refresh/swap icon
@@ -116,18 +116,25 @@ In B2B portals, button icons should serve a **functional purpose**, not just aes
 ## Specific Recommendations
 
 ### Keep Icons (Justified):
-1. ✅ **Add All to Cart** (BOM sidebar) - cart icon
-2. ✅ **Edit Configuration** (BOM sidebar) - pencil icon
-3. ✅ **Swap** (product rows) - refresh icon
-4. ✅ **Remove** (product rows) - trash icon
-5. ✅ **Account nav items** - home, profile, orders, locations icons
-6. ✅ **Quick Action cards** - inline icons for card types
+1. ✅ **Swap** (product rows) - refresh icon
+2. ✅ **Remove** (product rows) - trash icon
+3. ✅ **Account nav items** - home, profile, orders, locations icons
+4. ✅ **Quick Action cards** - inline icons for card types
 
-### Remove Icons (Not Needed):
-1. ❌ **Cancel** buttons - text is clear
-2. ❌ **Apply Swap** - text is clear
-3. ❌ **Generate BOM** - already removed ✓
-4. ❌ **Large CTAs** (Start New Build, Upload Template) - text is clear
+### Remove Icons (Workflow Consistency):
+1. ❌ **Add All to Cart** (BOM sidebar) - REMOVED ✓
+   - Reason: Matches Configure Build sidebar (same workflow)
+2. ❌ **Edit Configuration** (BOM sidebar) - REMOVED ✓
+   - Reason: Matches Configure Build sidebar (same workflow)
+3. ❌ **Cancel** buttons - text is clear
+4. ❌ **Apply Swap** - text is clear
+5. ❌ **Generate BOM** - already removed ✓
+6. ❌ **Large CTAs** (Start New Build, Upload Template) - text is clear
+
+### Key Insight: Workflow Consistency
+**Configure Build → BOM Review** are consecutive steps in the same flow.
+Both sidebars now use the same pattern: **large, text-only buttons**.
+This creates a consistent, professional experience throughout the BOM workflow.
 
 ### Consider Adding (For Consistency):
 None identified - current usage is appropriate
