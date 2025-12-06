@@ -189,21 +189,22 @@ class BuildConfigurator {
   
   getVariantImageUrl(name) {
     // Map variant names to appropriate images with optional background position and zoom class
+    // Updated: Covered Patio now uses screened porch image (IdWUP1SZ9uw) by Point3D Commercial Imaging Ltd.
     const imageMap = {
       'Bonus Room': { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' },
       'Extended Garage': { 
         url: 'https://images.unsplash.com/photo-1581044294446-9efb5910a3ba?w=900&h=600&fit=crop&q=80',
         zoom: 'out-more'
       },
-      'Covered Patio': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
+      'Covered Patio': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
       'Home Office': { url: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop' },
       'Courtyard Entry': { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop' },
       'Bonus Loft': { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' },
-      'Rooftop Deck': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
+      'Rooftop Deck': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
       'Casita Addition': { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop' },
       'Guest Casita': { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop' },
-      'Outdoor Living': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
-      'Resort Package': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
+      'Outdoor Living': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
+      'Resort Package': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
       'Media Room': { url: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop' }
     };
     
@@ -232,41 +233,76 @@ class BuildConfigurator {
   renderPackageTile(pkg) {
     const { id, name, description, tier, addedCost, subdivisionSpecific } = pkg;
     
-    // Use appropriate image based on tier
-    const imageUrl = this.getPackageImageUrl(tier);
+    // Use icons instead of photos for Material Packages (mixed media approach)
+    const icon = this.getPackageIcon(tier);
+    const tierClass = this.getPackageTierClass(tier);
     
     // Check if this is the default (Builder's Choice)
     const isDefault = id === 'builders-choice';
     
     return `
-      <div class="selection-tile selection-tile-photo photo-tile photo-tile--selection" 
+      <div class="selection-tile selection-tile-icon icon-tile icon-tile--package ${tierClass}" 
            data-type="package" 
            data-id="${id}"
            data-selected="${isDefault}"
            data-cost="${addedCost}"
-           style="background-image: url('${imageUrl}')"
            role="radio"
            aria-checked="${isDefault}"
            tabindex="0"
            aria-label="${name}, ${subdivisionSpecific ? 'for ' + subdivisionSpecific + ', ' : ''}${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}">
-        <div class="tile-overlay"></div>
-        <div class="tile-content photo-tile__content">
-          <h4 class="tile-title photo-tile__title">${name}</h4>
-          <p class="tile-description photo-tile__description">${description}</p>
-          <p class="tile-price photo-tile__price">${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}</p>
+        <div class="icon-tile__icon">${icon}</div>
+        <div class="icon-tile__content">
+          <h4 class="icon-tile__title">${name}</h4>
+          <p class="icon-tile__description">${description}</p>
+          <p class="icon-tile__price">${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}</p>
         </div>
       </div>
     `;
   }
   
-  getPackageImageUrl(tier) {
-    const imageMap = {
-      'builder_grade': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop',
-      'premium': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop',
-      'luxury': 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop'
+  getPackageIcon(tier) {
+    // Lucide icons for each material package tier
+    const icons = {
+      // Builder's Choice - hammer icon (standard construction)
+      'builder_grade': `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/>
+        <path d="M17.64 15 22 10.64"/>
+        <path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/>
+      </svg>`,
+      // Desert Ridge Premium - sparkles icon (upgraded quality)
+      'premium': `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+        <path d="M5 3v4"/>
+        <path d="M19 17v4"/>
+        <path d="M3 5h4"/>
+        <path d="M17 19h4"/>
+      </svg>`,
+      // Sunset Valley Executive - building icon (premium/luxury)
+      'luxury': `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+        <path d="M9 22v-4h6v4"/>
+        <path d="M8 6h.01"/>
+        <path d="M16 6h.01"/>
+        <path d="M12 6h.01"/>
+        <path d="M12 10h.01"/>
+        <path d="M12 14h.01"/>
+        <path d="M16 10h.01"/>
+        <path d="M16 14h.01"/>
+        <path d="M8 10h.01"/>
+        <path d="M8 14h.01"/>
+      </svg>`
     };
     
-    return imageMap[tier] || imageMap['builder_grade'];
+    return icons[tier] || icons['builder_grade'];
+  }
+  
+  getPackageTierClass(tier) {
+    const classes = {
+      'builder_grade': 'icon-tile--builder',
+      'premium': 'icon-tile--premium',
+      'luxury': 'icon-tile--luxury'
+    };
+    return classes[tier] || classes['builder_grade'];
   }
   
   getPhaseImageUrl(name) {

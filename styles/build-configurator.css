@@ -406,6 +406,146 @@ body.white-variant #build-info-section .section-title {
 }
 
 /* ============================================
+   ICON TILES FOR MATERIAL PACKAGES (Mixed Media)
+   Uses icons instead of photos for tier differentiation
+   ============================================ */
+
+.icon-tile--package {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-large);
+  min-height: 200px;
+  background: var(--color-background);
+  transition: all 0.2s ease;
+}
+
+.icon-tile__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: var(--spacing-medium);
+  transition: all 0.2s ease;
+}
+
+.icon-tile__icon svg {
+  transition: all 0.2s ease;
+}
+
+.icon-tile__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+}
+
+.icon-tile__title {
+  font: var(--type-body-1-strong-font);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.icon-tile__description {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.icon-tile__price {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: var(--spacing-small) 0 0 0;
+}
+
+/* Tier-specific colors */
+
+/* Builder's Choice - Gray/Neutral */
+.icon-tile--builder .icon-tile__icon {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+}
+
+.icon-tile--builder .icon-tile__icon svg {
+  color: var(--color-text-secondary);
+}
+
+.icon-tile--builder .icon-tile__price {
+  color: var(--color-text-secondary);
+}
+
+.icon-tile--builder:hover .icon-tile__icon {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.icon-tile--builder[data-selected="true"] .icon-tile__icon {
+  background: var(--color-brand-500);
+  border-color: var(--color-brand-500);
+}
+
+.icon-tile--builder[data-selected="true"] .icon-tile__icon svg {
+  color: white;
+}
+
+/* Desert Ridge Premium - Blue/Brand */
+.icon-tile--premium .icon-tile__icon {
+  background: rgba(15, 91, 167, 0.1);
+  border: 2px solid var(--color-brand-400);
+}
+
+.icon-tile--premium .icon-tile__icon svg {
+  color: var(--color-brand-500);
+}
+
+.icon-tile--premium .icon-tile__price {
+  color: var(--color-brand-600);
+}
+
+.icon-tile--premium:hover .icon-tile__icon {
+  background: rgba(15, 91, 167, 0.2);
+}
+
+.icon-tile--premium[data-selected="true"] .icon-tile__icon {
+  background: var(--color-brand-500);
+  border-color: var(--color-brand-500);
+}
+
+.icon-tile--premium[data-selected="true"] .icon-tile__icon svg {
+  color: white;
+}
+
+/* Sunset Valley Executive - Gold/Premium */
+.icon-tile--luxury .icon-tile__icon {
+  background: rgba(180, 130, 50, 0.1);
+  border: 2px solid #B48232;
+}
+
+.icon-tile--luxury .icon-tile__icon svg {
+  color: #B48232;
+}
+
+.icon-tile--luxury .icon-tile__price {
+  color: #8B6914;
+}
+
+.icon-tile--luxury:hover .icon-tile__icon {
+  background: rgba(180, 130, 50, 0.2);
+}
+
+.icon-tile--luxury[data-selected="true"] .icon-tile__icon {
+  background: #B48232;
+  border-color: #B48232;
+}
+
+.icon-tile--luxury[data-selected="true"] .icon-tile__icon svg {
+  color: white;
+}
+
+/* ============================================
    ORDER SUMMARY SIDEBAR
    ============================================ */
 
