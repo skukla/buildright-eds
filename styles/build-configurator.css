@@ -354,6 +354,26 @@ body.white-variant #build-info-section .section-title {
   margin: 0;
 }
 
+/* Material Package tiles - smart crop positioning for each tier */
+.selection-tile-photo[data-type="package"] {
+  background-size: cover;
+}
+
+/* Builder's Choice - show cabinets and counters (center-bottom focus) */
+.selection-tile-photo[data-id="builders-choice"] {
+  background-position: center 40%;
+}
+
+/* Premium Select - show island, pendants, stools */
+.selection-tile-photo[data-id="premium-select"] {
+  background-position: center 60%;
+}
+
+/* Designer Series - show waterfall island and living space */
+.selection-tile-photo[data-id="designer-series"] {
+  background-position: center 55%;
+}
+
 /* Icon Tile Variant (for phases) */
 .selection-tile-icon {
   display: flex;
@@ -482,9 +502,10 @@ body.white-variant #build-info-section .section-title {
   background: rgba(0, 0, 0, 0.08);
 }
 
+/* Builder's Choice selected - stays in gray family */
 .icon-tile--builder[data-selected="true"] .icon-tile__icon {
-  background: var(--color-brand-500);
-  border-color: var(--color-brand-500);
+  background: #4a5568;
+  border-color: #4a5568;
 }
 
 .icon-tile--builder[data-selected="true"] .icon-tile__icon svg {

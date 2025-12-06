@@ -6,6 +6,7 @@
       "description": "Standard quality materials for value-conscious builders",
       "tier": "builder_grade",
       "addedCost": 0,
+      "image": "https://images.unsplash.com/photo-1723257129172-6315cde654da?w=600&h=500&fit=crop&crop=center&q=80",
       "skuOverrides": {
         "foundation_framing": {},
         "envelope": {},
@@ -15,9 +16,10 @@
     {
       "id": "premium-select",
       "name": "Premium Select",
-      "description": "Upgraded finishes with Pella windows and architectural shingles",
+      "description": "Enhanced materials with upgraded fixtures",
       "tier": "premium",
       "addedCost": 18000,
+      "image": "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&h=500&fit=crop&crop=center&q=80",
       "skuOverrides": {
         "foundation_framing": {},
         "envelope": {
@@ -35,11 +37,12 @@
       }
     },
     {
-      "id": "executive-collection",
-      "name": "Executive Collection",
+      "id": "designer-series",
+      "name": "Designer Series",
       "description": "Luxury materials with designer finishes and premium brands",
       "tier": "luxury",
       "addedCost": 42000,
+      "image": "https://images.unsplash.com/photo-1628745277862-bc0b2d68c50c?w=600&h=500&fit=crop&crop=center&q=80",
       "skuOverrides": {
         "foundation_framing": {
           "drywall": "DRYWALL-MOISTURE"
@@ -131,7 +134,7 @@
       "compatiblePackages": [
         "builders-choice",
         "premium-select",
-        "executive-collection"
+        "designer-series"
       ]
     },
     {
@@ -196,7 +199,7 @@
       "compatiblePackages": [
         "builders-choice",
         "premium-select",
-        "executive-collection"
+        "designer-series"
       ]
     },
     {
@@ -261,7 +264,7 @@
       "compatiblePackages": [
         "builders-choice",
         "premium-select",
-        "executive-collection"
+        "designer-series"
       ]
     },
     {
@@ -333,7 +336,7 @@
       "compatiblePackages": [
         "builders-choice",
         "premium-select",
-        "executive-collection"
+        "designer-series"
       ]
     },
     {
@@ -398,7 +401,7 @@
       "compatiblePackages": [
         "builders-choice",
         "premium-select",
-        "executive-collection"
+        "designer-series"
       ]
     },
     {
@@ -470,7 +473,7 @@
       "compatiblePackages": [
         "builders-choice",
         "premium-select",
-        "executive-collection"
+        "designer-series"
       ]
     }
   ]
