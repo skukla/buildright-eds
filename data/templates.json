@@ -6,7 +6,6 @@
       "description": "Standard quality materials for value-conscious builders",
       "tier": "builder_grade",
       "addedCost": 0,
-      "subdivisionSpecific": false,
       "skuOverrides": {
         "foundation_framing": {},
         "envelope": {},
@@ -14,12 +13,11 @@
       }
     },
     {
-      "id": "desert-ridge-premium",
-      "name": "Desert Ridge Premium",
-      "description": "Upgraded finishes and materials for Desert Ridge subdivision",
+      "id": "premium-select",
+      "name": "Premium Select",
+      "description": "Upgraded finishes with Pella windows and architectural shingles",
       "tier": "premium",
       "addedCost": 18000,
-      "subdivisionSpecific": "Desert Ridge",
       "skuOverrides": {
         "foundation_framing": {},
         "envelope": {
@@ -37,12 +35,11 @@
       }
     },
     {
-      "id": "sunset-valley-executive",
-      "name": "Sunset Valley Executive",
-      "description": "Luxury materials and designer finishes for Sunset Valley subdivision",
+      "id": "executive-collection",
+      "name": "Executive Collection",
+      "description": "Luxury materials with designer finishes and premium brands",
       "tier": "luxury",
       "addedCost": 42000,
-      "subdivisionSpecific": "Sunset Valley",
       "skuOverrides": {
         "foundation_framing": {
           "drywall": "DRYWALL-MOISTURE"
@@ -133,8 +130,8 @@
       },
       "compatiblePackages": [
         "builders-choice",
-        "desert-ridge-premium",
-        "sunset-valley-executive"
+        "premium-select",
+        "executive-collection"
       ]
     },
     {
@@ -198,8 +195,8 @@
       },
       "compatiblePackages": [
         "builders-choice",
-        "desert-ridge-premium",
-        "sunset-valley-executive"
+        "premium-select",
+        "executive-collection"
       ]
     },
     {
@@ -263,8 +260,8 @@
       },
       "compatiblePackages": [
         "builders-choice",
-        "desert-ridge-premium",
-        "sunset-valley-executive"
+        "premium-select",
+        "executive-collection"
       ]
     },
     {
@@ -335,8 +332,8 @@
       },
       "compatiblePackages": [
         "builders-choice",
-        "desert-ridge-premium",
-        "sunset-valley-executive"
+        "premium-select",
+        "executive-collection"
       ]
     },
     {
@@ -400,8 +397,8 @@
       },
       "compatiblePackages": [
         "builders-choice",
-        "desert-ridge-premium",
-        "sunset-valley-executive"
+        "premium-select",
+        "executive-collection"
       ]
     },
     {
@@ -472,8 +469,8 @@
       },
       "compatiblePackages": [
         "builders-choice",
-        "desert-ridge-premium",
-        "sunset-valley-executive"
+        "premium-select",
+        "executive-collection"
       ]
     }
   ]

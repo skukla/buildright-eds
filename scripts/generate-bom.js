@@ -7,7 +7,7 @@
  * 
  * Usage:
  *   node scripts/generate-bom.js <templateId> <packageId>
- *   node scripts/generate-bom.js sedona desert-ridge-premium
+ *   node scripts/generate-bom.js sedona premium-select
  *   node scripts/generate-bom.js --all  # Generate for all templates
  * 
  * @module scripts/generate-bom
@@ -137,7 +137,7 @@ async function main() {
     console.log('');
     console.log('Usage:');
     console.log('  node scripts/generate-bom.js <templateId> <packageId>');
-    console.log('  node scripts/generate-bom.js sedona desert-ridge-premium');
+    console.log('  node scripts/generate-bom.js sedona premium-select');
     console.log('  node scripts/generate-bom.js --all');
     console.log('');
     console.log('Available Templates:');
@@ -161,7 +161,7 @@ async function main() {
     
     if (!packageId) {
       console.error('❌ Error: Please specify both templateId and packageId');
-      console.log('Example: node scripts/generate-bom.js sedona desert-ridge-premium');
+      console.log('Example: node scripts/generate-bom.js sedona premium-select');
       process.exit(1);
     }
     
