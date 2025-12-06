@@ -12,16 +12,19 @@ This is **Part 4 of 6** in the Phase 6-Foundation planning series.
 **🔗 Related Architecture**:
 - ⭐ [PRODUCT-TAXONOMY-ANALYSIS.md](./PRODUCT-TAXONOMY-ANALYSIS.md#sarah-martinez---production-home-builder) - Sarah's mental model & shopping behavior
 - ⭐ [ACO-CATALOG-ARCHITECTURE.md](./ACO-CATALOG-ARCHITECTURE.md#view-1-production-builder-view-sarah) - Sarah's catalog view configuration
+- ⭐ [INDUSTRY-REALISM-ANALYSIS.md](../A-sarah-dashboard/INDUSTRY-REALISM-ANALYSIS.md) - Research validation & scale decision
 
 ---
 
 ## Overview
 
-This document details Sarah Martinez's (Production Builder) complete implementation using the Project entity.
+This document details Sarah Martinez's (Regional Production Builder) complete implementation using the Project entity.
 
 **What's Different**: Sarah orders materials for multiple house builds, tracks deliveries, and reuses configurations across identical units.
 
 **Key Focus**: Materials ordering and delivery tracking (BuildRight's actual scope) - NOT construction management.
+
+**Scale Context**: Sarah works for a regional builder (20-30 homes/year) without ERP integration. She uses the BuildRight B2B portal directly for ordering—making this flow ideal for demonstrating Adobe Commerce's full B2B capabilities including cart, checkout, and order management.
 
 ---
 

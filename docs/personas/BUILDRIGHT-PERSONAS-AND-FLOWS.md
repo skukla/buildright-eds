@@ -18,18 +18,22 @@
 
 ---
 
-## Persona 1: Production Home Builder
+## Persona 1: Regional Production Builder
 
 ### **Profile**
 - **Name:** Sarah Martinez
 - **Title:** Purchasing Manager
-- **Company:** Sunset Valley Homes (Production Builder)
+- **Company:** Sunset Valley Homes (Regional Production Builder)
 - **Location:** Phoenix, AZ
-- **Scale:** Builds 120 homes/year across 3 active subdivisions
+- **Scale:** Builds 20-30 homes/year in the Desert Ridge subdivision
 - **Tier:** Commercial-Tier2 (volume pricing)
+- **Note:** Regional builder without ERP integration; uses BuildRight portal directly for ordering
+
+### **Why This Scale?**
+Regional builders at 20-30 homes/year are large enough to benefit from template-based ordering and negotiated pricing, but small enough that they don't have ERP systems that would automate supplier integration. They use the BuildRight B2B portal directly—making this persona ideal for demonstrating Adobe Commerce's full B2B capabilities.
 
 ### **Use Case**
-Sarah is ordering framing materials for the next 8 units of "The Sedona" floor plan in their Desert Ridge subdivision. She's already ordered materials for 24 units of this plan, so she has a saved template. She needs to adjust quantities slightly because 3 of the 8 units will have an optional bonus room.
+Sarah is ordering framing materials for the next 3 units of "The Sedona" floor plan in their Desert Ridge subdivision. She's already ordered materials for 8 units of this plan this year, so she has a saved template. She needs to adjust quantities slightly because 1 of the 3 units will have an optional bonus room.
 
 ### **User Flow: Template-Based Repeat Ordering**
 
@@ -42,17 +46,17 @@ Sarah is ordering framing materials for the next 8 units of "The Sedona" floor p
    └─ System loads saved BOM (45 line items, quantities for 1 unit)
 
 3. ADJUST FOR QUANTITY
-   └─ Enter: "8 units" in quantity multiplier
-   └─ System calculates: 8x all quantities
-   └─ Total updates: $67,200
+   └─ Enter: "3 units" in quantity multiplier
+   └─ System calculates: 3x all quantities
+   └─ Total updates: $25,200
 
 4. CUSTOMIZE FOR VARIANTS
-   └─ See option: "3 units include bonus room (+800 sq ft)"
+   └─ See option: "1 unit includes bonus room (+200 sq ft)"
    └─ Check box → System adds:
-      • 2x4 studs: +240 units
-      • OSB sheathing: +20 sheets
+      • 2x4 studs: +80 units
+      • OSB sheathing: +7 sheets
       • Additional fasteners
-   └─ Revised total: $73,800
+   └─ Revised total: $27,450
 
 5. REVIEW BY CONSTRUCTION PHASE
    └─ BOM displayed in sections:
@@ -63,10 +67,10 @@ Sarah is ordering framing materials for the next 8 units of "The Sedona" floor p
 
 6. SUBMIT ORDER
    └─ "Add to Cart" → Cart shows:
-      • Order for: Desert Ridge - The Sedona x8 units
+      • Order for: Desert Ridge - The Sedona x3 units
       • Phased delivery: 3 shipments
       • Tier2 pricing applied
-      • Total: $73,800
+      • Total: $27,450
    └─ Checkout
 
 7. SAVE UPDATES TO TEMPLATE
@@ -74,7 +78,12 @@ Sarah is ordering framing materials for the next 8 units of "The Sedona" floor p
    └─ Yes → Template now has "Standard" and "+Bonus Room" options
 ```
 
-**CCDM Value Demonstrated:** Template reuse, bulk multiplier, variant management, tier pricing
+**Adobe Commerce Value Demonstrated:** 
+- B2B catalog personalization (tier-specific pricing)
+- App Builder integration (BOM microservice)
+- Full cart/checkout flow
+- Requisition list functionality (saved templates)
+- Customer group pricing (Commercial-Tier2)
 
 ---
 
@@ -523,15 +532,15 @@ It's Thursday morning, and Kevin is doing his weekly restock order. His POS syst
 
 ---
 
-## Summary: 5 Personas, 5 Flows, 5 CCDM Values
+## Summary: 5 Personas, 5 Flows, Adobe Commerce Value
 
-| Persona | Flow Type | Key CCDM Capability |
-|---------|-----------|---------------------|
-| **Sarah** (Production) | Template & Repeat | Saved configurations, bulk multiplier |
-| **Marcus** (GC) | Semi-Custom Builder | Wizard generation, phase filtering, browsing |
-| **Lisa** (Remodeler) | Package Selection | Tier comparison, within-tier customization |
-| **David** (Homeowner) | Progressive Builder | Triggered policies, step-by-step revelation |
-| **Kevin** (Store Mgr) | Restock Mode | Non-project, velocity-based, inventory focus |
+| Persona | Flow Type | Key Adobe Commerce Capability |
+|---------|-----------|-------------------------------|
+| **Sarah** (Regional Builder) | Template & Repeat | B2B pricing, App Builder BOM service, full checkout |
+| **Marcus** (GC) | Semi-Custom Builder | Wizard generation, phase filtering, catalog browsing |
+| **Lisa** (Remodeler) | Package Selection | Tier comparison, quote generation, client sharing |
+| **David** (Homeowner) | Progressive Builder | Guided configuration, step-by-step revelation |
+| **Kevin** (Store Mgr) | Restock Mode | Inventory management, velocity-based suggestions |
 
-**Each flow is distinct. No overlap. All demonstrate unique CCDM value.**
+**Each flow is distinct. No overlap. All demonstrate unique Adobe Commerce + App Builder value.**
 
