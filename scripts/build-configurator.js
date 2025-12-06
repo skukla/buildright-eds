@@ -1,7 +1,7 @@
 /**
  * Build Configurator
  * Handles configuration of new builds from floor plan templates
- * Phase 6A - Sarah Martinez (Production Builder) workflow
+ * Phase 6A - Sarah Martinez (Regional Production Builder) workflow
  */
 
 class BuildConfigurator {
