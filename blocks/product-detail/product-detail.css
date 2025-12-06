@@ -54,10 +54,10 @@
   padding-top: 2.5rem; /* Space below separator */
 }
 
-/* Product Name - Elegant */
+/* Product Name - Standard H1 (Standardized to design system) */
 .product-name-clean {
   font-size: 2rem;
-  font-weight: 400;
+  font-weight: 700; /* Standardized: was 400, now matches --type-display-1-font */
   color: var(--color-text);
   margin: 0;
   line-height: 1.3;

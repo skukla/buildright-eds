@@ -8,126 +8,91 @@
   <title>Login - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
-  <style>
-    .login-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: stretch; /* Make both columns equal height */
-    }
-    
-    .login-grid > div {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .login-grid .card {
-      flex: 1; /* Card stretches to fill container */
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .login-grid .card-body {
-      flex: 1; /* Card body expands to fill available space */
-      display: flex;
-      flex-direction: column;
-    }
-    
-    @media (max-width: 768px) {
-      .login-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="../styles/login.css">
 </head>
-<body>
+<body class="page-login">
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
   <!-- Main Content -->
   <main>
-    <section class="section">
-      <div class="container" style="max-width: 1200px;">
+    <section class="section section-compact">
+      <div class="login-container">
         
-        <div style="text-align: center; margin-bottom: 3rem;">
+        <div class="login-header">
           <h1>Login</h1>
-          <p style="color: var(--color-text-light);">Access your personalized catalog and pricing</p>
+          <p>Access your personalized catalog and pricing</p>
         </div>
 
-        <div class="login-grid">
-        
-        <!-- Traditional Login Form -->
-        <div>
-        <div class="card">
-          <div class="card-header" style="text-align: center; border-bottom: 1px solid var(--color-border);">
-            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Email Login</h2>
-          </div>
-          <div class="card-body">
-            <form id="login-form">
-              <div class="form-group">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" id="email" class="form-input" required placeholder="your.email@company.com">
-              </div>
-
-              <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" class="form-input" required placeholder="Enter your password">
-              </div>
-
-              <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-                <input type="checkbox" id="remember" style="width: auto;">
-                <label for="remember" style="margin: 0; font-weight: normal;">Remember me</label>
-              </div>
-
-              <div class="form-group">
-                <button type="submit" class="btn btn-cta btn-lg" style="width: 100%;">Login</button>
-              </div>
-            </form>
-          </div>
-          <div class="card-footer" style="text-align: center;">
-            <p style="color: var(--color-text-light); margin: 0;">
-              Don't have an account? <a href="/pages/signup.html">Create an account</a>
-            </p>
-          </div>
-        </div>
-        </div>
-
-        <!-- Quick Persona Login (Demo) -->
-        <div>
-          <div class="card">
-            <div class="card-header" style="text-align: center; border-bottom: 1px solid var(--color-border);">
-              <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Quick Login (Demo)</h2>
-            </div>
-            <div class="card-body">
-              <div class="form-group">
-                <label for="persona-select" class="form-label" style="font-weight: 600;">Choose a Persona</label>
-                <select id="persona-select" class="form-input" style="cursor: pointer; font-size: 1rem;">
-                  <option value="">-- Select a persona --</option>
-                </select>
-              </div>
+        <!-- Single Combined Login Card -->
+        <div class="login-card-single">
+          <div class="login-card">
+            <div class="login-card-body">
               
-              <div id="persona-info" style="display: none; padding: 1rem; background: var(--color-background-light, #f9fafb); border-radius: 6px; margin-bottom: 1.25rem;">
-                <!-- Persona details will be shown here -->
-              </div>
-              
-              <!-- Spacer to match left form fields when persona info is hidden -->
-              <div id="persona-spacer" style="min-height: 158px;"></div>
-              
-              <div class="form-group">
-                <button id="quick-login-btn" class="btn btn-cta btn-lg" style="width: 100%;" disabled>
-                  Login as Selected Persona
+              <!-- Login Method Tabs -->
+              <div class="login-tabs">
+                <button type="button" class="login-tab active" data-tab="email">
+                  Email Login
+                </button>
+                <button type="button" class="login-tab" data-tab="persona">
+                  Quick Login (Demo)
                 </button>
               </div>
+              
+              <!-- Email Login Form -->
+              <div id="email-login" class="login-tab-content active">
+                <form id="login-form">
+                  <div class="login-form-group">
+                    <label for="email" class="login-form-label">Email Address</label>
+                    <input type="email" id="email" class="login-form-input" required placeholder="your.email@company.com">
+                  </div>
+
+                  <div class="login-form-group">
+                    <label for="password" class="login-form-label">Password</label>
+                    <input type="password" id="password" class="login-form-input" required placeholder="Enter your password">
+                  </div>
+
+                  <div class="login-form-group">
+                    <div class="login-checkbox-group">
+                      <input type="checkbox" id="remember">
+                      <label for="remember">Remember me</label>
+                    </div>
+                  </div>
+
+                  <div class="login-form-group">
+                    <button type="submit" class="btn btn-cta btn-lg" style="width: 100%;">Login</button>
+                  </div>
+                </form>
+              </div>
+              
+              <!-- Persona Login Form -->
+              <div id="persona-login" class="login-tab-content">
+                <div class="login-form-group">
+                  <label for="persona-select" class="login-form-label">Choose a Persona</label>
+                  <select id="persona-select" class="login-form-input">
+                    <option value="">-- Select a persona --</option>
+                  </select>
+                </div>
+                
+                <div id="persona-info" class="persona-info" style="display: none;">
+                  <!-- Persona details will be shown here -->
+                </div>
+                
+                <div class="login-form-group">
+                  <button id="quick-login-btn" class="btn btn-cta btn-lg" style="width: 100%;" disabled>
+                    Login as Selected Persona
+                  </button>
+                </div>
+              </div>
+              
             </div>
-            <div class="card-footer" style="text-align: center; visibility: hidden;">
-              <p style="color: var(--color-text-light); margin: 0;">
-                Placeholder for alignment
+            <div class="login-card-footer">
+              <p>
+                Don't have an account? <a href="/pages/signup.html">Create an account</a>
               </p>
             </div>
           </div>
         </div>
-
-        </div> <!-- End grid -->
       </div>
     </section>
   </main>
@@ -207,22 +172,10 @@
       if (spacer) spacer.style.display = 'none';
       
       infoDiv.innerHTML = `
-        <div style="display: flex; align-items: start; gap: 1rem;">
-          <div style="flex: 1;">
-            <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: var(--color-text);">
-              ${persona.name}
-            </p>
-            <p style="margin: 0 0 0.25rem 0; font-size: 0.875rem; color: var(--color-text-secondary);">
-              <strong>Company:</strong> ${persona.company}
-            </p>
-            <p style="margin: 0 0 0.25rem 0; font-size: 0.875rem; color: var(--color-text-secondary);">
-              <strong>Role:</strong> ${persona.role}
-            </p>
-            <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-light); margin-top: 0.5rem;">
-              ${persona.description}
-            </p>
-          </div>
-        </div>
+        <p class="persona-info-name">${persona.name}</p>
+        <p class="persona-info-detail"><strong>Company:</strong> ${persona.company}</p>
+        <p class="persona-info-detail"><strong>Role:</strong> ${persona.role}</p>
+        <p class="persona-info-description">${persona.description}</p>
       `;
       
       // Enable login button and update text
@@ -375,10 +328,38 @@
       }
     }
     
+    // Handle tab switching
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.login-tab').forEach(tab => {
+        if (tab.dataset.tab === tabName) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      
+      // Update tab content
+      document.querySelectorAll('.login-tab-content').forEach(content => {
+        if (content.id === `${tabName}-login`) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+    }
+    
     // Attach event listener when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
       // Populate persona dropdown
       populatePersonaDropdown();
+      
+      // Handle tab clicks
+      document.querySelectorAll('.login-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          switchTab(tab.dataset.tab);
+        });
+      });
       
       // Handle persona selection change
       const personaSelect = document.getElementById('persona-select');

@@ -7,21 +7,10 @@
       "tier": "builder_grade",
       "addedCost": 0,
       "subdivisionSpecific": false,
-      "skuMappings": {
-        "windows_double_hung": "WINDOW-8039584D",
-        "doors_entry": "DOOR-34C72FD2",
-        "roofing_shingles": "ROOF-23151318",
-        "flooring_carpet": "FLOOR-CARPET-STAND",
-        "flooring_vinyl": "FLOOR-VINYL-LUX-OAK",
-        "fixtures_kitchen_faucet": "PLUMB-FAUCET-KIT-CHROME",
-        "fixtures_bath_faucet": "PLUMB-FAUCET-BATH-CHROME",
-        "fixtures_lighting_ceiling": "LIGHT-CEILING-FLUSH",
-        "fixtures_lighting_recessed": "LIGHT-RECESSED-4IN",
-        "siding": "SIDING-VINYL-STANDARD",
-        "paint_interior": "PAINT-INT-FLAT-WHT",
-        "paint_exterior": "PAINT-INT-EGGSHELL-BG",
-        "insulation": "INSUL-FIBERGLASS-R15",
-        "drywall": "DRYWALL-HALF-4X8"
+      "skuOverrides": {
+        "foundation_framing": {},
+        "envelope": {},
+        "interior_finish": {}
       }
     },
     {
@@ -31,22 +20,20 @@
       "tier": "premium",
       "addedCost": 18000,
       "subdivisionSpecific": "Desert Ridge",
-      "skuMappings": {
-        "windows_casement": "WINDOW-8F26E917",
-        "doors_patio": "DOOR-E93CC71C",
-        "roofing_shingles": "ROOF-7B1F4022",
-        "flooring_hardwood": "FLOOR-HARDWOOD-OAK",
-        "flooring_tile": "FLOOR-TILE-CERAMIC-12",
-        "flooring_carpet": "FLOOR-VINYL-PREMIUM",
-        "fixtures_kitchen_faucet": "PLUMB-FAUCET-KIT-BRUSH",
-        "fixtures_bath_faucet": "PLUMB-FAUCET-BATH-BRUSH",
-        "fixtures_lighting_ceiling": "LIGHT-CEILING-SEMI",
-        "fixtures_lighting_recessed": "LIGHT-RECESSED-6IN-LED",
-        "siding": "SIDING-STUCCO-STANDARD",
-        "paint_interior": "PAINT-INT-SATIN-SW",
-        "paint_exterior": "PAINT-EXT-SATIN-SW",
-        "insulation": "INSUL-FIBERGLASS-R30",
-        "drywall": "DRYWALL-HALF-4X12"
+      "skuOverrides": {
+        "foundation_framing": {},
+        "envelope": {
+          "windows": "WINDOW-8F26E917",
+          "entry_door": "DOOR-E93CC71C",
+          "roofing": "ROOF-7B1F4022",
+          "siding": "SIDING-FIBER-CEMENT-PRO"
+        },
+        "interior_finish": {
+          "flooring": "FLOOR-HARDWOOD-OAK",
+          "paint": "PAINT-INT-SATIN-SW",
+          "light_fixtures": "LIGHT-RECESSED-6IN-LED",
+          "plumbing_fixtures": "PLUMB-FAUCET-KIT-BRUSH"
+        }
       }
     },
     {
@@ -56,22 +43,24 @@
       "tier": "luxury",
       "addedCost": 42000,
       "subdivisionSpecific": "Sunset Valley",
-      "skuMappings": {
-        "windows_casement": "WINDOW-8F26E917",
-        "doors_patio": "DOOR-E93CC71C",
-        "roofing_shingles": "ROOF-7B1F4022",
-        "flooring_hardwood": "FLOOR-HARDWOOD-WALNUT",
-        "flooring_tile": "FLOOR-TILE-PORCELAIN-24",
-        "flooring_carpet": "FLOOR-CARPET-PREMIUM",
-        "fixtures_kitchen_faucet": "PLUMB-FAUCET-KIT-DELTA",
-        "fixtures_bath_faucet": "PLUMB-FAUCET-BATH-KOHLER",
-        "fixtures_lighting_chandelier": "LIGHT-CHANDELIER-DINING",
-        "fixtures_lighting_pendant": "LIGHT-PENDANT-ISLAND",
-        "siding": "SIDING-STONE-VENEER",
-        "paint_interior": "PAINT-INT-BENJAMIN",
-        "paint_exterior": "PAINT-EXT-BENJAMIN",
-        "insulation": "INSUL-SPRAY-FOAM",
-        "drywall": "DRYWALL-MOISTURE"
+      "skuOverrides": {
+        "foundation_framing": {
+          "drywall": "DRYWALL-MOISTURE"
+        },
+        "envelope": {
+          "windows": "WINDOW-8F26E917",
+          "entry_door": "DOOR-E93CC71C",
+          "roofing": "ROOF-7B1F4022",
+          "siding": "SIDING-STONE-VENEER",
+          "wall_insulation": "INSUL-SPRAY-FOAM"
+        },
+        "interior_finish": {
+          "flooring": "FLOOR-HARDWOOD-WALNUT",
+          "paint": "PAINT-INT-BENJAMIN",
+          "interior_doors": "DOOR-SOLID-CORE-OAK",
+          "light_fixtures": "LIGHT-CHANDELIER-DINING",
+          "plumbing_fixtures": "PLUMB-FAUCET-KIT-DELTA"
+        }
       }
     }
   ],
@@ -142,7 +131,11 @@
         "averageCost": 111000,
         "averageDays": 120
       },
-      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
+      "compatiblePackages": [
+        "builders-choice",
+        "desert-ridge-premium",
+        "sunset-valley-executive"
+      ]
     },
     {
       "id": "prescott",
@@ -203,7 +196,11 @@
         "averageCost": 81000,
         "averageDays": 105
       },
-      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
+      "compatiblePackages": [
+        "builders-choice",
+        "desert-ridge-premium",
+        "sunset-valley-executive"
+      ]
     },
     {
       "id": "flagstaff",
@@ -264,7 +261,11 @@
         "averageCost": 152000,
         "averageDays": 145
       },
-      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
+      "compatiblePackages": [
+        "builders-choice",
+        "desert-ridge-premium",
+        "sunset-valley-executive"
+      ]
     },
     {
       "id": "tucson",
@@ -332,7 +333,11 @@
         "averageCost": 122000,
         "averageDays": 130
       },
-      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
+      "compatiblePackages": [
+        "builders-choice",
+        "desert-ridge-premium",
+        "sunset-valley-executive"
+      ]
     },
     {
       "id": "phoenix",
@@ -393,7 +398,11 @@
         "averageCost": 138000,
         "averageDays": 135
       },
-      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
+      "compatiblePackages": [
+        "builders-choice",
+        "desert-ridge-premium",
+        "sunset-valley-executive"
+      ]
     },
     {
       "id": "scottsdale",
@@ -461,8 +470,11 @@
         "averageCost": 171000,
         "averageDays": 155
       },
-      "compatiblePackages": ["builders-choice", "desert-ridge-premium", "sunset-valley-executive"]
+      "compatiblePackages": [
+        "builders-choice",
+        "desert-ridge-premium",
+        "sunset-valley-executive"
+      ]
     }
   ]
 }
-

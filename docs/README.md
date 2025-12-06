@@ -43,6 +43,7 @@ This guide routes you directly to what you need:
 | **Product/UX** | Personas & flows | [personas/](./personas/) |
 | **Architect** | Architectural decisions | [adr/](./adr/) |
 | **Frontend Dev** | CSS & coding standards | [standards/](./standards/) |
+| **Frontend Dev** | Component architecture | [component-architecture/](./component-architecture/) |
 | **Backend Dev** | Commerce + ACO setup | [phase-8-backend/](./phase-8-backend/) |
 | **QA/Testing** | Testing strategies | [testing/](./testing/) |
 | **DevOps** | Production deployment | [phase-9-deployment/](./phase-9-deployment/) |
@@ -62,6 +63,7 @@ This documentation is organized by implementation phase and topic:
 - **Current Work** - Phases 6-7 (active implementation)
 
 ### Cross-Phase Reference Folders ⭐ **USED THROUGHOUT**
+- **[component-architecture/](./component-architecture/)** - EDS blocks, component extraction, utilities vs blocks
 - **[personas/](./personas/)** - All 5 personas, flows, UX patterns, implementation plans
 - **[standards/](./standards/)** - CSS architecture, coding principles, components, animations
 - **[testing/](./testing/)** - Testing strategies, QA checklists

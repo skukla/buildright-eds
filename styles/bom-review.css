@@ -55,15 +55,45 @@
 
 .section-title {
   font: var(--type-headline-2-font);
+  font-weight: 700; /* Standardized weight */
   color: var(--color-text);
   margin: 0 0 var(--spacing-medium) 0;
-  padding: var(--spacing-small) var(--spacing-medium);
-  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
-  border-bottom: 2px solid var(--color-brand-500);
-  border-radius: var(--shape-border-radius-2) var(--shape-border-radius-2) 0 0;
+  padding: var(--spacing-medium) var(--spacing-large); /* Increased from small/medium to medium/large */
+  background: white; /* Plain white for middle sections */
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-4) var(--shape-border-radius-4) 0 0; /* Matches section container (12px) */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   margin-left: calc(var(--spacing-large) * -1);
   margin-right: calc(var(--spacing-large) * -1);
   margin-top: calc(var(--spacing-large) * -1);
+}
+
+/* First section (Summary) - top-down gradient */
+#summary-section .section-title {
+  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
+  border-bottom: 2px solid var(--color-brand-500);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Last section (Materials by Phase) - bottom-up gradient on content */
+#materials-section {
+  position: relative; /* Ensure pseudo-element is positioned correctly */
+  padding-bottom: var(--spacing-xxlarge); /* Extra bottom padding to separate content from gradient */
+}
+
+#materials-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px; /* Gradient height */
+  background: linear-gradient(to top, #EBF4FB 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: 0 0 var(--shape-border-radius-4) var(--shape-border-radius-4);
 }
 
 .section-description {
@@ -88,9 +118,9 @@
   flex-direction: column;
   gap: var(--spacing-xsmall);
   padding: var(--spacing-medium);
-  background: var(--color-surface);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--shape-border-radius-2);
+  background: white; /* White background for better contrast */
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
@@ -118,9 +148,9 @@
 }
 
 .bom-accordion {
-  background: var(--color-surface);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--shape-border-radius-2);
+  background: var(--color-surface); /* Level 2: Light gray for phase accordion */
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
@@ -131,13 +161,13 @@
   gap: var(--spacing-medium);
   padding: var(--spacing-medium);
   cursor: pointer;
-  background: var(--color-surface);
+  background: var(--color-surface); /* Same as accordion background */
   transition: background var(--transition-fast);
   user-select: none;
 }
 
 .bom-accordion-header:hover {
-  background: var(--color-surface-hover);
+  background: var(--color-surface-hover); /* Slightly darker on hover */
 }
 
 .accordion-icon-wrapper {
@@ -215,7 +245,7 @@
   overflow: hidden;
   transition: max-height var(--transition-slow), opacity var(--transition-slow);
   opacity: 1;
-  background: var(--color-background);
+  background: var(--color-surface-nested); /* Level 3: Ultra-light nested background */
   border-top: 1px solid var(--color-border);
 }
 
@@ -279,21 +309,22 @@
   gap: 0.75rem;
   align-items: center;
   padding: 0.75rem;
-  background: var(--color-surface);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--shape-border-radius-2);
+  background: var(--color-background); /* Level 4: Pure white for product rows */
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .product-row:hover {
+  background: var(--color-surface-nested); /* Subtle highlight on hover */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .product-row-image {
   width: 60px;
   height: 60px;
-  border-radius: var(--shape-border-radius-2);
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   overflow: hidden;
   background: var(--color-surface);
   flex-shrink: 0;
@@ -403,7 +434,7 @@
   opacity: 0;
   transition: max-height var(--transition-slow), opacity var(--transition-slow), padding var(--transition-slow), margin var(--transition-slow);
   background: var(--color-surface);
-  border-radius: var(--shape-border-radius-2);
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   margin-top: 0;
   border: 1px solid transparent;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -414,7 +445,7 @@
   opacity: 1;
   padding: var(--spacing-medium);
   margin-top: 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--color-border);
 }
 
 .swap-panel-header {
@@ -449,24 +480,26 @@
 .swap-product-tile {
   flex-shrink: 0;
   width: 140px;
-  border: 3px solid var(--color-border);
-  border-radius: var(--shape-border-radius-3);
+  border: 2px solid var(--color-border); /* Matches build configurator */
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   padding: var(--spacing-small);
   cursor: pointer;
-  transition: all var(--transition-fast);
-  background: var(--color-surface);
+  transition: all var(--transition-base);
+  background: white; /* White background to stand out on gray page */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Stronger shadow */
   position: relative;
 }
 
 .swap-product-tile:hover {
-  border-color: var(--color-brand-500);
-  box-shadow: var(--shape-shadow-2);
-  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12)); /* Drop shadow for depth */
+  transform: translateY(-1px); /* Subtle lift */
+  border-color: var(--color-brand-500); /* Brand color on hover */
 }
 
 .swap-product-tile[data-selected="true"] {
-  border-color: var(--color-brand-500);
-  box-shadow: 0 4px 12px rgba(15, 91, 167, 0.2);
+  border: 3px solid var(--color-brand-500); /* Thicker border for selected state */
+  box-shadow: 0 4px 12px rgba(15, 91, 167, 0.2); /* Stronger shadow for selected */
 }
 
 .swap-product-tile[data-selected="true"]::after {
@@ -503,7 +536,7 @@
   width: 100%;
   height: 80px;
   background: var(--color-border);
-  border-radius: var(--shape-border-radius-2);
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   margin-bottom: var(--spacing-small);
   overflow: hidden;
   position: relative;
@@ -580,12 +613,13 @@
 
 .summary-title {
   font: var(--type-headline-2-font);
+  font-weight: 700; /* Standardized weight */
   color: var(--color-text);
   margin: 0 0 var(--spacing-medium) 0;
-  padding: var(--spacing-small) var(--spacing-medium);
-  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
+  padding: var(--spacing-medium) var(--spacing-large); /* Increased from small/medium to medium/large */
+  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%); /* Top-down gradient for sidebar */
   border-bottom: 2px solid var(--color-brand-500);
-  border-radius: var(--shape-border-radius-2) var(--shape-border-radius-2) 0 0;
+  border-radius: var(--shape-border-radius-4) var(--shape-border-radius-4) 0 0; /* Matches section container (12px) */
   margin-left: calc(var(--spacing-large) * -1);
   margin-right: calc(var(--spacing-large) * -1);
   margin-top: calc(var(--spacing-large) * -1);
@@ -618,6 +652,15 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-small);
+  /* Bottom-up gradient for actions area */
+  background: linear-gradient(to top, #EBF4FB 0%, white 100%);
+  border-top: 2px solid var(--color-border);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+  margin-left: calc(var(--spacing-large) * -1);
+  margin-right: calc(var(--spacing-large) * -1);
+  margin-bottom: calc(var(--spacing-large) * -1);
+  padding: var(--spacing-large);
+  border-radius: 0 0 var(--shape-border-radius-4) var(--shape-border-radius-4);
 }
 
 .order-actions-buttons .btn {

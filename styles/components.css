@@ -60,6 +60,145 @@
   padding: 0.25rem 0.625rem; /* Slightly more horizontal padding for pill */
 }
 
+/* Photo Tile - Shared pattern for image-based selection/navigation tiles */
+/* Used by: Build Configurator, Shop by Job, Template Dashboard */
+.photo-tile {
+  position: relative;
+  border-radius: var(--shape-border-radius-3);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Content overlay at bottom with gradient background */
+.photo-tile__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  padding: var(--spacing-large) var(--spacing-medium) var(--spacing-medium);
+  color: white;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.85) 30%, rgba(0, 0, 0, 0.65) 60%, rgba(0, 0, 0, 0.3) 85%, transparent 100%);
+  transition: none;
+  will-change: auto;
+}
+
+.photo-tile__title {
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: white;
+  margin: 0 0 var(--spacing-xsmall) 0;
+}
+
+.photo-tile__description {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 var(--spacing-xsmall) 0;
+  line-height: 1.4;
+}
+
+.photo-tile__price {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-accent-300);
+  margin: 0;
+}
+
+.photo-tile__cta {
+  color: var(--color-accent-300);
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Hover state */
+.photo-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shape-shadow-2);
+}
+
+/* Variant: Selection tile (for configurators) */
+.photo-tile--selection {
+  border: 2px solid var(--color-border);
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.photo-tile--selection:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-brand-500);
+}
+
+.photo-tile--selection[data-selected="true"] {
+  border: 3px solid var(--color-brand-500);
+  box-shadow: 0 4px 12px rgba(15, 91, 167, 0.2);
+}
+
+/* Modifier: Custom zoom for images that need to show more context */
+.photo-tile--zoom-out {
+  background-size: auto 110% !important;
+  background-repeat: no-repeat !important;
+}
+
+.photo-tile--zoom-out-more {
+  background-size: auto 120% !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Checkmark for selected tiles */
+.photo-tile--selection[data-selected="true"]::after {
+  content: '';
+  position: absolute;
+  top: var(--spacing-small);
+  left: var(--spacing-small);
+  width: 40px;
+  height: 40px;
+  background: var(--color-brand-500);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), 0 0 0 3px white;
+  z-index: 3;
+  animation: checkmarkFadeIn 0.2s ease;
+}
+
+.photo-tile--selection[data-selected="true"]::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--spacing-small) + 11px);
+  left: calc(var(--spacing-small) + 14px);
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  z-index: 4;
+}
+
+@keyframes checkmarkFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Variant: Job/navigation tile */
+.photo-tile--job {
+  border: 1px solid var(--color-border);
+  min-height: 220px;
+}
+
+.photo-tile--job:hover {
+  border-color: var(--color-primary);
+}
+
 /* ========== End Reusable Components ========== */
 
 /* Buttons */
@@ -174,19 +313,27 @@
 
 /* Cards */
 .card {
-  background-color: var(--color-surface);
+  background-color: var(--color-background); /* White cards on gray background pages */
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-3);
-  padding: var(--spacing-large);
+  padding: var(--spacing-xlarge); /* Increased: was --spacing-large (24px), now 32px for better breathing room */
   box-shadow: var(--shape-shadow-1);
-  transition: all var(--transition-base);
 }
 
-.card:hover {
-  box-shadow: var(--shape-shadow-2);
-  border-color: var(--color-primary);
-  transform: translateY(-2px);
+/* Interactive cards (links, buttons) get hover effects */
+a.card,
+button.card,
+.card.interactive {
+  transition: all var(--transition-base);
   cursor: pointer;
+}
+
+a.card:hover,
+button.card:hover,
+.card.interactive:hover {
+  box-shadow: var(--shape-shadow-2);
+  border-color: var(--color-brand-500);
+  transform: translateY(-2px);
 }
 
 .card-header {
@@ -753,23 +900,22 @@
   align-items: center;
 }
 
-.simple-list-table {
-  margin-bottom: 2rem;
-}
+/* Simple List Table - Container for list tables (wrapped in .card) */
 
 .simple-list-table-header {
   display: grid;
   grid-template-columns: 2fr 140px 100px 100px 60px;
   gap: 1rem;
-  padding: 0.75rem 1rem;
-  background: var(--color-surface-secondary);
+  padding: 0.875rem 1rem;
+  background: var(--color-surface); /* Subtle gray header inside white card */
   border-radius: var(--shape-border-radius-2);
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.025em;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--color-border);
 }
 
 /* Ensure all table header columns have the same font size */
@@ -790,16 +936,24 @@
   grid-template-columns: 2fr 140px 100px 100px 60px;
   gap: 1rem;
   padding: 1rem;
-  background: var(--color-surface);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: white; /* White rows inside card containers */
+  border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-2);
   align-items: center;
-  transition: box-shadow 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.simple-list-row:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+/* Interactive list rows (links or clickable items) get hover effects */
+a.simple-list-row,
+.simple-list-row.interactive {
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+a.simple-list-row:hover,
+.simple-list-row.interactive:hover {
+  background: var(--color-surface); /* Subtle gray on hover */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .simple-list-col-item {
@@ -2205,6 +2359,3 @@
     gap: 0.5rem;
   }
 }
-
-}
-

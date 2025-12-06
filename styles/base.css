@@ -58,9 +58,10 @@
      ============================================ */
   
   --color-background: #FFFFFF;     /* White background */
-  --color-surface: #F8FAFC;        /* slate-50 - Card backgrounds */
-  --color-surface-hover: #F1F5F9;  /* slate-100 - Surface hover */
-  --color-border: #E2E8F0;         /* slate-200 - Dividers */
+  --color-surface: #F1F5F9;        /* slate-100 - Card backgrounds (darker for more contrast) */
+  --color-surface-hover: #E2E8F0;  /* slate-200 - Surface hover */
+  --color-surface-nested: #F8FAFC; /* slate-50 - For nested content areas */
+  --color-border: #CBD5E1;         /* slate-300 - Dividers (darker for visibility) */
   --color-text: #1E293B;           /* slate-800 - Primary text */
   --color-text-secondary: #64748B;  /* slate-500 - Secondary text */
   --color-text-disabled: #94A3B8;  /* slate-400 - Disabled text */
@@ -141,9 +142,13 @@
      LAYOUT
      ============================================ */
   
-  --container-max-width: 1280px;
+  --container-max-width: 1440px;
   --section-padding-vertical: 5rem;   /* 80px */
   --section-padding-horizontal: 1.5rem; /* 24px */
+  
+  /* Sidebar widths */
+  --sidebar-width-narrow: 250px;   /* Navigation menus, simple lists */
+  --sidebar-width-standard: 360px; /* Order summaries, detailed info panels */
 
   /* ============================================
      TRANSITIONS
@@ -179,7 +184,8 @@ body.page-catalog,
 body.page-product-detail,
 body.page-dashboard-templates,
 body.page-build-configurator,
-body.page-bom-review {
+body.page-bom-review,
+body.page-account {
   background-color: var(--color-surface); /* Gray background for product browsing */
 }
 
@@ -188,7 +194,8 @@ body.white-variant.page-catalog,
 body.white-variant.page-product-detail,
 body.white-variant.page-dashboard-templates,
 body.white-variant.page-build-configurator,
-body.white-variant.page-bom-review {
+body.white-variant.page-bom-review,
+body.white-variant.page-account {
   background-color: var(--color-background); /* Force white background */
 }
 

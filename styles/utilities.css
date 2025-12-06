@@ -359,3 +359,30 @@
   }
 }
 
+/* ============================================
+   PAGE HEADER UTILITIES
+   Standardized across all pages
+   ============================================ */
+
+.page-header {
+  margin-bottom: 0; /* Remove bottom margin - layout grid will handle spacing */
+  padding-bottom: var(--spacing-xlarge); /* Add padding with subtle border for separation */
+  border-bottom: 1px solid var(--color-border);
+}
+
+.page-subtitle {
+  font: var(--type-body-1-default-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.section-header {
+  margin: 0 0 var(--spacing-small) 0;
+}
+
+.section-description {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-large) 0;
+}
+

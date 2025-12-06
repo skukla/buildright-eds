@@ -8,50 +8,9 @@
   <title>Account Dashboard - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
-  <style>
-    .account-nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      color: var(--color-text);
-      text-decoration: none;
-      border-radius: var(--shape-border-radius-3);
-      transition: all 0.2s ease;
-      font-weight: 500;
-    }
-    
-    .account-nav-item:hover {
-      background: var(--color-surface);
-      color: var(--color-brand-500);
-    }
-    
-    .account-nav-item.active {
-      background: var(--color-brand-500);
-      color: white;
-    }
-    
-    .account-nav-item svg {
-      flex-shrink: 0;
-    }
-    
-    .account-section {
-      animation: fadeIn 0.3s ease;
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="../styles/dashboards/account-dashboard.css">
 </head>
-<body>
+<body class="page-account">
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
@@ -69,12 +28,12 @@
 
     <!-- Account Dashboard with Sidebar -->
     <section class="section">
-      <div class="container" style="max-width: 1400px;">
-        <h1 style="margin-bottom: 3rem; font-size: 2rem; font-weight: 700;">Account Dashboard</h1>
+      <div class="container">
+        <h1 class="page-header">Account Dashboard</h1>
 
-        <div style="display: grid; grid-template-columns: 250px 1fr; gap: 3rem;">
+        <div class="account-layout">
           <!-- Sidebar Navigation -->
-          <nav style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <nav class="account-nav">
             <a href="#dashboard" class="account-nav-item active" data-section="dashboard">
               <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -113,146 +72,88 @@
             <!-- Dashboard Section (default) -->
             <div class="account-section" id="section-dashboard">
               <!-- Company Information -->
-              <div style="margin-bottom: 3rem;">
-                <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Company Information</h2>
-                <p style="margin: 0 0 1.5rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">View your company details and primary warehouse.</p>
+              <div class="section-block">
+                <h2 class="section-header">Company Information</h2>
+                <p class="section-description">View your company details and primary warehouse.</p>
                 <div class="card">
                   <div class="card-body">
                     <div id="company-info">
-                      <p style="margin-bottom: 0.75rem;">
+                      <p class="company-info-text">
                         <strong>Company:</strong> 
                         <span id="company-name">Loading...</span>
-                        <span id="tier-badge-pill" style="display: inline-block; margin-left: 0.5rem; padding: 0.25rem 0.75rem; background: var(--color-brand-500); color: white; border-radius: 999px; font-size: 0.75rem; font-weight: 600; vertical-align: middle;">
+                        <span id="tier-badge-pill" class="tier-badge-inline">
                           <span id="tier-label-inline">Loading...</span>
                         </span>
                       </p>
-                      <p style="margin-bottom: 0.75rem;"><strong>Region:</strong> <span id="company-region">Loading...</span></p>
-                      <p style="margin-bottom: 0;"><strong>Primary Warehouse:</strong> <span id="primary-warehouse">Loading...</span></p>
+                      <p class="company-info-text"><strong>Region:</strong> <span id="company-region">Loading...</span></p>
+                      <p class="company-info-text"><strong>Primary Warehouse:</strong> <span id="primary-warehouse">Loading
                     </div>
                   </div>
                 </div>
               </div>
 
               <!-- Quick Actions -->
-              <div>
-                <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Quick Actions</h2>
-                <p style="margin: 0 0 1.5rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Access frequently used features and manage your account.</p>
-                <div class="grid grid-3" id="quick-actions-grid">
+              <div class="section-block">
+                <h2 class="section-header">Quick Actions</h2>
+                <p class="section-description">Access frequently used features and manage your account.</p>
+                <div class="quick-actions-grid" id="quick-actions-grid">
                   <!-- Quick Actions cards loaded dynamically based on persona -->
                 </div>
               </div>
             </div>
 
-            <!-- My Templates Section (Sarah only) -->
-            <div class="account-section" id="section-templates" style="display: none;">
-              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">My Templates</h2>
-              <p style="margin: 0 0 1.5rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Manage your saved templates and start new builds.</p>
+            <!-- My Builds Section (Sarah only) -->
+            <div class="account-section" id="section-builds" style="display: none;">
+              <h2 class="section-header">My Builds</h2>
+              <p class="section-description">Track your active construction projects and order materials.</p>
               
               <!-- Action Buttons -->
-              <div style="display: flex; gap: 1rem; margin-bottom: 3rem;">
-                <a href="/pages/dashboard-templates.html" class="btn btn-cta">Start New Build</a>
-                <button class="btn btn-secondary" onclick="alert('Upload template coming soon!')">Upload New Template</button>
+              <div class="builds-action-buttons">
+                <a href="/pages/dashboard-templates.html" class="btn btn-cta">+ Order Materials for New Build</a>
               </div>
 
-              <!-- Template List -->
-              <div class="simple-list-table">
-                <div class="simple-list-table-header" style="grid-template-columns: 2fr 1fr 120px;">
-                  <div>Template</div>
-                  <div>Details</div>
-                  <div>Status</div>
-                </div>
-                <div class="simple-list-items">
-                  <div class="simple-list-row">
-                    <div class="simple-list-col-item">
-                      <div class="simple-list-item-image">
-                        <img src="../images/floor-plans/phoenix.png" alt="The Phoenix floor plan" onerror="this.parentElement.classList.add('simple-list-item-image-placeholder'); this.style.display='none';">
-                      </div>
-                      <div class="simple-list-item-info">
-                        <div class="simple-list-item-name-row">
-                          <span class="simple-list-item-name">The Phoenix</span>
-                        </div>
-                        <div class="simple-list-item-sku">BOM generated 2 days ago</div>
-                      </div>
-                    </div>
-                    <div style="text-align: right;">
-                      <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-secondary);">2,950 sq ft • 4 bed • 2.5 bath</p>
-                    </div>
-                    <div style="text-align: right;">
-                      <span class="order-status completed">Active</span>
-                    </div>
-                  </div>
-                  
-                  <div class="simple-list-row">
-                    <div class="simple-list-col-item">
-                      <div class="simple-list-item-image">
-                        <img src="../images/floor-plans/prescott.png" alt="The Prescott floor plan" onerror="this.parentElement.classList.add('simple-list-item-image-placeholder'); this.style.display='none';">
-                      </div>
-                      <div class="simple-list-item-info">
-                        <div class="simple-list-item-name-row">
-                          <span class="simple-list-item-name">The Prescott</span>
-                        </div>
-                        <div class="simple-list-item-sku">BOM generated 5 days ago</div>
-                      </div>
-                    </div>
-                    <div style="text-align: right;">
-                      <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-secondary);">1,875 sq ft • 3 bed • 2 bath</p>
-                    </div>
-                    <div style="text-align: right;">
-                      <span class="order-status completed">Active</span>
-                    </div>
-                  </div>
-                  
-                  <div class="simple-list-row">
-                    <div class="simple-list-col-item">
-                      <div class="simple-list-item-image">
-                        <img src="../images/floor-plans/tucson.png" alt="The Tucson floor plan" onerror="this.parentElement.classList.add('simple-list-item-image-placeholder'); this.style.display='none';">
-                      </div>
-                      <div class="simple-list-item-info">
-                        <div class="simple-list-item-name-row">
-                          <span class="simple-list-item-name">The Tucson</span>
-                        </div>
-                        <div class="simple-list-item-sku">BOM generated 1 week ago</div>
-                      </div>
-                    </div>
-                    <div style="text-align: right;">
-                      <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-secondary);">2,680 sq ft • 4 bed • 3 bath</p>
-                    </div>
-                    <div style="text-align: right;">
-                      <span class="order-status completed">Active</span>
-                    </div>
-                  </div>
-                </div>
+              <!-- Builds Table -->
+              <div id="builds-content">
+                <!-- Builds will be loaded here dynamically -->
+              </div>
+            </div>
+            
+            <!-- Deliveries Section (Sarah only) -->
+            <div class="account-section" id="section-deliveries" style="display: none;">
+              <h2 class="section-header">Deliveries</h2>
+              <p class="section-description">Track scheduled and completed material deliveries.</p>
+              
+              <!-- Deliveries Table -->
+              <div id="deliveries-content">
+                <!-- Deliveries will be loaded here dynamically -->
               </div>
             </div>
 
             <!-- Store Locations Section -->
             <div class="account-section" id="section-locations" style="display: none;">
-              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Store Locations</h2>
-              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Manage your store locations and set your primary warehouse.</p>
-              <div id="company-locations" class="grid grid-3"></div>
+              <h2 class="section-header">Store Locations</h2>
+              <p class="section-description">Manage your store locations and set your primary warehouse.</p>
+              <div id="company-locations" class="locations-grid"></div>
             </div>
 
             <!-- Profile Section -->
             <div class="account-section" id="section-profile" style="display: none;">
-              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Personal Information</h2>
-              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">Update your personal details and contact information.</p>
+              <h2 class="section-header">Personal Information</h2>
+              <p class="section-description">Update your personal details and contact information.</p>
               <div class="card">
-                <div class="card-body" style="text-align: center; padding: 3rem 1rem;">
-                  <p style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--color-text);">Profile settings coming soon</p>
-                  <p style="color: var(--color-text-secondary); margin: 0;">You'll be able to update your information here</p>
+                <div class="card-body empty-state-card">
+                  <p class="empty-state-title">Profile settings coming soon</p>
+                  <p class="empty-state-text">You'll be able to update your information here</p>
                 </div>
               </div>
             </div>
 
             <!-- Orders Section -->
             <div class="account-section" id="section-orders" style="display: none;">
-              <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; color: var(--color-text);">Order History</h2>
-              <p style="margin: 0 0 2rem 0; font-size: 0.9375rem; color: var(--color-text-secondary);">View and track your orders.</p>
-              <div class="card">
-                <div class="card-body" style="text-align: center; padding: 3rem 1rem;">
-                  <p style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--color-text);">No orders yet</p>
-                  <p style="color: var(--color-text-secondary); margin: 0;">When you make a purchase, it will appear here</p>
-                </div>
+              <h2 class="section-header">Order History</h2>
+              <p class="section-description">View and track your orders.</p>
+              <div id="orders-content">
+                <!-- Orders will be loaded here dynamically -->
               </div>
             </div>
           </div>
@@ -317,7 +218,7 @@
         // Create location cards
         const locationsHTML = company.locations.map(loc => {
           const primaryCheckmark = loc.isPrimary 
-            ? `<svg style="width: 20px; height: 20px; margin-left: 0.5rem; vertical-align: middle; color: var(--color-success);" fill="currentColor" viewBox="0 0 20 20">
+            ? `<svg class="location-primary-icon" fill="currentColor" viewBox="0 0 20 20">
                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                </svg>` 
             : '';
@@ -331,13 +232,13 @@
           return `
             <div class="card">
               <div class="card-body">
-                <h3 style="margin: 0 0 0.75rem 0; font-size: 1.25rem; font-weight: 600; color: var(--color-text);">
+                <h3 class="location-card-title">
                   ${loc.city}${primaryCheckmark}
                 </h3>
-                <p style="margin: 0 0 0.25rem 0; font-size: 0.9375rem; color: var(--color-text);">${loc.address}</p>
-                <p style="margin: 0 0 0.25rem 0; font-size: 0.9375rem; color: var(--color-text);">${loc.city}, ${loc.state} ${loc.zip}</p>
-                <p style="margin: 0; font-size: 0.9375rem; color: var(--color-text-secondary);">
-                  <svg style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;" fill="currentColor" viewBox="0 0 20 20">
+                <p class="location-card-text">${loc.address}</p>
+                <p class="location-card-text">${loc.city}, ${loc.state} ${loc.zip}</p>
+                <p class="location-card-phone">
+                  <svg class="location-card-icon" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                   </svg>
                   ${loc.phone}
@@ -406,20 +307,22 @@
       
       // Persona-specific first card
       if (persona?.features?.templates) {
-        // Sarah: Templates card - navigates to section within account page
+        // Sarah: My Builds card - navigates to builds section
         cards.push(`
-          <a href="#templates" class="card quick-action-nav-item" data-section="templates" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+          <a href="#builds" class="card quick-action-nav-item" data-section="builds" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
             <div class="card-body">
-              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="3" width="7" height="7"/>
-                  <rect x="14" y="3" width="7" height="7"/>
-                  <rect x="14" y="14" width="7" height="7"/>
-                  <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">My Templates</h3>
-              </div>
-              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">6 floor plan templates available</p>
+              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">My Builds</h3>
+              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;"><strong id="builds-count">0</strong> active builds</p>
+            </div>
+          </a>
+        `);
+        
+        // Sarah: Deliveries card - navigates to deliveries section
+        cards.push(`
+          <a href="#deliveries" class="card quick-action-nav-item" data-section="deliveries" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+            <div class="card-body">
+              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Deliveries</h3>
+              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;"><strong id="deliveries-count">0</strong> scheduled this week</p>
             </div>
           </a>
         `);
@@ -428,14 +331,7 @@
         cards.push(`
           <a href="/pages/dashboard.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
             <div class="card-body">
-              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                </svg>
-                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Restock Dashboard</h3>
-              </div>
+              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Restock Dashboard</h3>
               <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage inventory and view smart suggestions.</p>
             </div>
           </a>
@@ -445,34 +341,18 @@
         cards.push(`
           <a href="project-selector.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
             <div class="card-body">
-              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                  <polyline points="10 9 9 9 8 9"/>
-                </svg>
-                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Saved Projects</h3>
-              </div>
+              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Saved Projects</h3>
               <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Access your frequently used project types.</p>
             </div>
           </a>
         `);
       }
       
-      // Standard cards for everyone - Orders
+      // Standard cards for everyone - Orders (links to orders section)
       cards.push(`
-        <a href="order-history.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+        <a href="#orders" class="card quick-action-nav-item" data-section="orders" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
           <div class="card-body">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-              <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8" cy="21" r="1"/>
-                <circle cx="19" cy="21" r="1"/>
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-              </svg>
-              <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Orders</h3>
-            </div>
+            <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Orders</h3>
             <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Track your orders and view order history.</p>
           </div>
         </a>
@@ -482,13 +362,7 @@
       cards.push(`
         <a href="#" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;" onclick="alert('Account settings coming soon!'); return false;">
           <div class="card-body">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-              <svg style="width: 24px; height: 24px; color: var(--color-brand-500); flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m8.66-11.66-4.24 4.24m-4.84 4.84-4.24 4.24M23 12h-6m-6 0H1m20.66 8.66-4.24-4.24m-4.84-4.84-4.24-4.24"/>
-              </svg>
-              <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Account Settings</h3>
-            </div>
+            <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Account Settings</h3>
             <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage your preferences and information.</p>
           </div>
         </a>
@@ -508,17 +382,26 @@
       const personaNavContainer = document.getElementById('persona-nav-items');
       const navItems = [];
       
-      // Sarah: Templates (Phase 6A)
+      // Sarah: My Builds & Deliveries (Phase 6A)
       if (persona?.features?.templates) {
         navItems.push(`
-          <a href="#templates" class="account-nav-item" data-section="templates">
+          <a href="#builds" class="account-nav-item" data-section="builds">
             <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"/>
-              <rect x="14" y="3" width="7" height="7"/>
-              <rect x="14" y="14" width="7" height="7"/>
-              <rect x="3" y="14" width="7" height="7"/>
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            My Templates
+            My Builds
+          </a>
+        `);
+        navItems.push(`
+          <a href="#deliveries" class="account-nav-item" data-section="deliveries">
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13"/>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/>
+              <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+            Deliveries
           </a>
         `);
       }
@@ -554,11 +437,425 @@
       }
     }
 
+    // Format date helper
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+    };
+    
+    // Render orders table (shared for both templates and orders)
+    function renderOrdersTable(orders, emptyTitle, emptyText) {
+      if (orders.length === 0) {
+        return `
+          <div class="card">
+            <div class="card-body empty-state-card">
+              <p class="empty-state-title">${emptyTitle}</p>
+              <p class="empty-state-text">${emptyText}</p>
+            </div>
+          </div>
+        `;
+      }
+      
+      return `
+        <div class="orders-table-wrapper">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Order / Build</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orders.map(order => `
+                <tr>
+                  <td data-label="Date" class="order-date">${formatDate(order.timestamp)}</td>
+                  <td data-label="Order / Build">
+                    <div class="order-id">${order.orderID}</div>
+                    ${order.buildName ? `<div class="order-project-name">${order.buildName}</div>` : ''}
+                    ${order.projectName ? `<div class="order-project-name">${order.projectName}</div>` : ''}
+                    ${order.phase ? `<div class="order-template-details">${order.phase} Phase</div>` : ''}
+                    ${order.templateDetails ? `<div class="order-template-details">${order.templateDetails}</div>` : ''}
+                  </td>
+                  <td data-label="Items">
+                    <div class="order-items">
+                      <span class="order-items-count">${order.itemCount} items</span>
+                    </div>
+                  </td>
+                  <td data-label="Total" class="order-total">$${order.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                  <td data-label="Status">
+                    <span class="order-status ${order.status.toLowerCase().replace(/\s+/g, '-')}">${order.status}</span>
+                  </td>
+                  <td data-label="Actions">
+                    <div class="order-actions">
+                      ${order.type === 'build-order'
+                        ? `<button class="btn btn-secondary btn-sm" onclick="alert('View order: ${order.orderID}')">View Details</button>
+                           <button class="btn btn-secondary btn-sm" onclick="alert('Track delivery: ${order.orderID}')">Track Delivery</button>`
+                        : order.type === 'template' 
+                          ? `<a href="/pages/bom-review.html" class="btn btn-secondary btn-sm">View BOM</a>
+                             <a href="/pages/build-configurator.html" class="btn btn-primary btn-sm">Edit Build</a>`
+                          : `<button class="btn btn-secondary btn-sm">View Details</button>
+                             <button class="btn btn-primary btn-sm">Reorder</button>`
+                      }
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    
+    // Load builds (Sarah only)
+    async function loadBuilds() {
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      const buildsContainer = document.getElementById('builds-content');
+      
+      if (!buildsContainer) return;
+      
+      const persona = currentUser?.persona;
+      
+      // Only load builds for Sarah
+      if (!persona?.features?.templates) return;
+      
+      const builds = [
+        {
+          buildId: 'BUILD-2024-001',
+          timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          projectName: 'Desert Ridge Lot 12',
+          templateName: 'The Phoenix (Bonus Room)',
+          itemCount: 847,
+          total: 234567.89,
+          status: 'Partially Ordered',
+          type: 'build',
+          phasesOrdered: ['Foundation', 'Framing'],
+          phasesRemaining: ['Envelope', 'Interior Finish'],
+          orderCount: 2
+        },
+        {
+          buildId: 'BUILD-2024-002',
+          timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          projectName: 'Desert Ridge Lot 15',
+          templateName: 'The Prescott',
+          itemCount: 623,
+          total: 187234.50,
+          status: 'Configured',
+          type: 'build',
+          phasesOrdered: [],
+          phasesRemaining: ['Foundation', 'Framing', 'Envelope', 'Interior Finish'],
+          orderCount: 0
+        },
+        {
+          buildId: 'BUILD-2024-003',
+          timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          projectName: 'Sunset Valley Lot 8',
+          templateName: 'The Tucson',
+          itemCount: 791,
+          total: 219876.23,
+          status: 'Fully Ordered',
+          type: 'build',
+          phasesOrdered: ['Foundation', 'Framing', 'Envelope', 'Interior Finish'],
+          phasesRemaining: [],
+          orderCount: 4
+        }
+      ];
+      
+      // Sort by date (newest first)
+      builds.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      
+      // Update builds count in quick actions
+      const buildsCountEl = document.getElementById('builds-count');
+      if (buildsCountEl) {
+        buildsCountEl.textContent = builds.filter(b => b.status !== 'Fully Ordered').length;
+      }
+      
+      buildsContainer.innerHTML = renderBuildsTable(builds);
+    }
+    
+    // Render builds table
+    function renderBuildsTable(builds) {
+      if (builds.length === 0) {
+        return `
+          <div class="card">
+            <div class="card-body empty-state-card">
+              <p class="empty-state-title">No builds yet</p>
+              <p class="empty-state-text">Start your first build by selecting a template.</p>
+            </div>
+          </div>
+        `;
+      }
+      
+      return `
+        <div class="orders-table-wrapper">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Build</th>
+                <th>Progress</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${builds.map(build => `
+                <tr>
+                  <td data-label="Date" class="order-date">${formatDate(build.timestamp)}</td>
+                  <td data-label="Build">
+                    <div class="order-project-name">${build.projectName}</div>
+                    <div class="order-template-details">${build.templateName}</div>
+                  </td>
+                  <td data-label="Progress">
+                    <div style="font-size: 0.875rem; color: var(--color-text-secondary);">
+                      ${build.phasesOrdered.length} of ${build.phasesOrdered.length + build.phasesRemaining.length} phases ordered
+                    </div>
+                  </td>
+                  <td data-label="Total" class="order-total">$${build.total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                  <td data-label="Status">
+                    <span class="order-status ${build.status.toLowerCase().replace(/\s+/g, '-')}">${build.status}</span>
+                  </td>
+                  <td data-label="Actions">
+                    <div class="order-actions">
+                      ${build.status === 'Configured' || build.status === 'Partially Ordered'
+                        ? `<a href="/pages/build-configurator.html?id=${build.buildId}" class="btn btn-primary btn-sm">Order Materials</a>`
+                        : `<a href="/pages/build-detail.html?id=${build.buildId}" class="btn btn-secondary btn-sm">View Details</a>`
+                      }
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    
+    // Load deliveries (Sarah only)
+    async function loadDeliveries() {
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      const deliveriesContainer = document.getElementById('deliveries-content');
+      
+      if (!deliveriesContainer) return;
+      
+      const persona = currentUser?.persona;
+      
+      // Only load deliveries for Sarah
+      if (!persona?.features?.templates) return;
+      
+      const deliveries = [
+        {
+          deliveryId: 'DEL-2024-001',
+          deliveryDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+          buildName: 'Desert Ridge Lot 12',
+          orderID: 'ORD-1234',
+          phase: 'Framing',
+          location: '123 Desert Ridge Blvd, Phoenix, AZ',
+          itemCount: 245,
+          status: 'Scheduled'
+        },
+        {
+          deliveryId: 'DEL-2024-002',
+          deliveryDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+          buildName: 'Desert Ridge Lot 12',
+          orderID: 'ORD-1235',
+          phase: 'Envelope',
+          location: '123 Desert Ridge Blvd, Phoenix, AZ',
+          itemCount: 182,
+          status: 'Scheduled'
+        },
+        {
+          deliveryId: 'DEL-2024-003',
+          deliveryDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+          buildName: 'Sunset Valley Lot 8',
+          orderID: 'ORD-1240',
+          phase: 'Interior Finish',
+          location: '456 Sunset Valley Dr, Phoenix, AZ',
+          itemCount: 156,
+          status: 'Scheduled'
+        },
+        {
+          deliveryId: 'DEL-2024-004',
+          deliveryDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          buildName: 'Desert Ridge Lot 12',
+          orderID: 'ORD-1230',
+          phase: 'Foundation',
+          location: '123 Desert Ridge Blvd, Phoenix, AZ',
+          itemCount: 120,
+          status: 'Delivered'
+        }
+      ];
+      
+      // Sort by date (soonest first)
+      deliveries.sort((a, b) => new Date(a.deliveryDate) - new Date(b.deliveryDate));
+      
+      // Update deliveries count in quick actions (upcoming this week)
+      const deliveriesCountEl = document.getElementById('deliveries-count');
+      if (deliveriesCountEl) {
+        const now = new Date();
+        const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        const thisWeek = deliveries.filter(d => {
+          const delDate = new Date(d.deliveryDate);
+          return delDate >= now && delDate <= weekFromNow && d.status === 'Scheduled';
+        });
+        deliveriesCountEl.textContent = thisWeek.length;
+      }
+      
+      deliveriesContainer.innerHTML = renderDeliveriesTable(deliveries);
+    }
+    
+    // Render deliveries table
+    function renderDeliveriesTable(deliveries) {
+      if (deliveries.length === 0) {
+        return `
+          <div class="card">
+            <div class="card-body empty-state-card">
+              <p class="empty-state-title">No deliveries scheduled</p>
+              <p class="empty-state-text">Deliveries will appear here after you order materials.</p>
+            </div>
+          </div>
+        `;
+      }
+      
+      return `
+        <div class="orders-table-wrapper">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Delivery Date</th>
+                <th>Build / Order</th>
+                <th>Phase</th>
+                <th>Location</th>
+                <th>Items</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${deliveries.map(delivery => `
+                <tr>
+                  <td data-label="Delivery Date" class="order-date">${formatDate(delivery.deliveryDate)}</td>
+                  <td data-label="Build / Order">
+                    <div class="order-project-name">${delivery.buildName}</div>
+                    <div class="order-id">${delivery.orderID}</div>
+                  </td>
+                  <td data-label="Phase">
+                    <span style="font-weight: 600;">${delivery.phase}</span>
+                  </td>
+                  <td data-label="Location">
+                    <div style="font-size: 0.875rem; color: var(--color-text-secondary);">
+                      ${delivery.location}
+                    </div>
+                  </td>
+                  <td data-label="Items">
+                    <div class="order-items">
+                      <span class="order-items-count">${delivery.itemCount} items</span>
+                    </div>
+                  </td>
+                  <td data-label="Status">
+                    <span class="order-status ${delivery.status.toLowerCase()}">${delivery.status}</span>
+                  </td>
+                  <td data-label="Actions">
+                    <div class="order-actions">
+                      ${delivery.status === 'Scheduled'
+                        ? `<button class="btn btn-secondary btn-sm" onclick="alert('Track delivery: ${delivery.deliveryId}')">Track</button>
+                           <button class="btn btn-secondary btn-sm" onclick="alert('Reschedule: ${delivery.deliveryId}')">Reschedule</button>`
+                        : `<button class="btn btn-secondary btn-sm" onclick="alert('View details: ${delivery.deliveryId}')">View Details</button>`
+                      }
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    
+    // Load orders
+    async function loadOrders() {
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      const ordersContainer = document.getElementById('orders-content');
+      
+      if (!ordersContainer) return;
+      
+      const persona = currentUser?.persona;
+      
+      // Load orders from localStorage
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('buildright_orders') || '[]');
+      } catch (e) {
+        console.error('Error loading orders:', e);
+      }
+      
+      // For Sarah, add build/phase context to orders
+      if (persona?.features?.templates) {
+        // Mock orders with build context
+        const buildsOrders = [
+          {
+            orderID: 'ORD-1234',
+            timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+            buildName: 'Desert Ridge Lot 12',
+            phase: 'Framing',
+            itemCount: 245,
+            total: 45230.00,
+            status: 'Delivered',
+            type: 'build-order'
+          },
+          {
+            orderID: 'ORD-1230',
+            timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+            buildName: 'Desert Ridge Lot 12',
+            phase: 'Foundation',
+            itemCount: 120,
+            total: 32450.00,
+            status: 'Delivered',
+            type: 'build-order'
+          },
+          {
+            orderID: 'ORD-1240',
+            timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+            buildName: 'Sunset Valley Lot 8',
+            phase: 'Interior Finish',
+            itemCount: 156,
+            total: 28900.00,
+            status: 'Processing',
+            type: 'build-order'
+          }
+        ];
+        orders = [...buildsOrders, ...orders];
+      }
+      
+      // Sort by date (newest first)
+      orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      
+      ordersContainer.innerHTML = renderOrdersTable(
+        orders,
+        'No orders yet',
+        'When you make a purchase, it will appear here.'
+      );
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
       await loadAccountInfo();
       await loadQuickActions();
       await loadPersonaNav();
+      await loadBuilds();
+      await loadDeliveries();
+      await loadOrders();
       initNavigation();
     });
   </script>

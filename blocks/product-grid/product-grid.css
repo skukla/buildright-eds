@@ -13,14 +13,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-large);
-  padding-bottom: var(--spacing-medium);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.grid-header h2 {
-  margin: 0;
-  font-size: 1.75rem;
-  color: var(--color-text);
+  /* Removed border-bottom for cleaner look */
 }
 
 /* Grid header controls for mobile filter toggle */
@@ -43,7 +36,8 @@
 
 .product-count {
   color: var(--color-text-secondary);
-  font: var(--type-body-1-default-font);
+  font-size: 0.9375rem; /* 15px - readable but not too prominent */
+  font-weight: 400;
   min-height: 24px; /* CLS prevention */
   display: block;
 }

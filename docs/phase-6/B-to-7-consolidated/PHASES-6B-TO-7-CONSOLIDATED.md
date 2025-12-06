@@ -997,9 +997,10 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
 3. Performance optimization
 4. Responsive design verification
 5. Accessibility testing
-6. Create demo walkthrough guide
-7. Bug fixes and polish
-8. Production readiness check
+6. **⭐ Component extraction & refactoring** (NEW)
+7. Create demo walkthrough guide
+8. Bug fixes and polish
+9. Production readiness check
 
 ### Task 1: Cross-Persona Testing
 
@@ -1051,7 +1052,107 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
 - ARIA labels
 - Semantic HTML
 
-### Task 5: Demo Walkthrough Guide
+### Task 5: Component Extraction & Refactoring ⭐ NEW
+
+**Duration**: 1-2 days  
+**Dependencies**: Phases 6A-6E complete  
+**Reference**: [Component Architecture Documentation](../../component-architecture/README.md)
+
+**Overview**:
+
+After building all 5 persona experiences (Phases 6A-6E), review the codebase for proven patterns that emerged and extract them into reusable components following Adobe EDS block principles.
+
+**Why Phase 7?**
+- All personas are now built - can identify what ACTUALLY repeated
+- Patterns are proven in production code, not speculative
+- Component extraction IS polish and optimization
+- Clean up frontend before moving to backend integration (Phase 8)
+
+**Task Breakdown**:
+
+**Step 1: Pattern Review** (2-3 hours)
+- Review all Phase 6 implementations (6A-6E)
+- Reference the component audit: [`component-architecture/COMPONENT-EXTRACTION-OPPORTUNITIES.md`](../../component-architecture/COMPONENT-EXTRACTION-OPPORTUNITIES.md)
+- Identify which of the 47+ identified patterns actually repeated across multiple personas
+- Document what was built multiple times vs. what was unique
+
+**Step 2: Component Classification** (1-2 hours)
+- Use the classification framework from [`component-architecture/EDS-BLOCKS-VS-COMPONENT-EXTRACTION.md`](../../component-architecture/EDS-BLOCKS-VS-COMPONENT-EXTRACTION.md)
+- Categorize proven patterns:
+  - **Utilities**: Reusable CSS classes (buttons, badges, loading states)
+  - **Shared Functions**: JavaScript utilities (quantity controls, modals, formatters)
+  - **EDS Blocks**: Content-driven components (should be rare at this stage)
+  - **Auto-blocks**: Programmatic block creation patterns
+- Focus on high-value, frequently-used patterns
+
+**Step 3: Extract High-Value Utilities** (3-4 hours)
+- Extract 3-5 proven CSS utilities to `styles/utilities.css`
+- Document in `docs/standards/CSS-ARCHITECTURE.md`
+- Examples might include:
+  - Consistent card patterns
+  - Loading spinner variants
+  - Status badge styles
+  - Form input groups
+  - Empty state displays
+
+**Step 4: Extract Shared JavaScript Functions** (2-3 hours)
+- Extract 3-5 proven JavaScript utilities to `scripts/utils.js` or create specialized utility files
+- Document in code with JSDoc comments
+- Examples might include:
+  - Product list filtering/sorting
+  - Quantity increment/decrement
+  - Price formatting
+  - Date/time utilities
+  - Modal/dialog helpers
+
+**Step 5: Create EDS Block Content Models** (1-2 hours) - OPTIONAL
+- **ONLY if patterns emerged that authors should control**
+- Create 1-2 block content models (JSON definitions)
+- Document block authoring in [`docs/phase-10-authoring/`](../../phase-10-authoring/)
+- Likely candidates:
+  - Info cards (if repeated across personas)
+  - Educational content panels
+  - Package comparison layouts
+
+**Step 6: Refactor Duplicate Code** (2-3 hours)
+- Replace duplicate implementations with extracted components
+- Test each persona after refactoring
+- Ensure no regressions
+
+**Step 7: Update Documentation** (1 hour)
+- Update [`component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md`](../../component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md) with what was extracted
+- Update [`component-architecture/COMPONENT-EXTRACTION-ROADMAP.md`](../../component-architecture/COMPONENT-EXTRACTION-ROADMAP.md) for future extractions
+- Document in [`docs/standards/CSS-ARCHITECTURE.md`](../../docs/standards/CSS-ARCHITECTURE.md)
+- Add notes to [`docs/standards/COMPONENT-DESIGN-LIBRARY.md`](../../docs/standards/COMPONENT-DESIGN-LIBRARY.md)
+
+**Success Criteria**:
+- [ ] Reviewed all Phase 6 implementations
+- [ ] Classified proven patterns using EDS framework
+- [ ] Extracted 3-5 high-value CSS utilities
+- [ ] Extracted 3-5 shared JavaScript functions
+- [ ] Created 1-2 EDS block content models (if applicable)
+- [ ] Refactored duplicate code to use extracted components
+- [ ] All personas still working after refactoring
+- [ ] Component documentation updated
+- [ ] No regressions introduced
+
+**What NOT to Extract**:
+- ❌ Persona-specific logic (keep this in persona configs)
+- ❌ One-off patterns that only appear once
+- ❌ Patterns that might change significantly
+- ❌ Premature abstractions
+
+**Key Principle**:
+> **Rule of Three**: Only extract patterns that appeared in at least 3 different places. Otherwise, duplication is acceptable.
+
+**Reference Documents**:
+- 📚 [Component Architecture README](../../component-architecture/README.md) - Master index
+- 📊 [Component Extraction Opportunities](../../component-architecture/COMPONENT-EXTRACTION-OPPORTUNITIES.md) - Full audit
+- 🎯 [EDS Blocks vs Component Extraction](../../component-architecture/EDS-BLOCKS-VS-COMPONENT-EXTRACTION.md) - Classification guide
+- 📋 [Component Extraction Quick Reference](../../component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md) - Lookup table
+- 🗺️ [Component Extraction Roadmap](../../component-architecture/COMPONENT-EXTRACTION-ROADMAP.md) - Planning doc
+
+### Task 6: Demo Walkthrough Guide
 
 **File**: `docs/DEMO-WALKTHROUGH.md`
 
@@ -1119,7 +1220,7 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
    - **Checkout shows San Antonio shipping address** ⭐
    - **Explain: "Order fulfilled from BuildRight's Phoenix warehouse via MSI"** ⭐
 
-### Task 6: Bug Tracking & Fixes
+### Task 7: Bug Tracking & Fixes
 
 **Bug Categories**:
 - Critical (blocks core functionality)
@@ -1148,6 +1249,8 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
 ✅ Mock ACO service functions correctly  
 ✅ Customer group pricing displays throughout  
 ✅ CCDM filtering demonstrated clearly  
+✅ **⭐ High-value components extracted and documented** (NEW)  
+✅ **⭐ Duplicate code refactored to use shared components** (NEW)  
 ✅ Performance targets met  
 ✅ Mobile responsive  
 ✅ Accessibility compliant  
@@ -1163,12 +1266,23 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
 - [ ] `docs/ACCESSIBILITY-AUDIT.md`
 - [ ] `docs/BROWSER-COMPATIBILITY.md`
 - [ ] `docs/KNOWN-ISSUES.md`
+- [ ] **⭐ Updated `docs/component-architecture/` documentation** (NEW)
+
+**Component Extraction** (NEW):
+- [ ] Extracted CSS utilities in `styles/utilities.css`
+- [ ] Extracted JavaScript utilities in `scripts/utils.js` (or specialized files)
+- [ ] EDS block content models (if applicable)
+- [ ] Updated `docs/standards/CSS-ARCHITECTURE.md`
+- [ ] Updated `docs/standards/COMPONENT-DESIGN-LIBRARY.md`
+- [ ] Updated `docs/component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md`
+- [ ] Updated `docs/component-architecture/COMPONENT-EXTRACTION-ROADMAP.md`
 
 **Testing**:
 - [ ] Test results for all personas
 - [ ] Performance test results
 - [ ] Accessibility audit results
 - [ ] Browser compatibility matrix
+- [ ] **⭐ Regression tests after component refactoring** (NEW)
 
 ---
 

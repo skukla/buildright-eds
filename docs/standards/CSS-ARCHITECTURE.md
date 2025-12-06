@@ -51,6 +51,195 @@ Use descriptive, reusable class names:
 - `.catalog-layout` - Catalog grid layout
 - `.section-compact` - Section with reduced padding
 
+## Standard Page Structure
+
+All pages should follow this consistent HTML structure:
+
+### HTML Template
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title - BuildRight Solutions</title>
+  
+  <!-- Critical initialization -->
+  <script src="../scripts/critical-init.js"></script>
+  <script type="module" src="../scripts/scripts.js"></script>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../styles/styles.css">
+  <link rel="stylesheet" href="../styles/page-specific.css">
+</head>
+<body class="page-{name}">
+  
+  <!-- Header (loaded dynamically) -->
+  <header></header>
+  
+  <main>
+    <!-- Breadcrumbs (consistent across all pages) -->
+    <div class="breadcrumbs">
+      <div><div><a href="../index.html">Home</a></div></div>
+      <div><div>Page Name</div></div>
+    </div>
+    
+    <!-- Main content in standard section/container wrapper -->
+    <section class="section">
+      <div class="container">
+        
+        <!-- Page header with consistent structure -->
+        <h1>Page Title</h1>
+        
+        <!-- Page-specific content -->
+        <div class="page-content">
+          <!-- Content here -->
+        </div>
+        
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer (loaded dynamically) -->
+  <footer></footer>
+  
+  <script type="module" src="../scripts/page-name.js"></script>
+</body>
+</html>
+```
+
+### Key Elements
+
+1. **Page Title (H1)**: Every page MUST have exactly one h1
+   - Improves accessibility
+   - Better SEO
+   - Clear page hierarchy
+
+2. **Breadcrumbs**: Consistent navigation path
+   - Always first element in `<main>`
+   - Uses standard `.breadcrumbs` class
+
+3. **Section/Container**: Standard wrapper pattern
+   - `.section` provides vertical padding
+   - `.container` provides max-width and horizontal padding
+   - Consistent across all pages
+
+### Page Header Utilities
+
+Use these standard classes (defined in `utilities.css`):
+
+```css
+.page-header {
+  margin-bottom: var(--spacing-xlarge);
+}
+
+.page-subtitle {
+  font: var(--type-body-1-default-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.section-header {
+  margin: 0 0 var(--spacing-small) 0;
+}
+
+.section-description {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-large) 0;
+}
+```
+
+**Example usage:**
+
+```html
+<div class="page-header">
+  <h1>Account Dashboard</h1>
+  <p class="page-subtitle">Manage your account and preferences</p>
+</div>
+
+<div class="section-block">
+  <h2 class="section-header">Company Information</h2>
+  <p class="section-description">View your company details and primary warehouse.</p>
+  <!-- Section content -->
+</div>
+```
+
+### Design System Tokens
+
+**Always use design system tokens, never hardcode values:**
+
+#### Spacing
+```css
+/* ❌ Bad */
+margin: 24px;
+gap: 3rem;
+
+/* ✅ Good */
+margin: var(--spacing-large);      /* 24px */
+gap: var(--spacing-xxlarge);       /* 48px */
+```
+
+#### Typography
+```css
+/* ❌ Bad */
+font-size: 1.5rem;
+font-weight: 600;
+
+/* ✅ Good */
+font: var(--type-headline-2-font);  /* Includes size, weight, line-height */
+```
+
+#### Colors
+```css
+/* ❌ Bad */
+color: #64748B;
+background: #0f5ba7;
+
+/* ✅ Good */
+color: var(--color-text-secondary);
+background: var(--color-brand-500);
+```
+
+#### Layout
+```css
+/* ❌ Bad */
+max-width: 1280px;
+grid-template-columns: 250px 1fr;
+
+/* ✅ Good */
+max-width: var(--container-max-width);
+grid-template-columns: var(--sidebar-width-narrow) 1fr;
+```
+
+### Available Design Tokens
+
+**Spacing** (`base.css`):
+- `--spacing-xsmall`: 4px
+- `--spacing-small`: 8px
+- `--spacing-medium`: 16px
+- `--spacing-large`: 24px
+- `--spacing-xlarge`: 32px
+- `--spacing-xxlarge`: 48px
+
+**Sidebar Widths** (`base.css`):
+- `--sidebar-width-narrow`: 250px (for navigation menus)
+- `--sidebar-width-standard`: 360px (for order summaries, detailed panels)
+
+**Typography** (`base.css`):
+- `--type-headline-1-font`: Page titles (32px, weight 700)
+- `--type-headline-2-font`: Section headers (24px, weight 600)
+- `--type-body-1-default-font`: Normal text (16px, weight 400)
+- `--type-body-2-default-font`: Small text (14px, weight 400)
+
+**Colors** (`base.css`):
+- `--color-brand-500`: Primary brand color
+- `--color-text`: Primary text color
+- `--color-text-secondary`: Secondary text color
+- `--color-surface`: Card/panel backgrounds
+- `--color-border`: Borders and dividers
+
 ## CSS File Structure
 
 ### Core Styles (Load Order)

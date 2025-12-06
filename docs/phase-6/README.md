@@ -229,6 +229,7 @@ await projectManager.deleteProject(id)
 **Architecture**:
 - [../standards/CSS-ARCHITECTURE.md](../standards/CSS-ARCHITECTURE.md) - Design system
 - [../standards/COMPONENT-DESIGN-LIBRARY.md](../standards/COMPONENT-DESIGN-LIBRARY.md) - Reusable components
+- [../component-architecture/](../component-architecture/) - Component extraction strategy (implemented in Phase 7)
 
 **Testing**:
 - [../testing/](../testing/) - Testing strategies
@@ -274,9 +275,12 @@ await projectManager.deleteProject(id)
 **Q: Where are the wireframes/designs?**  
 **A**: Embedded in each phase's documentation. See Sarah's implementation guide for complete UX flows.
 
+**Q: When should we extract components and refactor duplicate code?**  
+**A**: In **Phase 7** (Integration & Polish), after all personas are built. Component extraction requires seeing proven patterns across all implementations. Reference: [../component-architecture/](../component-architecture/)
+
 ---
 
-**Last Updated**: 2024-11-25  
+**Last Updated**: 2024-12-06  
 **Status**: Phase 6-0-Foundation Complete, 6A In Progress  
 **Next Milestone**: Complete Phase 6A Sarah Dashboard Redesign
 

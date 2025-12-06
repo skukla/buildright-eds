@@ -52,16 +52,56 @@
 }
 
 .section-title {
-  font: var(--type-headline-2-font);
+  font-size: 1.25rem;
+  font-weight: 700; /* Standardized to match design system H2 */
   color: var(--color-text);
   margin: 0 0 var(--spacing-medium) 0;
-  padding: var(--spacing-small) var(--spacing-medium);
-  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
-  border-bottom: 2px solid var(--color-brand-500);
-  border-radius: var(--shape-border-radius-2) var(--shape-border-radius-2) 0 0;
+  padding: var(--spacing-medium) var(--spacing-large); /* Increased for better breathing room (16px 24px) */
+  background: white; /* White background for middle sections */
+  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border); /* Add subtle top border for definition */
+  border-radius: var(--shape-border-radius-4) var(--shape-border-radius-4) 0 0; /* Matches section container (12px) */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow to lift off gray background */
   margin-left: calc(var(--spacing-large) * -1);
   margin-right: calc(var(--spacing-large) * -1);
   margin-top: calc(var(--spacing-large) * -1);
+}
+
+/* Top gradient - first section only (Build Details) */
+#build-info-section .section-title {
+  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
+  border-bottom: 2px solid var(--color-brand-500);
+  border-top: none; /* No top border for gradient section */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Bottom gradient - applied to content of last section (Construction Phases) */
+#phases-section {
+  position: relative;
+  padding-bottom: var(--spacing-xxlarge); /* Extra bottom padding to separate content from gradient */
+}
+
+#phases-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px; /* Slightly taller gradient */
+  background: linear-gradient(to top, #EBF4FB 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: 0 0 var(--shape-border-radius-4) var(--shape-border-radius-4);
+  z-index: 0;
+  will-change: auto;
+}
+
+/* White variant support */
+body.white-variant .section-title {
+  background: var(--color-surface); /* Invert: gray background for middle sections */
+}
+
+body.white-variant #build-info-section .section-title {
+  background: linear-gradient(to bottom, #EBF4FB 0%, var(--color-surface) 100%);
 }
 
 .section-description {
@@ -136,9 +176,9 @@
   display: flex;
   gap: var(--spacing-medium);
   padding: var(--spacing-medium);
-  background: var(--color-surface);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--shape-border-radius-2);
+  background: var(--color-surface-nested); /* Level 2: Ultra-light for nested card */
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3); /* Matches standard card radius */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -201,16 +241,19 @@
 
 .selection-grid {
   display: grid;
-  gap: var(--spacing-medium);
+  gap: var(--spacing-large);
 }
 
 .selection-grid-variants,
 .selection-grid-packages {
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .selection-grid-phases {
   grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-large);
+  position: relative;
+  z-index: 1;
 }
 
 /* ============================================
@@ -220,44 +263,52 @@
 
 .selection-tile {
   position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--shape-border-radius-2);
+  border: 2px solid var(--color-border); /* Stronger border for better definition */
+  border-radius: var(--shape-border-radius-3); /* 8px - matches standard card radius */
   overflow: hidden;
   cursor: pointer;
-  transition: all var(--transition-base);
-  background: var(--color-surface);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  background: white; /* White background to stand out on gray page */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Stronger shadow */
 }
 
 .selection-tile:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px); /* Subtle lift */
+  border-color: var(--color-brand-500); /* Brand color on hover */
 }
 
 /* Selected state - checkmark badge */
 .selection-tile[data-selected="true"] {
-  border: 2px solid var(--color-brand-500);
-  box-shadow: 0 2px 8px rgba(15, 91, 167, 0.15);
+  border: 3px solid var(--color-brand-500); /* Thicker border for selected state */
+  box-shadow: 0 4px 12px rgba(15, 91, 167, 0.2); /* Stronger shadow for selected */
 }
 
 .selection-tile[data-selected="true"]::after {
-  content: '✓';
+  content: '';
   position: absolute;
   top: var(--spacing-small);
-  right: var(--spacing-small);
-  width: 32px;
-  height: 32px;
+  left: var(--spacing-small);
+  width: 40px;
+  height: 40px;
   background: var(--color-brand-500);
-  color: white;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.125rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), 0 0 0 3px white;
   z-index: 3;
   animation: checkmarkFadeIn 0.2s ease;
+}
+
+.selection-tile[data-selected="true"]::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--spacing-small) + 11px);
+  left: calc(var(--spacing-small) + 14px);
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  z-index: 4;
 }
 
 @keyframes checkmarkFadeIn {
@@ -272,37 +323,33 @@
 }
 
 /* Photo Tile Variant (for variants, packages) */
+/* Photo tile variant - uses shared .photo-tile from components.css */
 .selection-tile-photo {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  /* Inherits from .photo-tile and .photo-tile--selection in components.css */
+  min-height: 240px;
 }
 
+/* Hide the overlay element (gradient is on content) */
 .selection-tile-photo .tile-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
-  padding: var(--spacing-large) var(--spacing-medium) var(--spacing-medium);
-  color: white;
+  display: none;
 }
 
+/* Typography uses shared .photo-tile__* classes from components.css */
 .selection-tile-photo .tile-title {
-  font: var(--type-body-1-strong-font);
-  color: white;
-  margin: 0 0 var(--spacing-xsmall) 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  /* Inherits from .photo-tile__title */
 }
 
 .selection-tile-photo .tile-description {
-  font: var(--type-body-2-default-font);
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0 0 var(--spacing-small) 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  /* Inherits from .photo-tile__description */
 }
 
 .selection-tile-photo .tile-price {
-  font: var(--type-body-1-strong-font);
+  /* Inherits from .photo-tile__price */
+}
+
+.selection-tile-photo .tile-price {
+  font-weight: 700;
+  font-size: 1rem;
   color: var(--color-accent-300);
   margin: 0;
 }
@@ -376,16 +423,22 @@
 }
 
 .summary-title {
-  font: var(--type-headline-2-font);
+  font-size: 1.25rem;
+  font-weight: 700; /* Standardized to match design system H2 */
   color: var(--color-text);
   margin: 0 0 var(--spacing-medium) 0;
-  padding: var(--spacing-small) var(--spacing-medium);
-  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
+  padding: var(--spacing-medium) var(--spacing-large); /* Increased for better breathing room (16px 24px) */
+  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%); /* Keep gradient - top element */
   border-bottom: 2px solid var(--color-brand-500);
-  border-radius: var(--shape-border-radius-2) var(--shape-border-radius-2) 0 0;
+  border-radius: var(--shape-border-radius-4) var(--shape-border-radius-4) 0 0; /* Matches section container (12px) */
   margin-left: calc(var(--spacing-large) * -1);
   margin-right: calc(var(--spacing-large) * -1);
   margin-top: calc(var(--spacing-large) * -1);
+}
+
+/* White variant support */
+body.white-variant .summary-title {
+  background: linear-gradient(to bottom, #EBF4FB 0%, var(--color-surface) 100%);
 }
 
 .summary-content {
@@ -434,6 +487,19 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-small);
+  padding: 1.5rem;
+  background: linear-gradient(to top, #EBF4FB 0%, white 100%); /* Bottom-up gradient like mini-cart */
+  border-top: 2px solid var(--color-border);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+  margin-left: calc(var(--spacing-large) * -1);
+  margin-right: calc(var(--spacing-large) * -1);
+  margin-bottom: calc(var(--spacing-large) * -1);
+  border-radius: 0 0 var(--shape-border-radius-4) var(--shape-border-radius-4);
+}
+
+/* White variant support */
+body.white-variant .summary-actions {
+  background: linear-gradient(to top, #EBF4FB 0%, var(--color-surface) 100%);
 }
 
 .summary-actions .btn {

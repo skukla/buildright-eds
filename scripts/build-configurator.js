@@ -158,47 +158,56 @@ class BuildConfigurator {
   renderVariantTile(variant) {
     const { id, name, description, addedCost, sqft } = variant;
     
-    // Use placeholder image based on variant type
-    const imageUrl = this.getVariantImageUrl(name);
+    // Get image data with optional background position and zoom class
+    const imageData = this.getVariantImageUrl(name);
+    const imageUrl = imageData.url;
+    const bgPosition = imageData.position || 'center';
+    
+    // Add zoom class if specified
+    const zoomClass = imageData.zoom ? `photo-tile--zoom-${imageData.zoom}` : '';
     
     return `
-      <div class="selection-tile selection-tile-photo" 
+      <div class="selection-tile selection-tile-photo photo-tile photo-tile--selection ${zoomClass}" 
            data-type="variant" 
            data-id="${id}"
            data-selected="false"
            data-cost="${addedCost}"
-           style="background-image: url('${imageUrl}')"
+           style="background-image: url('${imageUrl}'); background-position: ${bgPosition};"
            role="checkbox"
            aria-checked="false"
            tabindex="0"
            aria-label="${name}, adds ${sqft ? sqft + ' sq ft, ' : ''}$${addedCost.toLocaleString()}">
-        <div class="tile-overlay">
-          <h4 class="tile-title">${name}</h4>
-          <p class="tile-description">${description}</p>
-          <p class="tile-price">+$${addedCost.toLocaleString()}</p>
+        <div class="tile-overlay"></div>
+        <div class="tile-content photo-tile__content">
+          <h4 class="tile-title photo-tile__title">${name}</h4>
+          <p class="tile-description photo-tile__description">${description}</p>
+          <p class="tile-price photo-tile__price">+$${addedCost.toLocaleString()}</p>
         </div>
       </div>
     `;
   }
   
   getVariantImageUrl(name) {
-    // Map variant names to appropriate images
+    // Map variant names to appropriate images with optional background position and zoom class
     const imageMap = {
-      'Bonus Room': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop',
-      'Extended Garage': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
-      'Covered Patio': 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop',
-      'Home Office': 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop',
-      'Courtyard Entry': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
-      'Bonus Loft': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop',
-      'Rooftop Deck': 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop',
-      'Casita Addition': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop',
-      'Guest Casita': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop',
-      'Outdoor Living': 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop',
-      'Resort Package': 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop',
-      'Media Room': 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop'
+      'Bonus Room': { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' },
+      'Extended Garage': { 
+        url: 'https://images.unsplash.com/photo-1581044294446-9efb5910a3ba?w=900&h=600&fit=crop&q=80',
+        zoom: 'out-more'
+      },
+      'Covered Patio': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
+      'Home Office': { url: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop' },
+      'Courtyard Entry': { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop' },
+      'Bonus Loft': { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' },
+      'Rooftop Deck': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
+      'Casita Addition': { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop' },
+      'Guest Casita': { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop' },
+      'Outdoor Living': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
+      'Resort Package': { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=300&fit=crop' },
+      'Media Room': { url: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop' }
     };
     
-    return imageMap[name] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop';
+    return imageMap[name] || { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' };
   }
   
   renderPackages() {
@@ -230,7 +239,7 @@ class BuildConfigurator {
     const isDefault = id === 'builders-choice';
     
     return `
-      <div class="selection-tile selection-tile-photo" 
+      <div class="selection-tile selection-tile-photo photo-tile photo-tile--selection" 
            data-type="package" 
            data-id="${id}"
            data-selected="${isDefault}"
@@ -240,10 +249,11 @@ class BuildConfigurator {
            aria-checked="${isDefault}"
            tabindex="0"
            aria-label="${name}, ${subdivisionSpecific ? 'for ' + subdivisionSpecific + ', ' : ''}${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}">
-        <div class="tile-overlay">
-          <h4 class="tile-title">${name}</h4>
-          <p class="tile-description">${description}${subdivisionSpecific ? ' (' + subdivisionSpecific + ')' : ''}</p>
-          <p class="tile-price">${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}</p>
+        <div class="tile-overlay"></div>
+        <div class="tile-content photo-tile__content">
+          <h4 class="tile-title photo-tile__title">${name}</h4>
+          <p class="tile-description photo-tile__description">${description}</p>
+          <p class="tile-price photo-tile__price">${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}</p>
         </div>
       </div>
     `;
@@ -259,6 +269,20 @@ class BuildConfigurator {
     return imageMap[tier] || imageMap['builder_grade'];
   }
   
+  getPhaseImageUrl(name) {
+    // Map phase names to appropriate construction images
+    const imageMap = {
+      // Foundation & Framing - construction worker on wooden frame
+      'Foundation & Framing': 'https://images.unsplash.com/photo-1587582423116-ec07293f0395?w=400&h=300&fit=crop',
+      // Building Envelope - roofing work (same as "Roof a House" from home page)
+      'Building Envelope': 'https://images.unsplash.com/photo-1518736346281-76873166a64a?w=400&h=300&fit=crop',
+      // Interior Finish - painting, drywall, finish work
+      'Interior Finish': 'https://images.unsplash.com/photo-1652829069968-4ded3e30f411?w=400&h=300&fit=crop'
+    };
+    
+    return imageMap[name] || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop';
+  }
+  
   renderPhases() {
     const container = document.getElementById('phases-grid');
     if (!container || !this.template) return;
@@ -267,30 +291,32 @@ class BuildConfigurator {
   }
   
   renderPhaseTile(phase) {
-    const { id, name, icon } = phase;
+    const { id, name, description } = phase;
     
     // Get estimated cost from template BOM summary
     const phaseData = this.template.bomSummary[id];
     const estimatedCost = phaseData?.estimatedCost || 0;
     
-    // Get icon SVG
-    const iconSvg = this.getPhaseIcon(icon);
+    // Use appropriate image based on phase
+    const imageUrl = this.getPhaseImageUrl(name);
     
     return `
-      <div class="selection-tile selection-tile-icon" 
+      <div class="selection-tile selection-tile-photo photo-tile photo-tile--selection" 
            data-type="phase" 
            data-id="${id}"
            data-selected="false"
            data-cost="${estimatedCost}"
+           style="background-image: url('${imageUrl}')"
            role="checkbox"
            aria-checked="false"
            tabindex="0"
            aria-label="${name}, estimated $${estimatedCost.toLocaleString()}">
-        <div class="tile-icon">
-          ${iconSvg}
+        <div class="tile-overlay"></div>
+        <div class="tile-content photo-tile__content">
+          <h4 class="tile-title photo-tile__title">${name}</h4>
+          <p class="tile-description photo-tile__description">${description}</p>
+          <p class="tile-price photo-tile__price">Est. $${estimatedCost.toLocaleString()}</p>
         </div>
-        <h4 class="tile-title">${name}</h4>
-        <p class="tile-price">Est. $${estimatedCost.toLocaleString()}</p>
       </div>
     `;
   }

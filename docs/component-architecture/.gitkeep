@@ -1,0 +1,10 @@
+# Component Architecture Documentation
+
+This folder contains all documentation related to:
+- Adobe EDS blocks and how they work
+- Component extraction opportunities (47+ identified patterns)
+- Utilities vs. Blocks decision framework
+- Implementation roadmap and priorities
+
+**Start here:** Read `README.md` for complete navigation guide.
+

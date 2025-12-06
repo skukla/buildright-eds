@@ -55,7 +55,7 @@ body.white-variant .promo-code-section {
 .promo-label {
   display: block;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600; /* Standardized: was 500, now matches form label pattern */
   color: var(--color-text-secondary);
   margin-bottom: 0.5rem;
 }
@@ -106,7 +106,7 @@ body.white-variant .promo-input {
 .promo-success {
   background: rgba(34, 197, 94, 0.1);
   color: var(--color-positive-600);
-  font-weight: 500;
+  font-weight: 400; /* Standardized: was 500, messages are informational text */
 }
 
 .promo-success svg {
@@ -116,13 +116,13 @@ body.white-variant .promo-input {
 .promo-error {
   background: rgba(239, 68, 68, 0.1);
   color: #dc2626;
-  font-weight: 500;
+  font-weight: 400; /* Standardized: was 500, messages are informational text */
 }
 
 .cart-summary-title {
   margin: 0;
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 600; /* Standardized: was 700, now matches H3/section header pattern */
   color: var(--color-text);
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
@@ -159,7 +159,7 @@ body.white-variant .summary-totals {
 }
 
 .summary-row span:first-child {
-  font-weight: 500;
+  font-weight: 400; /* Standardized: was 500, labels are secondary/regular text */
   color: var(--color-text-secondary);
 }
 

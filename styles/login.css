@@ -1,0 +1,323 @@
+/* Login Page Styles
+ * Matches account dashboard aesthetic - clean white cards on gray background
+ */
+
+/* Page background - gray like account dashboard */
+body.page-login {
+  background-color: var(--color-surface);
+}
+
+/* Login container */
+.login-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-medium) var(--section-padding-horizontal); /* Minimal top padding to maximize visible space */
+}
+
+/* Page header */
+.login-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xlarge); /* More breathing room before card */
+}
+
+.login-header h1 {
+  margin-bottom: var(--spacing-small);
+  font-weight: 700;
+}
+
+.login-header p {
+  color: var(--color-text-secondary);
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+/* Single login card wrapper */
+.login-card-single {
+  /* Wrapper is just for centering, no styles needed */
+}
+
+/* Login card - matches account dashboard cards */
+.login-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  box-shadow: var(--shape-shadow-1);
+}
+
+/* Card header - simple */
+.login-card-header {
+  padding: var(--spacing-large);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.login-card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Card body - consistent height */
+.login-card-body {
+  padding: var(--spacing-xlarge) var(--spacing-large);
+  min-height: 410px; /* Accommodate full persona info panel without shifting */
+  border-radius: var(--shape-border-radius-3) var(--shape-border-radius-3) 0 0; /* Top corners rounded since no header */
+}
+
+/* Card footer */
+.login-card-footer {
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  background: var(--color-surface-nested);
+  border-radius: 0 0 var(--shape-border-radius-3) var(--shape-border-radius-3);
+}
+
+.login-card-footer p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+}
+
+.login-card-footer a {
+  color: var(--color-brand-500);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-card-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Login tabs */
+.login-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: var(--spacing-large);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.login-tab {
+  flex: 1;
+  padding: var(--spacing-medium) var(--spacing-large);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.login-tab:hover {
+  color: var(--color-text);
+  background: var(--color-surface-nested);
+}
+
+.login-tab.active {
+  color: var(--color-brand-500);
+  font-weight: 600;
+  border-bottom-color: var(--color-brand-500);
+  background: transparent;
+}
+
+/* Tab content - consistent height with button at bottom */
+.login-tab-content {
+  display: none;
+  min-height: 350px; /* Accommodate full persona info panel without shifting */
+}
+
+.login-tab-content.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Spacer to push button to bottom */
+.login-tab-content.active > *:not(:last-child) {
+  flex-shrink: 0;
+}
+
+.login-tab-content.active > .login-form-group:last-child {
+  margin-top: auto; /* Push to bottom */
+}
+
+/* Form element - flexbox for button positioning */
+#login-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Form groups */
+.login-form-group {
+  margin-bottom: var(--spacing-medium); /* Reduced spacing */
+  flex-shrink: 0;
+}
+
+.login-form-group:last-child {
+  margin-bottom: 0;
+  margin-top: auto; /* Push last form group (button) to bottom */
+}
+
+/* Form labels */
+.login-form-label {
+  display: block;
+  margin-bottom: var(--spacing-small);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+}
+
+/* Form inputs - inset styling */
+.login-form-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--shape-border-radius-3);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-fast);
+}
+
+.login-form-input:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(15, 91, 167, 0.12);
+}
+
+.login-form-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Select dropdown */
+select.login-form-input {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+/* Checkbox group */
+.login-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.login-checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.login-checkbox-group label {
+  margin: 0;
+  font-weight: 400;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* Primary CTA button - matches site button hierarchy */
+.login-btn-primary {
+  width: 100%;
+  height: 48px;
+  padding: 0 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--color-cta-500);
+  color: white;
+  border: none;
+  border-radius: var(--shape-border-radius-3);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-fast);
+  display: inline-block;
+}
+
+.login-btn-primary:hover:not(:disabled) {
+  background: var(--color-cta-600);
+  box-shadow: 0 4px 12px rgba(237, 108, 2, 0.3);
+  transform: translateY(-1px);
+}
+
+.login-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-btn-primary:disabled {
+  background: var(--color-text-secondary);
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Persona info panel */
+.persona-info {
+  padding: var(--spacing-medium);
+  background: var(--color-surface-nested);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  margin-bottom: var(--spacing-large);
+}
+
+.persona-info-name {
+  margin: 0 0 var(--spacing-small) 0;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.persona-info-detail {
+  margin: 0 0 var(--spacing-xsmall) 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.persona-info-detail strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.persona-info-description {
+  margin: var(--spacing-small) 0 0 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-container {
+    padding: var(--spacing-large) var(--spacing-medium);
+  }
+  
+  .login-header {
+    margin-bottom: var(--spacing-large);
+  }
+  
+  .login-card-single {
+    max-width: 100%;
+  }
+  
+  .login-tabs {
+    margin-bottom: var(--spacing-medium);
+  }
+  
+  .login-tab {
+    padding: var(--spacing-small) var(--spacing-medium);
+    font-size: 0.9375rem;
+  }
+}

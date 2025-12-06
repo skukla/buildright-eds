@@ -1,278 +1,288 @@
-# Phase 6A: Sarah Martinez - Dashboard Redesign
+# Phase 6A: Sarah's Dashboard - Documentation Index
 
-**📊 Status**: 🚧 Planning Complete, Implementation Next  
-**⏱️ Timeline**: 2-3 weeks  
-**👥 Audience**: Developers implementing Sarah's persona  
-**🔗 Depends On**: [Phase 6-0-Foundation](../0-foundation/)
+**Phase Status**: In Progress  
+**Current Task**: Layout Consistency Standardization  
+**Last Updated**: December 4, 2025
 
 ---
 
 ## Overview
 
-Phase 6A implements Sarah Martinez's (Production Builder) complete dashboard redesign and materials ordering workflow.
-
-**Key Transformation**: Browsing-oriented template dashboard → Action-oriented materials ordering hub
+This folder contains all documentation related to Phase 6A of the persona implementation plan, focusing on Sarah Martinez's production builder dashboard and related pages.
 
 ---
 
-## 📁 Documents in This Folder
+## Documents in This Folder
 
-### [PHASE-6A-DASHBOARD-REDESIGN-PLAN.md](./PHASE-6A-DASHBOARD-REDESIGN-PLAN.md)
-**Reading Time**: 30-40 minutes  
-**Purpose**: Complete implementation plan for Sarah's dashboard
+### Planning & Design
 
-**Key Content**:
-- 7 sub-phases (Dashboard simplification → Integration)
-- Architecture changes (ProjectManager integration)
-- Component refactoring (template-dashboard.js)
-- New pages (templates.html, build-configurator.html, bom-review.html)
-- Success criteria & testing strategy
+1. **[PHASE-6A-DASHBOARD-REDESIGN-PLAN.md](./PHASE-6A-DASHBOARD-REDESIGN-PLAN.md)**
+   - Original design plan for Sarah's dashboard
+   - Template configuration workflow
+   - BOM generation process
+   - Material options structure
+   - Status: ✅ Mostly implemented
 
----
+### Layout Consistency (NEW - Dec 4, 2025)
 
-### [PHASE-6A-PERSONA-SARAH.md](./PHASE-6A-PERSONA-SARAH.md)
-**Reading Time**: 10-15 minutes  
-**Purpose**: Sarah's persona profile, goals, pain points
+2. **[LAYOUT-CONSISTENCY-AUDIT.md](./LAYOUT-CONSISTENCY-AUDIT.md)** ⭐ START HERE
+   - Comprehensive technical analysis
+   - Identifies all layout/typography inconsistencies
+   - Compares patterns across all pages
+   - Detailed findings with code examples
+   - **Purpose**: Understanding the problem
+   - **Audience**: Developers, architects
 
-**Key Content**:
-- Role: Production Builder (Sunset Valley Homes)
-- Primary goals: Fast materials ordering, delivery tracking
-- Pain points: Template browsing, no configuration reuse
-- BuildRight features she uses
-- Customer group: Commercial-Tier2
+3. **[VISUAL-CONSISTENCY-EXAMPLES.md](./VISUAL-CONSISTENCY-EXAMPLES.md)**
+   - Side-by-side code comparisons
+   - Before/after examples
+   - Visual pattern guides
+   - Quick reference for common patterns
+   - **Purpose**: Seeing specific examples
+   - **Audience**: Developers implementing fixes
 
----
-
-## 🔗 Foundation Reference
-
-**Before starting Phase 6A, read these foundation docs**:
-
-1. **[../0-foundation/03-SARAH-IMPLEMENTATION.md](../0-foundation/03-SARAH-IMPLEMENTATION.md)** ⭐ MUST READ
-   - Complete UX flows (5 flows)
-   - ProjectManager integration examples
-   - Design system component mapping
-   - Before/After user journey
-
-2. **[../0-foundation/02-PROJECT-MANAGER-API.md](../0-foundation/02-PROJECT-MANAGER-API.md)**
-   - Complete API reference
-   - Sarah-specific usage examples
-   - LocalStorage strategy
-
-3. **[../0-foundation/01-PROJECT-ENTITY-SCHEMA.md](../0-foundation/01-PROJECT-ENTITY-SCHEMA.md)**
-   - Project entity structure
-   - Sarah's required fields
-   - Selection packages definition
+4. **[STANDARDIZATION-ACTION-PLAN.md](./STANDARDIZATION-ACTION-PLAN.md)** ⭐ IMPLEMENTATION GUIDE
+   - Step-by-step implementation plan
+   - Critical decisions needed
+   - Time estimates per phase
+   - Testing checklist
+   - **Purpose**: Executing the fixes
+   - **Audience**: Developer implementing changes
 
 ---
 
-## 🚀 Quick Start
+## Quick Navigation
 
-### Implementation Checklist
+### If you want to...
 
-**Phase 6-0-Foundation (Prerequisite)**:
-- [ ] ProjectManager service implemented
-- [ ] LocalStorage adapter working
-- [ ] Persona config updated with terminology
-- [ ] Templates.json updated with packages
-- [ ] Tested: Can create/read/update projects
+**Understand what's inconsistent:**  
+→ Read [LAYOUT-CONSISTENCY-AUDIT.md](./LAYOUT-CONSISTENCY-AUDIT.md)
 
-**Phase 6A - Sub-Phase 1: Dashboard Simplification** (Day 1-2):
-- [ ] Simplify template-dashboard.css (remove verbose styles)
-- [ ] Simplify template-dashboard.js (remove browsing features)
-- [ ] Focus on "Start New Build" action
-- [ ] Test: Dashboard loads clean, templates show as cards
+**See specific code examples:**  
+→ Read [VISUAL-CONSISTENCY-EXAMPLES.md](./VISUAL-CONSISTENCY-EXAMPLES.md)
 
-**Phase 6A - Sub-Phase 2: Template Selection Page** (Day 2-3):
-- [ ] Create pages/templates.html
-- [ ] Use .grid .grid-3 for layout
-- [ ] Large images, clean spacing
-- [ ] "Start New Build" buttons
-- [ ] Test: Template selection works
+**Fix the issues:**  
+→ Follow [STANDARDIZATION-ACTION-PLAN.md](./STANDARDIZATION-ACTION-PLAN.md)
 
-**Phase 6A - Sub-Phase 3: Build Configurator** (Day 4-7):
-- [ ] Create pages/build-configurator.html
-- [ ] Create scripts/builders/project-configurator.js
-- [ ] Implement sidebar layout (.catalog-layout)
-- [ ] Variant selection (visual tiles)
-- [ ] Package selection (card grid)
-- [ ] Additional upgrades (checkboxes)
-- [ ] ProjectManager integration (create, update config)
-- [ ] Test: Full configuration flow
-
-**Phase 6A - Sub-Phase 4: BOM Generation** (Day 8-9):
-- [ ] Update scripts/builders/template-builder.js
-- [ ] Accept Project entity as input
-- [ ] Apply selection package SKU mappings
-- [ ] Apply additional upgrades
-- [ ] Filter by selected phases
-- [ ] ProjectManager.saveBOM() integration
-- [ ] Test: BOM generates correctly
-
-**Phase 6A - Sub-Phase 5: My Builds Dashboard** (Day 10-12):
-- [ ] Create dashboard view for "My Builds"
-- [ ] Use .orders-table for builds list
-- [ ] Show project info (name, template, orders)
-- [ ] "Order Materials" button per build
-- [ ] Phase selection modal
-- [ ] ProjectManager.getProjectsByType('template')
-- [ ] Test: Dashboard shows real builds
-
-**Phase 6A - Sub-Phase 6: BOM Review Page** (Day 12-14):
-- [ ] Create pages/bom-review.html
-- [ ] Reuse .simple-list-* components
-- [ ] Group by phase & category
-- [ ] Edit quantities
-- [ ] Add to cart flow
-- [ ] ProjectManager.addOrder() after checkout
-- [ ] Test: Complete order flow
-
-**Phase 6A - Sub-Phase 7: Integration & Polish** (Day 14-15):
-- [ ] Header navigation updates
-- [ ] Breadcrumbs on all pages
-- [ ] Success/error messages
-- [ ] Loading states
-- [ ] Mobile responsive testing
-- [ ] Cross-browser testing
-- [ ] Performance optimization
+**Review original Sarah dashboard plan:**  
+→ Read [PHASE-6A-DASHBOARD-REDESIGN-PLAN.md](./PHASE-6A-DASHBOARD-REDESIGN-PLAN.md)
 
 ---
 
-## 🎯 Key Features
+## Key Findings Summary
 
-### 1. Template Selection
-- Clean 3-column grid
-- Large images (4:3 aspect ratio)
-- Key specs visible
-- "Start New Build" CTA
+### Main Issues Discovered
 
-### 2. Build Configurator
-- **Sidebar**: Template info, nav, pricing summary
-- **Main Content**: 3 panels
-  - Panel 1: Variant selection (visual tiles)
-  - Panel 2: Selection package (card grid)
-  - Panel 3: Additional upgrades (checkboxes with recommendations)
-- **Footer**: Cancel, Save Build buttons
+1. **Account Dashboard** (`pages/account.html`)
+   - ❌ Heavy use of inline styles
+   - ❌ Inline `<style>` block in HTML
+   - ❌ Hardcoded values instead of design tokens
+   - ❌ Inline layout grids
 
-### 3. Selection Packages ⭐
-Pre-defined material combinations (industry standard):
-- Builder's Choice (standard, $0)
-- Desert Ridge Premium (subdivision-specific, +$18K)
-- Sunset Valley Executive (subdivision-specific, +$35K)
+2. **Template Dashboard** (`pages/dashboard-templates.html`)
+   - ⚠️ Custom max-width (1600px) not using design token
+   - ⚠️ Custom container class instead of standard pattern
 
-Each package includes: Windows, Doors, Roofing, Siding, Interior finishes
+3. **Catalog Page** (`pages/catalog.html`)
+   - ❌ Missing h1 (accessibility issue)
 
-### 4. Phase-Based Ordering
-- Modal: Select which phases to order
-- BOM Review: Filtered to selected phases
-- Grouped by: Phase → Category → Products
-- Track: What's ordered vs. what's remaining
+### Pages That Are Good Examples
 
-### 5. Build Cloning
-- Duplicate existing build configuration
-- Update: Name, lot number, delivery address
-- Order materials in minutes
+✅ **Build Configurator** (`pages/build-configurator.html`)
+- Proper external CSS
+- Uses design system tokens
+- Clean HTML structure
+- Good patterns to follow
+
+✅ **BOM Review** (`pages/bom-review.html`)
+- Same as build configurator
+- Consistent with design system
+- Good patterns to follow
 
 ---
 
-## 🎨 Design System Compliance
+## Recommendations
 
-**Zero New CSS Required!**
+### Priority 1: Remove Inline Styles (HIGH)
 
-All components reuse existing patterns:
+**Account Dashboard needs:**
+- Remove `<style>` block from HTML
+- Remove all `style="..."` attributes
+- Create proper CSS file
+- Use design system tokens
 
-| Screen | Pattern | File Reference |
-|--------|---------|----------------|
-| Dashboard Landing | `.grid .grid-3` + `.card` | `pages/account.html` |
-| Template Selection | `.grid .grid-3` + `.card` | Clean, simple cards |
-| Build Configurator | `.catalog-layout` | `pages/catalog.html` |
-| BOM Review | `.simple-list-*` | Existing components |
-| Builds Table | `.orders-table` | `pages/order-history.html` |
+**Estimated Time:** 1.5 hours
 
 ---
 
-## 📊 Success Criteria
+### Priority 2: Standardize Containers (MEDIUM)
 
-### Technical
-- [ ] All new pages render correctly
-- [ ] ProjectManager integration works
-- [ ] Projects persist across sessions
-- [ ] BOM generation accurate
-- [ ] Order flow complete
-- [ ] No console errors
-- [ ] No linter errors
+**All pages should:**
+- Use consistent max-width approach
+- Use design system tokens
+- Follow standard `.section` → `.container` pattern
 
-### UX
-- [ ] Dashboard is action-oriented (not browsing)
-- [ ] Configuration is intuitive
-- [ ] Build cloning works
-- [ ] Phase ordering is clear
-- [ ] Materials tracking visible
-- [ ] Sales rep info accessible
+**Estimated Time:** 1 hour
 
-### Performance
-- [ ] Page load < 2s
-- [ ] Interactions < 100ms
-- [ ] No layout shift
+---
+
+### Priority 3: Fix Accessibility (HIGH)
+
+**Catalog page needs:**
+- Add h1 element
+
+**Estimated Time:** 15 minutes
+
+---
+
+### Priority 4: Create Global Utilities (LOW)
+
+**Add to design system:**
+- `.page-subtitle` class
+- `.section-description` class
+- Sidebar width tokens
+
+**Estimated Time:** 30 minutes
+
+---
+
+## Implementation Status
+
+### Completed ✅
+- Analysis and audit complete
+- Documentation written
+- Action plan defined
+
+### In Progress 🔄
+- Awaiting decisions on standards
+- Ready to implement fixes
+
+### Blocked ⏸️
+- Need decisions on:
+  1. Container max-width approach
+  2. Section header style preference
+  3. Page structure standard
+  4. Sidebar width standards
+
+---
+
+## Critical Decisions Needed
+
+Before implementation can proceed, decide:
+
+### Decision 1: Container Max-Width
+- [ ] **Option A**: Enforce `1280px` everywhere (simplest)
+- [ ] **Option B**: Allow wider containers via modifier classes (flexible)
+
+### Decision 2: Section Headers
+- [ ] **Option A**: Plain h2 everywhere (simplest)
+- [ ] **Option B**: Gradient headers for complex pages only (flexible)
+- [ ] **Option C**: Gradient headers everywhere (consistent)
+
+### Decision 3: Page Structure
+- [ ] **Option A**: Standard EDS `.section` → `.container` pattern (recommended)
+- [ ] **Option B**: Custom container per page (flexible)
+
+### Decision 4: Sidebar Widths
+- [ ] **Option A**: Single standard width (`360px`)
+- [ ] **Option B**: Two standards (recommended)
+  - `250px` for navigation
+  - `360px` for summaries
+
+---
+
+## Files Affected
+
+### To Be Created (1)
+- `styles/dashboards/account-dashboard.css`
+
+### To Be Modified (5)
+- `pages/account.html`
+- `pages/catalog.html`
+- `styles/dashboards/template-dashboard.css`
+- `styles/utilities.css`
+- `styles/base.css` (optional)
+
+### Documentation (1)
+- `docs/standards/CSS-ARCHITECTURE.md`
+
+---
+
+## Time Estimate
+
+**Total Implementation Time:** 4-6 hours
+
+| Phase | Time |
+|-------|------|
+| Create CSS file | 30 min |
+| Update account HTML | 1 hour |
+| Update template dashboard | 30 min |
+| Add utilities | 30 min |
+| Fix catalog | 15 min |
+| Testing | 1 hour |
+| Documentation | 30 min |
+
+---
+
+## Success Criteria
+
+Implementation complete when:
+
+- [ ] Zero inline `style="..."` attributes
+- [ ] Zero `<style>` blocks in HTML
+- [ ] All pages use design system tokens
+- [ ] Consistent heading sizes
+- [ ] Consistent spacing
+- [ ] All pages have h1
 - [ ] Mobile responsive
+- [ ] CSS organized and commented
+- [ ] Documentation updated
 
 ---
 
-## 🧪 Testing Strategy
+## Related Documentation
 
-### Unit Tests
-- ProjectManager CRUD operations
-- BOM generation logic
-- Package SKU mapping
+### Design System
+- `styles/base.css` - Design tokens and variables
+- `styles/components.css` - Reusable component styles
+- `docs/standards/CSS-ARCHITECTURE.md` - CSS organization guide
 
-### Integration Tests
-- Complete configuration flow
-- Order placement flow
-- Build cloning flow
+### Phase 6 Planning
+- `docs/personas/PERSONA-IMPLEMENTATION-PLAN.md` - Overall persona plan
+- `docs/phase-6/` - Other persona implementation docs
 
-### E2E Tests
-- Sarah logs in
-- Selects template
-- Configures build
-- Saves build
-- Orders materials
-- Views dashboard
+### Testing
+- `docs/testing/` - Testing guidelines and checklists
 
 ---
 
-## 🔗 Related Documentation
+## Change Log
 
-**Foundation**:
-- [../0-foundation/](../0-foundation/) - Project entity & API
+### December 4, 2025
+- Created layout consistency audit
+- Identified all inconsistencies across pages
+- Documented recommended patterns
+- Created action plan for standardization
 
-**Personas**:
-- [../../personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](../../personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md) - Sarah's flow
-
-**Design System**:
-- [../../standards/CSS-ARCHITECTURE.md](../../standards/CSS-ARCHITECTURE.md)
-- [../../standards/COMPONENT-DESIGN-LIBRARY.md](../../standards/COMPONENT-DESIGN-LIBRARY.md)
-
----
-
-## ❓ FAQ
-
-**Q: Do I need to read the foundation docs first?**  
-**A**: YES! Especially [03-SARAH-IMPLEMENTATION.md](../0-foundation/03-SARAH-IMPLEMENTATION.md). It has all the UX flows and code examples.
-
-**Q: Can I create new CSS classes?**  
-**A**: No! Reuse existing design system components. Zero new CSS is the goal.
-
-**Q: How do I test ProjectManager integration?**  
-**A**: Use `projectDemo.createSampleProjects()` in browser console. See [0-foundation/05-IMPLEMENTATION-PLAN.md](../0-foundation/05-IMPLEMENTATION-PLAN.md).
-
-**Q: What about the old template-dashboard?**  
-**A**: Simplify it! Remove browsing features, make it action-oriented. See [PHASE-6A-DASHBOARD-REDESIGN-PLAN.md](./PHASE-6A-DASHBOARD-REDESIGN-PLAN.md) Sub-Phase 1.
-
-**Q: Where are the selection packages defined?**  
-**A**: In `data/templates.json`. See [0-foundation/06-COLLABORATIVE-REVIEW.md](../0-foundation/06-COLLABORATIVE-REVIEW.md) Question 9.
+### [Previous Dates]
+- See git history for earlier changes
 
 ---
 
-**Last Updated**: 2024-11-25  
-**Status**: Ready for Implementation  
-**Next Step**: Start with Sub-Phase 1 (Dashboard Simplification)
+## Contact
 
+Questions about this phase? See:
+- **Technical questions**: Review `LAYOUT-CONSISTENCY-AUDIT.md`
+- **Implementation**: Follow `STANDARDIZATION-ACTION-PLAN.md`
+- **Examples**: Check `VISUAL-CONSISTENCY-EXAMPLES.md`
+
+---
+
+## Quick Start for Implementer
+
+1. ✅ **Read** `LAYOUT-CONSISTENCY-AUDIT.md` (10 min)
+2. 📋 **Review** `VISUAL-CONSISTENCY-EXAMPLES.md` (10 min)
+3. ✏️ **Make decisions** on the 4 critical choices
+4. 🚀 **Follow** `STANDARDIZATION-ACTION-PLAN.md` phase by phase
+5. ✔️ **Test** against success criteria
+6. 📚 **Update** documentation when complete

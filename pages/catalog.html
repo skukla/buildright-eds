@@ -23,17 +23,55 @@
         <div><a href="../index.html">Home</a></div>
       </div>
       <div>
-        <div>Products</div>
+        <div id="breadcrumb-category">All Products</div>
       </div>
     </div>
 
     <section class="section section-compact">
       <div class="container">
+        <h1 id="catalog-title">All Products</h1>
+        
         <div class="catalog-layout" id="catalog-layout">
           <!-- Catalog Loading Overlay -->
           <div class="catalog-loading-overlay" id="catalog-loading">
             <div class="loading-spinner loading-spinner-sm"></div>
             <p style="margin-top: var(--spacing-medium); color: var(--color-text-secondary);">Loading catalog...</p>
+          </div>
+          
+          <!-- Search and Sort Bar (spans full width) -->
+          <div class="catalog-controls-wrapper" style="visibility: hidden;">
+            <div class="catalog-controls">
+              <div class="catalog-search">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input 
+                  type="search" 
+                  id="catalog-search-input" 
+                  class="catalog-search-input" 
+                  placeholder="Search products..."
+                  aria-label="Search products"
+                />
+                <button class="search-clear" id="search-clear" aria-label="Clear search" style="display: none;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              
+              <div class="catalog-sort">
+                <label for="catalog-sort-select" class="sort-label">Sort by:</label>
+                <select id="catalog-sort-select" class="catalog-sort-select">
+                  <option value="relevance">Best Match</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="name-asc">Name: A to Z</option>
+                  <option value="name-desc">Name: Z to A</option>
+                </select>
+              </div>
+            </div>
           </div>
           
           <!-- Filters Sidebar -->
@@ -162,7 +200,6 @@
                   <div class="grid-header">
                     <div class="grid-header-controls">
                       <button class="btn btn-secondary btn-sm" id="mobile-filter-toggle">Filters</button>
-                      <h2>Products</h2>
                     </div>
                     <div class="product-count" style="visibility: hidden;">0 products</div>
                   </div>
@@ -182,6 +219,140 @@
   <footer></footer>
 
   <script type="module">
+    import { parseCatalogPath } from '../scripts/url-router.js';
+    
+    // Category display names (matches filter labels)
+    const categoryNames = {
+      'structural_materials': 'Structural Materials',
+      'windows_doors': 'Windows & Doors',
+      'fasteners_hardware': 'Fasteners & Hardware',
+      'roofing': 'Roofing',
+      'framing_drywall': 'Framing & Drywall',
+      'paint': 'Paint',
+      'flooring': 'Flooring',
+      'plumbing': 'Plumbing',
+      'electrical': 'Electrical'
+    };
+    
+    // Update page title, breadcrumb, and search placeholder based on active category
+    const updateCatalogTitle = (selectedCategories = null) => {
+      const catalogTitle = document.getElementById('catalog-title');
+      const breadcrumbCategory = document.getElementById('breadcrumb-category');
+      const searchInput = document.getElementById('catalog-search-input');
+      
+      let displayName = 'All Products';
+      let searchPlaceholder = 'Search products...';
+      
+      // If categories are provided (from filter event), use those
+      if (selectedCategories && selectedCategories.length > 0) {
+        if (selectedCategories.length === 1) {
+          // Single category selected
+          displayName = categoryNames[selectedCategories[0]] || selectedCategories[0];
+          searchPlaceholder = `Search ${displayName.toLowerCase()}...`;
+        } else {
+          // Multiple categories selected - show count
+          displayName = `${selectedCategories.length} Categories`;
+          searchPlaceholder = 'Search selected categories...';
+        }
+      } else {
+        // Parse clean URL path (e.g., /catalog/structural-materials)
+        const catalogPath = parseCatalogPath(window.location.pathname);
+        
+        if (catalogPath.type === 'category' && catalogPath.value) {
+          displayName = categoryNames[catalogPath.value] || catalogPath.value;
+          searchPlaceholder = `Search ${displayName.toLowerCase()}...`;
+        } else {
+          // Fallback: Check URL params
+          const urlParams = new URLSearchParams(window.location.search);
+          const category = urlParams.get('category');
+          if (category && categoryNames[category]) {
+            displayName = categoryNames[category];
+            searchPlaceholder = `Search ${displayName.toLowerCase()}...`;
+          }
+        }
+      }
+      
+      if (catalogTitle) {
+        catalogTitle.textContent = displayName;
+      }
+      
+      if (breadcrumbCategory) {
+        breadcrumbCategory.textContent = displayName;
+      }
+      
+      if (searchInput) {
+        searchInput.placeholder = searchPlaceholder;
+      }
+    };
+    
+    // Update on page load
+    updateCatalogTitle();
+    
+    // Update when filters change (from sidebar)
+    window.addEventListener('filtersChanged', (event) => {
+      // Check if this is a reset event
+      if (event.detail?.reset) {
+        updateCatalogTitle([]); // Show "All Products"
+        return;
+      }
+      
+      const filters = event.detail?.filters || {};
+      const selectedCategories = filters.category || [];
+      updateCatalogTitle(selectedCategories);
+    });
+    
+    // Update when URL changes (browser back/forward)
+    window.addEventListener('popstate', () => updateCatalogTitle());
+    
+    // Search functionality
+    const searchInput = document.getElementById('catalog-search-input');
+    const searchClear = document.getElementById('search-clear');
+    let searchTimeout;
+    
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const value = e.target.value.trim();
+        
+        // Show/hide clear button
+        if (searchClear) {
+          searchClear.style.display = value ? 'flex' : 'none';
+        }
+        
+        // Debounce search (wait 300ms after user stops typing)
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          // Dispatch search event to filter system
+          window.dispatchEvent(new CustomEvent('catalogSearch', {
+            detail: { searchTerm: value }
+          }));
+        }, 300);
+      });
+      
+      // Clear search
+      if (searchClear) {
+        searchClear.addEventListener('click', () => {
+          searchInput.value = '';
+          searchClear.style.display = 'none';
+          window.dispatchEvent(new CustomEvent('catalogSearch', {
+            detail: { searchTerm: '' }
+          }));
+          searchInput.focus();
+        });
+      }
+    }
+    
+    // Sort functionality
+    const sortSelect = document.getElementById('catalog-sort-select');
+    
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (e) => {
+        // Dispatch sort event to filter system
+        window.dispatchEvent(new CustomEvent('catalogSort', {
+          detail: { sortBy: e.target.value }
+        }));
+      });
+    }
+    
     // Mobile filter toggle
     const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
     const filtersAside = document.getElementById('filters-aside');
@@ -210,6 +381,7 @@
     // Handle catalog loading overlay
     (function() {
       const overlay = document.getElementById('catalog-loading');
+      const controlsWrapper = document.querySelector('.catalog-controls-wrapper');
       const filtersAside = document.getElementById('filters-aside');
       const productGridWrapper = document.getElementById('product-grid-wrapper');
       const productCount = document.querySelector('.product-count');
@@ -219,7 +391,10 @@
         if (overlay) {
           overlay.classList.remove('hidden');
         }
-        // Hide filters, products, and count during reload
+        // Hide controls, filters, products, and count during reload
+        if (controlsWrapper) {
+          controlsWrapper.style.visibility = 'hidden';
+        }
         if (filtersAside) {
           filtersAside.style.visibility = 'hidden';
         }
@@ -235,6 +410,9 @@
       window.addEventListener('catalogLoaded', () => {
         if (overlay) {
           overlay.classList.add('hidden');
+        }
+        if (controlsWrapper) {
+          controlsWrapper.style.visibility = 'visible';
         }
         if (filtersAside) {
           filtersAside.style.visibility = 'visible';

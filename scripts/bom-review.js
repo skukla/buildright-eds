@@ -150,9 +150,12 @@ class BOMReview {
     // Check if this product is a package override (premium product)
     const selectedPackage = this.packagesData?.find(p => p.id === this.bomData?.selectedPackage);
     if (!selectedPackage?.skuOverrides) return false;
-    return Object.values(selectedPackage.skuOverrides).flat().some(
-      override => override.sku === sku || override === sku
-    );
+    
+    // SKU overrides are now organized by phase: { foundation_framing: {}, envelope: {...}, interior_finish: {...} }
+    const allOverrideSKUs = Object.values(selectedPackage.skuOverrides)
+      .flatMap(phaseOverrides => Object.values(phaseOverrides || {}));
+    
+    return allOverrideSKUs.includes(sku);
   }
   
   renderHeader() {
