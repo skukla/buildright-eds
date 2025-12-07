@@ -420,6 +420,12 @@
   font-size: 1.125rem; /* Extract from --type-button-1-font */
 }
 
+/* Accessibility: Focus styles for buttons */
+.btn:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
 /* Loading Spinner */
 .loading-spinner {
   width: 60px;
