@@ -433,16 +433,16 @@ header .header {
 }
 
 .user-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .user-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
@@ -483,16 +483,16 @@ header .header {
 }
 
 .cart-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .cart-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
@@ -502,16 +502,16 @@ header .header {
 
 .cart-count {
   position: absolute;
-  top: -2px;
-  right: -6px;
+  top: -6px;
+  right: -10px;
   background-color: var(--color-brand-500);
   color: white;
-  border-radius: var(--shape-border-radius-full);
-  padding: 0.125rem 0.375rem;
-  font-size: 0.625rem;
-  font-weight: 600;
-  min-width: 18px;
-  height: 18px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 0.625rem; /* 10px */
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
