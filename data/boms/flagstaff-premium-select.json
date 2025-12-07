@@ -5,8 +5,8 @@
   "stories": 2,
   "bedrooms": 5,
   "bathrooms": 3,
-  "packageId": "desert-ridge-premium",
-  "packageName": "Desert Ridge Premium",
+  "packageId": "premium-select",
+  "packageName": "Premium Select",
   "packageTier": "premium",
   "generated": "2025-11-26T19:07:11.177Z",
   "measurements": {

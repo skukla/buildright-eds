@@ -62,7 +62,7 @@ class BOMReview {
   }
   
   async loadData() {
-    // Load BOM from localStorage (saved by configurator as 'buildright_current_build')
+    // Load build config from localStorage (saved by configurator as 'buildright_current_build')
     const storedBuild = localStorage.getItem('buildright_current_build');
     if (storedBuild) {
       this.bomData = JSON.parse(storedBuild);
@@ -85,10 +85,82 @@ class BOMReview {
       console.error('Error loading template data:', error);
     }
     
-    // Generate mock line items based on selections
-    if (this.bomData && this.templateData) {
+    // Load pre-generated BOM data (real ACO product data)
+    if (this.bomData?.templateId && this.bomData?.selectedPackage) {
+      try {
+        const bomFile = `/data/boms/${this.bomData.templateId}-${this.bomData.selectedPackage}.json`;
+        const bomResponse = await fetch(bomFile);
+        if (bomResponse.ok) {
+          const preGeneratedBom = await bomResponse.json();
+          this.bomData.lineItems = this.convertBomToLineItems(preGeneratedBom);
+          console.log(`Loaded pre-generated BOM: ${bomFile}`);
+        } else {
+          console.warn(`Pre-generated BOM not found: ${bomFile}, falling back to mock data`);
+          this.bomData.lineItems = this.generateMockLineItems();
+        }
+      } catch (error) {
+        console.error('Error loading pre-generated BOM:', error);
+        this.bomData.lineItems = this.generateMockLineItems();
+      }
+    } else if (this.bomData && this.templateData) {
+      // Fallback to mock data if no template/package selected
       this.bomData.lineItems = this.generateMockLineItems();
     }
+  }
+  
+  convertBomToLineItems(preGeneratedBom) {
+    // Convert pre-generated BOM format to line items for display
+    const items = [];
+    const selectedPhases = this.bomData.selectedPhases || ['foundation_framing', 'envelope', 'interior_finish'];
+    
+    // Iterate through phases in the pre-generated BOM
+    Object.entries(preGeneratedBom.phases || {}).forEach(([phaseId, phaseData]) => {
+      // Only include selected phases
+      if (!selectedPhases.includes(phaseId)) return;
+      
+      (phaseData.items || []).forEach(item => {
+        items.push({
+          phase: phaseId,
+          category: this.formatCategory(item.category),
+          name: item.name,
+          brand: this.extractBrand(item.name),
+          sku: item.sku,
+          unit: item.unit,
+          qty: item.quantity,
+          price: item.pricePerUnit,
+          lineTotal: item.totalCost,
+          description: item.description,
+          image: this.getProductImage(item.sku, item.category),
+          isOverride: this.isPackageOverride(item.sku),
+        });
+      });
+    });
+    
+    return items;
+  }
+  
+  getProductImage(sku, category) {
+    // SKU-based images are stored as /images/products/{SKU}.png
+    // Return the SKU-based path - the UI will handle missing images gracefully
+    if (sku) {
+      return `/images/products/${sku}.png`;
+    }
+    // Fallback to category-based placeholder
+    return `/images/products/placeholder-${category || 'product'}.png`;
+  }
+  
+  formatCategory(category) {
+    // Convert snake_case to Title Case
+    return category
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+  
+  extractBrand(productName) {
+    // Extract brand from product name (first word typically)
+    const parts = productName.split(' ');
+    return parts[0] || 'Generic';
   }
   
   generateMockLineItems() {
@@ -356,25 +428,26 @@ class BOMReview {
   
   getMockAlternatives(item) {
     // Return mock alternatives based on category
+    // Tiers match our material package names: Builder's Choice, Premium Select, Designer Series
     const alternatives = {
       Lumber: [
-        { name: '2x4 Premium Studs', brand: 'BigBear Select', sku: 'BBS-2X4-8', unit: 'ea', price: 6.49, tier: 'Premium', image: '/images/products/lumber-2x4.png' },
-        { name: '2x4 Economy Studs', brand: 'ValueWood', sku: 'VW-2X4-8', unit: 'ea', price: 3.99, tier: 'Economy', image: '/images/products/lumber-2x4.png' },
+        { name: '2x4 Select Studs', brand: 'BigBear Select', sku: 'BBS-2X4-8', unit: 'ea', price: 6.49, tier: 'Designer Series', image: '/images/products/lumber-2x4.png' },
+        { name: '2x4 Standard Studs', brand: 'ValueWood', sku: 'VW-2X4-8', unit: 'ea', price: 3.99, tier: "Builder's Choice", image: '/images/products/lumber-2x4.png' },
         { name: '2x4 Fire-Rated', brand: 'FireBlock', sku: 'FB-2X4-8', unit: 'ea', price: 7.99, tier: 'Specialty', image: '/images/products/lumber-2x4.png' },
       ],
       Insulation: [
-        { name: 'R-19 High Density', brand: 'Owens Corning HD', sku: 'OC-R19HD-24', unit: 'roll', price: 68.00, tier: 'Premium', image: '/images/products/insulation-r19.png' },
-        { name: 'R-19 Standard', brand: 'Johns Manville', sku: 'JM-R19-24', unit: 'roll', price: 45.00, tier: 'Standard', image: '/images/products/insulation-r19.png' },
-        { name: 'R-19 Economy', brand: 'InsulFast', sku: 'IF-R19-24', unit: 'roll', price: 38.00, tier: 'Economy', image: '/images/products/insulation-r19.png' },
+        { name: 'R-19 High Density', brand: 'Owens Corning HD', sku: 'OC-R19HD-24', unit: 'roll', price: 68.00, tier: 'Designer Series', image: '/images/products/insulation-r19.png' },
+        { name: 'R-19 Standard', brand: 'Johns Manville', sku: 'JM-R19-24', unit: 'roll', price: 45.00, tier: 'Premium Select', image: '/images/products/insulation-r19.png' },
+        { name: 'R-19 Value', brand: 'InsulFast', sku: 'IF-R19-24', unit: 'roll', price: 38.00, tier: "Builder's Choice", image: '/images/products/insulation-r19.png' },
       ],
       Roofing: [
-        { name: 'Designer Shingles', brand: 'GAF Grand Canyon', sku: 'GAF-GC-CHAR', unit: 'bundle', price: 52.99, tier: 'Premium', image: '/images/products/shingles.png' },
-        { name: '3-Tab Shingles', brand: 'GAF Royal Sovereign', sku: 'GAF-RS-CHAR', unit: 'bundle', price: 24.99, tier: 'Economy', image: '/images/products/shingles.png' },
-        { name: 'Metal Panels', brand: 'Fabral', sku: 'FAB-MP-24', unit: 'panel', price: 28.50, tier: 'Premium', image: '/images/products/shingles.png' },
+        { name: 'Designer Shingles', brand: 'GAF Grand Canyon', sku: 'GAF-GC-CHAR', unit: 'bundle', price: 52.99, tier: 'Designer Series', image: '/images/products/shingles.png' },
+        { name: '3-Tab Shingles', brand: 'GAF Royal Sovereign', sku: 'GAF-RS-CHAR', unit: 'bundle', price: 24.99, tier: "Builder's Choice", image: '/images/products/shingles.png' },
+        { name: 'Metal Panels', brand: 'Fabral', sku: 'FAB-MP-24', unit: 'panel', price: 28.50, tier: 'Designer Series', image: '/images/products/shingles.png' },
       ],
       default: [
-        { name: `${item.name} Premium`, brand: item.brand, sku: `${item.sku}-P`, unit: item.unit, price: item.price * 1.3, tier: 'Premium', image: item.image },
-        { name: `${item.name} Economy`, brand: 'Generic', sku: `${item.sku}-E`, unit: item.unit, price: item.price * 0.7, tier: 'Economy', image: item.image },
+        { name: `${item.name} Upgraded`, brand: item.brand, sku: `${item.sku}-P`, unit: item.unit, price: item.price * 1.3, tier: 'Designer Series', image: item.image },
+        { name: `${item.name} Standard`, brand: 'Generic', sku: `${item.sku}-E`, unit: item.unit, price: item.price * 0.7, tier: "Builder's Choice", image: item.image },
       ],
     };
     
@@ -496,14 +569,51 @@ class BOMReview {
     document.getElementById('loading-title').textContent = 'Adding to cart...';
     document.getElementById('loading-subtitle').textContent = `${this.bomData.lineItems.length} items`;
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Create a bundle from the BOM items
+    const bundleId = `bom-${Date.now()}`;
+    const templateName = this.templateData?.name || 'Custom Build';
+    const packageName = this.packagesData?.find(p => p.id === this.bomData.selectedPackage)?.name || '';
+    
+    const bundle = {
+      type: 'bundle',
+      bundleId: bundleId,
+      bundleName: `${templateName} - ${packageName} BOM`,
+      itemCount: this.bomData.lineItems.length,
+      totalPrice: this.bomData.lineItems.reduce((sum, item) => sum + item.lineTotal, 0),
+      items: this.bomData.lineItems.map(item => ({
+        sku: item.sku,
+        name: item.name,
+        quantity: item.qty,
+        unitPrice: item.price,
+        unit: item.unit,
+        category: item.category,
+        phase: item.phase
+      })),
+      metadata: {
+        templateId: this.bomData.templateId,
+        packageId: this.bomData.selectedPackage,
+        variants: this.bomData.selectedVariants,
+        phases: this.bomData.selectedPhases,
+        createdAt: new Date().toISOString()
+      }
+    };
+    
+    // Add bundle to cart
+    const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+    cart.push(bundle);
+    localStorage.setItem('buildright_cart', JSON.stringify(cart));
+    
+    // Dispatch cart updated event
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
+    
+    // Brief delay for UX
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     this.elements.loadingOverlay.dataset.visible = 'false';
     
     // Show success
     this.elements.successMessage.dataset.visible = 'true';
-    document.getElementById('success-title').textContent = 'Items added to cart!';
+    document.getElementById('success-title').textContent = 'BOM added to cart!';
     document.getElementById('success-subtitle').textContent = `${this.bomData.lineItems.length} items totaling ${this.elements.summaryTotal.textContent}`;
     
     // Save build to localStorage for dashboard
@@ -512,7 +622,7 @@ class BOMReview {
     // Redirect after delay
     setTimeout(() => {
       window.location.href = '/pages/cart.html';
-    }, 2500);
+    }, 2000);
   }
   
   saveBuildToHistory() {

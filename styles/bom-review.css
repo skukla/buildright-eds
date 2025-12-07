@@ -50,7 +50,9 @@
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-4);
   padding: var(--spacing-large);
-  box-shadow: var(--shape-shadow-2);
+  /* Outer shadow + inset shadow for recessed content effect */
+  box-shadow: var(--shape-shadow-2), 
+              inset 0 50px 30px -45px rgba(0, 0, 0, 0.08);
 }
 
 .section-title {
@@ -59,8 +61,11 @@
   color: var(--color-text);
   margin: 0 0 var(--spacing-medium) 0;
   padding: var(--spacing-medium) var(--spacing-large); /* Increased from small/medium to medium/large */
-  background: white; /* Plain white for middle sections */
-  border: 1px solid var(--color-border);
+  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%); /* Blue gradient on all sections */
+  border-bottom: 2px solid var(--color-brand-500); /* Brand underline */
+  border-top: none;
+  border-left: none;
+  border-right: none;
   border-radius: var(--shape-border-radius-4) var(--shape-border-radius-4) 0 0; /* Matches section container (12px) */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   margin-left: calc(var(--spacing-large) * -1);
@@ -68,15 +73,7 @@
   margin-top: calc(var(--spacing-large) * -1);
 }
 
-/* First section (Summary) - top-down gradient */
-#summary-section .section-title {
-  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
-  border-bottom: 2px solid var(--color-brand-500);
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
+/* All section titles now use gradient + brand underline */
 
 /* Last section (Materials by Phase) - bottom-up gradient on content */
 #materials-section {
