@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tile Layout Test: Card Stack</title>
+  <style>
+    body {
+      font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+      background: var(--color-gray-100, #f5f5f5);
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .test-header {
+      max-width: 900px;
+      margin: 0 auto 2rem;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .test-header h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.5rem;
+      color: #1a1a1a;
+    }
+
+    .test-header p {
+      margin: 0;
+      color: #666;
+    }
+
+    .tiles-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* Card Stack Tile Styles */
+    .tile-card-stack {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .tile-card-stack:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+
+    .tile-card-stack[data-selected="true"] {
+      border-color: var(--color-primary, #2563eb);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .tile-card-stack[data-selected="true"] .tile-card-stack__badge {
+      display: flex;
+    }
+
+    .tile-card-stack__image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .tile-card-stack__content {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .tile-card-stack__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .tile-card-stack__title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0;
+    }
+
+    .tile-card-stack__badge {
+      display: none;
+      align-items: center;
+      gap: 0.25rem;
+      background: var(--color-primary, #2563eb);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .tile-card-stack__description {
+      font-size: 0.875rem;
+      color: #666;
+      margin: 0 0 0.75rem;
+      line-height: 1.4;
+    }
+
+    .tile-card-stack__price {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary, #2563eb);
+      margin: 0;
+    }
+
+    .tile-card-stack__price--base {
+      color: #22c55e;
+    }
+
+    /* Tier indicators */
+    .tile-card-stack--builder_grade .tile-card-stack__title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #9ca3af;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .tile-card-stack--premium .tile-card-stack__title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #f59e0b;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .tile-card-stack--luxury .tile-card-stack__title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #8b5cf6;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .tiles-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="test-header">
+    <h1>Option 1: Card Stack Layout</h1>
+    <p>Image above, text below on solid background. Full image visibility with clear, readable text.</p>
+  </div>
+
+  <div class="tiles-container">
+    <!-- Builder's Choice -->
+    <div class="tile-card-stack tile-card-stack--builder_grade" data-selected="true" data-id="builders-choice">
+      <img 
+        src="https://images.unsplash.com/photo-1723257129172-6315cde654da?w=600&h=400&fit=crop&q=80" 
+        alt="Builder's Choice Kitchen" 
+        class="tile-card-stack__image"
+      >
+      <div class="tile-card-stack__content">
+        <div class="tile-card-stack__header">
+          <h3 class="tile-card-stack__title">Builder's Choice</h3>
+          <span class="tile-card-stack__badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Selected
+          </span>
+        </div>
+        <p class="tile-card-stack__description">Standard quality materials for value-conscious builders</p>
+        <p class="tile-card-stack__price tile-card-stack__price--base">Base Price</p>
+      </div>
+    </div>
+
+    <!-- Premium Select -->
+    <div class="tile-card-stack tile-card-stack--premium" data-selected="false" data-id="premium-select">
+      <img 
+        src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&h=400&fit=crop&q=80" 
+        alt="Premium Select Kitchen" 
+        class="tile-card-stack__image"
+      >
+      <div class="tile-card-stack__content">
+        <div class="tile-card-stack__header">
+          <h3 class="tile-card-stack__title">Premium Select</h3>
+          <span class="tile-card-stack__badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Selected
+          </span>
+        </div>
+        <p class="tile-card-stack__description">Enhanced materials with upgraded fixtures</p>
+        <p class="tile-card-stack__price">+$24,000</p>
+      </div>
+    </div>
+
+    <!-- Designer Series -->
+    <div class="tile-card-stack tile-card-stack--luxury" data-selected="false" data-id="designer-series">
+      <img 
+        src="https://images.unsplash.com/photo-1628745277862-bc0b2d68c50c?w=600&h=400&fit=crop&q=80" 
+        alt="Designer Series Kitchen" 
+        class="tile-card-stack__image"
+      >
+      <div class="tile-card-stack__content">
+        <div class="tile-card-stack__header">
+          <h3 class="tile-card-stack__title">Designer Series</h3>
+          <span class="tile-card-stack__badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Selected
+          </span>
+        </div>
+        <p class="tile-card-stack__description">Luxury materials with designer finishes and premium brands</p>
+        <p class="tile-card-stack__price">+$42,000</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple selection toggle for testing
+    document.querySelectorAll('.tile-card-stack').forEach(tile => {
+      tile.addEventListener('click', () => {
+        document.querySelectorAll('.tile-card-stack').forEach(t => t.dataset.selected = 'false');
+        tile.dataset.selected = 'true';
+      });
+    });
+  </script>
+</body>
+</html>
+
