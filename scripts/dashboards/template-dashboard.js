@@ -67,7 +67,8 @@ class TemplateDashboard {
   }
   
     // Show the grid now that it's populated
-    grid.style.visibility = 'visible';
+    grid.classList.remove('templates-grid--loading');
+    grid.classList.add('templates-grid--ready');
     }
     
   decorateBreadcrumbs() {

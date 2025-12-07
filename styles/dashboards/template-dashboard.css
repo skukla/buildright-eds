@@ -37,6 +37,15 @@
   gap: var(--spacing-xxlarge);
 }
 
+/* FOUC Prevention - hidden until content loads */
+.templates-grid--loading {
+  visibility: hidden;
+}
+
+.templates-grid--ready {
+  visibility: visible;
+}
+
 /* Template Card - Compact Design */
 .template-card {
   background: var(--color-background);

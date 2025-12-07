@@ -597,10 +597,10 @@ class BuildConfigurator {
     const variantsLine = document.getElementById('summary-variants-line');
     const variantsValue = document.getElementById('summary-variants');
     if (variantsCost > 0) {
-      variantsLine.style.display = 'flex';
+      variantsLine.classList.remove('summary-line--hidden');
       variantsValue.textContent = `+$${variantsCost.toLocaleString()}`;
     } else {
-      variantsLine.style.display = 'none';
+      variantsLine.classList.add('summary-line--hidden');
     }
     
     document.getElementById('summary-total').textContent = `$${total.toLocaleString()}`;

@@ -608,6 +608,11 @@ body.white-variant .summary-title {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+}
+
+/* Conditional visibility for summary lines */
+.summary-line--hidden {
+  display: none;
   padding: var(--spacing-small) 0;
 }
 
