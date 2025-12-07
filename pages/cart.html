@@ -109,6 +109,19 @@
     import { removeBundleFromCart, updateBundleItemQuantity } from '../scripts/project-builder.js';
     import { decorateBlock } from '../scripts/scripts.js';
     
+    // Group bundle items by phase
+    function groupItemsByPhase(items) {
+      const groups = {};
+      items.forEach(item => {
+        const phase = item.phase || 'Other';
+        if (!groups[phase]) {
+          groups[phase] = [];
+        }
+        groups[phase].push(item);
+      });
+      return groups;
+    }
+    
     // Load cart items
     async function loadCartItems() {
       const cart = getCart();
@@ -134,6 +147,15 @@
           const bundleCard = document.createElement('div');
           bundleCard.className = 'cart-item-card cart-bundle-card';
           
+          // Group items by phase
+          const phaseGroups = groupItemsByPhase(item.items);
+          const phaseOrder = ['Foundation', 'Framing', 'Envelope', 'Interior Finish'];
+          const sortedPhases = Object.keys(phaseGroups).sort((a, b) => {
+            const aIndex = phaseOrder.indexOf(a);
+            const bIndex = phaseOrder.indexOf(b);
+            return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
+          });
+          
           bundleCard.innerHTML = `
             <div class="cart-item-main">
               <div class="cart-item-details">
@@ -156,28 +178,34 @@
                 </button>
                 
                 <div class="bundle-items-nested" data-bundle-id="${item.bundleId}" style="display: none;">
-                  ${item.items.map(bundleItem => `
-                    <div class="bundle-item-card">
-                      <div class="bundle-item-content">
-                        <div class="bundle-item-info">
-                          <div class="bundle-item-name">${bundleItem.name}</div>
-                          <div class="bundle-item-sku">SKU: ${bundleItem.sku}</div>
-                        </div>
-                        <div class="bundle-item-details">
-                          <div>
-                            <label class="bundle-item-qty-label">Qty:</label>
-                            <input type="number" min="1" value="${bundleItem.quantity}" 
-                                   data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
-                                   class="bundle-item-qty-input">
+                  ${sortedPhases.map(phase => {
+                    const phaseItems = phaseGroups[phase];
+                    return `
+                      <div class="phase-divider">${phase}</div>
+                      ${phaseItems.map(bundleItem => `
+                        <div class="bundle-item-card">
+                          <div class="bundle-item-content">
+                            <div class="bundle-item-info">
+                              <div class="bundle-item-name">${bundleItem.name}</div>
+                              <div class="bundle-item-sku">SKU: ${bundleItem.sku}</div>
+                            </div>
+                            <div class="bundle-item-details">
+                              <div>
+                                <label class="bundle-item-qty-label">Qty:</label>
+                                <input type="number" min="1" value="${bundleItem.quantity}" 
+                                       data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
+                                       class="bundle-item-qty-input">
+                              </div>
+                              <div class="bundle-item-pricing">
+                                <div class="bundle-item-total">$${(bundleItem.unitPrice * bundleItem.quantity).toFixed(2)}</div>
+                                <div class="bundle-item-price">$${bundleItem.unitPrice.toFixed(2)} each</div>
+                              </div>
+                            </div>
                           </div>
-                          <div class="bundle-item-pricing">
-                            <div class="bundle-item-total">$${(bundleItem.unitPrice * bundleItem.quantity).toFixed(2)}</div>
-                            <div class="bundle-item-price">$${bundleItem.unitPrice.toFixed(2)} each</div>
-                          </div>
                         </div>
-                      </div>
-                    </div>
-                  `).join('')}
+                      `).join('')}
+                    `;
+                  }).join('')}
                 </div>
                 
                 <div class="cart-item-footer">

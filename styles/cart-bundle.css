@@ -203,6 +203,16 @@
   overflow-y: auto;
 }
 
+/* Phase Divider - Simple text label */
+.phase-divider {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-small) var(--spacing-medium);
+  background: var(--color-surface-nested);
+  border-bottom: 1px solid var(--color-border);
+}
+
 .bundle-item-card {
   padding: var(--spacing-small) var(--spacing-medium);
   border-bottom: 1px solid var(--color-border);
