@@ -43,9 +43,23 @@ export default async function decorate(block) {
       block.querySelector('.user-initials').textContent = initials;
       block.querySelector('.user-name').textContent = userName;
       block.querySelector('.user-company').textContent = companyName;
+      
+      // Show/hide persona-specific links
+      const newBuildLink = block.querySelector('#user-menu-new-build');
+      if (newBuildLink) {
+        // Show "Start New Build" for personas with templates feature (Sarah)
+        const hasTemplates = user.persona?.features?.templates === true;
+        newBuildLink.style.display = hasTemplates ? 'flex' : 'none';
+      }
     } else {
       loggedOutState.classList.remove('hidden');
       loggedInState.classList.add('hidden');
+      
+      // Hide persona-specific links when logged out
+      const newBuildLink = block.querySelector('#user-menu-new-build');
+      if (newBuildLink) {
+        newBuildLink.style.display = 'none';
+      }
     }
   }
 
