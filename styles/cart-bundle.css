@@ -147,15 +147,47 @@
 /* Bundle Header */
 .bundle-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-xsmall);
+  gap: var(--spacing-medium);
+  margin-bottom: var(--spacing-medium);
 }
 
-.bundle-header-left {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-small);
+.cart-bundle-clickable {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.cart-bundle-clickable:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cart-bundle-clickable:hover .bundle-title {
+  color: var(--color-brand-500);
+}
+
+.bundle-thumbnail {
+  width: 80px;
+  height: 60px;
+  min-width: 80px;
+  min-height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--shape-border-radius-2);
+  overflow: hidden;
+  background: var(--color-surface);
+  position: relative; /* Required for .image-placeholder ::before positioning */
+}
+
+.bundle-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* When .image-placeholder is added (on error), styles from components.css apply */
+
+.bundle-header-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .bundle-badge {
@@ -171,69 +203,167 @@
 }
 
 .bundle-title {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
+  color: var(--color-text);
   margin: 0;
+  line-height: 1.4;
 }
 
 .bundle-meta {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-medium);
+  margin: 0;
 }
 
-/* Toggle Button */
-.bundle-toggle-btn {
-  display: block;
-  width: 100%;
-  padding: var(--spacing-small);
-  background: var(--color-surface);
+/* Toggle Button - Subtle link style */
+button.bundle-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: var(--color-brand-500);
   border: none;
   border-radius: var(--shape-border-radius-2);
   cursor: pointer;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  text-align: left;
+  transition: background-color 0.2s ease;
+  user-select: none;
+  margin-top: 0.75rem;
 }
 
-.bundle-toggle-btn:hover {
-  background: var(--color-surface-hover);
+button.bundle-toggle-btn:hover {
+  background: var(--color-brand-600);
 }
 
-/* Bundle Items List */
+button.bundle-toggle-btn:focus {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+button.bundle-toggle-btn .toggle-text {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: white;
+}
+
+button.bundle-toggle-btn .toggle-icon {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+button.bundle-toggle-btn .toggle-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: white;
+}
+
+button.bundle-toggle-btn.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Bundle Items List - Mini-cart style */
 .bundle-items-list {
   margin-top: var(--spacing-medium);
-  border: 1px solid var(--color-border);
+  padding: 0.25rem;
+}
+
+/* Show More Button - Subtle solid style matching btn-secondary */
+.bundle-show-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  margin-top: 0.75rem;
+  background: var(--color-secondary-500);
+  border: none;
   border-radius: var(--shape-border-radius-2);
-  overflow: hidden;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shape-shadow-1);
+}
+
+.bundle-show-more-btn.expanded {
+  margin-bottom: 0.75rem;
+}
+
+.bundle-show-more-btn:hover {
+  background: var(--color-secondary-600, #374151);
+  box-shadow: var(--shape-shadow-2);
+}
+
+.bundle-show-more-btn:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+.bundle-show-more-btn svg {
+  transition: transform 0.2s ease;
+  stroke: white;
+}
+
+.bundle-show-more-btn.expanded svg {
+  transform: rotate(180deg);
+}
+
+/* Hidden items container */
+.bundle-items-hidden {
+  margin-top: 0.75rem;
 }
 
 .bundle-item-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  gap: var(--spacing-medium);
+  display: flex;
+  gap: 0.75rem;
   align-items: center;
-  padding: var(--spacing-small) var(--spacing-medium);
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-background);
+  padding: 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--shape-border-radius-2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+  margin-bottom: 0.75rem;
 }
 
-.bundle-item-row:last-child {
-  border-bottom: none;
+.bundle-item-row:last-child,
+.bundle-items-hidden .bundle-item-row:last-child {
+  margin-bottom: 0;
+}
+
+.bundle-item-row:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.bundle-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
 }
 
 .bundle-item-name {
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+  margin: 0;
 }
 
 .bundle-item-sku {
-  font-size: 0.75rem;
-  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  color: var(--color-text-tertiary);
+  margin: 0;
 }
 
 .bundle-item-qty {
-  font-size: 0.875rem;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
@@ -250,10 +380,11 @@
 }
 
 .bundle-item-price {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 600;
+  color: var(--color-text);
   text-align: right;
-  min-width: 80px;
+  white-space: nowrap;
 }
 
 /* Bundle Footer */

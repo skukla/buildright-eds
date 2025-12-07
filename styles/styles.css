@@ -15,6 +15,7 @@
 
 /* Import page-specific styles */
 @import url('page-specific.css');
+@import url('cart-bundle.css');
 
 /* Import fragment styles */
 @import url('fragments.css');
