@@ -214,19 +214,21 @@
                 const phaseItems = phaseGroups[phase];
                 return `
                   <div class="phase-divider">${phase}</div>
-                  ${phaseItems.map(bundleItem => `
-                    <div class="bundle-item-row">
-                      <div class="bundle-item-name">${bundleItem.name}</div>
-                      <div class="bundle-item-sku">SKU: ${bundleItem.sku}</div>
-                      <div class="bundle-item-qty">
-                        <span>Qty:</span>
-                        <input type="number" min="1" value="${bundleItem.quantity}" 
-                               data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
-                               class="bundle-qty-input-simple">
+                  <div class="phase-items-container">
+                    ${phaseItems.map(bundleItem => `
+                      <div class="bundle-item-row">
+                        <div class="bundle-item-name">${bundleItem.name}</div>
+                        <div class="bundle-item-sku">SKU: ${bundleItem.sku}</div>
+                        <div class="bundle-item-qty">
+                          <span>Qty:</span>
+                          <input type="number" min="1" value="${bundleItem.quantity}" 
+                                 data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
+                                 class="bundle-qty-input-simple">
+                        </div>
+                        <div class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
                       </div>
-                      <div class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
-                    </div>
-                  `).join('')}
+                    `).join('')}
+                  </div>
                 `;
               }).join('')}
             </div>

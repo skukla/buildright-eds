@@ -217,18 +217,18 @@
   align-items: center;
   gap: var(--spacing-xsmall);
   padding: var(--spacing-small) var(--spacing-medium);
-  background: none;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-2);
   cursor: pointer;
   font-size: 0.875rem;
-  color: var(--color-brand-500);
+  color: var(--color-text-secondary);
   transition: all 0.15s;
 }
 
 .bundle-expand-btn:hover {
-  background: var(--color-surface);
-  border-color: var(--color-brand-500);
+  background: var(--color-surface-hover);
+  color: var(--color-text);
 }
 
 /* Bundle Items Container */
@@ -238,20 +238,28 @@
   padding-top: var(--spacing-medium);
 }
 
-/* Phase Divider - Simple text label */
+/* Phase Divider - Readable name */
 .phase-divider {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-secondary);
-  padding: var(--spacing-small) 0;
-  margin-top: var(--spacing-small);
-  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: var(--spacing-small) var(--spacing-medium);
+  margin-top: var(--spacing-medium);
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-2);
 }
 
 .phase-divider:first-child {
   margin-top: 0;
+}
+
+/* Phase Items Container - Nested background */
+.phase-items-container {
+  background: var(--color-surface-nested);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  margin-top: var(--spacing-small);
+  padding: var(--spacing-small);
 }
 
 /* Bundle Item Row - Simple */
@@ -260,12 +268,15 @@
   grid-template-columns: 1fr auto auto auto;
   gap: var(--spacing-medium);
   align-items: center;
-  padding: var(--spacing-small) 0;
-  border-bottom: 1px solid var(--color-surface);
+  padding: var(--spacing-small) var(--spacing-medium);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  margin-bottom: var(--spacing-xsmall);
 }
 
 .bundle-item-row:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .bundle-item-name {
