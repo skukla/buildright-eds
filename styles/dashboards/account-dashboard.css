@@ -60,6 +60,8 @@
 
 .account-nav-item svg {
   flex-shrink: 0;
+  width: 20px;
+  height: 20px;
 }
 
 /* Persona-specific nav items container */
@@ -76,6 +78,15 @@
 /* Add top padding to content area to separate from page title */
 #account-content {
   padding-top: var(--spacing-medium); /* Additional separation for content */
+}
+
+/* Account sections - hidden by default, shown when active */
+.account-section {
+  display: none;
+}
+
+.account-section.active {
+  display: block;
 }
 
 /* Section spacing - More breathing room */
@@ -114,10 +125,26 @@
   gap: var(--spacing-large);
 }
 
-/* Quick action cards are interactive - inherit hover from a.card */
-.quick-action-nav-item {
+/* Quick action cards are interactive */
+.quick-action-nav-item,
+.quick-action-card {
   text-decoration: none;
-  /* Hover effects inherited from a.card in components.css */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Quick action card content */
+.quick-action-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.quick-action-text {
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-size: 0.9375rem;
 }
 
 /* ============================================
@@ -377,6 +404,21 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+/* Build/Delivery table specific cells */
+.order-progress {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.order-phase {
+  font-weight: 600;
+}
+
+.order-location {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
 }
 
 .btn-sm {

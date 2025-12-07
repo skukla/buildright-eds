@@ -35,29 +35,29 @@
           <!-- Sidebar Navigation -->
           <nav class="account-nav">
             <a href="#dashboard" class="account-nav-item active" data-section="dashboard">
-              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 <polyline points="9 22 9 12 15 12 15 22"/>
               </svg>
               Dashboard
             </a>
             <a href="#profile" class="account-nav-item" data-section="profile">
-              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
               Profile
             </a>
             <a href="#orders" class="account-nav-item" data-section="orders">
-              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="21" r="1"/>
                 <circle cx="19" cy="21" r="1"/>
                 <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
               </svg>
               Orders
             </a>
-            <a href="#locations" class="account-nav-item" data-section="locations" id="locations-nav-item" style="display: none;">
-              <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <a href="#locations" class="account-nav-item" data-section="locations" id="locations-nav-item" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
@@ -70,7 +70,7 @@
           <!-- Main Content Area -->
           <div id="account-content">
             <!-- Dashboard Section (default) -->
-            <div class="account-section" id="section-dashboard">
+            <div class="account-section active" id="section-dashboard">
               <!-- Company Information -->
               <div class="section-block">
                 <h2 class="section-header">Company Information</h2>
@@ -103,7 +103,7 @@
             </div>
 
             <!-- My Builds Section (Sarah only) -->
-            <div class="account-section" id="section-builds" style="display: none;">
+            <div class="account-section" id="section-builds">
               <h2 class="section-header">My Builds</h2>
               <p class="section-description">Track your active construction projects and order materials.</p>
               
@@ -119,7 +119,7 @@
             </div>
             
             <!-- Deliveries Section (Sarah only) -->
-            <div class="account-section" id="section-deliveries" style="display: none;">
+            <div class="account-section" id="section-deliveries">
               <h2 class="section-header">Deliveries</h2>
               <p class="section-description">Track scheduled and completed material deliveries.</p>
               
@@ -130,14 +130,14 @@
             </div>
 
             <!-- Store Locations Section -->
-            <div class="account-section" id="section-locations" style="display: none;">
+            <div class="account-section" id="section-locations">
               <h2 class="section-header">Store Locations</h2>
               <p class="section-description">Manage your store locations and set your primary warehouse.</p>
               <div id="company-locations" class="locations-grid"></div>
             </div>
 
             <!-- Profile Section -->
-            <div class="account-section" id="section-profile" style="display: none;">
+            <div class="account-section" id="section-profile">
               <h2 class="section-header">Personal Information</h2>
               <p class="section-description">Update your personal details and contact information.</p>
               <div class="card">
@@ -149,7 +149,7 @@
             </div>
 
             <!-- Orders Section -->
-            <div class="account-section" id="section-orders" style="display: none;">
+            <div class="account-section" id="section-orders">
               <h2 class="section-header">Order History</h2>
               <p class="section-description">View and track your orders.</p>
               <div id="orders-content">
@@ -213,7 +213,7 @@
       
       if (persona?.hasMultipleLocations && company && company.locations && company.locations.length > 1) {
         // Show locations nav item
-        locationsNavItem.style.display = 'flex';
+        locationsNavItem.hidden = false;
         
         // Create location cards
         const locationsHTML = company.locations.map(loc => {
@@ -252,7 +252,7 @@
         locationsContainer.innerHTML = locationsHTML;
       } else {
         // Hide locations nav item
-        locationsNavItem.style.display = 'none';
+        locationsNavItem.hidden = true;
       }
     }
     
@@ -287,9 +287,9 @@
           
           // Show selected section
           sections.forEach(section => {
-            section.style.display = 'none';
+            section.classList.remove('active');
           });
-          targetSection.style.display = 'block';
+          targetSection.classList.add('active');
         });
       });
     }
@@ -309,40 +309,40 @@
       if (persona?.features?.templates) {
         // Sarah: My Builds card - navigates to builds section
         cards.push(`
-          <a href="#builds" class="card quick-action-nav-item" data-section="builds" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+          <a href="#builds" class="card quick-action-nav-item" data-section="builds">
             <div class="card-body">
-              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">My Builds</h3>
-              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;"><strong id="builds-count">0</strong> active builds</p>
+              <h3 class="quick-action-title">My Builds</h3>
+              <p class="quick-action-text"><strong id="builds-count">0</strong> active builds</p>
             </div>
           </a>
         `);
         
         // Sarah: Deliveries card - navigates to deliveries section
         cards.push(`
-          <a href="#deliveries" class="card quick-action-nav-item" data-section="deliveries" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+          <a href="#deliveries" class="card quick-action-nav-item" data-section="deliveries">
             <div class="card-body">
-              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Deliveries</h3>
-              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;"><strong id="deliveries-count">0</strong> scheduled this week</p>
+              <h3 class="quick-action-title">Deliveries</h3>
+              <p class="quick-action-text"><strong id="deliveries-count">0</strong> scheduled this week</p>
             </div>
           </a>
         `);
       } else if (persona?.features?.restockDashboard) {
         // Kevin: Restock Dashboard card - navigates to external dashboard.html
         cards.push(`
-          <a href="/pages/dashboard.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+          <a href="/pages/dashboard.html" class="card quick-action-card">
             <div class="card-body">
-              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Restock Dashboard</h3>
-              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage inventory and view smart suggestions.</p>
+              <h3 class="quick-action-title">Restock Dashboard</h3>
+              <p class="quick-action-text">Manage inventory and view smart suggestions.</p>
             </div>
           </a>
         `);
       } else {
         // Marcus/Lisa/David/Others: Saved Projects
         cards.push(`
-          <a href="project-selector.html" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+          <a href="project-selector.html" class="card quick-action-card">
             <div class="card-body">
-              <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Saved Projects</h3>
-              <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Access your frequently used project types.</p>
+              <h3 class="quick-action-title">Saved Projects</h3>
+              <p class="quick-action-text">Access your frequently used project types.</p>
             </div>
           </a>
         `);
@@ -350,20 +350,20 @@
       
       // Standard cards for everyone - Orders (links to orders section)
       cards.push(`
-        <a href="#orders" class="card quick-action-nav-item" data-section="orders" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;">
+        <a href="#orders" class="card quick-action-nav-item" data-section="orders">
           <div class="card-body">
-            <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Orders</h3>
-            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Track your orders and view order history.</p>
+            <h3 class="quick-action-title">Orders</h3>
+            <p class="quick-action-text">Track your orders and view order history.</p>
           </div>
         </a>
       `);
       
       // Standard cards for everyone - Account Settings
       cards.push(`
-        <a href="#" class="card" style="text-decoration: none; cursor: pointer; transition: all 0.2s ease;" onclick="alert('Account settings coming soon!'); return false;">
+        <a href="#" class="card quick-action-card" onclick="alert('Account settings coming soon!'); return false;">
           <div class="card-body">
-            <h3 style="margin: 0 0 0.75rem 0; font-size: 1.125rem; font-weight: 600; color: var(--color-text);">Account Settings</h3>
-            <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage your preferences and information.</p>
+            <h3 class="quick-action-title">Account Settings</h3>
+            <p class="quick-action-text">Manage your preferences and information.</p>
           </div>
         </a>
       `);
@@ -386,7 +386,7 @@
       if (persona?.features?.templates) {
         navItems.push(`
           <a href="#builds" class="account-nav-item" data-section="builds">
-            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
               <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
@@ -395,7 +395,7 @@
         `);
         navItems.push(`
           <a href="#deliveries" class="account-nav-item" data-section="deliveries">
-            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <rect x="1" y="3" width="15" height="13"/>
               <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
               <circle cx="5.5" cy="18.5" r="2.5"/>
@@ -410,7 +410,7 @@
       if (persona?.features?.restockDashboard) {
         navItems.push(`
           <a href="/pages/dashboard.html" class="account-nav-item">
-            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <ellipse cx="12" cy="5" rx="9" ry="3"/>
               <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
               <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
@@ -424,7 +424,7 @@
       if (persona?.features?.projectWizard || persona?.features?.packageBuilder) {
         navItems.push(`
           <a href="builder.html" class="account-nav-item">
-            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
             Project Builder
@@ -616,7 +616,7 @@
                     <div class="order-template-details">${build.templateName}</div>
                   </td>
                   <td data-label="Progress">
-                    <div style="font-size: 0.875rem; color: var(--color-text-secondary);">
+                    <div class="order-progress">
                       ${build.phasesOrdered.length} of ${build.phasesOrdered.length + build.phasesRemaining.length} phases ordered
                     </div>
                   </td>
@@ -750,10 +750,10 @@
                     <div class="order-id">${delivery.orderID}</div>
                   </td>
                   <td data-label="Phase">
-                    <span style="font-weight: 600;">${delivery.phase}</span>
+                    <span class="order-phase">${delivery.phase}</span>
                   </td>
                   <td data-label="Location">
-                    <div style="font-size: 0.875rem; color: var(--color-text-secondary);">
+                    <div class="order-location">
                       ${delivery.location}
                     </div>
                   </td>
