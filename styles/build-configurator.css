@@ -33,6 +33,11 @@
   align-items: start;
 }
 
+/* When layout contains only an error/empty state, span full width */
+.configurator-layout > .state-container:only-child {
+  grid-column: 1 / -1;
+}
+
 .configurator-main {
   display: flex;
   flex-direction: column;

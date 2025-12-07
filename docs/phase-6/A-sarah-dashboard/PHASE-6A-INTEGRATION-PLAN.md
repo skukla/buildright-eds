@@ -280,11 +280,79 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
 
 ---
 
-## Integration Phase 5: Production Readiness
+## Integration Phase 5: EDS Production Patterns
+**Estimated Time**: 2-3 days  
+**Priority**: MEDIUM
+
+### 5.1 Error Pages (Author-Controlled)
+
+- [ ] **404 Page** (2h)
+  - [ ] Create `404.html` with author-editable content
+  - [ ] Style with design system
+  - [ ] Include search and navigation helpers
+  - [ ] Test with EDS error routing
+
+- [ ] **500/System Error Page** (1h)
+  - [ ] Create `500.html` for server errors
+  - [ ] Minimal dependencies (in case JS fails)
+  - [ ] Contact support messaging
+
+### 5.2 State Components as EDS Blocks
+
+- [ ] **Empty State Block** (2h)
+  - [ ] Create `blocks/empty-state/empty-state.html`
+  - [ ] Author-controlled title, message, icon
+  - [ ] Optional CTA button
+  - [ ] Document for content authors
+
+- [ ] **Error Message Block** (1h)
+  - [ ] Create `blocks/error-message/error-message.html`
+  - [ ] For inline contextual errors
+  - [ ] Variant support (warning, error, info)
+
+- [ ] **Loading State Block** (1h)
+  - [ ] Create `blocks/loading-state/loading-state.html`
+  - [ ] Spinner + optional message
+  - [ ] Skeleton loader variant
+
+### 5.3 Content Fragments for Localization
+
+- [ ] **Identify Author-Controlled Content** (1h)
+  - [ ] Empty state messages
+  - [ ] Error page content
+  - [ ] Help text and tooltips
+  
+- [ ] **Create Fragment Patterns** (2h)
+  - [ ] Document fragment structure
+  - [ ] Create example fragments
+  - [ ] Test fragment loading
+
+### 5.4 Helix/EDS Deployment Readiness
+
+- [ ] **Configuration Verification** (1h)
+  - [ ] Verify `fstab.yaml` setup
+  - [ ] Check `helix-query.yaml` if using indexing
+  - [ ] Validate paths and redirects
+
+- [ ] **Preview/Live Testing** (2h)
+  - [ ] Deploy to `.hlx.page` (preview)
+  - [ ] Test all Sarah flows on preview
+  - [ ] Promote to `.hlx.live` (production)
+  - [ ] Validate CDN caching behavior
+
+- [ ] **Lighthouse Audit** (1h)
+  - [ ] Performance score > 90
+  - [ ] Accessibility score > 90
+  - [ ] Best Practices score > 90
+  - [ ] SEO score > 90
+
+---
+
+## Integration Phase 6: Production Readiness
 **Estimated Time**: 3-5 days  
 **Priority**: MEDIUM
 
-### 5.1 Performance
+### 6.1 Performance
 
 - [ ] **Page Load Speed** (2h)
   - [ ] Audit with Lighthouse
@@ -297,7 +365,7 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
   - [ ] No jank on interactions
   - [ ] Efficient DOM updates
 
-### 5.2 Monitoring
+### 6.2 Monitoring
 
 - [ ] **Error Tracking** (2h)
   - [ ] Sentry or similar integration
@@ -310,7 +378,7 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
   - [ ] Event tracking (add to cart, checkout, etc.)
   - [ ] Conversion funnel setup
 
-### 5.3 Documentation
+### 6.3 Documentation
 
 - [ ] **Demo Script** (2h)
   - [ ] Step-by-step walkthrough
@@ -323,7 +391,7 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
   - [ ] API documentation
   - [ ] Troubleshooting guide
 
-### 5.4 QA & Testing
+### 6.4 QA & Testing
 
 - [ ] **End-to-End Testing** (4h)
   - [ ] Full flow: Login → Dashboard → Configure → BOM → Cart → Checkout
@@ -346,9 +414,10 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
 | **2. Data Completeness** | 10 tasks | 2-3 days | HIGH |
 | **3. Cart & Checkout** | 12 tasks | 3-4 days | HIGH |
 | **4. Backend Connection** | 9 tasks | 1-2 weeks | MEDIUM |
-| **5. Production Readiness** | 8 tasks | 3-5 days | MEDIUM |
+| **5. EDS Production Patterns** | 12 tasks | 2-3 days | MEDIUM |
+| **6. Production Readiness** | 8 tasks | 3-5 days | MEDIUM |
 
-**Total Estimated Time**: 3-4 weeks
+**Total Estimated Time**: 4-5 weeks
 
 ---
 
@@ -364,8 +433,9 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
 ### Week 3: Backend (if pursuing)
 4. Backend Connection (Phase 4)
 
-### Week 4: Ship It
-5. Production Readiness (Phase 5)
+### Week 4: EDS Patterns & Ship It
+5. EDS Production Patterns (Phase 5)
+6. Production Readiness (Phase 6)
 
 ---
 

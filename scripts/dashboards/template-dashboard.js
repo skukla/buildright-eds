@@ -36,23 +36,39 @@ class TemplateDashboard {
   }
   
   async loadTemplates() {
+    const loadingEl = document.getElementById('templates-loading');
+    const errorEl = document.getElementById('templates-error');
+    
     try {
       const response = await fetch('/data/templates.json');
+      if (!response.ok) throw new Error('Failed to fetch templates');
       const data = await response.json();
       this.templates = data.templates;
+      this.loadError = false;
     } catch (error) {
       console.error('Error loading templates:', error);
       this.templates = [];
+      this.loadError = true;
+    } finally {
+      // Hide loading state
+      if (loadingEl) loadingEl.hidden = true;
     }
   }
   
   renderTemplates() {
     const grid = document.getElementById('templates-grid');
+    const errorEl = document.getElementById('templates-error');
     if (!grid) return;
+    
+    // Show error state if loading failed
+    if (this.loadError) {
+      if (errorEl) errorEl.hidden = false;
+      return;
+    }
     
     if (this.templates.length === 0) {
       grid.innerHTML = `
-        <div class="empty-state">
+        <div class="state-container empty-state">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="9" y1="9" x2="15" y2="9"></line>
@@ -64,12 +80,12 @@ class TemplateDashboard {
       `;
     } else {
       grid.innerHTML = this.templates.map(template => this.renderTemplateCard(template)).join('');
-  }
+    }
   
     // Show the grid now that it's populated
     grid.classList.remove('templates-grid--loading');
     grid.classList.add('templates-grid--ready');
-    }
+  }
     
   decorateBreadcrumbs() {
     const breadcrumbsBlock = this.container.querySelector('.breadcrumbs');

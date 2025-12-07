@@ -37,6 +37,25 @@
         </div>
       </div>
       
+      <!-- Loading State -->
+      <div class="state-container loading-state" id="templates-loading">
+        <div class="loading-spinner"></div>
+        <p>Loading templates...</p>
+      </div>
+      
+      <!-- Error State (hidden by default) -->
+      <div class="state-container error-state" id="templates-error" hidden>
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        <h3>Failed to load templates</h3>
+        <p>Please check your connection and try again.</p>
+        <button class="btn btn-primary" onclick="location.reload()">Retry</button>
+      </div>
+      
+      <!-- Templates Grid (populated by JS) -->
       <div class="templates-grid templates-grid--loading" id="templates-grid">
         <!-- Template cards populated by template-dashboard.js -->
       </div>

@@ -447,6 +447,90 @@
 }
 
 /* ============================================
+   STATE COMPONENTS
+   Reusable loading, error, and empty state displays
+   ============================================ */
+
+/* Base state container */
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xxlarge);
+  min-height: 200px;
+}
+
+/* Ensure hidden attribute works with flex containers */
+.state-container[hidden] {
+  display: none !important;
+}
+
+.state-container svg {
+  margin-bottom: var(--spacing-medium);
+  color: var(--color-text-disabled);
+}
+
+.state-container h2,
+.state-container h3 {
+  margin: 0 0 var(--spacing-small);
+  font: var(--type-headline-2-font);
+  color: var(--color-text);
+}
+
+.state-container p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.state-container .btn {
+  margin-top: var(--spacing-large);
+}
+
+/* Loading State */
+.loading-state {
+  gap: var(--spacing-medium);
+}
+
+.loading-state .loading-spinner {
+  margin-bottom: var(--spacing-small);
+}
+
+.loading-state p {
+  font: var(--type-body-2-default-font);
+}
+
+/* Error State */
+.error-state svg {
+  color: var(--color-negative-500);
+}
+
+.error-state h2,
+.error-state h3 {
+  color: var(--color-negative-500);
+}
+
+/* Empty State */
+.empty-state {
+  gap: var(--spacing-small);
+}
+
+.empty-state svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* Inline states (for use within sections) */
+.state-inline {
+  padding: var(--spacing-large);
+  min-height: auto;
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-3);
+  border: 1px solid var(--color-border);
+}
+
+/* ============================================
    IMAGE PLACEHOLDER COMPONENT
    Reusable placeholder for missing/failed images
    

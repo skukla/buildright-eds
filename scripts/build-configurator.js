@@ -704,18 +704,19 @@ class BuildConfigurator {
   }
   
   showError(message) {
-    const container = document.querySelector('.configurator-main');
+    // Replace the entire layout with error state (hides sidebar too)
+    const container = document.querySelector('.configurator-layout');
     if (container) {
       container.innerHTML = `
-        <div class="error-state" style="text-align: center; padding: 4rem;">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--color-negative-500)" stroke-width="2">
+        <div class="state-container error-state">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"/>
             <line x1="15" y1="9" x2="9" y2="15"/>
             <line x1="9" y1="9" x2="15" y2="15"/>
           </svg>
-          <h2 style="margin-top: 1rem;">Error</h2>
-          <p style="color: var(--color-text-secondary);">${message}</p>
-          <a href="/pages/dashboard-templates.html" class="btn btn-primary" style="margin-top: 1rem;">
+          <h2>Error</h2>
+          <p>${message}</p>
+          <a href="/pages/dashboard-templates.html" class="btn btn-primary">
             Back to Templates
           </a>
         </div>
