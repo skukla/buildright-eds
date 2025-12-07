@@ -1,0 +1,575 @@
+/* Cart Bundle Styles
+ * Design patterns from BOM review for consistent visual language
+ * Uses design system tokens from base.css
+ */
+
+/* ============================================
+   CART ITEM CARDS (Base)
+   ============================================ */
+
+.cart-item-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-4);
+  overflow: hidden;
+  box-shadow: var(--shape-shadow-1);
+}
+
+.cart-item-main {
+  display: flex;
+  gap: var(--spacing-medium);
+  padding: var(--spacing-medium);
+}
+
+.cart-item-image-wrapper {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: var(--shape-border-radius-3);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.cart-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-item-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+}
+
+.cart-item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-xsmall);
+}
+
+.cart-item-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  flex-wrap: wrap;
+}
+
+.cart-item-title {
+  font: var(--type-body-1-strong-font);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.cart-item-meta {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-xsmall) 0;
+}
+
+.cart-item-price {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.cart-item-remove {
+  background: none;
+  border: none;
+  padding: var(--spacing-xsmall);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  border-radius: var(--shape-border-radius-2);
+  transition: all var(--transition-fast);
+}
+
+.cart-item-remove:hover {
+  background: var(--color-surface);
+  color: var(--color-negative-500);
+}
+
+.cart-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-medium);
+  padding-top: var(--spacing-medium);
+  border-top: 1px solid var(--color-border);
+}
+
+.cart-item-total {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* ============================================
+   QUANTITY CONTROLS
+   ============================================ */
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  overflow: hidden;
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+}
+
+.qty-btn:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+}
+
+.qty-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.qty-display {
+  width: 48px;
+  text-align: center;
+  font-weight: 600;
+  background: var(--color-background);
+  padding: var(--spacing-small) 0;
+}
+
+/* ============================================
+   BUNDLE CARD (Phase-Grouped)
+   ============================================ */
+
+.cart-bundle-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-4);
+  overflow: hidden;
+  box-shadow: var(--shape-shadow-2),
+              inset 0 50px 30px -45px rgba(0, 0, 0, 0.08);
+}
+
+.cart-bundle-card .cart-item-main {
+  padding: 0;
+}
+
+.cart-bundle-card .cart-item-details {
+  padding: 0;
+}
+
+/* Bundle Header */
+.bundle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-medium) var(--spacing-large);
+  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
+  border-bottom: 2px solid var(--color-brand-500);
+}
+
+.bundle-header-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+}
+
+.bundle-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: var(--color-brand-500);
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--shape-border-radius-2);
+}
+
+.bundle-title {
+  font: var(--type-headline-2-font);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.bundle-meta {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: var(--spacing-xsmall) 0 0 0;
+}
+
+.bundle-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.bundle-total-display {
+  text-align: right;
+}
+
+.bundle-total-label {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.bundle-total-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-brand-500);
+}
+
+/* Bundle Toggle */
+.bundle-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  padding: var(--spacing-small) var(--spacing-medium);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  cursor: pointer;
+  font: var(--type-body-2-strong-font);
+  color: var(--color-brand-500);
+  transition: all var(--transition-fast);
+}
+
+.bundle-toggle-btn:hover {
+  background: var(--color-surface-hover);
+}
+
+.bundle-toggle-icon {
+  transition: transform var(--transition-slow);
+}
+
+.bundle-toggle-btn[aria-expanded="true"] .bundle-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Bundle Content */
+.bundle-content {
+  background: var(--color-surface);
+}
+
+/* ============================================
+   PHASE ACCORDIONS (from BOM review)
+   ============================================ */
+
+.bundle-phases {
+  display: flex;
+  flex-direction: column;
+}
+
+.bundle-phase-accordion {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bundle-phase-accordion:last-child {
+  border-bottom: none;
+}
+
+.phase-accordion-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  padding: var(--spacing-medium) var(--spacing-large);
+  cursor: pointer;
+  background: var(--color-surface);
+  transition: background var(--transition-fast);
+  user-select: none;
+}
+
+.phase-accordion-header:hover {
+  background: var(--color-surface-hover);
+}
+
+.phase-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 91, 167, 0.1);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all var(--transition-base);
+}
+
+.phase-icon-wrapper svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-brand-500);
+}
+
+.bundle-phase-accordion[data-expanded="true"] .phase-icon-wrapper {
+  background: var(--color-brand-500);
+}
+
+.bundle-phase-accordion[data-expanded="true"] .phase-icon-wrapper svg {
+  color: white;
+}
+
+.phase-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.phase-name {
+  font: var(--type-body-1-strong-font);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.phase-item-count {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.phase-totals {
+  text-align: right;
+}
+
+.phase-total {
+  font: var(--type-body-1-strong-font);
+  color: var(--color-brand-500);
+}
+
+.phase-percent {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+}
+
+.phase-chevron {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-secondary);
+  transition: transform var(--transition-slow);
+  flex-shrink: 0;
+}
+
+.bundle-phase-accordion[data-expanded="false"] .phase-chevron {
+  transform: rotate(-90deg);
+}
+
+/* Phase Content */
+.phase-accordion-content {
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height var(--transition-slow), opacity var(--transition-slow);
+  opacity: 1;
+  background: var(--color-surface-nested);
+}
+
+.bundle-phase-accordion[data-expanded="false"] .phase-accordion-content {
+  max-height: 0;
+  opacity: 0;
+}
+
+.phase-items {
+  padding: var(--spacing-medium) var(--spacing-large);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+/* ============================================
+   BUNDLE PRODUCT ROWS (from BOM review)
+   ============================================ */
+
+.bundle-product-row {
+  display: grid;
+  grid-template-columns: 48px 1fr auto auto;
+  gap: var(--spacing-small);
+  align-items: center;
+  padding: var(--spacing-small) var(--spacing-medium);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.15s ease;
+}
+
+.bundle-product-row:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bundle-product-image {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--shape-border-radius-2);
+  overflow: hidden;
+  background: var(--color-surface);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bundle-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bundle-product-image-placeholder {
+  color: var(--color-text-secondary);
+}
+
+.bundle-product-info {
+  min-width: 0;
+}
+
+.bundle-product-name {
+  font: var(--type-body-2-strong-font);
+  color: var(--color-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bundle-product-sku {
+  font: var(--type-details-caption-1-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.bundle-product-qty {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xsmall);
+}
+
+.bundle-product-qty label {
+  font: var(--type-body-2-default-font);
+  color: var(--color-text-secondary);
+}
+
+.bundle-qty-input {
+  width: 60px;
+  padding: var(--spacing-xsmall) var(--spacing-small);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  font: var(--type-body-2-default-font);
+  text-align: center;
+}
+
+.bundle-qty-input:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 2px rgba(15, 91, 167, 0.1);
+}
+
+.bundle-product-price {
+  text-align: right;
+  min-width: 80px;
+}
+
+.bundle-product-total {
+  font: var(--type-body-2-strong-font);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.bundle-product-unit {
+  font: var(--type-details-caption-1-font);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   BUNDLE FOOTER
+   ============================================ */
+
+.bundle-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: var(--spacing-medium) var(--spacing-large);
+  background: linear-gradient(to top, #EBF4FB 0%, white 100%);
+  border-top: 1px solid var(--color-border);
+}
+
+.bundle-footer-total {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* ============================================
+   PHASE ICONS
+   ============================================ */
+
+.phase-icon-foundation svg,
+.phase-icon-framing svg,
+.phase-icon-envelope svg,
+.phase-icon-interior svg {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .bundle-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-medium);
+  }
+  
+  .bundle-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .bundle-product-row {
+    grid-template-columns: 40px 1fr;
+    gap: var(--spacing-xsmall);
+  }
+  
+  .bundle-product-qty,
+  .bundle-product-price {
+    grid-column: 2;
+  }
+  
+  .phase-accordion-header {
+    padding: var(--spacing-small) var(--spacing-medium);
+  }
+  
+  .phase-icon-wrapper {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .phase-icon-wrapper svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
