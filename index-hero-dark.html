@@ -119,7 +119,7 @@
         <div class="user-menu-wrapper">
           <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
             <span class="user-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
@@ -132,7 +132,7 @@
         <div class="cart-link-wrapper">
           <button class="cart-link" id="cart-link-toggle" aria-expanded="false" aria-label="Shopping cart">
             <span class="cart-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="21" r="1"/>
                 <circle cx="19" cy="21" r="1"/>
                 <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
@@ -278,23 +278,55 @@
     </div>
   </section>
 
-  <!-- Featured Products - Main Content -->
-  <section class="section py-5" style="background: var(--color-background);">
+  <!-- Shop By Job - Slate Section -->
+  <section class="section section-dark" style="padding: 4rem 0 5rem 0;">
     <div class="container">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="m-0 text-175 font-bold">Featured Products</h1>
-        <a href="catalog" class="text-brand text-decoration-none font-semibold text-base">View All Products →</a>
-      </div>
-      
-      <!-- Featured Products Block -->
-      <div class="featured-products" data-block-name="featured-products" data-block-status="loading">
-        <div>
-          <div>
-            <div class="products-container featured-products">
-              <!-- Products will be loaded by JavaScript -->
-            </div>
+      <h2 class="text-center mb-2 text-2xl">Shop By Job</h2>
+      <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Get a customized material kit for your specific construction job</p>
+      <div class="grid grid-4 gap-6">
+        <!-- Remodel a Bathroom -->
+        <a href="pages/project-builder.html?type=bathroom" class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-success mb-4">Renovation</span>
+            <h3 class="ideas-center__heading">Remodel a Bathroom</h3>
+            <p class="ideas-center__text">Materials for bathroom renovation and remodeling projects</p>
+            <span class="ideas-center__link">Start Project →</span>
           </div>
-        </div>
+        </a>
+        
+        <!-- Install Windows -->
+        <a href="pages/project-builder.html?type=windows" class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-warning mb-4">Windows</span>
+            <h3 class="ideas-center__heading">Install Windows</h3>
+            <p class="ideas-center__text">Window installation materials and hardware</p>
+            <span class="ideas-center__link">Start Project →</span>
+          </div>
+        </a>
+        
+        <!-- Repair Plumbing -->
+        <a href="pages/project-builder.html?type=plumbing" class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-primary mb-4">Plumbing</span>
+            <h3 class="ideas-center__heading">Repair Plumbing</h3>
+            <p class="ideas-center__text">Essential materials for plumbing repairs and maintenance</p>
+            <span class="ideas-center__link">Start Project →</span>
+          </div>
+        </a>
+        
+        <!-- Build a Deck -->
+        <a href="pages/project-builder.html?type=deck" class="ideas-center__card">
+          <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1656646549607-8fda5837a4ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+          <div class="ideas-center__content">
+            <span class="badge badge-secondary mb-4">Outdoor</span>
+            <h3 class="ideas-center__heading">Build a Deck</h3>
+            <p class="ideas-center__text">Lumber, fasteners, and materials for outdoor deck construction</p>
+            <span class="ideas-center__link">Start Project →</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -407,73 +439,23 @@
     </div>
   </section>
 
-  <!-- Shop By Job -->
-  <section class="section">
+  <!-- Featured Products -->
+  <section class="section py-5" style="background: var(--color-background);">
     <div class="container">
-      <h2 class="text-center mb-4 text-2xl">Shop By Job</h2>
-      <p class="text-center mb-4 max-w-600 mx-auto" style="color: var(--color-text-light);">Get a customized material kit for your specific construction job</p>
-      <div class="grid grid-3 gap-6">
-        <!-- Adobe Stock: "residential wall framing construction" -->
-        <a href="pages/project-builder.html?type=framing" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Frame a Wall</h3>
-            <p class="shop-by-job__text">Complete framing materials for residential wall construction</p>
-            <span class="shop-by-job__cta">Start Project →</span>
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="m-0 text-175 font-bold">Featured Products</h1>
+        <a href="catalog" class="text-brand text-decoration-none font-semibold text-base">View All Products →</a>
+      </div>
+      
+      <!-- Featured Products Block -->
+      <div class="featured-products" data-block-name="featured-products" data-block-status="loading">
+        <div>
+          <div>
+            <div class="products-container featured-products">
+              <!-- Products will be loaded by JavaScript -->
+            </div>
           </div>
-        </a>
-        
-        <!-- Adobe Stock: "bathroom renovation modern" -->
-        <a href="pages/project-builder.html?type=bathroom" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Remodel a Bathroom</h3>
-            <p class="shop-by-job__text">Materials for bathroom renovation and remodeling projects</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "window installation construction" -->
-        <a href="pages/project-builder.html?type=windows" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Install Windows</h3>
-            <p class="shop-by-job__text">Window installation materials and hardware</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "roofing construction shingles installation" -->
-        <!-- Unsplash: https://unsplash.com/photos/grey-roof-m_vEaZizd2s -->
-        <a href="pages/project-builder.html?type=roofing" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1518736346281-76873166a64a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Roof a House</h3>
-            <p class="shop-by-job__text">Complete roofing materials for new construction</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "plumbing tools pipes repair" -->
-        <a href="pages/project-builder.html?type=plumbing" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Repair Plumbing</h3>
-            <p class="shop-by-job__text">Essential materials for plumbing repairs and maintenance</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
-        
-        <!-- Adobe Stock: "outdoor deck construction lumber" -->
-        <!-- Unsplash: https://unsplash.com/photos/a-deck-with-chairs-and-tables-on-it-and-a-deck-with-plants-8c4kyStDeAE -->
-        <a href="pages/project-builder.html?type=deck" class="shop-by-job__card" style="background-image: url('https://images.unsplash.com/photo-1656646549607-8fda5837a4ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-          <div class="shop-by-job__overlay"></div>
-          <div class="shop-by-job__content">
-            <h3 class="shop-by-job__heading">Build a Deck</h3>
-            <p class="shop-by-job__text">Lumber, fasteners, and materials for outdoor deck construction</p>
-            <span class="shop-by-job__cta">Start Project →</span>
-          </div>
-        </a>
+        </div>
       </div>
     </div>
   </section>
