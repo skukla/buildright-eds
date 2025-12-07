@@ -136,6 +136,11 @@ body.white-variant #build-info-section .section-title {
   display: block;
   font: var(--type-details-caption-1-font);
   color: var(--color-text-secondary);
+}
+
+.form-hint--error {
+  color: var(--color-negative-500);
+  margin-top: var(--spacing-small);
   margin-top: var(--spacing-xsmall);
 }
 

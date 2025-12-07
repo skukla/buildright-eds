@@ -13,6 +13,8 @@ class BuildConfigurator {
     this.selectedPackage = null;
     this.selectedPhases = new Set();
     this.editingBundleId = null; // Track if editing existing BOM
+    this.isSubmitting = false; // Prevent double-submit
+    this.hasUnsavedChanges = false; // Track for navigation guard
     
     // Form data
     this.buildInfo = {
@@ -448,11 +450,15 @@ class BuildConfigurator {
   setupEventListeners() {
     // Selection tiles (click and keyboard) - includes both .selection-tile and .card-tile--selection
     document.querySelectorAll('.selection-tile, .card-tile--selection').forEach(tile => {
-      tile.addEventListener('click', () => this.handleTileClick(tile));
+      tile.addEventListener('click', () => {
+        this.handleTileClick(tile);
+        this.hasUnsavedChanges = true;
+      });
       tile.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           this.handleTileClick(tile);
+          this.hasUnsavedChanges = true;
         }
       });
     });
@@ -460,17 +466,20 @@ class BuildConfigurator {
     // Form inputs
     document.getElementById('project-name')?.addEventListener('input', (e) => {
       this.buildInfo.projectName = e.target.value;
+      this.hasUnsavedChanges = true;
     });
     
     document.getElementById('subdivision')?.addEventListener('change', (e) => {
       this.buildInfo.subdivision = e.target.value;
       this.updateDeliveryAddress();
       this.updatePackageAvailability();
+      this.hasUnsavedChanges = true;
     });
     
     document.getElementById('lot-number')?.addEventListener('input', (e) => {
       this.buildInfo.lotNumber = e.target.value;
       this.updateDeliveryAddress();
+      this.hasUnsavedChanges = true;
     });
     
     // Generate BOM button
@@ -480,7 +489,17 @@ class BuildConfigurator {
     
     // Cancel button
     document.getElementById('cancel-btn')?.addEventListener('click', () => {
+      // Clear unsaved changes flag before navigating
+      this.hasUnsavedChanges = false;
       window.location.href = '/pages/dashboard-templates.html';
+    });
+    
+    // Navigation guard - warn before leaving with unsaved changes
+    window.addEventListener('beforeunload', (e) => {
+      if (this.hasUnsavedChanges && !this.isSubmitting) {
+        e.preventDefault();
+        e.returnValue = ''; // Chrome requires returnValue to be set
+      }
     });
   }
   
@@ -614,9 +633,29 @@ class BuildConfigurator {
     const isValid = this.selectedPhases.size > 0;
     btn.disabled = !isValid;
     
-    // Update button text if editing existing BOM
-    if (this.editingBundleId) {
+    // Update button text based on state
+    if (this.isSubmitting) {
+      btn.textContent = 'Processing...';
+    } else if (this.editingBundleId) {
       btn.textContent = 'Review Changes';
+    } else {
+      btn.textContent = 'Generate BOM';
+    }
+    
+    // Show/hide validation hint
+    let hint = document.getElementById('generate-btn-hint');
+    if (!hint) {
+      hint = document.createElement('p');
+      hint.id = 'generate-btn-hint';
+      hint.className = 'form-hint form-hint--error';
+      btn.parentNode.insertBefore(hint, btn.nextSibling);
+    }
+    
+    if (!isValid && !this.isSubmitting) {
+      hint.textContent = 'Select at least one construction phase';
+      hint.hidden = false;
+    } else {
+      hint.hidden = true;
     }
   }
   
@@ -630,6 +669,11 @@ class BuildConfigurator {
       alert('Please select at least one construction phase.');
       return;
     }
+    
+    // Prevent double-submit
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+    this.updateGenerateButton();
     
     // Show loading overlay with contextual message
     const loadingTitle = this.editingBundleId ? 'Updating Bill of Materials...' : 'Generating Bill of Materials...';
@@ -668,12 +712,17 @@ class BuildConfigurator {
       // Simulate API call delay (replace with actual buildright-service call)
       await new Promise(resolve => setTimeout(resolve, 1500));
       
+      // Clear unsaved changes flag before navigating
+      this.hasUnsavedChanges = false;
+      
       // Navigate to BOM review
       window.location.href = `/pages/bom-review.html?buildId=${buildId}`;
       
     } catch (error) {
       console.error('Error generating BOM:', error);
       this.hideLoading();
+      this.isSubmitting = false;
+      this.updateGenerateButton();
       alert('Failed to generate BOM. Please try again.');
     }
   }

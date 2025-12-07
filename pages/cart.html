@@ -246,12 +246,15 @@
             });
           }
           
-          // Setup quantity inputs
+          // Setup quantity inputs (with min/max validation)
           bundleCard.querySelectorAll('.bundle-qty-input').forEach(input => {
             input.addEventListener('change', (e) => {
               const bundleId = e.target.dataset.bundleId;
               const sku = e.target.dataset.sku;
-              const quantity = parseInt(e.target.value) || 1;
+              const MIN_QUANTITY = 1;
+              const MAX_QUANTITY = 9999;
+              let quantity = parseInt(e.target.value) || MIN_QUANTITY;
+              quantity = Math.max(MIN_QUANTITY, Math.min(MAX_QUANTITY, quantity));
               updateBundleItemQuantity(bundleId, sku, quantity);
               loadCartItems();
             });
@@ -336,7 +339,8 @@
         const sku = increaseBtn.getAttribute('data-sku');
         const cart = getCart();
         const item = cart.find(i => i.sku === sku);
-        if (item) {
+        const MAX_QUANTITY = 9999;
+        if (item && item.quantity < MAX_QUANTITY) {
           updateCartItem(sku, item.quantity + 1);
           loadCartItems();
         }

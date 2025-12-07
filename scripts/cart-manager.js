@@ -1,5 +1,9 @@
 // Cart Manager - Shopping cart functionality
 
+// Quantity limits
+const MIN_QUANTITY = 1;
+const MAX_QUANTITY = 9999;
+
 // Get cart from localStorage
 function getCart() {
   try {
@@ -15,15 +19,16 @@ function saveCart(cart) {
   window.dispatchEvent(new CustomEvent('cartUpdated'));
 }
 
-// Add item to cart
+// Add item to cart (with max quantity validation)
 function addToCart(sku, quantity = 1) {
   const cart = getCart();
   const existingItem = cart.find(item => item.sku === sku);
 
   if (existingItem) {
-    existingItem.quantity += quantity;
+    // Clamp to max quantity
+    existingItem.quantity = Math.min(existingItem.quantity + quantity, MAX_QUANTITY);
   } else {
-    cart.push({ sku, quantity });
+    cart.push({ sku, quantity: Math.min(quantity, MAX_QUANTITY) });
   }
 
   saveCart(cart);
@@ -45,7 +50,7 @@ function removeFromCart(identifier) {
   return cart;
 }
 
-// Update item quantity in cart
+// Update item quantity in cart (with min/max validation)
 function updateCartItem(sku, quantity) {
   const cart = getCart();
   const item = cart.find(item => item.sku === sku);
@@ -54,7 +59,8 @@ function updateCartItem(sku, quantity) {
     if (quantity <= 0) {
       return removeFromCart(sku);
     }
-    item.quantity = quantity;
+    // Clamp quantity to valid range
+    item.quantity = Math.max(MIN_QUANTITY, Math.min(MAX_QUANTITY, quantity));
     saveCart(cart);
   }
 
