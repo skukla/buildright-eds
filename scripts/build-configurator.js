@@ -12,6 +12,7 @@ class BuildConfigurator {
     this.selectedVariants = new Set();
     this.selectedPackage = null;
     this.selectedPhases = new Set();
+    this.editingBundleId = null; // Track if editing existing BOM
     
     // Form data
     this.buildInfo = {
@@ -81,8 +82,114 @@ class BuildConfigurator {
     // Setup event listeners
     this.setupEventListeners();
     
+    // Restore previous selections if editing
+    this.restorePreviousSelections();
+    
     // Initial summary update
     this.updateOrderSummary();
+    
+    // Listen for cart updates to detect if edited bundle is removed
+    this.setupCartListener();
+  }
+  
+  setupCartListener() {
+    window.addEventListener('cartUpdated', async () => {
+      if (this.editingBundleId) {
+        // Check if the bundle we're editing still exists
+        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+        const bundleExists = cart.some(item => item.bundleId === this.editingBundleId);
+        
+        if (!bundleExists) {
+          // Bundle was removed - switch to "create new" mode
+          this.editingBundleId = null;
+          
+          // Update button text
+          const btn = document.getElementById('generate-bom-btn');
+          if (btn) {
+            btn.textContent = 'Generate BOM';
+          }
+          
+          // Update localStorage to clear editingBundleId
+          const storedBuild = JSON.parse(localStorage.getItem('buildright_current_build') || '{}');
+          delete storedBuild.editingBundleId;
+          localStorage.setItem('buildright_current_build', JSON.stringify(storedBuild));
+          
+          // Show info notification
+          const { showInfoNotification } = await import('./cart-notification.js');
+          showInfoNotification('The BOM you were editing was removed from your cart. Your changes will be added as a new item.');
+        }
+      }
+    });
+  }
+  
+  restorePreviousSelections() {
+    // Check if we're editing an existing build
+    const storedBuild = localStorage.getItem('buildright_current_build');
+    if (!storedBuild) return;
+    
+    try {
+      const buildData = JSON.parse(storedBuild);
+      
+      // Only restore if it's the same template
+      if (buildData.templateId !== this.template.id) return;
+      
+      // Check if we're editing an existing BOM bundle
+      this.editingBundleId = buildData.editingBundleId || null;
+      
+      // Restore package selection
+      if (buildData.packageId) {
+        const packageTile = document.querySelector(`[data-type="package"][data-id="${buildData.packageId}"]`);
+        if (packageTile) {
+          // Deselect all packages first
+          document.querySelectorAll('[data-type="package"]').forEach(t => {
+            t.dataset.selected = 'false';
+            t.setAttribute('aria-checked', 'false');
+          });
+          // Select the saved package
+          packageTile.dataset.selected = 'true';
+          packageTile.setAttribute('aria-checked', 'true');
+          this.selectedPackage = buildData.packageId;
+        }
+      }
+      
+      // Restore variant selections
+      if (buildData.variants && buildData.variants.length > 0) {
+        buildData.variants.forEach(variantId => {
+          const variantTile = document.querySelector(`[data-type="variant"][data-id="${variantId}"]`);
+          if (variantTile) {
+            variantTile.dataset.selected = 'true';
+            variantTile.setAttribute('aria-checked', 'true');
+            this.selectedVariants.add(variantId);
+          }
+        });
+      }
+      
+      // Restore phase selections
+      if (buildData.phases && buildData.phases.length > 0) {
+        // Deselect all phases first
+        document.querySelectorAll('[data-type="phase"]').forEach(t => {
+          t.dataset.selected = 'false';
+          t.setAttribute('aria-checked', 'false');
+        });
+        this.selectedPhases.clear();
+        
+        buildData.phases.forEach(phaseId => {
+          const phaseTile = document.querySelector(`[data-type="phase"][data-id="${phaseId}"]`);
+          if (phaseTile) {
+            phaseTile.dataset.selected = 'true';
+            phaseTile.setAttribute('aria-checked', 'true');
+            this.selectedPhases.add(phaseId);
+          }
+        });
+      }
+      
+      // Update UI after restoring
+      this.updateOrderSummary();
+      this.updateGenerateButton();
+      
+    } catch (error) {
+      console.error('Error restoring previous selections:', error);
+    }
   }
   
   async loadTemplateData(templateId) {
@@ -506,6 +613,11 @@ class BuildConfigurator {
     // Enable if at least one phase is selected
     const isValid = this.selectedPhases.size > 0;
     btn.disabled = !isValid;
+    
+    // Update button text if editing existing BOM
+    if (this.editingBundleId) {
+      btn.textContent = 'Review Changes';
+    }
   }
   
   // ============================================
@@ -519,8 +631,9 @@ class BuildConfigurator {
       return;
     }
     
-    // Show loading overlay
-    this.showLoading('Generating Bill of Materials...', 'This will take just a moment');
+    // Show loading overlay with contextual message
+    const loadingTitle = this.editingBundleId ? 'Updating Bill of Materials...' : 'Generating Bill of Materials...';
+    this.showLoading(loadingTitle, 'This will take just a moment');
     
     try {
       // Prepare build configuration
@@ -535,11 +648,18 @@ class BuildConfigurator {
       
       // Save to localStorage for BOM review page
       const buildId = `build-${Date.now()}`;
-      localStorage.setItem('buildright_current_build', JSON.stringify({
+      const buildData = {
         id: buildId,
         ...buildConfig,
         createdAt: new Date().toISOString()
-      }));
+      };
+      
+      // Preserve editingBundleId if editing existing BOM
+      if (this.editingBundleId) {
+        buildData.editingBundleId = this.editingBundleId;
+      }
+      
+      localStorage.setItem('buildright_current_build', JSON.stringify(buildData));
       
       // Update last project number
       const projectNum = parseInt(this.buildInfo.projectName.match(/\d+/)?.[0] || '47', 10);

@@ -11,6 +11,7 @@ class BOMReview {
     this.packagesData = null;
     this.expandedPanels = new Set(); // Track which swap panels are open
     this.selectedSwaps = new Map();  // Track swap selections
+    this.editingBundleId = null; // Track if we're editing an existing BOM bundle
     
     // DOM Elements
     this.elements = {
@@ -59,6 +60,39 @@ class BOMReview {
     this.renderSummary();
     this.renderPhases();
     this.setupEventListeners();
+    
+    // Update button text if editing existing BOM
+    if (this.editingBundleId) {
+      this.elements.addToCartBtn.textContent = 'Update Cart';
+    }
+    
+    // Listen for cart updates to detect if edited bundle is removed
+    this.setupCartListener();
+  }
+  
+  setupCartListener() {
+    window.addEventListener('cartUpdated', async () => {
+      if (this.editingBundleId) {
+        // Check if the bundle we're editing still exists
+        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+        const bundleExists = cart.some(item => item.bundleId === this.editingBundleId);
+        
+        if (!bundleExists) {
+          // Bundle was removed - switch to "add new" mode
+          this.editingBundleId = null;
+          this.elements.addToCartBtn.textContent = 'Add All to Cart';
+          
+          // Update localStorage to clear editingBundleId
+          const storedBuild = JSON.parse(localStorage.getItem('buildright_current_build') || '{}');
+          delete storedBuild.editingBundleId;
+          localStorage.setItem('buildright_current_build', JSON.stringify(storedBuild));
+          
+          // Show info notification
+          const { showInfoNotification } = await import('./cart-notification.js');
+          showInfoNotification('The BOM you were editing was removed from your cart. Your changes will be added as a new item.');
+        }
+      }
+    });
   }
   
   async loadData() {
@@ -72,6 +106,9 @@ class BOMReview {
       this.bomData.selectedPhases = this.bomData.phases || [];
       this.bomData.projectDetails = this.bomData.buildInfo;
       this.bomData.generatedDate = this.bomData.createdAt;
+      
+      // Check if we're editing an existing bundle
+      this.editingBundleId = this.bomData.editingBundleId || null;
     }
     
     // Load templates and packages directly from JSON
@@ -565,12 +602,14 @@ class BOMReview {
   }
   
   async addAllToCart() {
+    const isEditing = !!this.editingBundleId;
+    
     this.elements.loadingOverlay.dataset.visible = 'true';
-    document.getElementById('loading-title').textContent = 'Adding to cart...';
+    document.getElementById('loading-title').textContent = isEditing ? 'Updating cart...' : 'Adding to cart...';
     document.getElementById('loading-subtitle').textContent = `${this.bomData.lineItems.length} items`;
     
     // Create a bundle from the BOM items
-    const bundleId = `bom-${Date.now()}`;
+    const bundleId = isEditing ? this.editingBundleId : `bom-${Date.now()}`;
     const templateName = this.templateData?.name || 'Custom Build';
     const packageName = this.packagesData?.find(p => p.id === this.bomData.selectedPackage)?.name || '';
     
@@ -598,10 +637,29 @@ class BOMReview {
       }
     };
     
-    // Add bundle to cart
-    const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
-    cart.push(bundle);
+    // Get current cart
+    let cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
+    
+    if (isEditing) {
+      // Update existing bundle
+      const existingIndex = cart.findIndex(item => item.bundleId === this.editingBundleId);
+      if (existingIndex !== -1) {
+        cart[existingIndex] = bundle;
+      } else {
+        // Bundle not found, add as new
+        cart.push(bundle);
+      }
+    } else {
+      // Add new bundle
+      cart.push(bundle);
+    }
+    
     localStorage.setItem('buildright_cart', JSON.stringify(cart));
+    
+    // Clear the editing flag from localStorage
+    const storedBuild = JSON.parse(localStorage.getItem('buildright_current_build') || '{}');
+    delete storedBuild.editingBundleId;
+    localStorage.setItem('buildright_current_build', JSON.stringify(storedBuild));
     
     // Dispatch cart updated event
     window.dispatchEvent(new CustomEvent('cartUpdated'));
@@ -613,11 +671,13 @@ class BOMReview {
     
     // Show success
     this.elements.successMessage.dataset.visible = 'true';
-    document.getElementById('success-title').textContent = 'BOM added to cart!';
+    document.getElementById('success-title').textContent = isEditing ? 'Cart updated!' : 'BOM added to cart!';
     document.getElementById('success-subtitle').textContent = `${this.bomData.lineItems.length} items totaling ${this.elements.summaryTotal.textContent}`;
     
-    // Save build to localStorage for dashboard
-    this.saveBuildToHistory();
+    // Save build to localStorage for dashboard (only for new builds)
+    if (!isEditing) {
+      this.saveBuildToHistory();
+    }
     
     // Redirect after delay
     setTimeout(() => {

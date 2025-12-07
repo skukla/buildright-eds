@@ -108,6 +108,7 @@
     import { getProductBySKU, getPrice } from '../scripts/data-mock.js';
     import { removeBundleFromCart, updateBundleItemQuantity } from '../scripts/project-builder.js';
     import { decorateBlock } from '../scripts/scripts.js';
+    import '../scripts/image-placeholder.js'; // Registers global handleImageError
     
     // Load cart items
     async function loadCartItems() {
@@ -132,35 +133,86 @@
         // Handle bundles
         if (item.type === 'bundle') {
           const bundleCard = document.createElement('div');
-          bundleCard.className = 'cart-item-card cart-bundle-card';
+          bundleCard.className = 'cart-item-card cart-bundle-card cart-bundle-clickable';
+          
+          // Get template image from metadata
+          const templateId = item.metadata?.templateId || 'sedona';
+          const templateImage = `/images/floor-plans/${templateId}.png`;
+          
+          // Store bundle data for edit link
+          const bundleDataForEdit = JSON.stringify({
+            templateId: item.metadata?.templateId,
+            packageId: item.metadata?.packageId,
+            variants: item.metadata?.variants || [],
+            phases: item.metadata?.phases || [],
+            bundleId: item.bundleId
+          });
+          
+          // Add data attribute to the card for click handling
+          bundleCard.dataset.bundleEdit = bundleDataForEdit;
           
           bundleCard.innerHTML = `
             <div class="bundle-header">
-              <div class="bundle-header-left">
-                <span class="bundle-badge">BUNDLE</span>
-                <h3 class="bundle-title">${item.bundleName}</h3>
+              <div class="bundle-thumbnail">
+                <img src="${templateImage}" alt="Floor plan" onerror="handleImageError(this)">
               </div>
-              <button class="cart-item-remove" onclick="removeBundle('${item.bundleId}')" aria-label="Remove bundle">×</button>
+              <div class="bundle-header-info">
+                <h3 class="bundle-title">${item.bundleName}</h3>
+                <p class="bundle-meta">${item.itemCount} items</p>
+              </div>
+              <button class="cart-item-remove" onclick="event.stopPropagation(); removeBundle('${item.bundleId}')" aria-label="Remove bundle">×</button>
             </div>
-            <p class="bundle-meta">${item.itemCount} items</p>
             
             <button class="bundle-toggle-btn" data-bundle-id="${item.bundleId}">
-              View Bundle Contents ▼
+              <span class="toggle-text">View Bundle Contents</span>
+              <span class="toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
             </button>
             
             <div class="bundle-items-list" data-bundle-id="${item.bundleId}" style="display: none;">
-              ${item.items.map(bundleItem => `
-                <div class="bundle-item-row">
-                  <span class="bundle-item-name">${bundleItem.name}</span>
-                  <span class="bundle-item-sku">SKU: ${bundleItem.sku}</span>
-                  <span class="bundle-item-qty">Qty: <input type="number" min="1" value="${bundleItem.quantity}" data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}" class="bundle-qty-input"></span>
-                  <span class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toFixed(2)}</span>
-                </div>
-              `).join('')}
+              ${(() => {
+                const INITIAL_ITEMS = 5;
+                const visibleItems = item.items.slice(0, INITIAL_ITEMS);
+                const hiddenItems = item.items.slice(INITIAL_ITEMS);
+                const hasMore = hiddenItems.length > 0;
+                
+                let html = visibleItems.map(bundleItem => `
+                  <div class="bundle-item-row">
+                    <div class="bundle-item-info">
+                      <div class="bundle-item-name">${bundleItem.name}</div>
+                      <div class="bundle-item-sku">${bundleItem.sku}</div>
+                    </div>
+                    <span class="bundle-item-qty">× ${bundleItem.quantity}</span>
+                    <span class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                `).join('');
+                
+                if (hasMore) {
+                  html += `
+                    <button class="bundle-show-more-btn" data-bundle-id="${item.bundleId}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                      <span>Show ${hiddenItems.length} more item${hiddenItems.length > 1 ? 's' : ''}</span>
+                    </button>
+                    <div class="bundle-items-hidden" data-bundle-id="${item.bundleId}" style="display: none;">
+                      ${hiddenItems.map(bundleItem => `
+                        <div class="bundle-item-row">
+                          <div class="bundle-item-info">
+                            <div class="bundle-item-name">${bundleItem.name}</div>
+                            <div class="bundle-item-sku">${bundleItem.sku}</div>
+                          </div>
+                          <span class="bundle-item-qty">× ${bundleItem.quantity}</span>
+                          <span class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  `;
+                }
+                
+                return html;
+              })()}
             </div>
             
             <div class="bundle-footer">
-              <span class="bundle-total">$${item.totalPrice.toFixed(2)}</span>
+              <span class="bundle-total">$${item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
           `;
           
@@ -169,11 +221,30 @@
           // Setup toggle
           const toggle = bundleCard.querySelector('.bundle-toggle-btn');
           const itemsDiv = bundleCard.querySelector('.bundle-items-list');
+          const toggleText = toggle.querySelector('.toggle-text');
           toggle.addEventListener('click', () => {
             const isExpanded = itemsDiv.style.display !== 'none';
             itemsDiv.style.display = isExpanded ? 'none' : 'block';
-            toggle.textContent = isExpanded ? 'View Bundle Contents ▼' : 'Hide Bundle Contents ▲';
+            toggleText.textContent = isExpanded ? 'View Bundle Contents' : 'Hide Bundle Contents';
+            toggle.classList.toggle('expanded', !isExpanded);
           });
+          
+          // Setup "Show more" toggle for hidden items
+          const showMoreBtn = bundleCard.querySelector('.bundle-show-more-btn');
+          if (showMoreBtn) {
+            const hiddenItemsDiv = bundleCard.querySelector('.bundle-items-hidden');
+            showMoreBtn.addEventListener('click', () => {
+              const isShowingMore = hiddenItemsDiv.style.display !== 'none';
+              hiddenItemsDiv.style.display = isShowingMore ? 'none' : 'block';
+              showMoreBtn.classList.toggle('expanded', !isShowingMore);
+              
+              // Update button text
+              const hiddenCount = hiddenItemsDiv.querySelectorAll('.bundle-item-row').length;
+              showMoreBtn.querySelector('span').textContent = isShowingMore 
+                ? `Show ${hiddenCount} more item${hiddenCount > 1 ? 's' : ''}`
+                : 'Show less';
+            });
+          }
           
           // Setup quantity inputs
           bundleCard.querySelectorAll('.bundle-qty-input').forEach(input => {
@@ -200,7 +271,8 @@
         const imagePath = product.image || `../images/products/${product.sku}.png`;
 
         const card = document.createElement('div');
-        card.className = 'cart-item-card';
+        card.className = 'cart-item-card cart-item-clickable';
+        card.dataset.href = `/pages/pdp.html?sku=${item.sku}`;
         card.innerHTML = `
           <div class="cart-item-main">
             <div class="cart-item-image-wrapper">
@@ -219,7 +291,7 @@
                 </button>
               </div>
               <p class="cart-item-meta">SKU: ${product.sku}</p>
-              <p class="cart-item-price">$${price.toFixed(2)} per unit</p>
+              <p class="cart-item-price">$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} per unit</p>
               
               <div class="cart-item-footer">
                 <div class="quantity-controls">
@@ -235,7 +307,7 @@
                     </svg>
                   </button>
                 </div>
-                <div class="cart-item-total">$${total.toFixed(2)}</div>
+                <div class="cart-item-total">$${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
               </div>
             </div>
           </div>
@@ -250,6 +322,7 @@
     document.addEventListener('click', (e) => {
       const decreaseBtn = e.target.closest('.qty-decrease');
       const increaseBtn = e.target.closest('.qty-increase');
+      const bundleEditLink = e.target.closest('.bundle-link');
       
       if (decreaseBtn) {
         const sku = decreaseBtn.getAttribute('data-sku');
@@ -268,7 +341,38 @@
           loadCartItems();
         }
       }
+      
+      // Handle clickable cart item cards (individual products)
+      const clickableCard = e.target.closest('.cart-item-clickable');
+      if (clickableCard && !e.target.closest('button') && !e.target.closest('.quantity-controls')) {
+        window.location.href = clickableCard.dataset.href;
+      }
+      
+      // Handle clickable bundle cards (entire bundle card is clickable)
+      const bundleCard = e.target.closest('.cart-bundle-clickable');
+      if (bundleCard && !e.target.closest('button') && !e.target.closest('.bundle-toggle-btn')) {
+        navigateToBomEdit(bundleCard.dataset.bundleEdit);
+      }
     });
+    
+    // Helper function to navigate to BOM review for editing
+    function navigateToBomEdit(bundleEditJson) {
+      const bundleData = JSON.parse(bundleEditJson);
+      
+      // Restore build configuration to localStorage for BOM review
+      const buildConfig = {
+        templateId: bundleData.templateId,
+        packageId: bundleData.packageId,
+        variants: bundleData.variants,
+        phases: bundleData.phases,
+        editingBundleId: bundleData.bundleId,
+        createdAt: new Date().toISOString()
+      };
+      localStorage.setItem('buildright_current_build', JSON.stringify(buildConfig));
+      
+      // Navigate to BOM review
+      window.location.href = '/pages/bom-review.html';
+    }
 
     window.removeItem = function(sku) {
       removeFromCart(sku);

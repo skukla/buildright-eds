@@ -81,7 +81,7 @@ export default async function decorate(block) {
       }
 
       if (miniCartTotal) {
-        miniCartTotal.textContent = `$${subtotal.toFixed(2)}`;
+        miniCartTotal.textContent = `$${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
 
       // Show empty state or items
@@ -163,9 +163,21 @@ export default async function decorate(block) {
       return div.innerHTML;
     };
 
-    // Link to Kit PDP (Step 5) with edit mode
+    // Store bundle metadata for edit link
+    const bundleEditData = JSON.stringify({
+      templateId: bundle.metadata?.templateId,
+      packageId: bundle.metadata?.packageId,
+      variants: bundle.metadata?.variants || [],
+      phases: bundle.metadata?.phases || [],
+      bundleId: bundle.bundleId
+    });
+
+    // Link to BOM Review with edit mode
     return `
-      <a href="${basePath}pages/project-builder.html?edit=${bundle.bundleId}" class="mini-cart-item mini-cart-bundle mini-cart-item-link" data-bundle-id="${bundle.bundleId}" title="View/Edit ${escapeHtml(bundle.bundleName || 'Project Bundle')}">
+      <a href="#" class="mini-cart-item mini-cart-bundle mini-cart-item-link mini-cart-bundle-edit" 
+         data-bundle-id="${bundle.bundleId}" 
+         data-bundle-edit='${bundleEditData.replace(/'/g, "&#39;")}'
+         title="View/Edit ${escapeHtml(bundle.bundleName || 'Project Bundle')}">
         <div class="mini-cart-item-info">
           <div class="mini-cart-bundle-badge-row">
             <span class="mini-cart-badge">BUNDLE</span>
@@ -180,7 +192,7 @@ export default async function decorate(block) {
           </div>
           <div class="mini-cart-item-details-row">
             <span class="mini-cart-item-quantity">${bundle.itemCount || 0} items</span>
-            <div class="mini-cart-item-price">$${(bundle.totalPrice || 0).toFixed(2)}</div>
+            <div class="mini-cart-item-price">$${(bundle.totalPrice || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           </div>
         </div>
       </a>
@@ -217,16 +229,18 @@ export default async function decorate(block) {
           </div>
           <div class="mini-cart-item-details-row">
             <span class="mini-cart-item-quantity">Qty: ${item.quantity}</span>
-            <span class="mini-cart-item-price">$${total.toFixed(2)}</span>
+            <span class="mini-cart-item-price">$${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
         </div>
       </a>
     `;
   }
 
-  // Handle remove item clicks
+  // Handle clicks (remove buttons and bundle edit links)
   block.addEventListener('click', async (e) => {
     const removeBtn = e.target.closest('.mini-cart-item-remove');
+    const bundleEditLink = e.target.closest('.mini-cart-bundle-edit');
+    
     if (removeBtn) {
       // Prevent link navigation when clicking remove button
       e.preventDefault();
@@ -240,6 +254,26 @@ export default async function decorate(block) {
         const { removeFromCart } = await import('../../scripts/cart-manager.js');
         removeFromCart(bundleId || sku);
       }
+    } else if (bundleEditLink && !e.target.closest('.mini-cart-item-remove')) {
+      // Handle bundle edit - navigate to BOM review
+      e.preventDefault();
+      
+      const bundleData = JSON.parse(bundleEditLink.dataset.bundleEdit);
+      
+      // Restore build configuration to localStorage for BOM review
+      const buildConfig = {
+        templateId: bundleData.templateId,
+        packageId: bundleData.packageId,
+        variants: bundleData.variants,
+        phases: bundleData.phases,
+        editingBundleId: bundleData.bundleId,
+        createdAt: new Date().toISOString()
+      };
+      localStorage.setItem('buildright_current_build', JSON.stringify(buildConfig));
+      
+      // Close mini-cart and navigate to BOM review
+      block.classList.remove('active');
+      window.location.href = '/pages/bom-review.html';
     }
   });
 
