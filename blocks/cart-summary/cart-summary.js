@@ -57,18 +57,18 @@ export default async function decorate(block) {
     }
 
     if (subtotalEl) {
-      subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+      subtotalEl.textContent = `$${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
 
     if (savingsEl) {
-      savingsEl.textContent = `$${savings.toFixed(2)}`;
+      savingsEl.textContent = `$${savings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       if (savings <= 0) {
         savingsEl.textContent = '$0.00';
       }
     }
 
     if (totalEl) {
-      totalEl.textContent = `$${subtotal.toFixed(2)}`;
+      totalEl.textContent = `$${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
   }
 
