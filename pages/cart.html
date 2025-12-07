@@ -191,102 +191,61 @@
           
           bundleCard.innerHTML = `
             <!-- Bundle Header -->
-            <div class="bundle-header">
-              <div class="bundle-header-info">
-                <div>
-                  <div style="display: flex; align-items: center; gap: var(--spacing-small); margin-bottom: var(--spacing-xsmall);">
-                    <span class="bundle-badge">BUNDLE</span>
-                    <h3 class="bundle-title">${item.bundleName}</h3>
-                  </div>
-                  <p class="bundle-meta">${item.itemCount} items across ${sortedPhases.length} phases</p>
-                </div>
+            <div class="bundle-header-simple">
+              <div class="bundle-header-left">
+                <span class="bundle-badge">BUNDLE</span>
+                <h3 class="bundle-title-simple">${item.bundleName}</h3>
               </div>
-              <div class="bundle-header-actions">
-                <div class="bundle-total-display">
-                  <p class="bundle-total-label">Bundle Total</p>
-                  <span class="bundle-total-value">$${item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
-                </div>
-                <button class="cart-item-remove" onclick="removeBundle('${item.bundleId}')" aria-label="Remove bundle">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12"/>
-                  </svg>
-                </button>
+              <div class="bundle-header-right">
+                <span class="bundle-total-simple">$${item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                <button class="cart-item-remove" onclick="removeBundle('${item.bundleId}')" aria-label="Remove bundle">×</button>
               </div>
             </div>
             
-            <!-- Bundle Content - Phase Accordions -->
-            <div class="bundle-content">
-              <div class="bundle-phases">
-                ${sortedPhases.map(phase => {
-                  const phaseItems = phaseGroups[phase];
-                  const phaseTotal = phaseItems.reduce((sum, i) => sum + (i.unitPrice * i.quantity), 0);
-                  const phasePercent = ((phaseTotal / item.totalPrice) * 100).toFixed(0);
-                  const phaseIcon = getPhaseIcon(phase);
-                  
-                  return `
-                    <div class="bundle-phase-accordion" data-expanded="false" data-phase="${phase}">
-                      <div class="phase-accordion-header">
-                        <div class="phase-icon-wrapper phase-icon-${phase.toLowerCase().replace(/\s+/g, '-')}">
-                          ${phaseIcon}
-                        </div>
-                        <div class="phase-info">
-                          <h4 class="phase-name">${phase}</h4>
-                          <p class="phase-item-count">${phaseItems.length} items</p>
-                        </div>
-                        <div class="phase-totals">
-                          <span class="phase-total">$${phaseTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
-                          <span class="phase-percent">${phasePercent}% of bundle</span>
-                        </div>
-                        <svg class="phase-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <path d="m6 9 6 6 6-6"/>
-                        </svg>
+            <p class="bundle-meta-simple">${item.itemCount} items</p>
+            
+            <button class="bundle-expand-btn" data-bundle-id="${item.bundleId}" aria-expanded="false">
+              View Bundle Contents ▼
+            </button>
+            
+            <!-- Bundle Items (collapsible) -->
+            <div class="bundle-items-simple" data-bundle-id="${item.bundleId}" style="display: none;">
+              ${sortedPhases.map(phase => {
+                const phaseItems = phaseGroups[phase];
+                return `
+                  <div class="phase-divider">${phase}</div>
+                  ${phaseItems.map(bundleItem => `
+                    <div class="bundle-item-row">
+                      <div class="bundle-item-name">${bundleItem.name}</div>
+                      <div class="bundle-item-sku">SKU: ${bundleItem.sku}</div>
+                      <div class="bundle-item-qty">
+                        <span>Qty:</span>
+                        <input type="number" min="1" value="${bundleItem.quantity}" 
+                               data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
+                               class="bundle-qty-input-simple">
                       </div>
-                      <div class="phase-accordion-content">
-                        <div class="phase-items">
-                          ${phaseItems.map(bundleItem => `
-                            <div class="bundle-product-row">
-                              <div class="bundle-product-image">
-                                <img src="../images/products/${bundleItem.sku}.png" alt="${bundleItem.name}"
-                                     onerror="this.parentElement.innerHTML='<div class=\\'bundle-product-image-placeholder\\'><svg width=\\'20\\' height=\\'20\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\'/><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'/><path d=\\'M21 15l-5-5L5 21\\'/></svg></div>'">
-                              </div>
-                              <div class="bundle-product-info">
-                                <p class="bundle-product-name">${bundleItem.name}</p>
-                                <p class="bundle-product-sku">SKU: ${bundleItem.sku}</p>
-                              </div>
-                              <div class="bundle-product-qty">
-                                <label>Qty:</label>
-                                <input type="number" min="1" value="${bundleItem.quantity}" 
-                                       data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
-                                       class="bundle-qty-input">
-                              </div>
-                              <div class="bundle-product-price">
-                                <p class="bundle-product-total">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-                                <p class="bundle-product-unit">$${bundleItem.unitPrice.toFixed(2)} ea</p>
-                              </div>
-                            </div>
-                          `).join('')}
-                        </div>
-                      </div>
+                      <div class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
                     </div>
-                  `;
-                }).join('')}
-              </div>
+                  `).join('')}
+                `;
+              }).join('')}
             </div>
           `;
           
           itemsContainer.appendChild(bundleCard);
           
-          // Setup phase accordion toggles
-          bundleCard.querySelectorAll('.phase-accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-              const accordion = header.closest('.bundle-phase-accordion');
-              const isExpanded = accordion.dataset.expanded === 'true';
-              accordion.dataset.expanded = isExpanded ? 'false' : 'true';
-            });
+          // Setup expand/collapse toggle
+          const expandBtn = bundleCard.querySelector('.bundle-expand-btn');
+          const itemsDiv = bundleCard.querySelector('.bundle-items-simple');
+          expandBtn.addEventListener('click', () => {
+            const isExpanded = expandBtn.getAttribute('aria-expanded') === 'true';
+            expandBtn.setAttribute('aria-expanded', !isExpanded);
+            expandBtn.textContent = isExpanded ? 'View Bundle Contents ▼' : 'Hide Bundle Contents ▲';
+            itemsDiv.style.display = isExpanded ? 'none' : 'block';
           });
           
           // Setup quantity inputs
-          bundleCard.querySelectorAll('.bundle-qty-input').forEach(input => {
+          bundleCard.querySelectorAll('.bundle-qty-input-simple').forEach(input => {
             input.addEventListener('change', (e) => {
               const bundleId = e.target.dataset.bundleId;
               const sku = e.target.dataset.sku;
