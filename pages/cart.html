@@ -109,52 +109,6 @@
     import { removeBundleFromCart, updateBundleItemQuantity } from '../scripts/project-builder.js';
     import { decorateBlock } from '../scripts/scripts.js';
     
-    // Group bundle items by phase
-    function groupItemsByPhase(items) {
-      const groups = {};
-      items.forEach(item => {
-        const phase = item.phase || 'Other';
-        if (!groups[phase]) {
-          groups[phase] = [];
-        }
-        groups[phase].push(item);
-      });
-      return groups;
-    }
-    
-    // Get SVG icon for construction phase
-    function getPhaseIcon(phase) {
-      const icons = {
-        'Foundation': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="18" width="20" height="4" rx="1"/>
-          <path d="M4 18V14M8 18V14M12 18V14M16 18V14M20 18V14"/>
-          <path d="M2 14h20"/>
-        </svg>`,
-        'Framing': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21V8l9-5 9 5v13"/>
-          <path d="M9 21V12h6v9"/>
-          <path d="M3 8h18"/>
-        </svg>`,
-        'Envelope': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21h18"/>
-          <path d="M5 21V7l7-4 7 4v14"/>
-          <rect x="9" y="13" width="6" height="8"/>
-          <path d="M9 9h6"/>
-        </svg>`,
-        'Interior Finish': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <path d="M3 9h18"/>
-          <path d="M9 9v12"/>
-          <circle cx="6" cy="6" r="1"/>
-        </svg>`,
-        'Other': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <path d="M12 8v8M8 12h8"/>
-        </svg>`
-      };
-      return icons[phase] || icons['Other'];
-    }
-    
     // Load cart items
     async function loadCartItems() {
       const cart = getCart();
@@ -180,74 +134,76 @@
           const bundleCard = document.createElement('div');
           bundleCard.className = 'cart-item-card cart-bundle-card';
           
-          // Group items by phase
-          const phaseGroups = groupItemsByPhase(item.items);
-          const phaseOrder = ['Foundation', 'Framing', 'Envelope', 'Interior Finish'];
-          const sortedPhases = Object.keys(phaseGroups).sort((a, b) => {
-            const aIndex = phaseOrder.indexOf(a);
-            const bIndex = phaseOrder.indexOf(b);
-            return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
-          });
-          
           bundleCard.innerHTML = `
-            <!-- Bundle Header -->
-            <div class="bundle-header-simple">
-              <div class="bundle-header-left">
-                <span class="bundle-badge">BUNDLE</span>
-                <h3 class="bundle-title-simple">${item.bundleName}</h3>
-              </div>
-              <div class="bundle-header-right">
-                <span class="bundle-total-simple">$${item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
-                <button class="cart-item-remove" onclick="removeBundle('${item.bundleId}')" aria-label="Remove bundle">×</button>
-              </div>
-            </div>
-            
-            <p class="bundle-meta-simple">${item.itemCount} items</p>
-            
-            <button class="bundle-expand-btn" data-bundle-id="${item.bundleId}" aria-expanded="false">
-              View Bundle Contents ▼
-            </button>
-            
-            <!-- Bundle Items (collapsible) -->
-            <div class="bundle-items-simple" data-bundle-id="${item.bundleId}" style="display: none;">
-              ${sortedPhases.map(phase => {
-                const phaseItems = phaseGroups[phase];
-                return `
-                  <div class="phase-divider">${phase}</div>
-                  <div class="phase-items-container">
-                    ${phaseItems.map(bundleItem => `
-                      <div class="bundle-item-row">
-                        <div class="bundle-item-name">${bundleItem.name}</div>
-                        <div class="bundle-item-sku">SKU: ${bundleItem.sku}</div>
-                        <div class="bundle-item-qty">
-                          <span>Qty:</span>
-                          <input type="number" min="1" value="${bundleItem.quantity}" 
-                                 data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
-                                 class="bundle-qty-input-simple">
-                        </div>
-                        <div class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
-                      </div>
-                    `).join('')}
+            <div class="cart-item-main">
+              <div class="cart-item-details">
+                <div class="cart-item-header">
+                  <div class="cart-item-title-group">
+                    <span class="bundle-badge">BUNDLE</span>
+                    <h3 class="cart-item-title">${item.bundleName}</h3>
                   </div>
-                `;
-              }).join('')}
+                  <button class="cart-item-remove" onclick="removeBundle('${item.bundleId}')" aria-label="Remove bundle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+                <p class="cart-item-meta">${item.itemCount} items</p>
+                
+                <button class="bundle-toggle-btn" data-bundle-id="${item.bundleId}">
+                  <span>View Bundle Contents</span>
+                  <span class="bundle-toggle-icon">▼</span>
+                </button>
+                
+                <div class="bundle-items-nested" data-bundle-id="${item.bundleId}" style="display: none;">
+                  ${item.items.map(bundleItem => `
+                    <div class="bundle-item-card">
+                      <div class="bundle-item-content">
+                        <div class="bundle-item-info">
+                          <div class="bundle-item-name">${bundleItem.name}</div>
+                          <div class="bundle-item-sku">SKU: ${bundleItem.sku}</div>
+                        </div>
+                        <div class="bundle-item-details">
+                          <div>
+                            <label class="bundle-item-qty-label">Qty:</label>
+                            <input type="number" min="1" value="${bundleItem.quantity}" 
+                                   data-bundle-id="${item.bundleId}" data-sku="${bundleItem.sku}"
+                                   class="bundle-item-qty-input">
+                          </div>
+                          <div class="bundle-item-pricing">
+                            <div class="bundle-item-total">$${(bundleItem.unitPrice * bundleItem.quantity).toFixed(2)}</div>
+                            <div class="bundle-item-price">$${bundleItem.unitPrice.toFixed(2)} each</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+                
+                <div class="cart-item-footer">
+                  <div></div>
+                  <div class="cart-item-total">$${item.totalPrice.toFixed(2)}</div>
+                </div>
+              </div>
             </div>
           `;
           
           itemsContainer.appendChild(bundleCard);
           
-          // Setup expand/collapse toggle
-          const expandBtn = bundleCard.querySelector('.bundle-expand-btn');
-          const itemsDiv = bundleCard.querySelector('.bundle-items-simple');
-          expandBtn.addEventListener('click', () => {
-            const isExpanded = expandBtn.getAttribute('aria-expanded') === 'true';
-            expandBtn.setAttribute('aria-expanded', !isExpanded);
-            expandBtn.textContent = isExpanded ? 'View Bundle Contents ▼' : 'Hide Bundle Contents ▲';
-            itemsDiv.style.display = isExpanded ? 'none' : 'block';
-          });
+          // Setup toggle
+          const toggle = bundleCard.querySelector('.bundle-toggle-btn');
+          const itemsDiv = bundleCard.querySelector('.bundle-items-nested');
+          if (toggle && itemsDiv) {
+            toggle.addEventListener('click', () => {
+              const isExpanded = itemsDiv.style.display !== 'none';
+              itemsDiv.style.display = isExpanded ? 'none' : 'block';
+              const icon = toggle.querySelector('.bundle-toggle-icon');
+              if (icon) icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+          }
           
           // Setup quantity inputs
-          bundleCard.querySelectorAll('.bundle-qty-input-simple').forEach(input => {
+          bundleCard.querySelectorAll('.bundle-item-qty-input').forEach(input => {
             input.addEventListener('change', (e) => {
               const bundleId = e.target.dataset.bundleId;
               const sku = e.target.dataset.sku;

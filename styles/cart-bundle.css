@@ -1,22 +1,21 @@
-/* Cart Bundle Styles - Minimal Phase Dividers
- * Clean, simple approach with phase headers as dividers
- */
+/* Cart Bundle & Item Styles */
 
 /* ============================================
-   CART ITEM CARDS (Base)
+   CART ITEM CARDS
    ============================================ */
 
 .cart-item-card {
   background: var(--color-background);
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-3);
-  padding: var(--spacing-medium);
+  overflow: hidden;
   box-shadow: var(--shape-shadow-1);
 }
 
 .cart-item-main {
   display: flex;
   gap: var(--spacing-medium);
+  padding: var(--spacing-medium);
 }
 
 .cart-item-image-wrapper {
@@ -72,7 +71,7 @@
 .cart-item-meta {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-xsmall) 0;
+  margin: 0 0 var(--spacing-small) 0;
 }
 
 .cart-item-price {
@@ -87,8 +86,6 @@
   padding: var(--spacing-xsmall);
   cursor: pointer;
   color: var(--color-text-secondary);
-  font-size: 1.25rem;
-  line-height: 1;
   border-radius: var(--shape-border-radius-2);
   transition: color 0.15s;
 }
@@ -153,31 +150,11 @@
 }
 
 /* ============================================
-   BUNDLE CARD - SIMPLE
+   BUNDLE CARD
    ============================================ */
 
-.cart-bundle-card {
-  padding: var(--spacing-medium);
-}
-
-/* Bundle Header - Simple */
-.bundle-header-simple {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-xsmall);
-}
-
-.bundle-header-left {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-small);
-}
-
-.bundle-header-right {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-medium);
+.cart-bundle-card .cart-item-main {
+  flex-direction: column;
 }
 
 .bundle-badge {
@@ -192,96 +169,66 @@
   border-radius: var(--shape-border-radius-1);
 }
 
-.bundle-title-simple {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-text);
-  margin: 0;
-}
-
-.bundle-total-simple {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.bundle-meta-simple {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-medium) 0;
-}
-
-/* Expand Button */
-.bundle-expand-btn {
+/* Bundle Toggle Button */
+.bundle-toggle-btn {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xsmall);
   padding: var(--spacing-small) var(--spacing-medium);
-  background: var(--color-surface);
+  background: none;
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-2);
   cursor: pointer;
   font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  color: var(--color-brand-500);
   transition: all 0.15s;
 }
 
-.bundle-expand-btn:hover {
-  background: var(--color-surface-hover);
-  color: var(--color-text);
-}
-
-/* Bundle Items Container */
-.bundle-items-simple {
-  margin-top: var(--spacing-medium);
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--spacing-medium);
-}
-
-/* Phase Divider - Readable name */
-.phase-divider {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--color-text);
-  padding: var(--spacing-small) var(--spacing-medium);
-  margin-top: var(--spacing-medium);
+.bundle-toggle-btn:hover {
   background: var(--color-surface);
-  border-radius: var(--shape-border-radius-2);
+  border-color: var(--color-brand-500);
 }
 
-.phase-divider:first-child {
-  margin-top: 0;
+.bundle-toggle-icon {
+  transition: transform 0.2s;
 }
 
-/* Phase Items Container - Nested background */
-.phase-items-container {
-  background: var(--color-surface-nested);
+/* Bundle Items List */
+.bundle-items-nested {
+  margin-top: var(--spacing-medium);
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-2);
-  margin-top: var(--spacing-small);
-  padding: var(--spacing-small);
+  background: var(--color-surface);
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-/* Bundle Item Row - Simple */
-.bundle-item-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  gap: var(--spacing-medium);
-  align-items: center;
+.bundle-item-card {
   padding: var(--spacing-small) var(--spacing-medium);
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: var(--shape-border-radius-2);
-  margin-bottom: var(--spacing-xsmall);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.bundle-item-row:last-child {
-  margin-bottom: 0;
+.bundle-item-card:last-child {
+  border-bottom: none;
+}
+
+.bundle-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-medium);
+}
+
+.bundle-item-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .bundle-item-name {
   font-size: 0.9375rem;
+  font-weight: 500;
   color: var(--color-text);
+  margin-bottom: 0.125rem;
 }
 
 .bundle-item-sku {
@@ -289,15 +236,19 @@
   color: var(--color-text-secondary);
 }
 
-.bundle-item-qty {
+.bundle-item-details {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xsmall);
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  gap: var(--spacing-large);
 }
 
-.bundle-qty-input-simple {
+.bundle-item-qty-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-right: var(--spacing-xsmall);
+}
+
+.bundle-item-qty-input {
   width: 50px;
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--color-border);
@@ -306,17 +257,25 @@
   text-align: center;
 }
 
-.bundle-qty-input-simple:focus {
+.bundle-item-qty-input:focus {
   outline: none;
   border-color: var(--color-brand-500);
 }
 
-.bundle-item-price {
+.bundle-item-pricing {
+  text-align: right;
+  min-width: 80px;
+}
+
+.bundle-item-total {
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-text);
-  text-align: right;
-  min-width: 70px;
+}
+
+.bundle-item-price {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
 }
 
 /* ============================================
@@ -324,23 +283,14 @@
    ============================================ */
 
 @media (max-width: 640px) {
-  .bundle-header-simple {
+  .bundle-item-content {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-small);
   }
   
-  .bundle-header-right {
+  .bundle-item-details {
     width: 100%;
     justify-content: space-between;
-  }
-  
-  .bundle-item-row {
-    grid-template-columns: 1fr auto;
-    gap: var(--spacing-small);
-  }
-  
-  .bundle-item-sku {
-    grid-column: 1 / -1;
   }
 }
