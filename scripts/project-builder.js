@@ -509,9 +509,6 @@ export function loadBundleIntoWizardState(cartBundle) {
   
   saveWizardState(wizardState);
   
-  // Set kit mode to 'edit' so sidebar can appear if needed
-  sessionStorage.setItem('kit_mode_resume_choice', 'edit');
-  
   return true;
 }
 

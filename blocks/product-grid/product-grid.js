@@ -9,7 +9,6 @@ export default async function decorate(block) {
   // Ensure idempotent - if already decorated, cleanup first
   if (block._decorated) {
     cleanupEventListeners(window, 'projectFilterChanged');
-    cleanupEventListeners(window, 'kitModeExited');
     cleanupEventListeners(window, 'filtersChanged');
   }
   block._decorated = true;

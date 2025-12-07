@@ -370,91 +370,6 @@ function fixStaticLinks() {
   }
 }
 
-/**
- * Initialize kit sidebar only on catalog pages (from app.js)
- */
-async function initializeKitSidebar() {
-  const pathname = window.location.pathname.toLowerCase();
-  const hasCatalogPath = pathname.includes('catalog');
-  const hasCatalogClass = document.body.classList.contains('page-catalog');
-  const hasProjectBuilderPath = pathname.includes('project-builder');
-  const hasProjectBuilderClass = document.body.classList.contains('page-project-builder');
-  
-  const isCatalogPage = hasCatalogPath || hasCatalogClass;
-  const isProjectBuilderPage = hasProjectBuilderPath || hasProjectBuilderClass;
-  
-  // Only show kit sidebar on catalog pages, NOT on project builder pages
-  if (isCatalogPage && !isProjectBuilderPage) {
-    const { getWizardState, hasKitItems } = await import('./project-builder.js');
-    const wizardState = getWizardState();
-    const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
-    
-    // Only show resume banner if kit has items
-    if (wizardState && hasKitItems() && !resumeChoice) {
-      const { showKitModeResumeBanner } = await import('./kit-mode-banner.js');
-      showKitModeResumeBanner();
-    } else if (resumeChoice === 'edit') {
-      // Check if kit still has items - if not, exit kit mode
-      if (!hasKitItems()) {
-        sessionStorage.removeItem('kit_mode_resume_choice');
-        sessionStorage.removeItem('buildright_wizard_state');
-        return;
-      }
-      // User chose to edit kit - show sidebar
-      const { initKitSidebar } = await import('./kit-sidebar.js');
-      await initKitSidebar();
-      
-      // Listen for kit updates
-      const existingKitUpdatedHandler = window._kitUpdatedHandler;
-      if (existingKitUpdatedHandler) {
-        window.removeEventListener('kitUpdated', existingKitUpdatedHandler);
-      }
-      
-      const kitUpdatedHandler = async (event) => {
-        if (event?.detail?.skipRerender) {
-          return;
-        }
-        const { updateKitSidebar } = await import('./kit-sidebar.js');
-        await updateKitSidebar();
-      };
-      window._kitUpdatedHandler = kitUpdatedHandler;
-      window.addEventListener('kitUpdated', kitUpdatedHandler);
-      
-      // Listen for kit mode exit to remove sidebar
-      const existingKitExitedHandler = window._kitModeExitedHandler;
-      if (existingKitExitedHandler) {
-        window.removeEventListener('kitModeExited', existingKitExitedHandler);
-      }
-      
-      const kitModeExitedHandler = async () => {
-        const { removeKitSidebar } = await import('./kit-sidebar.js');
-        removeKitSidebar();
-        // Clean up listeners
-        if (window._kitUpdatedHandler) {
-          window.removeEventListener('kitUpdated', window._kitUpdatedHandler);
-          window._kitUpdatedHandler = null;
-        }
-        if (window._kitModeExitedHandler) {
-          window.removeEventListener('kitModeExited', window._kitModeExitedHandler);
-          window._kitModeExitedHandler = null;
-        }
-      };
-      window._kitModeExitedHandler = kitModeExitedHandler;
-      window.addEventListener('kitModeExited', kitModeExitedHandler);
-    }
-  } else if (isProjectBuilderPage) {
-    // Explicitly remove kit sidebar if we're on a project builder page
-    const { removeKitSidebar } = await import('./kit-sidebar.js');
-    removeKitSidebar();
-    
-    // Remove any existing kit update listeners
-    const existingHandler = window._kitUpdatedHandler;
-    if (existingHandler) {
-      window.removeEventListener('kitUpdated', existingHandler);
-      window._kitUpdatedHandler = null;
-    }
-  }
-}
 
 /**
  * Loads everything that doesn't need to be delayed
@@ -487,9 +402,6 @@ async function loadLazy(doc) {
   
   // Initialize cart manager (BuildRight-specific)
   await import('./cart-manager.js');
-  
-  // Initialize kit sidebar (BuildRight-specific)
-  await initializeKitSidebar();
   
   // Adobe Best Practice: Handle URL hash navigation after layout is stable
   // Delay scroll to prevent jumps during initial page render

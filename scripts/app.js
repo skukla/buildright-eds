@@ -6,78 +6,7 @@ import './cart-manager.js';
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   initializeApp();
-  initializeKitSidebar();
 });
-
-// Initialize kit sidebar only on catalog pages (NOT on project builder pages)
-async function initializeKitSidebar() {
-  // Check if we're on a page that should show the kit sidebar
-  // Body classes are set synchronously in inline scripts before DOMContentLoaded
-  const pathname = window.location.pathname.toLowerCase();
-  const hasCatalogPath = pathname.includes('catalog');
-  const hasCatalogClass = document.body.classList.contains('page-catalog');
-  const hasProjectBuilderPath = pathname.includes('project-builder');
-  const hasProjectBuilderClass = document.body.classList.contains('page-project-builder');
-  
-  const isCatalogPage = hasCatalogPath || hasCatalogClass;
-  const isProjectBuilderPage = hasProjectBuilderPath || hasProjectBuilderClass;
-  
-  // Only show kit sidebar on catalog pages, NOT on project builder pages
-  if (isCatalogPage && !isProjectBuilderPage) {
-    // Check for kit mode resume banner first
-    const { getWizardState, hasKitItems } = await import('./project-builder.js');
-    const wizardState = getWizardState();
-    const resumeChoice = sessionStorage.getItem('kit_mode_resume_choice');
-    
-    // Only show resume banner if kit has items
-    if (wizardState && hasKitItems() && !resumeChoice) {
-      // User has a kit with items but hasn't made a choice yet - show resume banner
-      const { showKitModeResumeBanner } = await import('./kit-mode-banner.js');
-      showKitModeResumeBanner();
-    } else if (resumeChoice === 'edit') {
-      // Check if kit still has items - if not, exit kit mode
-      if (!hasKitItems()) {
-        // Kit is empty, exit kit mode
-        sessionStorage.removeItem('kit_mode_resume_choice');
-        sessionStorage.removeItem('buildright_wizard_state');
-        return;
-      }
-      // User chose to edit kit - show sidebar
-      const { initKitSidebar } = await import('./kit-sidebar.js');
-      await initKitSidebar();
-      
-      // Listen for kit updates (use updateKitSidebar for smoother updates)
-      // Remove any existing listeners to avoid duplicates
-      const existingHandler = window._kitUpdatedHandler;
-      if (existingHandler) {
-        window.removeEventListener('kitUpdated', existingHandler);
-      }
-      
-      const kitUpdatedHandler = async (event) => {
-        // Skip re-render if the event indicates it's just a quantity update
-        if (event?.detail?.skipRerender) {
-          return;
-        }
-        const { updateKitSidebar } = await import('./kit-sidebar.js');
-        await updateKitSidebar();
-      };
-      window._kitUpdatedHandler = kitUpdatedHandler;
-      window.addEventListener('kitUpdated', kitUpdatedHandler);
-    }
-    // If resumeChoice === 'shop' or no wizard state, normal shopping mode (no sidebar)
-  } else if (isProjectBuilderPage) {
-    // Explicitly remove kit sidebar if we're on a project builder page
-    const { removeKitSidebar } = await import('./kit-sidebar.js');
-    removeKitSidebar();
-    
-    // Remove any existing kit update listeners
-    const existingHandler = window._kitUpdatedHandler;
-    if (existingHandler) {
-      window.removeEventListener('kitUpdated', existingHandler);
-      window._kitUpdatedHandler = null;
-    }
-  }
-}
 
 async function initializeApp() {
   // Fix all static links that start with "pages/" or "/pages/" to use BASE_PATH
