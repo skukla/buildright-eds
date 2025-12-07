@@ -508,19 +508,20 @@ header .header {
   color: white;
   border-radius: 50%;
   padding: 0;
-  font-size: 0.75rem; /* 12px - matches citisignal */
+  font-size: 0.6875rem; /* 11px */
   font-weight: 700;
   width: 20px;
   height: 20px;
-  min-width: 20px; /* Prevent compression */
+  min-width: 20px;
   min-height: 20px;
-  aspect-ratio: 1; /* Enforce perfect circle */
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  text-align: center;
+  line-height: 20px;
   white-space: nowrap;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.02em;
 }
 
 /* Mini Cart Positioning & Toggle - Styles are in blocks/mini-cart/mini-cart.css */
