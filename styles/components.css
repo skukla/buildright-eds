@@ -446,10 +446,53 @@
   }
 }
 
-/* Image Placeholder Pattern */
+/* ============================================
+   IMAGE PLACEHOLDER COMPONENT
+   Reusable placeholder for missing/failed images
+   
+   Usage:
+   1. Add .image-placeholder to any image container
+   2. Container needs width/height defined
+   3. On img error: img.style.display='none' and 
+      container.classList.add('image-placeholder')
+   
+   Or use the JS helper: handleImageError(imgElement)
+   ============================================ */
+
+.image-placeholder {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+}
+
+.image-placeholder::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-text-disabled),
+    var(--color-text-disabled) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  opacity: 0.4;
+}
+
+/* Legacy class - kept for backwards compatibility */
 .image-placeholder-pattern::before {
   content: '';
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 60%;
   height: 60%;
   background: repeating-linear-gradient(
@@ -1727,6 +1770,15 @@ a.simple-list-row:hover,
 
 .cart-notification-close:active {
   background-color: var(--color-border);
+}
+
+/* Info notification variant */
+.cart-notification.info {
+  border-left-color: var(--color-brand-500);
+}
+
+.cart-notification.info .cart-notification-icon {
+  background: var(--color-brand-500);
 }
 
 /* Simple fade animation (no slide) */

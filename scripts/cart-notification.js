@@ -94,6 +94,62 @@ function dismissNotification(notification) {
 }
 
 /**
+ * Show info notification (for general informational messages)
+ * @param {string} message - The message to display
+ * @param {number} duration - Duration in ms (default 4000)
+ */
+export function showInfoNotification(message, duration = 4000) {
+  // Remove any existing notification
+  if (activeNotification && activeNotification.parentElement) {
+    activeNotification.remove();
+  }
+
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = 'cart-notification info';
+  notification.setAttribute('role', 'status');
+  notification.setAttribute('aria-live', 'polite');
+  
+  // Build notification content with info icon
+  notification.innerHTML = `
+    <div class="cart-notification-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="cart-notification-content">
+      <span class="cart-notification-text">${escapeHtml(message)}</span>
+    </div>
+    <button class="cart-notification-close" aria-label="Close notification">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  `;
+  
+  // Add to DOM
+  document.body.appendChild(notification);
+  activeNotification = notification;
+  
+  // Trigger animation
+  requestAnimationFrame(() => {
+    notification.classList.add('active');
+  });
+  
+  // Setup close button
+  const closeBtn = notification.querySelector('.cart-notification-close');
+  closeBtn.addEventListener('click', () => {
+    dismissNotification(notification);
+  });
+  
+  // Auto-dismiss
+  setTimeout(() => {
+    dismissNotification(notification);
+  }, duration);
+}
+
+/**
  * Escape HTML to prevent XSS
  */
 function escapeHtml(unsafe) {
