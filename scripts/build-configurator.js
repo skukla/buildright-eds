@@ -158,30 +158,25 @@ class BuildConfigurator {
   renderVariantTile(variant) {
     const { id, name, description, addedCost, sqft } = variant;
     
-    // Get image data with optional background position and zoom class
+    // Get image data
     const imageData = this.getVariantImageUrl(name);
     const imageUrl = imageData.url;
-    const bgPosition = imageData.position || 'center';
-    
-    // Add zoom class if specified
-    const zoomClass = imageData.zoom ? `photo-tile--zoom-${imageData.zoom}` : '';
     
     return `
-      <div class="selection-tile selection-tile-photo photo-tile photo-tile--selection ${zoomClass}" 
+      <div class="card-tile card-tile--selection" 
            data-type="variant" 
            data-id="${id}"
            data-selected="false"
            data-cost="${addedCost}"
-           style="background-image: url('${imageUrl}'); background-position: ${bgPosition};"
            role="checkbox"
            aria-checked="false"
            tabindex="0"
            aria-label="${name}, adds ${sqft ? sqft + ' sq ft, ' : ''}$${addedCost.toLocaleString()}">
-        <div class="tile-overlay"></div>
-        <div class="tile-content photo-tile__content">
-          <h4 class="tile-title photo-tile__title">${name}</h4>
-          <p class="tile-description photo-tile__description">${description}</p>
-          <p class="tile-price photo-tile__price">+$${addedCost.toLocaleString()}</p>
+        <img src="${imageUrl}" alt="${name}" class="card-tile__image">
+        <div class="card-tile__content">
+          <h4 class="card-tile__title">${name}</h4>
+          <p class="card-tile__description">${description}</p>
+          <p class="card-tile__price">+$${addedCost.toLocaleString()}</p>
         </div>
       </div>
     `;
@@ -194,7 +189,7 @@ class BuildConfigurator {
     const imageMap = {
       'Bonus Room': { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' },
       'Extended Garage': { 
-        url: 'https://images.unsplash.com/photo-1762810981576-1b07f76af9d2?w=800&h=600&fit=crop&q=80'
+        url: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop'
       },
       'Covered Patio': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
       'Home Office': { url: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop' },
@@ -233,26 +228,25 @@ class BuildConfigurator {
   renderPackageTile(pkg) {
     const { id, name, description, tier, addedCost, image } = pkg;
     
-    // Use photo tiles for Material Packages (kitchen images showing quality tiers)
+    // Use Card Stack tiles for Material Packages (image above, text below)
     const isDefault = id === 'builders-choice';
     const imageUrl = image || this.getDefaultPackageImage(tier);
     
     return `
-      <div class="selection-tile selection-tile-photo photo-tile photo-tile--selection" 
+      <div class="card-tile card-tile--selection" 
            data-type="package" 
            data-id="${id}"
            data-selected="${isDefault}"
            data-cost="${addedCost}"
-           style="background-image: url('${imageUrl}')"
            role="radio"
            aria-checked="${isDefault}"
            tabindex="0"
            aria-label="${name}, ${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}">
-        <div class="tile-overlay"></div>
-        <div class="tile-content photo-tile__content">
-          <h4 class="tile-title photo-tile__title">${name}</h4>
-          <p class="tile-description photo-tile__description">${description}</p>
-          <p class="tile-price photo-tile__price">${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}</p>
+        <img src="${imageUrl}" alt="${name}" class="card-tile__image">
+        <div class="card-tile__content">
+          <h4 class="card-tile__title">${name}</h4>
+          <p class="card-tile__description">${description}</p>
+          <p class="card-tile__price">${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}</p>
         </div>
       </div>
     `;
@@ -300,21 +294,20 @@ class BuildConfigurator {
     const imageUrl = this.getPhaseImageUrl(name);
     
     return `
-      <div class="selection-tile selection-tile-photo photo-tile photo-tile--selection" 
+      <div class="card-tile card-tile--selection" 
            data-type="phase" 
            data-id="${id}"
            data-selected="false"
            data-cost="${estimatedCost}"
-           style="background-image: url('${imageUrl}')"
            role="checkbox"
            aria-checked="false"
            tabindex="0"
            aria-label="${name}, estimated $${estimatedCost.toLocaleString()}">
-        <div class="tile-overlay"></div>
-        <div class="tile-content photo-tile__content">
-          <h4 class="tile-title photo-tile__title">${name}</h4>
-          <p class="tile-description photo-tile__description">${description}</p>
-          <p class="tile-price photo-tile__price">Est. $${estimatedCost.toLocaleString()}</p>
+        <img src="${imageUrl}" alt="${name}" class="card-tile__image">
+        <div class="card-tile__content">
+          <h4 class="card-tile__title">${name}</h4>
+          <p class="card-tile__description">${description}</p>
+          <p class="card-tile__price">Est. $${estimatedCost.toLocaleString()}</p>
         </div>
       </div>
     `;
@@ -346,8 +339,8 @@ class BuildConfigurator {
   // ============================================
   
   setupEventListeners() {
-    // Selection tiles (click and keyboard)
-    document.querySelectorAll('.selection-tile').forEach(tile => {
+    // Selection tiles (click and keyboard) - includes both .selection-tile and .card-tile--selection
+    document.querySelectorAll('.selection-tile, .card-tile--selection').forEach(tile => {
       tile.addEventListener('click', () => this.handleTileClick(tile));
       tile.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {

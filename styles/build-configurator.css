@@ -48,7 +48,9 @@
   border: 1px solid var(--color-border);
   border-radius: var(--shape-border-radius-4);
   padding: var(--spacing-large);
-  box-shadow: var(--shape-shadow-2);
+  /* Outer shadow + inset shadow for recessed content effect */
+  box-shadow: var(--shape-shadow-2), 
+              inset 0 50px 30px -45px rgba(0, 0, 0, 0.08);
 }
 
 .section-title {
@@ -57,23 +59,18 @@
   color: var(--color-text);
   margin: 0 0 var(--spacing-medium) 0;
   padding: var(--spacing-medium) var(--spacing-large); /* Increased for better breathing room (16px 24px) */
-  background: white; /* White background for middle sections */
-  border-bottom: 1px solid var(--color-border);
-  border-top: 1px solid var(--color-border); /* Add subtle top border for definition */
+  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%); /* Blue gradient on all sections */
+  border-bottom: 2px solid var(--color-brand-500); /* Brand underline */
+  border-top: none;
   border-radius: var(--shape-border-radius-4) var(--shape-border-radius-4) 0 0; /* Matches section container (12px) */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow to lift off gray background */
   margin-left: calc(var(--spacing-large) * -1);
   margin-right: calc(var(--spacing-large) * -1);
   margin-top: calc(var(--spacing-large) * -1);
+  position: relative;
 }
 
-/* Top gradient - first section only (Build Details) */
-#build-info-section .section-title {
-  background: linear-gradient(to bottom, #EBF4FB 0%, white 100%);
-  border-bottom: 2px solid var(--color-brand-500);
-  border-top: none; /* No top border for gradient section */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
+/* All section titles now use gradient + brand underline */
 
 /* Bottom gradient - applied to content of last section (Construction Phases) */
 #phases-section {
@@ -333,6 +330,7 @@ body.white-variant #build-info-section .section-title {
 .selection-tile-photo .tile-overlay {
   display: none;
 }
+
 
 /* Typography uses shared .photo-tile__* classes from components.css */
 .selection-tile-photo .tile-title {
