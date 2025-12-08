@@ -1,6 +1,6 @@
 # Product Images Strategy for ACO Integration
 
-**Status**: 📋 Planning  
+**Status**: ✅ Implemented (Strategy Pattern)  
 **Created**: December 8, 2025  
 **Related**: [Catalog Service Architecture](./CATALOG-SERVICE-ARCHITECTURE.md) | [Phase 6A Integration Plan](./PHASE-6A-INTEGRATION-PLAN.md)
 
@@ -16,7 +16,80 @@ Adobe provides **three primary approaches** for managing product images in Comme
 | **AEM Assets Integration** | AEM Assets as a Service | Enterprise, multi-channel | Medium |
 | **External DAM/CDN** | Custom URL attributes | Existing DAM, flexibility | Low |
 
-**Recommendation for BuildRight**: Use **External CDN approach** (Option 3) with Unsplash/custom URLs during demo development, then plan migration to **AEM Assets** for production.
+**Implementation**: We use a **strategy pattern** (like `catalogService`) that allows seamless switching between local demo images and AEM Assets when ready.
+
+```
+imageService.initialize({ strategy: 'local' });     // Demo mode
+imageService.initialize({ strategy: 'aem-assets' }); // Production mode
+```
+
+---
+
+## Implementation: Image Service (Strategy Pattern)
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    buildright-eds Frontend                          │
+│                                                                     │
+│   build-configurator.js ──┐                                         │
+│   bom-review.js ──────────► imageService ──► LocalStrategy ────┐    │
+│   product-grid.js ────────┘       │                            │    │
+│                                   ▼                            │    │
+│                           AEMAssetsStrategy                    │    │
+│                           (future production)                  │    │
+└────────────────────────────────────────────────────────────────│────┘
+                                                                 │
+                                                                 ▼
+┌────────────────────────────────────┐    ┌──────────────────────────┐
+│         Local Sources              │    │    AEM Assets (Future)   │
+│  /images/products/{sku}.png        │    │  Dynamic Media CDN       │
+│  /images/templates/{id}.jpg        │    │  Smart Crop              │
+│  Unsplash (demo images)            │    │  Auto-format (webp)      │
+└────────────────────────────────────┘    └──────────────────────────┘
+```
+
+### File Location
+
+```
+scripts/services/
+├── catalog-service.js   ← Product data (strategy pattern)
+├── image-service.js     ← Product images (strategy pattern) ✨ NEW
+├── mesh-client.js       ← GraphQL client
+└── mesh-integration.js  ← Auth bridge
+```
+
+### Usage
+
+```javascript
+import { imageService } from './services/image-service.js';
+
+// Initialize (once, typically in auth.js or app init)
+await imageService.initialize(); // Auto-detects strategy
+
+// Or explicitly set strategy
+await imageService.initialize({ strategy: 'local' });
+
+// Get image URLs (same API regardless of strategy)
+const productUrl = imageService.getProductImage('LBR-001');
+const templateUrl = imageService.getTemplateImage('sedona');
+const variantUrl = imageService.getVariantImage('Covered Patio');
+const packageUrl = imageService.getPackageImage('premium-select', 'premium');
+const phaseUrl = imageService.getPhaseImage('Foundation & Framing');
+const categoryUrl = imageService.getCategoryImage('structural_materials');
+
+// Check active strategy
+console.log(imageService.getActiveStrategy()); // 'local' or 'aem-assets'
+console.log(imageService.isUsingAEMAssets()); // true/false
+```
+
+### Strategies
+
+| Strategy | Description | When Used |
+|----------|-------------|-----------|
+| **LocalStrategy** | Local files + Unsplash demo images | Development, demos |
+| **AEMAssetsStrategy** | AEM Assets Dynamic Media URLs | Production (future) |
 
 ---
 
@@ -27,16 +100,17 @@ Adobe provides **three primary approaches** for managing product images in Comme
 ```
 buildright-eds/
 ├── images/products/           ← Local placeholder SVGs
-├── scripts/data-mock.js       ← getProductImageUrl() with fallbacks
-└── scripts/services/
-    ├── catalog-service.js     ← Returns imageUrl from mesh or mock
-    └── mesh-client.js         ← GraphQL includes imageUrl field
+├── scripts/services/
+│   ├── image-service.js       ← Strategy pattern (NEW)
+│   ├── catalog-service.js     ← Returns imageUrl from mesh or mock
+│   └── mesh-client.js         ← GraphQL includes imageUrl field
+└── scripts/data-mock.js       ← Legacy getProductImageUrl() (to be deprecated)
 ```
 
 **Current Image Resolution Flow**:
-1. Mesh response includes `imageUrl` field
-2. If empty/null → fallback to `/images/products/{sku}.png`
-3. If file not found → CSS placeholder pattern
+1. `imageService.getProductImage(sku)` called
+2. LocalStrategy returns `/images/products/{sku}.png`
+3. If file not found → CSS placeholder pattern (diagonal lines)
 
 ### What ACO Products Have
 
@@ -230,38 +304,70 @@ function transformProduct(meshProduct) {
 
 ## Recommended Strategy for BuildRight
 
-### Phase 1: Demo/Development (Current)
-**Use External CDN approach with local fallbacks**
+### Phase 1: Demo/Development (Current) ✅ IMPLEMENTED
+**Use `imageService` with `LocalStrategy`**
 
-```
-Image Resolution Priority:
-1. Mesh response `imageUrl` (if populated in ACO)
-2. Local file `/images/products/{sku}.png`
-3. CSS placeholder pattern (diagonal lines)
+```javascript
+// Auto-initializes with LocalStrategy
+const url = imageService.getProductImage('LBR-001');
+// Returns: /images/products/LBR-001.png (or CSS placeholder if missing)
 ```
 
-**Tasks**:
-- [ ] Add `image_url` attribute to ACO product schema
-- [ ] Populate with Unsplash URLs for demo products
-- [ ] Update mesh resolver to return `imageUrl`
-- [ ] Frontend already handles fallback ✅
+**Image Resolution Priority**:
+1. LocalStrategy returns local path `/images/products/{sku}.png`
+2. If file not found → CSS placeholder pattern (diagonal lines)
+3. Variants/packages use curated Unsplash URLs
+
+**Completed**:
+- [x] Created `image-service.js` with strategy pattern
+- [x] LocalStrategy with all image types (product, template, variant, package, phase, category)
+- [x] AEMAssetsStrategy scaffold ready for production
+- [x] CSS placeholder fallback
+
+**Remaining**:
+- [ ] Integrate `imageService` into `build-configurator.js` (replace hardcoded URLs)
+- [ ] Integrate `imageService` into `bom-review.js`
+- [ ] Deprecate `getProductImageUrl()` in `data-mock.js`
 
 ### Phase 2: Production Pilot
-**Migrate to AEM Assets for core catalog**
+**Switch to `AEMAssetsStrategy`**
+
+```javascript
+// Configure AEM Assets
+await imageService.initialize({ 
+  strategy: 'aem-assets',
+  aemConfig: {
+    deliveryUrl: 'https://delivery.adobeassets.com',
+    assetPrefix: '/content/dam/buildright'
+  }
+});
+
+// Same API, different source
+const url = imageService.getProductImage('LBR-001');
+// Returns: https://delivery.adobeassets.com/dm/.../LBR-001?width=400&format=webp&crop=smart
+```
 
 **Tasks**:
 - [ ] Set up AEM Assets as a Cloud Service
-- [ ] Create folder structure for BuildRight products
+- [ ] Create folder structure: `/content/dam/buildright/products/`, `/templates/`, etc.
 - [ ] Upload product images with SKU metadata
 - [ ] Configure Commerce integration
-- [ ] Enable Dynamic Media for optimization
+- [ ] Set environment variable: `AEM_ASSETS_DELIVERY_URL`
+- [ ] Test with `{ strategy: 'aem-assets' }`
 
 ### Phase 3: Full Production
 **AEM Assets as single source of truth**
 
-- All product images managed in AEM
+```javascript
+// Auto-detection (checks AEM_ASSETS_DELIVERY_URL)
+await imageService.initialize({ strategy: 'auto' });
+// Automatically uses AEMAssetsStrategy if configured
+```
+
+Features enabled:
 - Dynamic Media for responsive delivery
-- AI-powered features (Smart Crop, Smart Tags)
+- AI-powered Smart Crop
+- Automatic format conversion (webp)
 - Workflow automation for approvals
 - Multi-channel delivery (web, mobile, print)
 
@@ -345,29 +451,54 @@ function resolveProductImage(product) {
 
 ### Immediate (Demo Phase)
 
-1. **Add image URLs to demo products**
-   - Select 10-20 key products
-   - Use high-quality Unsplash images
-   - Add `image_url` attribute to ACO data
+1. **Integrate `imageService` into components** ✅ Ready
+   ```javascript
+   // build-configurator.js
+   import { imageService } from './services/image-service.js';
+   
+   const url = imageService.getVariantImage('Covered Patio');
+   const packageUrl = imageService.getPackageImage('premium-select', 'premium');
+   ```
 
-2. **Update mesh to return imageUrl**
-   - Modify `product-search.js` resolver
-   - Map `image_url` attribute to response
+2. **Replace hardcoded Unsplash URLs**
+   - `build-configurator.js` - variants, packages, phases
+   - `bom-review.js` - product images
+   - `product-grid.js` - product cards
 
-3. **Test end-to-end**
-   - Verify images load from mesh response
-   - Confirm fallback to placeholders works
+3. **Deprecate legacy functions**
+   - Remove `getProductImageUrl()` from `data-mock.js`
+   - Remove `getVariantImageUrl()` from `build-configurator.js`
+   - Consolidate all image logic in `imageService`
 
 ### Future (Production Phase)
 
-1. **Evaluate AEM Assets setup**
+1. **Provision AEM Assets**
    - Review licensing and provisioning
-   - Plan folder structure and metadata schema
+   - Create tenant and configure access
 
-2. **Migration plan**
-   - Bulk upload product images to AEM
-   - Configure SKU-based matching
-   - Update storefront configuration
+2. **Set up folder structure**
+   ```
+   /content/dam/buildright/
+   ├── products/           # By SKU
+   │   ├── LBR-001.jpg
+   │   └── ...
+   ├── templates/          # Floor plans
+   │   ├── sedona.jpg
+   │   └── ...
+   └── categories/         # Category banners
+   ```
+
+3. **Configure integration**
+   - Set `AEM_ASSETS_DELIVERY_URL` environment variable
+   - Enable Commerce-AEM Assets sync
+   - Test Dynamic Media transformations
+
+4. **Switch strategy**
+   ```javascript
+   // Just change initialization
+   await imageService.initialize({ strategy: 'aem-assets' });
+   // All existing code continues to work!
+   ```
 
 ---
 
@@ -381,5 +512,5 @@ function resolveProductImage(product) {
 ---
 
 **Last Updated**: December 8, 2025  
-**Status**: 📋 Planning
+**Status**: ✅ Strategy Pattern Implemented
 
