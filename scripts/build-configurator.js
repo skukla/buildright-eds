@@ -666,7 +666,7 @@ class BuildConfigurator {
   // BOM GENERATION
   // ============================================
   
-  async generateBOM() {
+  generateBOM() {
     // Validate
     if (this.selectedPhases.size === 0) {
       alert('Please select at least one construction phase.');
@@ -678,56 +678,40 @@ class BuildConfigurator {
     this.isSubmitting = true;
     this.updateGenerateButton();
     
-    // Show loading overlay with contextual message
-    const loadingTitle = this.editingBundleId ? 'Updating Bill of Materials...' : 'Generating Bill of Materials...';
-    this.showLoading(loadingTitle, 'This will take just a moment');
+    // Prepare build configuration
+    const buildConfig = {
+      templateId: this.template.id,
+      templateName: this.template.name,
+      variants: [...this.selectedVariants],
+      packageId: this.selectedPackage || 'builders-choice',
+      phases: [...this.selectedPhases],
+      buildInfo: { ...this.buildInfo }
+    };
     
-    try {
-      // Prepare build configuration
-      const buildConfig = {
-        templateId: this.template.id,
-        templateName: this.template.name,
-        variants: [...this.selectedVariants],
-        packageId: this.selectedPackage || 'builders-choice',
-        phases: [...this.selectedPhases],
-        buildInfo: { ...this.buildInfo }
-      };
-      
-      // Save to localStorage for BOM review page
-      const buildId = `build-${Date.now()}`;
-      const buildData = {
-        id: buildId,
-        ...buildConfig,
-        createdAt: new Date().toISOString()
-      };
-      
-      // Preserve editingBundleId if editing existing BOM
-      if (this.editingBundleId) {
-        buildData.editingBundleId = this.editingBundleId;
-      }
-      
-      localStorage.setItem('buildright_current_build', JSON.stringify(buildData));
-      
-      // Update last project number
-      const projectNum = parseInt(this.buildInfo.projectName.match(/\d+/)?.[0] || '47', 10);
-      localStorage.setItem('buildright_last_project_num', projectNum.toString());
-      
-      // Simulate API call delay (replace with actual buildright-service call)
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Clear unsaved changes flag before navigating
-      this.hasUnsavedChanges = false;
-      
-      // Navigate to BOM review
-      window.location.href = `/pages/bom-review.html?buildId=${buildId}`;
-      
-    } catch (error) {
-      console.error('Error generating BOM:', error);
-      this.hideLoading();
-      this.isSubmitting = false;
-      this.updateGenerateButton();
-      alert('Failed to generate BOM. Please try again.');
+    // Save to localStorage for BOM review page
+    const buildId = `build-${Date.now()}`;
+    const buildData = {
+      id: buildId,
+      ...buildConfig,
+      createdAt: new Date().toISOString()
+    };
+    
+    // Preserve editingBundleId if editing existing BOM
+    if (this.editingBundleId) {
+      buildData.editingBundleId = this.editingBundleId;
     }
+    
+    localStorage.setItem('buildright_current_build', JSON.stringify(buildData));
+    
+    // Update last project number
+    const projectNum = parseInt(this.buildInfo.projectName.match(/\d+/)?.[0] || '47', 10);
+    localStorage.setItem('buildright_last_project_num', projectNum.toString());
+    
+    // Clear unsaved changes flag before navigating
+    this.hasUnsavedChanges = false;
+    
+    // Navigate to BOM review (actual BOM generation happens there)
+    window.location.href = `/pages/bom-review.html?buildId=${buildId}`;
   }
   
   // ============================================
