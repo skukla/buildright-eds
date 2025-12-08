@@ -1,14 +1,15 @@
 # Phase 6A: Sarah Martinez - Complete Integration Plan
 
 **Created**: December 7, 2025  
+**Updated**: December 8, 2025  
 **Status**: Active  
-**Goal**: Fully integrated, demo-ready Sarah persona experience
+**Goal**: Fully integrated, demo-ready Sarah persona with real ACO/Commerce catalog data
 
 ---
 
 ## Overview
 
-This plan restructures the remaining Phase 6A work to achieve complete end-to-end integration before moving to other personas. The focus is on making Sarah's production builder flow fully functional and polished.
+This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) product data. The focus is on demonstrating real catalog integration — orders and cart can remain mocked for now.
 
 ---
 
@@ -21,451 +22,307 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
 - Cart Integration (bundle display, edit flow)
 - Mini-cart (bundle editing)
 - Price formatting, notifications, placeholders
+- **Frontend Polish** (Phase 1 complete)
 
 ### What Needs Work 🔄
-- Layout consistency (inline styles in account page)
-- Data completeness (verify all BOMs)
-- Checkout flow (currently stops at cart)
-- Order history integration
-- Backend connections (using mocks)
+- Connect to real ACO product catalog
+- Real product images from Commerce
+- Real pricing from ACO price books
+- Catalog views / CCDM filtering
 
 ---
 
-## Integration Phase 1: Frontend Polish
-**Estimated Time**: 1-2 days  
-**Priority**: HIGH
+## Phase Summary (Revised Priority Order)
 
-### 1.1 Layout Consistency
-*Reference: `LAYOUT-CONSISTENCY-AUDIT.md`*
-
-- [ ] **Account Dashboard Cleanup** (1.5h)
-  - [ ] Remove `<style>` block from `pages/account.html`
-  - [ ] Remove all inline `style="..."` attributes
-  - [ ] Create `styles/dashboards/account-dashboard.css`
-  - [ ] Use design system tokens for all values
-  - [ ] Test responsive behavior
-
-- [ ] **Container Standardization** (30m)
-  - [ ] Audit max-width usage across Sarah's pages
-  - [ ] Decide: 1280px standard or allow wider?
-  - [ ] Apply consistent `.section` → `.container` pattern
-
-- [ ] **Typography Audit** (30m)
-  - [ ] Verify h1 exists on all pages (accessibility)
-  - [ ] Consistent heading hierarchy (h1 → h2 → h3)
-  - [ ] Page titles match design system
-
-### 1.2 Loading States & Error Handling
-
-- [ ] **Loading Overlays** (1h)
-  - [ ] Templates Dashboard: Loading state while fetching
-  - [ ] Build Configurator: Loading during BOM generation
-  - [ ] BOM Review: Loading while fetching product data
-  - [ ] Cart: Loading while updating quantities
-
-- [ ] **Error States** (1h)
-  - [ ] Failed to load templates
-  - [ ] Failed to generate BOM
-  - [ ] Failed to add to cart
-  - [ ] Network error handling
-
-- [ ] **Empty States** (30m)
-  - [ ] No templates available
-  - [ ] No active builds
-  - [ ] Empty cart (already done)
-  - [ ] No order history
-
-### 1.3 Edge Cases
-
-- [ ] **Form Validation** (30m)
-  - [ ] Build Configurator: Require phase selection
-  - [ ] Quantity inputs: Min/max validation
-  - [ ] Prevent double-submit on buttons
-
-- [ ] **Navigation Guards** (30m)
-  - [ ] Warn before leaving unsaved configuration?
-  - [ ] Handle browser back button gracefully
-  - [ ] Deep linking to configurator with template
-
-### 1.4 Mobile Responsive
-
-- [ ] **Test All Sarah Pages on Mobile** (1h)
-  - [ ] Templates Dashboard (grid collapses properly)
-  - [ ] Build Configurator (sections stack)
-  - [ ] BOM Review (accordions work on touch)
-  - [ ] Cart (bundle display responsive)
-  - [ ] Account Dashboard (sidebar behavior)
-
-- [ ] **Fix Any Issues Found** (1-2h)
-  - [ ] Touch targets (min 44px)
-  - [ ] Text readability
-  - [ ] Horizontal scroll prevention
-
-### 1.5 Accessibility
-
-- [ ] **WCAG 2.1 AA Compliance** (1h)
-  - [ ] All pages have h1
-  - [ ] Color contrast passes
-  - [ ] Focus indicators visible
-  - [ ] ARIA labels on interactive elements
-  - [ ] Keyboard navigation works
+| Phase | Description | Est. Time | Priority |
+|-------|-------------|-----------|----------|
+| **1. Frontend Polish** | Layout, loading, edge cases, a11y | 1-2 days | ✅ COMPLETE |
+| **2. ACO Catalog Integration** | Real products, pricing, images | 3-5 days | 🔴 HIGH |
+| **3. Commerce Storefront** | Product display, search, categories | 2-3 days | 🔴 HIGH |
+| **4. EDS Production Patterns** | 404 pages, blocks, Helix deploy | 2-3 days | 🟡 MEDIUM |
+| **5. Production Readiness** | Performance, docs, QA | 3-5 days | 🟡 MEDIUM |
+| **6. Cart & Orders** | Checkout, order history | 3-4 days | 🟢 LOW |
 
 ---
 
-## Integration Phase 2: Data Completeness
-**Estimated Time**: 2-3 days  
-**Priority**: HIGH
+## ✅ Phase 1: Frontend Polish - COMPLETE
 
-### 2.1 Template & BOM Data
+All sub-phases completed:
+- [x] 1.1 Layout Consistency
+- [x] 1.2 Loading States & Error Handling
+- [x] 1.3 Edge Cases (validation, navigation guards)
+- [x] 1.4 Mobile Responsive
+- [x] 1.5 Accessibility
 
-- [ ] **Verify All 6 Templates** (2h)
-  - [ ] Sedona - all variants, all packages
-  - [ ] Prescott - all variants, all packages
-  - [ ] Flagstaff - all variants, all packages
-  - [ ] Tucson - all variants, all packages
-  - [ ] Mesa - all variants, all packages
-  - [ ] Phoenix - all variants, all packages
+---
 
-- [ ] **BOM Data Quality** (3h)
-  - [ ] All 18 BOMs exist (6 templates × 3 packages)
-  - [ ] Line items have valid SKUs
-  - [ ] Quantities are realistic
-  - [ ] Prices are populated
-  - [ ] Categories are assigned
-  - [ ] Phases are assigned
+## Phase 2: ACO Catalog Integration
+**Estimated Time**: 3-5 days  
+**Priority**: 🔴 HIGH
 
-- [ ] **Variant Impact** (2h)
-  - [ ] Bonus Room variants add correct items
-  - [ ] Extended Garage variants work
-  - [ ] Multi-variant combinations work
+### 2.1 ACO Service Layer
 
-### 2.2 Product Data
+- [ ] **Create ACO Service Module** (4h)
+  - [ ] `scripts/services/aco-client.js` - API client
+  - [ ] Environment configuration (dev/staging/prod endpoints)
+  - [ ] Authentication handling (API keys, tokens)
+  - [ ] Error handling and retry logic
+  - [ ] Response caching strategy
+
+- [ ] **Product Fetching** (3h)
+  - [ ] Fetch product by SKU
+  - [ ] Fetch products by category
+  - [ ] Fetch products by attribute (e.g., phase)
+  - [ ] Batch product fetching for BOM display
+
+### 2.2 Product Data Integration
+
+- [ ] **Replace Mock Product Data** (4h)
+  - [ ] Update `data-mock.js` to call ACO service
+  - [ ] Or create `data-aco.js` as replacement
+  - [ ] Map ACO response to existing data structure
+  - [ ] Graceful fallback if ACO unavailable
 
 - [ ] **Product Images** (2h)
-  - [ ] Audit which BOM products have images
-  - [ ] Add placeholder strategy for missing
-  - [ ] Verify image paths are correct
+  - [ ] Use ACO image URLs
+  - [ ] Implement CDN/DAM path resolution
+  - [ ] Fallback placeholder strategy
+  - [ ] Lazy loading for performance
 
-- [ ] **Product Details** (1h)
-  - [ ] All products have names
-  - [ ] All products have SKUs
-  - [ ] All products have prices
-  - [ ] All products have categories
+- [ ] **Product Attributes** (2h)
+  - [ ] Name, description, SKU
+  - [ ] Category hierarchy
+  - [ ] Custom attributes (phase, tier, etc.)
+  - [ ] Inventory status (optional)
 
-### 2.3 Swap Alternatives
+### 2.3 Pricing Integration
 
-- [ ] **Verify Swap Data** (2h)
-  - [ ] Each product has alternatives
-  - [ ] Alternatives are in same category
-  - [ ] Price tiers make sense (Designer > Premium > Builder's)
-  - [ ] Swap functionality works end-to-end
+- [ ] **ACO Price Books** (3h)
+  - [ ] Fetch base pricing
+  - [ ] Customer group pricing (Sarah's tier)
+  - [ ] Volume/quantity discounts
+  - [ ] Price formatting with locale
 
----
+- [ ] **BOM Pricing** (2h)
+  - [ ] Calculate line item totals from ACO prices
+  - [ ] Phase subtotals
+  - [ ] Overall BOM total
+  - [ ] Handle price changes between sessions
 
-## Integration Phase 3: Cart & Checkout Flow
-**Estimated Time**: 3-4 days  
-**Priority**: HIGH
+### 2.4 Catalog Views & Filtering
 
-### 3.1 Cart Enhancements
+- [ ] **Sarah's Catalog View** (2h)
+  - [ ] Apply CCDM filtering
+  - [ ] Only show products in Sarah's catalog
+  - [ ] Handle category restrictions
 
-- [ ] **Bundle Quantity Editing** (2h)
-  - [ ] Can modify quantities in expanded bundle
-  - [ ] Total recalculates correctly
-  - [ ] Changes persist
-
-- [ ] **Remove Individual Items** (1h)
-  - [ ] Can remove single item from bundle
-  - [ ] Bundle updates correctly
-  - [ ] Edge case: removing last item
-
-- [ ] **Cart Persistence** (1h)
-  - [ ] Cart survives page refresh
-  - [ ] Cart survives logout/login
-  - [ ] Cart merging strategy (if needed)
-
-### 3.2 Checkout Flow
-
-- [ ] **Checkout Page** (4h)
-  - [ ] Create `pages/checkout.html`
-  - [ ] Shipping address form
-  - [ ] Delivery options (job site, will call, etc.)
-  - [ ] Payment method selection (mock)
-  - [ ] Order review before submit
-
-- [ ] **Order Submission** (2h)
-  - [ ] Submit order (save to localStorage for now)
-  - [ ] Generate order number
-  - [ ] Clear cart after successful order
-  - [ ] Handle submission errors
-
-- [ ] **Order Confirmation** (2h)
-  - [ ] Create `pages/order-confirmation.html`
-  - [ ] Display order number
-  - [ ] Show order summary
-  - [ ] Next steps / what to expect
-  - [ ] Link to order history
-
-### 3.3 Order History Integration
-
-- [ ] **Order History Page** (2h)
-  - [ ] Display Sarah's past orders
-  - [ ] Show BOM orders with bundle details
-  - [ ] Order status indicators
-  - [ ] Link to reorder
-
-- [ ] **Reorder Flow** (2h)
-  - [ ] "Reorder" button on past orders
-  - [ ] Loads previous configuration
-  - [ ] Goes to BOM review (edit mode)
-  - [ ] User can modify before adding to cart
-
-### 3.4 Account Integration
-
-- [ ] **My Builds in Account** (2h)
-  - [ ] Show active/saved builds
-  - [ ] Resume incomplete builds
-  - [ ] Delete saved builds
-  - [ ] Build status indicators
+- [ ] **Product Alternatives** (2h)
+  - [ ] Fetch swap alternatives from ACO
+  - [ ] Tier-based alternatives (Designer > Premium > Builder's)
+  - [ ] Same-category filtering
 
 ---
 
-## Integration Phase 4: Backend Connection
-**Estimated Time**: 1-2 weeks  
-**Priority**: MEDIUM (can demo without)
-
-### 4.1 ACO Integration
-
-- [ ] **Product Catalog** (3h)
-  - [ ] Connect to real ACO endpoint
-  - [ ] Fetch products by SKU
-  - [ ] Fetch products by category
-  - [ ] Handle ACO errors gracefully
-
-- [ ] **Pricing** (2h)
-  - [ ] Use ACO price books
-  - [ ] Sarah's customer group pricing
-  - [ ] Volume discounts (if applicable)
-
-- [ ] **Catalog Views** (2h)
-  - [ ] Apply Sarah's catalog view
-  - [ ] CCDM filtering
-  - [ ] Verify correct products visible
-
-### 4.2 Commerce Integration
-
-- [ ] **Cart API** (4h)
-  - [ ] Replace localStorage with Commerce cart
-  - [ ] Add to cart API calls
-  - [ ] Update quantity API
-  - [ ] Remove from cart API
-
-- [ ] **Checkout API** (4h)
-  - [ ] Shipping address submission
-  - [ ] Shipping method selection
-  - [ ] Payment method (mock or real)
-  - [ ] Place order API
-
-- [ ] **Order History API** (2h)
-  - [ ] Fetch customer orders
-  - [ ] Order details by ID
-  - [ ] Order status updates
-
-### 4.3 Authentication
-
-- [ ] **Real Auth Integration** (4h)
-  - [ ] Adobe IMS or Commerce auth
-  - [ ] Login/logout flow
-  - [ ] Session management
-  - [ ] Protected routes
-
----
-
-## Integration Phase 5: EDS Production Patterns
+## Phase 3: Commerce Storefront Integration
 **Estimated Time**: 2-3 days  
-**Priority**: MEDIUM
+**Priority**: 🔴 HIGH
 
-### 5.1 Error Pages (Author-Controlled)
+### 3.1 Product Display Pages
+
+- [ ] **PDP Integration** (3h)
+  - [ ] Fetch product details from Commerce
+  - [ ] Display real images, descriptions
+  - [ ] Show real pricing
+  - [ ] Related products from Commerce
+
+- [ ] **Product Grid/Catalog** (2h)
+  - [ ] Category pages use Commerce data
+  - [ ] Search results from Commerce
+  - [ ] Filtering and sorting
+
+### 3.2 Search Integration
+
+- [ ] **Commerce Search** (2h)
+  - [ ] Connect header search to Commerce
+  - [ ] Autocomplete suggestions
+  - [ ] Search results page
+
+### 3.3 Category Navigation
+
+- [ ] **Category Tree** (2h)
+  - [ ] Fetch categories from Commerce
+  - [ ] Navigation menu structure
+  - [ ] Breadcrumb generation
+
+---
+
+## Phase 4: EDS Production Patterns
+**Estimated Time**: 2-3 days  
+**Priority**: 🟡 MEDIUM
+
+### 4.1 Error Pages
 
 - [ ] **404 Page** (2h)
-  - [ ] Create `404.html` with author-editable content
+  - [ ] Create author-editable `404.html`
+  - [ ] Search and navigation helpers
   - [ ] Style with design system
-  - [ ] Include search and navigation helpers
-  - [ ] Test with EDS error routing
 
 - [ ] **500/System Error Page** (1h)
-  - [ ] Create `500.html` for server errors
-  - [ ] Minimal dependencies (in case JS fails)
+  - [ ] Minimal dependencies
   - [ ] Contact support messaging
 
-### 5.2 State Components as EDS Blocks
+### 4.2 State Components as Blocks
 
 - [ ] **Empty State Block** (2h)
-  - [ ] Create `blocks/empty-state/empty-state.html`
-  - [ ] Author-controlled title, message, icon
-  - [ ] Optional CTA button
-  - [ ] Document for content authors
-
 - [ ] **Error Message Block** (1h)
-  - [ ] Create `blocks/error-message/error-message.html`
-  - [ ] For inline contextual errors
-  - [ ] Variant support (warning, error, info)
-
 - [ ] **Loading State Block** (1h)
-  - [ ] Create `blocks/loading-state/loading-state.html`
-  - [ ] Spinner + optional message
-  - [ ] Skeleton loader variant
 
-### 5.3 Content Fragments for Localization
+### 4.3 Helix/EDS Deployment
 
-- [ ] **Identify Author-Controlled Content** (1h)
-  - [ ] Empty state messages
-  - [ ] Error page content
-  - [ ] Help text and tooltips
-  
-- [ ] **Create Fragment Patterns** (2h)
-  - [ ] Document fragment structure
-  - [ ] Create example fragments
-  - [ ] Test fragment loading
+- [ ] **Configuration** (1h)
+  - [ ] Verify `fstab.yaml`
+  - [ ] Check `helix-query.yaml`
 
-### 5.4 Helix/EDS Deployment Readiness
-
-- [ ] **Configuration Verification** (1h)
-  - [ ] Verify `fstab.yaml` setup
-  - [ ] Check `helix-query.yaml` if using indexing
-  - [ ] Validate paths and redirects
-
-- [ ] **Preview/Live Testing** (2h)
-  - [ ] Deploy to `.hlx.page` (preview)
-  - [ ] Test all Sarah flows on preview
-  - [ ] Promote to `.hlx.live` (production)
-  - [ ] Validate CDN caching behavior
-
-- [ ] **Lighthouse Audit** (1h)
-  - [ ] Performance score > 90
-  - [ ] Accessibility score > 90
-  - [ ] Best Practices score > 90
-  - [ ] SEO score > 90
+- [ ] **Deploy & Test** (2h)
+  - [ ] Preview on `.hlx.page`
+  - [ ] Production on `.hlx.live`
+  - [ ] Lighthouse audit (target: >90 all categories)
 
 ---
 
-## Integration Phase 6: Production Readiness
+## Phase 5: Production Readiness
 **Estimated Time**: 3-5 days  
-**Priority**: MEDIUM
+**Priority**: 🟡 MEDIUM
 
-### 6.1 Performance
+### 5.1 Performance
 
-- [ ] **Page Load Speed** (2h)
-  - [ ] Audit with Lighthouse
-  - [ ] Target: < 2s initial load
-  - [ ] Lazy load images
-  - [ ] Code splitting if needed
+- [ ] Page load speed (<2s)
+- [ ] Image optimization
+- [ ] Code splitting if needed
 
-- [ ] **Runtime Performance** (1h)
-  - [ ] Smooth scrolling
-  - [ ] No jank on interactions
-  - [ ] Efficient DOM updates
+### 5.2 Monitoring
 
-### 6.2 Monitoring
+- [ ] Error tracking (Sentry)
+- [ ] Analytics (page views, events)
 
-- [ ] **Error Tracking** (2h)
-  - [ ] Sentry or similar integration
-  - [ ] Capture JavaScript errors
-  - [ ] Capture API errors
-  - [ ] Error reporting dashboard
+### 5.3 Documentation
 
-- [ ] **Analytics** (2h)
-  - [ ] Page view tracking
-  - [ ] Event tracking (add to cart, checkout, etc.)
-  - [ ] Conversion funnel setup
+- [ ] Demo script
+- [ ] Technical architecture docs
+- [ ] API documentation
 
-### 6.3 Documentation
+### 5.4 QA & Testing
 
-- [ ] **Demo Script** (2h)
-  - [ ] Step-by-step walkthrough
-  - [ ] Key talking points
-  - [ ] Screenshots/video
-
-- [ ] **Technical Docs** (2h)
-  - [ ] Architecture overview
-  - [ ] Data flow diagrams
-  - [ ] API documentation
-  - [ ] Troubleshooting guide
-
-### 6.4 QA & Testing
-
-- [ ] **End-to-End Testing** (4h)
-  - [ ] Full flow: Login → Dashboard → Configure → BOM → Cart → Checkout
-  - [ ] Edit flow: Cart → BOM Review → Configure → Back
-  - [ ] Error scenarios
-  - [ ] Cross-browser (Chrome, Safari, Firefox, Edge)
-
-- [ ] **User Acceptance Testing** (2h)
-  - [ ] Demo to stakeholders
-  - [ ] Gather feedback
-  - [ ] Prioritize fixes
+- [ ] End-to-end flow testing
+- [ ] Cross-browser testing
+- [ ] User acceptance testing
 
 ---
 
-## Task Summary
+## Phase 6: Cart & Orders (Lower Priority)
+**Estimated Time**: 3-4 days  
+**Priority**: 🟢 LOW (can remain mocked for demo)
 
-| Phase | Tasks | Est. Time | Priority |
-|-------|-------|-----------|----------|
-| **1. Frontend Polish** | 15 tasks | 1-2 days | HIGH |
-| **2. Data Completeness** | 10 tasks | 2-3 days | HIGH |
-| **3. Cart & Checkout** | 12 tasks | 3-4 days | HIGH |
-| **4. Backend Connection** | 9 tasks | 1-2 weeks | MEDIUM |
-| **5. EDS Production Patterns** | 12 tasks | 2-3 days | MEDIUM |
-| **6. Production Readiness** | 8 tasks | 3-5 days | MEDIUM |
+### 6.1 Cart Enhancements
 
-**Total Estimated Time**: 4-5 weeks
+- [ ] Bundle quantity editing
+- [ ] Remove individual items
+- [ ] Cart persistence
 
----
+### 6.2 Checkout Flow
 
-## Suggested Order of Execution
+- [ ] Checkout page
+- [ ] Order submission
+- [ ] Order confirmation
 
-### Week 1: Polish & Data
-1. Frontend Polish (Phase 1)
-2. Data Completeness (Phase 2)
+### 6.3 Order History
 
-### Week 2: Checkout Flow
-3. Cart & Checkout (Phase 3)
-
-### Week 3: Backend (if pursuing)
-4. Backend Connection (Phase 4)
-
-### Week 4: EDS Patterns & Ship It
-5. EDS Production Patterns (Phase 5)
-6. Production Readiness (Phase 6)
+- [ ] Order history page
+- [ ] Reorder flow
+- [ ] Account integration
 
 ---
 
-## Success Criteria
+## Execution Timeline (Revised)
 
-### Minimum Viable Demo
-- [ ] Sarah can log in and see her templates
-- [ ] Sarah can configure a build (variants, package, phases)
-- [ ] Sarah can review the generated BOM
-- [ ] Sarah can add the BOM to cart
-- [ ] Sarah can edit the BOM from cart
-- [ ] Cart shows proper bundle display
-- [ ] Checkout flow works (even if mocked)
-- [ ] Order confirmation displays
+```
+WEEK 1: Catalog Integration
+├─ Phase 1: Frontend Polish ✅ COMPLETE
+└─ Phase 2: ACO Catalog Integration ← CURRENT FOCUS
 
-### Full Integration
-- [ ] All above, plus:
-- [ ] Real product data from ACO
-- [ ] Real pricing from ACO
-- [ ] Real cart via Commerce
-- [ ] Real checkout via Commerce
-- [ ] Order history shows real orders
+WEEK 2: Commerce Storefront
+└─ Phase 3: Commerce Storefront Integration
+
+WEEK 3: Production Prep
+├─ Phase 4: EDS Production Patterns
+└─ Phase 5: Production Readiness
+
+FUTURE: Cart & Orders (as needed)
+└─ Phase 6: Cart & Orders
+```
 
 ---
 
-## Notes
+## Success Criteria (Revised)
 
-- **Backend (Phase 4) is optional for demo** - The current mock implementation works well for demonstrations
-- **Focus on the happy path first** - Get the main flow working perfectly before edge cases
-- **Document as you go** - Update this plan as tasks complete
+### Primary Goal: Real Catalog Data
+- [ ] Products display with real ACO data
+- [ ] Images load from Commerce/DAM
+- [ ] Prices reflect ACO price books
+- [ ] Sarah sees her catalog view (CCDM filtered)
+- [ ] BOM products are real ACO products
+- [ ] Product swaps show real alternatives
+
+### Secondary Goal: Demo Ready
+- [ ] Smooth frontend experience
+- [ ] Proper loading/error states
+- [ ] Mobile responsive
+- [ ] Accessible
+
+### Deferred: Transaction Flow
+- [ ] Cart can remain localStorage-based
+- [ ] Checkout can remain mocked
+- [ ] Order history can show sample data
+
+---
+
+## Technical Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    EDS Frontend (BuildRight)                │
+├─────────────────────────────────────────────────────────────┤
+│  pages/           │  scripts/           │  styles/          │
+│  ├─ account.html  │  ├─ services/       │  ├─ base.css      │
+│  ├─ templates     │  │  ├─ aco-client   │  ├─ components    │
+│  ├─ configurator  │  │  └─ commerce     │  └─ dashboards    │
+│  ├─ bom-review    │  ├─ build-config    │                   │
+│  └─ cart          │  └─ bom-review      │                   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     ACO Service Layer                       │
+├─────────────────────────────────────────────────────────────┤
+│  scripts/services/aco-client.js                             │
+│  ├─ getProductBySKU(sku)                                    │
+│  ├─ getProductsByCategory(categoryId)                       │
+│  ├─ getPrice(sku, customerGroup)                            │
+│  ├─ getProductAlternatives(sku, tier)                       │
+│  └─ getProductImage(sku)                                    │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Adobe Commerce (ACO) Backend                   │
+├─────────────────────────────────────────────────────────────┤
+│  GraphQL API        │  REST API          │  Assets (DAM)   │
+│  ├─ Products        │  ├─ Catalog        │  ├─ Images      │
+│  ├─ Categories      │  ├─ Pricing        │  └─ Documents   │
+│  ├─ Pricing         │  └─ Inventory      │                 │
+│  └─ Search          │                    │                 │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -474,5 +331,5 @@ This plan restructures the remaining Phase 6A work to achieve complete end-to-en
 | Date | Change |
 |------|--------|
 | Dec 7, 2025 | Initial plan created |
-
+| Dec 8, 2025 | Restructured: ACO/Catalog integration as priority, Cart/Orders deferred |
 
