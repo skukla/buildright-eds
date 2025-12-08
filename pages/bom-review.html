@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="../styles/styles.css">
   <link rel="stylesheet" href="../styles/bom-review.css">
 </head>
-<body class="page-bom-review">
+<body class="page-bom-review" style="overflow: hidden;">
   
   <!-- Header block (loaded by scripts.js) -->
   <header></header>
@@ -112,11 +112,11 @@
     </div>
   </main>
   
-  <!-- Loading Overlay -->
-  <div class="loading-overlay" id="loading-overlay" data-visible="false">
+  <!-- Loading Overlay (visible by default, hidden after page renders) -->
+  <div class="loading-overlay" id="loading-overlay" data-visible="true">
     <div class="loading-content">
       <div class="loading-spinner"></div>
-      <h3 id="loading-title">Adding to cart...</h3>
+      <h3 id="loading-title">Loading Bill of Materials...</h3>
       <p id="loading-subtitle">Please wait</p>
     </div>
   </div>

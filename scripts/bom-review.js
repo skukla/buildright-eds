@@ -55,6 +55,7 @@ class BOMReview {
     await this.loadData();
     
     if (!this.bomData) {
+      this.hideLoadingOverlay();
       this.showError('No BOM data found. Please configure a build first.');
       return;
     }
@@ -71,6 +72,16 @@ class BOMReview {
     
     // Listen for cart updates to detect if edited bundle is removed
     this.setupCartListener();
+    
+    // Hide loading overlay now that page is fully rendered
+    this.hideLoadingOverlay();
+  }
+  
+  hideLoadingOverlay() {
+    if (this.elements.loadingOverlay) {
+      this.elements.loadingOverlay.dataset.visible = 'false';
+      document.body.style.overflow = '';
+    }
   }
   
   setupCartListener() {
