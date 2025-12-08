@@ -23,12 +23,15 @@ This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) produ
 - Mini-cart (bundle editing)
 - Price formatting, notifications, placeholders
 - **Frontend Polish** (Phase 1 complete)
+- **Catalog Service** with strategy pattern (Phase 2 complete)
+- **API Mesh integration** for real ACO data (Phase 2 complete)
+- **Product grid and featured products** using real mesh data (Phase 2 complete)
 
 ### What Needs Work 🔄
-- Connect to real ACO product catalog
-- Real product images from Commerce
-- Real pricing from ACO price books
-- Catalog views / CCDM filtering
+- PDP (Product Detail Page) integration with Commerce
+- Search integration with Commerce
+- Category navigation from Commerce
+- EDS production deployment (Helix/aem.live)
 
 ---
 
@@ -37,7 +40,7 @@ This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) produ
 | Phase | Description | Est. Time | Priority |
 |-------|-------------|-----------|----------|
 | **1. Frontend Polish** | Layout, loading, edge cases, a11y | 1-2 days | ✅ COMPLETE |
-| **2. ACO Catalog Integration** | Real products, pricing, images | 3-5 days | 🔴 HIGH |
+| **2. ACO Catalog Integration** | Real products, pricing, images | 3-5 days | ✅ COMPLETE |
 | **3. Commerce Storefront** | Product display, search, categories | 2-3 days | 🔴 HIGH |
 | **4. EDS Production Patterns** | 404 pages, blocks, Helix deploy | 2-3 days | 🟡 MEDIUM |
 | **5. Production Readiness** | Performance, docs, QA | 3-5 days | 🟡 MEDIUM |
@@ -56,70 +59,70 @@ All sub-phases completed:
 
 ---
 
-## Phase 2: ACO Catalog Integration
+## ✅ Phase 2: ACO Catalog Integration - COMPLETE
+
 **Estimated Time**: 3-5 days  
-**Priority**: 🔴 HIGH
+**Priority**: 🔴 HIGH  
+**Status**: ✅ Implemented December 8, 2025
 
-### 2.1 ACO Service Layer
+**📖 Architecture Documentation**: [CATALOG-SERVICE-ARCHITECTURE.md](./CATALOG-SERVICE-ARCHITECTURE.md)
 
-- [ ] **Create ACO Service Module** (4h)
-  - [ ] `scripts/services/aco-client.js` - API client
-  - [ ] Environment configuration (dev/staging/prod endpoints)
-  - [ ] Authentication handling (API keys, tokens)
-  - [ ] Error handling and retry logic
-  - [ ] Response caching strategy
+### 2.1 ACO Service Layer ✅
 
-- [ ] **Product Fetching** (3h)
-  - [ ] Fetch product by SKU
-  - [ ] Fetch products by category
-  - [ ] Fetch products by attribute (e.g., phase)
-  - [ ] Batch product fetching for BOM display
+- [x] **Create Catalog Service Module**
+  - [x] `scripts/services/catalog-service.js` - Strategy pattern implementation
+  - [x] `scripts/services/mesh-client.js` - GraphQL client for API Mesh
+  - [x] `scripts/services/mesh-integration.js` - Auth/persona integration
+  - [x] Automatic fallback to mock when mesh unavailable
+  - [x] Header-based persona authentication
 
-### 2.2 Product Data Integration
+- [x] **Product Fetching**
+  - [x] `catalogService.searchProducts(phrase, options)`
+  - [x] `catalogService.getProduct(sku)`
+  - [x] Pagination support (pageSize, currentPage)
 
-- [ ] **Replace Mock Product Data** (4h)
-  - [ ] Update `data-mock.js` to call ACO service
-  - [ ] Or create `data-aco.js` as replacement
-  - [ ] Map ACO response to existing data structure
-  - [ ] Graceful fallback if ACO unavailable
+### 2.2 Product Data Integration ✅
 
-- [ ] **Product Images** (2h)
-  - [ ] Use ACO image URLs
-  - [ ] Implement CDN/DAM path resolution
-  - [ ] Fallback placeholder strategy
-  - [ ] Lazy loading for performance
+- [x] **Replace Mock Product Data**
+  - [x] Product grid uses `catalogService.searchProducts()`
+  - [x] Featured products uses `catalogService.searchProducts()`
+  - [x] Graceful fallback to MockStrategy if mesh unavailable
 
-- [ ] **Product Attributes** (2h)
-  - [ ] Name, description, SKU
-  - [ ] Category hierarchy
-  - [ ] Custom attributes (phase, tier, etc.)
-  - [ ] Inventory status (optional)
+- [x] **Product Response Mapping**
+  - [x] Mesh response → standard product format
+  - [x] SKU, name, description, price, inStock
+  - [x] Image URLs from mesh response
+  - [x] Attributes array transformation
 
-### 2.3 Pricing Integration
+### 2.3 Pricing Integration ✅
 
-- [ ] **ACO Price Books** (3h)
-  - [ ] Fetch base pricing
-  - [ ] Customer group pricing (Sarah's tier)
-  - [ ] Volume/quantity discounts
-  - [ ] Price formatting with locale
+- [x] **ACO Price Books**
+  - [x] Persona headers include `X-Price-Book-Id`
+  - [x] Mesh returns tier-specific pricing
+  - [x] Price included in product response (no separate call)
 
-- [ ] **BOM Pricing** (2h)
-  - [ ] Calculate line item totals from ACO prices
-  - [ ] Phase subtotals
-  - [ ] Overall BOM total
-  - [ ] Handle price changes between sessions
+- [x] **BOM Pricing**
+  - [x] `catalogService.generateBOM(config)` returns priced line items
+  - [x] Falls back to pre-generated BOM files
 
-### 2.4 Catalog Views & Filtering
+### 2.4 Catalog Views & Filtering ✅
 
-- [ ] **Sarah's Catalog View** (2h)
-  - [ ] Apply CCDM filtering
-  - [ ] Only show products in Sarah's catalog
-  - [ ] Handle category restrictions
+- [x] **Persona Catalog Views**
+  - [x] Persona headers include `X-Catalog-View-Id`
+  - [x] Mesh applies CCDM filtering server-side
+  - [x] Sarah sees Production Builder catalog
 
-- [ ] **Product Alternatives** (2h)
-  - [ ] Fetch swap alternatives from ACO
-  - [ ] Tier-based alternatives (Designer > Premium > Builder's)
-  - [ ] Same-category filtering
+### Key Files Created/Modified
+
+| File | Purpose |
+|------|---------|
+| `scripts/services/catalog-service.js` | Strategy pattern, unified interface |
+| `scripts/services/mesh-client.js` | GraphQL queries, header management |
+| `scripts/services/mesh-integration.js` | Auth integration layer |
+| `scripts/auth.js` | Initialize mesh on login |
+| `blocks/product-grid/product-grid.js` | Uses catalogService |
+| `blocks/featured-products/featured-products.js` | Uses catalogService |
+| `scripts/bom-review.js` | Uses catalogService.generateBOM() |
 
 ---
 
@@ -248,10 +251,10 @@ All sub-phases completed:
 ```
 WEEK 1: Catalog Integration
 ├─ Phase 1: Frontend Polish ✅ COMPLETE
-└─ Phase 2: ACO Catalog Integration ← CURRENT FOCUS
+└─ Phase 2: ACO Catalog Integration ✅ COMPLETE
 
 WEEK 2: Commerce Storefront
-└─ Phase 3: Commerce Storefront Integration
+└─ Phase 3: Commerce Storefront Integration ← CURRENT FOCUS
 
 WEEK 3: Production Prep
 ├─ Phase 4: EDS Production Patterns
@@ -294,35 +297,52 @@ FUTURE: Cart & Orders (as needed)
 ├─────────────────────────────────────────────────────────────┤
 │  pages/           │  scripts/           │  styles/          │
 │  ├─ account.html  │  ├─ services/       │  ├─ base.css      │
-│  ├─ templates     │  │  ├─ aco-client   │  ├─ components    │
-│  ├─ configurator  │  │  └─ commerce     │  └─ dashboards    │
-│  ├─ bom-review    │  ├─ build-config    │                   │
-│  └─ cart          │  └─ bom-review      │                   │
+│  ├─ templates     │  │  ├─ catalog-svc  │  ├─ components    │
+│  ├─ configurator  │  │  ├─ mesh-client  │  └─ dashboards    │
+│  ├─ bom-review    │  │  └─ mesh-integ   │                   │
+│  └─ cart          │  ├─ build-config    │                   │
+│                   │  └─ bom-review      │                   │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                     ACO Service Layer                       │
+│                    Catalog Service Layer                    │
 ├─────────────────────────────────────────────────────────────┤
-│  scripts/services/aco-client.js                             │
-│  ├─ getProductBySKU(sku)                                    │
-│  ├─ getProductsByCategory(categoryId)                       │
-│  ├─ getPrice(sku, customerGroup)                            │
-│  ├─ getProductAlternatives(sku, tier)                       │
-│  └─ getProductImage(sku)                                    │
+│  scripts/services/catalog-service.js (Strategy Pattern)    │
+│  ├─ MeshStrategy: Real ACO data via API Mesh               │
+│  └─ MockStrategy: Local JSON files for offline dev         │
+│                                                             │
+│  API Methods:                                               │
+│  ├─ initialize(personaId, options)                          │
+│  ├─ searchProducts(phrase, {pageSize, currentPage})         │
+│  ├─ getProduct(sku)                                         │
+│  └─ generateBOM(config)                                     │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│              Adobe Commerce (ACO) Backend                   │
+│                      API Mesh                               │
+│   https://edge-sandbox-graph.adobe.io/api/.../graphql       │
 ├─────────────────────────────────────────────────────────────┤
-│  GraphQL API        │  REST API          │  Assets (DAM)   │
-│  ├─ Products        │  ├─ Catalog        │  ├─ Images      │
-│  ├─ Categories      │  ├─ Pricing        │  └─ Documents   │
-│  ├─ Pricing         │  └─ Inventory      │                 │
+│  BuildRight_personaForCustomer(customerGroupId)             │
+│  BuildRight_searchProducts(phrase, pageSize, currentPage)   │
+│  BuildRight_getProductBySKU(sku)                            │
+│  BuildRight_generateBOMFromTemplate(...)                    │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Adobe Commerce Optimizer (ACO)                 │
+├─────────────────────────────────────────────────────────────┤
+│  GraphQL API        │  CCDM              │  Price Books    │
+│  ├─ Products        │  ├─ Catalog Views  │  ├─ US-Retail   │
+│  ├─ Categories      │  ├─ Policies       │  ├─ Prod-Build  │
+│  ├─ Attributes      │  └─ Filtering      │  └─ Commercial  │
 │  └─ Search          │                    │                 │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+**📖 Full architecture details**: [CATALOG-SERVICE-ARCHITECTURE.md](./CATALOG-SERVICE-ARCHITECTURE.md)
 
 ---
 
@@ -332,4 +352,5 @@ FUTURE: Cart & Orders (as needed)
 |------|--------|
 | Dec 7, 2025 | Initial plan created |
 | Dec 8, 2025 | Restructured: ACO/Catalog integration as priority, Cart/Orders deferred |
+| Dec 8, 2025 | Phase 2 (ACO Catalog Integration) completed - catalog service, mesh integration, product grids updated |
 
