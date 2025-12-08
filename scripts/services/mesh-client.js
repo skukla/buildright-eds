@@ -300,11 +300,33 @@ export const QUERY_GENERATE_BOM = `
  * Fetch persona and set headers
  * Call this on app init or login
  * 
+ * Uses sessionStorage caching to avoid redundant mesh queries.
+ * Force refresh by passing { forceRefresh: true } in options.
+ * 
  * @param {string} customerGroupId - Customer group ID from Commerce
+ * @param {Object} options - { forceRefresh: boolean }
  * @returns {Promise<Object>} Persona data
  */
-export async function initializePersona(customerGroupId) {
-  console.log('[MeshClient] Initializing persona for customer group:', customerGroupId);
+export async function initializePersona(customerGroupId, options = {}) {
+  const { forceRefresh = false } = options;
+  
+  // Check cache first (unless force refresh requested)
+  if (!forceRefresh) {
+    try {
+      const cachedPersona = sessionStorage.getItem('buildright_persona');
+      const cachedHeaders = sessionStorage.getItem('buildright_persona_headers');
+      
+      if (cachedPersona && cachedHeaders) {
+        const persona = JSON.parse(cachedPersona);
+        console.log('[MeshClient] Using cached persona:', persona.name);
+        return persona;
+      }
+    } catch (e) {
+      console.warn('[MeshClient] Cache read failed, fetching fresh:', e);
+    }
+  }
+  
+  console.log('[MeshClient] Fetching persona from mesh for:', customerGroupId);
   
   const data = await meshQuery(QUERY_GET_PERSONA, { customerGroupId }, {
     includePersonaHeaders: false // Don't need persona headers to GET persona
@@ -322,7 +344,7 @@ export async function initializePersona(customerGroupId) {
     // Also store full persona info
     sessionStorage.setItem('buildright_persona', JSON.stringify(persona));
     
-    console.log('[MeshClient] Persona initialized:', persona.name);
+    console.log('[MeshClient] Persona fetched and cached:', persona.name);
   }
   
   return persona;

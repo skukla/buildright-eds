@@ -227,12 +227,23 @@ class CatalogService {
   constructor() {
     this.strategy = null;
     this.initialized = false;
+    this.initializing = null; // Promise to prevent concurrent initialization
     this.personaData = null;
+  }
+  
+  /**
+   * Check if service is initialized
+   */
+  get isInitialized() {
+    return this.initialized;
   }
   
   /**
    * Initialize the catalog service with a strategy
    * Automatically selects mesh if available, falls back to mock
+   * 
+   * Includes deduplication - if called multiple times concurrently,
+   * only one initialization occurs and all callers await the same promise.
    * 
    * @param {string} identifier - Persona ID (demo) or Customer Group ID (production)
    * @param {Object} options - Configuration options
@@ -248,6 +259,32 @@ class CatalogService {
    * await catalogService.initialize(user.group_id, { isProductionMode: true });
    */
   async initialize(identifier, options = {}) {
+    // Already initialized - return immediately
+    if (this.initialized) {
+      console.log('[CatalogService] Already initialized, skipping');
+      return;
+    }
+    
+    // Initialization in progress - wait for it
+    if (this.initializing) {
+      console.log('[CatalogService] Initialization in progress, waiting...');
+      return this.initializing;
+    }
+    
+    // Start initialization and store the promise
+    this.initializing = this._doInitialize(identifier, options);
+    
+    try {
+      await this.initializing;
+    } finally {
+      this.initializing = null;
+    }
+  }
+  
+  /**
+   * Internal initialization logic
+   */
+  async _doInitialize(identifier, options = {}) {
     const { forceStrategy, isProductionMode = false } = options;
     
     // If strategy is forced, use it
