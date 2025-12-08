@@ -10,6 +10,7 @@
 import { getPersona, PERSONAS, isValidPersona } from './persona-config.js';
 import { acoService } from './aco-service.js';
 import { getCompanyForPersona, getDefaultLocation } from './company-config.js';
+import { initializeMeshForPersona } from './services/mesh-integration.js';
 
 const AUTH_STORAGE_KEY = 'buildright_auth';
 const PERSONA_STORAGE_KEY = 'currentPersona';
@@ -52,6 +53,14 @@ class AuthService {
       // Get ACO context for persona
       const acoContext = await acoService.getUserContext(persona.id);
       
+      // Initialize mesh with persona (for real ACO API access)
+      let meshData = null;
+      try {
+        meshData = await initializeMeshForPersona(persona.id);
+      } catch (error) {
+        console.warn('[Auth Demo] Mesh initialization failed on restore:', error.message);
+      }
+      
       this.currentUser = {
         id: persona.id,
         name: persona.name,
@@ -60,7 +69,8 @@ class AuthService {
         company: persona.company,
         customerGroup: persona.customerGroup,
         persona,
-        acoContext
+        acoContext,
+        meshData
       };
       
       console.log('[Auth Demo] Restored session:', persona.name);
@@ -126,6 +136,16 @@ class AuthService {
     // Get ACO context for persona
     const acoContext = await acoService.getUserContext(persona.id);
     
+    // Initialize mesh with persona (for real ACO API access)
+    // This sets up the proper headers for catalog/pricing queries
+    let meshData = null;
+    try {
+      meshData = await initializeMeshForPersona(persona.id);
+      console.log('[Auth Demo] Mesh initialized:', meshData?.mesh ? 'connected' : 'fallback');
+    } catch (error) {
+      console.warn('[Auth Demo] Mesh initialization failed, using fallback:', error.message);
+    }
+    
     // Set current user
     this.currentUser = {
       id: persona.id,
@@ -135,7 +155,8 @@ class AuthService {
       company: persona.company,
       customerGroup: persona.customerGroup,
       persona,
-      acoContext
+      acoContext,
+      meshData
     };
     
     // Set customer context for location and pricing
