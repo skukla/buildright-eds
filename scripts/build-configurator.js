@@ -345,17 +345,17 @@ class BuildConfigurator {
     const { id, name, description, tier, addedCost, image } = pkg;
     
     // Use Card Stack tiles for Material Packages (image above, text below)
-    const isDefault = id === 'builders-choice';
+    // No default selection - user must explicitly choose
     const imageUrl = image || this.getDefaultPackageImage(tier);
     
     return `
       <div class="card-tile card-tile--selection" 
            data-type="package" 
            data-id="${id}"
-           data-selected="${isDefault}"
+           data-selected="false"
            data-cost="${addedCost}"
            role="radio"
-           aria-checked="${isDefault}"
+           aria-checked="false"
            tabindex="0"
            aria-label="${name}, ${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}">
         <img src="${imageUrl}" alt="${name}" class="card-tile__image">
@@ -635,7 +635,7 @@ class BuildConfigurator {
     const btn = document.getElementById('generate-bom-btn');
     if (!btn) return;
     
-    // Enable if at least one phase is selected
+    // Enable if at least one phase is selected (package is optional, defaults to Builder's Choice)
     const isValid = this.selectedPhases.size > 0;
     btn.disabled = !isValid;
     
@@ -670,7 +670,7 @@ class BuildConfigurator {
   // ============================================
   
   async generateBOM() {
-    // Validate
+    // Validate required selections
     if (this.selectedPhases.size === 0) {
       alert('Please select at least one construction phase.');
       return;
