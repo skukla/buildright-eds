@@ -4,6 +4,9 @@
  * Phase 6A - Sarah Martinez (Regional Production Builder) workflow
  */
 
+import { catalogService } from './services/catalog-service.js';
+import { authService } from './auth.js';
+
 class BuildConfigurator {
   constructor() {
     // State
@@ -666,7 +669,7 @@ class BuildConfigurator {
   // BOM GENERATION
   // ============================================
   
-  generateBOM() {
+  async generateBOM() {
     // Validate
     if (this.selectedPhases.size === 0) {
       alert('Please select at least one construction phase.');
@@ -678,40 +681,78 @@ class BuildConfigurator {
     this.isSubmitting = true;
     this.updateGenerateButton();
     
-    // Prepare build configuration
-    const buildConfig = {
-      templateId: this.template.id,
-      templateName: this.template.name,
-      variants: [...this.selectedVariants],
-      packageId: this.selectedPackage || 'builders-choice',
-      phases: [...this.selectedPhases],
-      buildInfo: { ...this.buildInfo }
-    };
+    // Show loading overlay
+    const loadingTitle = this.editingBundleId ? 'Updating Bill of Materials...' : 'Generating Bill of Materials...';
+    this.showLoading(loadingTitle, 'This will take just a moment');
     
-    // Save to localStorage for BOM review page
-    const buildId = `build-${Date.now()}`;
-    const buildData = {
-      id: buildId,
-      ...buildConfig,
-      createdAt: new Date().toISOString()
-    };
-    
-    // Preserve editingBundleId if editing existing BOM
-    if (this.editingBundleId) {
-      buildData.editingBundleId = this.editingBundleId;
+    try {
+      // Initialize catalog service if needed
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      const personaId = currentUser?.persona?.id || 'sarah';
+      
+      if (!catalogService.initialized) {
+        await catalogService.initialize(personaId);
+      }
+      
+      // Prepare build configuration
+      const buildConfig = {
+        templateId: this.template.id,
+        templateName: this.template.name,
+        variants: [...this.selectedVariants],
+        packageId: this.selectedPackage || 'builders-choice',
+        phases: [...this.selectedPhases],
+        buildInfo: { ...this.buildInfo }
+      };
+      
+      // Generate BOM via catalog service
+      let bomResult = null;
+      try {
+        bomResult = await catalogService.generateBOM({
+          templateId: buildConfig.templateId,
+          variantId: buildConfig.variants[0] || null,
+          packageId: buildConfig.packageId,
+          selectedPhases: buildConfig.phases
+        });
+        console.log('[Build Configurator] BOM generated:', bomResult?.lineItems?.length || 0, 'items');
+      } catch (error) {
+        console.warn('[Build Configurator] BOM generation failed, BOM Review will handle fallback:', error.message);
+      }
+      
+      // Save to localStorage for BOM review page
+      const buildId = `build-${Date.now()}`;
+      const buildData = {
+        id: buildId,
+        ...buildConfig,
+        createdAt: new Date().toISOString(),
+        // Include pre-generated BOM data if available
+        bomResult: bomResult || null
+      };
+      
+      // Preserve editingBundleId if editing existing BOM
+      if (this.editingBundleId) {
+        buildData.editingBundleId = this.editingBundleId;
+      }
+      
+      localStorage.setItem('buildright_current_build', JSON.stringify(buildData));
+      
+      // Update last project number
+      const projectNum = parseInt(this.buildInfo.projectName.match(/\d+/)?.[0] || '47', 10);
+      localStorage.setItem('buildright_last_project_num', projectNum.toString());
+      
+      // Clear unsaved changes flag before navigating
+      this.hasUnsavedChanges = false;
+      
+      // Navigate to BOM review with pre-generated data
+      window.location.href = `/pages/bom-review.html?buildId=${buildId}`;
+      
+    } catch (error) {
+      console.error('Error generating BOM:', error);
+      this.hideLoading();
+      this.isSubmitting = false;
+      this.updateGenerateButton();
+      alert('Failed to generate BOM. Please try again.');
     }
-    
-    localStorage.setItem('buildright_current_build', JSON.stringify(buildData));
-    
-    // Update last project number
-    const projectNum = parseInt(this.buildInfo.projectName.match(/\d+/)?.[0] || '47', 10);
-    localStorage.setItem('buildright_last_project_num', projectNum.toString());
-    
-    // Clear unsaved changes flag before navigating
-    this.hasUnsavedChanges = false;
-    
-    // Navigate to BOM review (actual BOM generation happens there)
-    window.location.href = `/pages/bom-review.html?buildId=${buildId}`;
   }
   
   // ============================================
