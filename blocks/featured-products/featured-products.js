@@ -5,7 +5,7 @@
  */
 
 import { authService } from '../../scripts/auth.js';
-import { acoService } from '../../scripts/aco-service.js';
+import { catalogService } from '../../scripts/services/catalog-service.js';
 import { resolveImagePath } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
@@ -16,56 +16,59 @@ export default async function decorate(block) {
   container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem;"><div class="loading-spinner loading-spinner-sm"></div></div>';
   
   try {
-    // Initialize auth to get user context
+    // Initialize auth to get user context (this also initializes catalogService)
     await authService.initialize();
     const currentUser = authService.getCurrentUser();
     
-    // Build user context for ACO
-    let userContext = {};
-    if (currentUser && currentUser.persona) {
-      const persona = currentUser.persona;
-      userContext = {
-        userId: currentUser.id || currentUser.email,
-        customerGroup: persona.customerGroup,
-        personaId: persona.id,
-        attributes: persona.attributes
-      };
-      console.log('[Featured Products] User context:', userContext);
-    } else {
-      // Default to retail customer group
-      userContext = {
-        userId: null,
-        customerGroup: 'US-Retail',
-        personaId: null,
-        attributes: {}
-      };
-      console.log('[Featured Products] Using default retail context');
+    // Ensure catalogService is initialized
+    if (!catalogService.initialized) {
+      const personaId = currentUser?.persona?.id || null;
+      if (personaId) {
+        await catalogService.initialize(personaId);
+      } else {
+        // Use mock strategy for unauthenticated users
+        await catalogService.initialize('guest', { forceStrategy: 'mock' });
+      }
     }
     
-    // Get products from ACO
-    const result = await acoService.getProducts({
-      filters: {},
-      userContext,
-      limit: 4,
-      offset: 0
+    console.log('[Featured Products] Using strategy:', catalogService.getActiveStrategy());
+    
+    // Get products via catalogService (uses mesh or mock based on strategy)
+    const result = await catalogService.searchProducts(' ', {
+      pageSize: 4,
+      currentPage: 1
     });
     
-    const products = result.products || [];
+    // Transform mesh response to expected format
+    const products = (result.items || []).map(item => ({
+      sku: item.sku,
+      name: item.name,
+      description: item.description,
+      image: item.imageUrl,
+      price: item.price?.value || 0,
+      inStock: item.inStock,
+      category: item.category
+    }));
     
     if (products.length === 0) {
       container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">No products available</p>';
       return;
     }
     
-    // Get pricing for all products
-    const productIds = products.map(p => p.sku);
-    const pricingResult = await acoService.getPricing({
-      productIds,
-      customerGroup: userContext.customerGroup,
-      quantity: 1
+    // Build pricing map from mesh response (price already included in items)
+    const pricing = {};
+    (result.items || []).forEach(item => {
+      if (item.price) {
+        pricing[item.sku] = {
+          unitPrice: item.price.value,
+          currency: item.price.currency,
+          retailPrice: null,
+          savings: 0,
+          savingsPercent: 0
+        };
+      }
     });
     
-    const pricing = pricingResult.pricing || {};
     console.log('[Featured Products] Got pricing for', Object.keys(pricing).length, 'products');
     
     // Clear container

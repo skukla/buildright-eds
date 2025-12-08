@@ -3,6 +3,9 @@
  * Displays generated Bill of Materials with phase accordions and product swap functionality
  */
 
+import { catalogService } from './services/catalog-service.js';
+import { authService } from './auth.js';
+
 class BOMReview {
   constructor() {
     this.buildId = new URLSearchParams(window.location.search).get('buildId');
@@ -122,27 +125,111 @@ class BOMReview {
       console.error('Error loading template data:', error);
     }
     
-    // Load pre-generated BOM data (real ACO product data)
+    // Generate BOM via catalogService (mesh) or fallback to local files
     if (this.bomData?.templateId && this.bomData?.selectedPackage) {
-      try {
-        const bomFile = `/data/boms/${this.bomData.templateId}-${this.bomData.selectedPackage}.json`;
-        const bomResponse = await fetch(bomFile);
-        if (bomResponse.ok) {
-          const preGeneratedBom = await bomResponse.json();
-          this.bomData.lineItems = this.convertBomToLineItems(preGeneratedBom);
-          console.log(`Loaded pre-generated BOM: ${bomFile}`);
-        } else {
-          console.warn(`Pre-generated BOM not found: ${bomFile}, falling back to mock data`);
-          this.bomData.lineItems = this.generateMockLineItems();
-        }
-      } catch (error) {
-        console.error('Error loading pre-generated BOM:', error);
-        this.bomData.lineItems = this.generateMockLineItems();
-      }
+      await this.loadBOMData();
     } else if (this.bomData && this.templateData) {
       // Fallback to mock data if no template/package selected
       this.bomData.lineItems = this.generateMockLineItems();
     }
+  }
+  
+  /**
+   * Load BOM data - tries mesh first, falls back to local files
+   */
+  async loadBOMData() {
+    // Ensure catalogService is initialized
+    try {
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      
+      if (!catalogService.initialized) {
+        const personaId = currentUser?.persona?.id || 'sarah';
+        await catalogService.initialize(personaId);
+      }
+    } catch (error) {
+      console.warn('[BOM Review] Auth/catalog init failed:', error.message);
+    }
+    
+    // Try to generate BOM via mesh
+    if (catalogService.isUsingRealData()) {
+      try {
+        console.log('[BOM Review] Generating BOM via mesh...');
+        const meshBom = await catalogService.generateBOM({
+          templateId: this.bomData.templateId,
+          variantId: this.bomData.selectedVariants?.[0] || null,
+          packageId: this.bomData.selectedPackage,
+          selectedPhases: this.bomData.selectedPhases
+        });
+        
+        if (meshBom && meshBom.lineItems) {
+          this.bomData.lineItems = this.convertMeshBomToLineItems(meshBom);
+          this.bomData.totalCost = meshBom.totalCost;
+          this.bomData.phases = meshBom.phases;
+          console.log(`[BOM Review] Generated BOM via mesh: ${meshBom.lineItems.length} items`);
+          return;
+        }
+      } catch (error) {
+        console.warn('[BOM Review] Mesh BOM generation failed, falling back to local:', error.message);
+      }
+    }
+    
+    // Fallback: Load pre-generated BOM from local files
+    try {
+      const bomFile = `/data/boms/${this.bomData.templateId}-${this.bomData.selectedPackage}.json`;
+      const bomResponse = await fetch(bomFile);
+      if (bomResponse.ok) {
+        const preGeneratedBom = await bomResponse.json();
+        this.bomData.lineItems = this.convertBomToLineItems(preGeneratedBom);
+        console.log(`[BOM Review] Loaded pre-generated BOM: ${bomFile}`);
+      } else {
+        console.warn(`[BOM Review] Pre-generated BOM not found: ${bomFile}, falling back to mock data`);
+        this.bomData.lineItems = this.generateMockLineItems();
+      }
+    } catch (error) {
+      console.error('[BOM Review] Error loading pre-generated BOM:', error);
+      this.bomData.lineItems = this.generateMockLineItems();
+    }
+  }
+  
+  /**
+   * Convert mesh BOM response to line items for display
+   */
+  convertMeshBomToLineItems(meshBom) {
+    const items = [];
+    const selectedPhases = this.bomData.selectedPhases || ['foundation_framing', 'envelope', 'interior_finish'];
+    
+    // Map phase enum values to our internal format
+    const phaseMap = {
+      'FOUNDATION_FRAMING': 'foundation_framing',
+      'ENVELOPE': 'envelope',
+      'INTERIOR_FINISH': 'interior_finish',
+      'SPECIALTY': 'specialty'
+    };
+    
+    (meshBom.lineItems || []).forEach(item => {
+      const phaseId = phaseMap[item.phase] || item.phase?.toLowerCase();
+      
+      // Only include selected phases
+      if (selectedPhases.length > 0 && !selectedPhases.includes(phaseId)) return;
+      
+      items.push({
+        phase: phaseId,
+        category: this.formatCategory(item.category || 'general'),
+        name: item.name,
+        brand: item.specifications?.brand || this.extractBrand(item.name),
+        sku: item.sku,
+        unit: item.unit || 'ea',
+        qty: item.quantity,
+        price: item.unitPrice?.value || 0,
+        lineTotal: item.totalPrice?.value || 0,
+        description: '',
+        image: this.getProductImage(item.sku, item.category),
+        isOverride: item.specifications?.qualityTier === 'premium' || item.specifications?.qualityTier === 'luxury',
+      });
+    });
+    
+    return items;
   }
   
   convertBomToLineItems(preGeneratedBom) {

@@ -1,7 +1,7 @@
 // Product grid block decoration
 import { parseCatalogPath } from '../../scripts/url-router.js';
 import { parseHTMLFragment, parseHTML, safeAddEventListener, cleanupEventListeners, cleanElementListeners, resolveImagePath } from '../../scripts/utils.js';
-import { acoService } from '../../scripts/aco-service.js';
+import { catalogService } from '../../scripts/services/catalog-service.js';
 import { authService } from '../../scripts/auth.js';
 import { getPersona } from '../../scripts/persona-config.js';
 
@@ -204,11 +204,22 @@ export default async function decorate(block) {
     showLoading();
     
     try {
-      // Initialize auth to get user context
+      // Initialize auth to get user context (this also initializes catalogService)
       await authService.initialize();
       const currentUser = authService.getCurrentUser();
       
-      // Get user context for ACO filtering
+      // Ensure catalog service is initialized
+      if (!catalogService.initialized) {
+        const personaId = currentUser?.persona?.id || null;
+        if (personaId) {
+          await catalogService.initialize(personaId);
+        } else {
+          // Use mock strategy for unauthenticated users
+          await catalogService.initialize('guest', { forceStrategy: 'mock' });
+        }
+      }
+      
+      // Store user context for reference
       if (currentUser && currentUser.persona) {
         const persona = currentUser.persona;
         userContext = {
@@ -219,7 +230,6 @@ export default async function decorate(block) {
         };
         console.log('[Product Grid] User context:', userContext);
       } else {
-        // Unauthenticated or no persona - use retail customer group
         userContext = {
           userId: null,
           customerGroup: 'US-Retail',
@@ -229,55 +239,77 @@ export default async function decorate(block) {
         console.log('[Product Grid] Using default customer group (US-Retail)');
       }
       
-      // Parse URL params for category filtering
+      // Parse URL params for category/search filtering
       const urlParams = new URLSearchParams(window.location.search);
       const category = urlParams.get('category');
-      const policy = urlParams.get('policy'); // CCDM policy to apply
+      const searchQuery = urlParams.get('q') || urlParams.get('search') || '';
       
-      // Build filters object
-      const filters = { ...currentFilters };
-      if (category) {
-        filters.category = category;
+      // Build search phrase - use category or search query
+      let searchPhrase = searchQuery || category || ' '; // Space = all products
+      
+      // Apply any additional filters from UI
+      if (currentFilters.category) {
+        searchPhrase = currentFilters.category;
       }
       
-      // Query ACO service for products
-      console.log('[Product Grid] Fetching products:', { filters, policy, userContext });
-      const result = await acoService.getProducts({
-        filters,
-        userContext,
-        policy,
-        limit: 100,
-        offset: 0
+      // Query products via catalogService (uses mesh or mock based on strategy)
+      console.log('[Product Grid] Fetching products via catalogService:', { 
+        searchPhrase, 
+        strategy: catalogService.getActiveStrategy() 
       });
       
-      const products = result.products || [];
-      console.log(`[Product Grid] Loaded ${products.length} products`);
+      const result = await catalogService.searchProducts(searchPhrase, {
+        pageSize: 100,
+        currentPage: 1
+      });
+      
+      // Transform mesh response to expected format
+      const products = (result.items || []).map(item => ({
+        sku: item.sku,
+        name: item.name,
+        description: item.description,
+        image: item.imageUrl,
+        price: item.price?.value || 0,
+        inStock: item.inStock,
+        category: item.category,
+        attributes: item.attributes?.reduce((acc, attr) => {
+          acc[attr.name] = attr.value;
+          return acc;
+        }, {}) || {}
+      }));
+      
+      console.log(`[Product Grid] Loaded ${products.length} products via ${catalogService.getActiveStrategy()}`);
       
       if (products.length === 0) {
         renderProducts([]);
+        window.dispatchEvent(new CustomEvent('catalogLoaded'));
         return;
       }
 
-      // Get pricing for all products
-      const productIds = products.map(p => p.sku);
-      const pricingResult = await acoService.getPricing({
-        productIds,
-        customerGroup: userContext.customerGroup,
-        quantity: 1
+      // Build pricing map from mesh response (price already included in items)
+      const pricing = {};
+      (result.items || []).forEach(item => {
+        if (item.price) {
+          pricing[item.sku] = {
+            unitPrice: item.price.value,
+            currency: item.price.currency,
+            // Mesh includes tier-specific pricing, so no separate savings calculation needed here
+            // If mesh provides originalPrice, we can calculate savings
+            retailPrice: null,
+            savings: 0,
+            savingsPercent: 0
+          };
+        }
       });
       
-      console.log('[Product Grid] Got pricing for', Object.keys(pricingResult.pricing).length, 'products');
+      console.log('[Product Grid] Got pricing for', Object.keys(pricing).length, 'products');
       
       // Render products with pricing
-      renderProducts(products, pricingResult.pricing);
+      renderProducts(products, pricing);
       
-      // Emit facets for filter sidebar
-      if (result.facets) {
-        window.dispatchEvent(new CustomEvent('facetsUpdated', {
-          detail: { facets: result.facets }
-        }));
-      }
-
+      // Emit facets for filter sidebar (if available from mesh)
+      // Note: Mesh may provide facets in future updates
+      
       // Emit catalog loaded event (for catalog page loading overlay)
       window.dispatchEvent(new CustomEvent('catalogLoaded'));
       
@@ -290,6 +322,7 @@ export default async function decorate(block) {
           <button class="btn btn-primary" onclick="window.location.reload()">Reload Page</button>
         </div>
       `;
+      window.dispatchEvent(new CustomEvent('catalogLoaded'));
     }
   }
 
