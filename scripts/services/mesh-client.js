@@ -29,6 +29,9 @@ function getEndpoint() {
 /**
  * Get persona headers from session storage
  * These headers are required for product queries
+ * Headers are set by initializePersona() after fetching from mesh
+ * 
+ * @throws {Error} If headers are not set (must call initializePersona first)
  */
 function getPersonaHeaders() {
   try {
@@ -40,11 +43,8 @@ function getPersonaHeaders() {
     console.warn('[MeshClient] Failed to parse persona headers:', e);
   }
   
-  // Default headers for development/testing
-  return {
-    'X-Catalog-View-Id': '22c02790-7c5e-474d-a3b6-c72b22203be5', // Production Builder view
-    'X-Price-Book-Id': 'Production-Builder'
-  };
+  // No hardcoded defaults - headers must come from mesh
+  throw new Error('Persona headers not set. Call initializePersona() first.');
 }
 
 /**
