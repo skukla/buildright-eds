@@ -52,12 +52,14 @@
 const MeshStrategy = {
   name: 'mesh',
   
-  async initialize(personaId) {
-    const { initializePersona, setPersonaHeaders } = await import('./mesh-client.js');
-    const customerGroupId = getCustomerGroupId(personaId);
+  async initialize(identifier, options = {}) {
+    const { initializePersona } = await import('./mesh-client.js');
+    const { isProductionMode = false } = options;
+    
+    const customerGroupId = resolveCustomerGroupId(identifier, isProductionMode);
     
     if (!customerGroupId) {
-      throw new Error(`No customer group mapping for persona: ${personaId}`);
+      throw new Error(`Cannot resolve customer group for: ${identifier} (production mode: ${isProductionMode})`);
     }
     
     const persona = await initializePersona(customerGroupId);
@@ -86,10 +88,12 @@ const MeshStrategy = {
 const MockStrategy = {
   name: 'mock',
   
-  async initialize(personaId) {
+  async initialize(identifier, options = {}) {
     // Mock doesn't need real initialization
-    console.log('[MockStrategy] Using mock data for persona:', personaId);
-    return { id: personaId, name: 'Mock Persona' };
+    const { isProductionMode = false } = options;
+    const customerGroupId = resolveCustomerGroupId(identifier, isProductionMode);
+    console.log('[MockStrategy] Using mock data for:', identifier, '(group:', customerGroupId, ')');
+    return { id: identifier, customerGroupId, name: 'Mock Persona' };
   },
   
   async searchProducts(phrase, options = {}) {
@@ -148,17 +152,34 @@ const MockStrategy = {
 
 /**
  * Map frontend persona IDs to Commerce customer group IDs
- * This mapping is frontend-specific (demo persona names)
+ * This mapping is ONLY used in demo mode (persona names like "sarah")
+ * In production mode, the customer group ID comes directly from Commerce Auth
  */
-function getCustomerGroupId(personaId) {
-  const mapping = {
-    'sarah': '1',      // Production Builder
-    'marcus': '2',     // General Contractor
-    'lisa': '3',       // Remodeling Contractor
-    'david': '4',      // DIY Homeowner
-    'kevin': '5'       // Store Manager
-  };
-  return mapping[personaId];
+const DEMO_PERSONA_MAPPING = {
+  'sarah': '1',      // Production Builder
+  'marcus': '2',     // General Contractor
+  'lisa': '3',       // Remodeling Contractor
+  'david': '4',      // DIY Homeowner
+  'kevin': '5'       // Store Manager
+};
+
+/**
+ * Resolve customer group ID from either:
+ * - Demo mode: persona ID ("sarah") → customer group ("1")
+ * - Production mode: customer group ID passed directly ("1")
+ * 
+ * @param {string} identifier - Either persona ID or customer group ID
+ * @param {boolean} isProductionMode - If true, identifier is already a customer group ID
+ * @returns {string|null} Customer group ID
+ */
+function resolveCustomerGroupId(identifier, isProductionMode = false) {
+  if (isProductionMode) {
+    // Production: identifier IS the customer group ID from Commerce
+    return identifier;
+  }
+  
+  // Demo: map persona ID to customer group ID
+  return DEMO_PERSONA_MAPPING[identifier] || null;
 }
 
 /**
@@ -213,17 +234,26 @@ class CatalogService {
    * Initialize the catalog service with a strategy
    * Automatically selects mesh if available, falls back to mock
    * 
-   * @param {string} personaId - Persona ID for initialization
+   * @param {string} identifier - Persona ID (demo) or Customer Group ID (production)
    * @param {Object} options - Configuration options
    * @param {string} options.forceStrategy - Force a specific strategy ('mesh' or 'mock')
+   * @param {boolean} options.isProductionMode - If true, identifier is a customer group ID from Commerce
+   * 
+   * @example
+   * // Demo mode (persona ID)
+   * await catalogService.initialize('sarah');
+   * 
+   * @example
+   * // Production mode (customer group ID from Commerce Auth)
+   * await catalogService.initialize(user.group_id, { isProductionMode: true });
    */
-  async initialize(personaId, options = {}) {
-    const { forceStrategy } = options;
+  async initialize(identifier, options = {}) {
+    const { forceStrategy, isProductionMode = false } = options;
     
     // If strategy is forced, use it
     if (forceStrategy === 'mock') {
       this.strategy = MockStrategy;
-      this.personaData = await this.strategy.initialize(personaId);
+      this.personaData = await this.strategy.initialize(identifier, { isProductionMode });
       this.initialized = true;
       console.log('[CatalogService] Initialized with MockStrategy (forced)');
       return;
@@ -233,7 +263,7 @@ class CatalogService {
     if (forceStrategy !== 'mock') {
       try {
         this.strategy = MeshStrategy;
-        this.personaData = await this.strategy.initialize(personaId);
+        this.personaData = await this.strategy.initialize(identifier, { isProductionMode });
         this.initialized = true;
         console.log('[CatalogService] Initialized with MeshStrategy');
         return;
@@ -244,7 +274,7 @@ class CatalogService {
     
     // Fallback to mock
     this.strategy = MockStrategy;
-    this.personaData = await this.strategy.initialize(personaId);
+    this.personaData = await this.strategy.initialize(identifier, { isProductionMode });
     this.initialized = true;
     console.log('[CatalogService] Initialized with MockStrategy (fallback)');
   }
@@ -312,7 +342,8 @@ export {
   CatalogService,
   MeshStrategy,
   MockStrategy,
-  getCustomerGroupId
+  resolveCustomerGroupId,
+  DEMO_PERSONA_MAPPING
 };
 
 export default catalogService;
