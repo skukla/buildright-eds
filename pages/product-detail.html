@@ -199,7 +199,7 @@
 
   <script type="module">
     import { decorateBlock } from '../scripts/scripts.js';
-    import { acoService } from '../scripts/aco-service.js';
+    import { catalogService } from '../scripts/services/catalog-service.js';
     import { authService } from '../scripts/auth.js';
     import { cleanElementListeners } from '../scripts/utils.js';
 
@@ -215,29 +215,65 @@
 
         // Get user context for pricing
         const currentUser = authService.getCurrentUser();
-        console.log('[PDP] Current user object:', currentUser);
-        console.log('[PDP] Current user customerGroup:', currentUser?.customerGroup);
-        
+        const personaId = currentUser?.persona?.id || null;
         const customerGroup = currentUser?.customerGroup || 'US-Retail';
         
         console.log('[PDP] Loading product with user context:', {
           authenticated: authService.isAuthenticated(),
           user: currentUser?.name,
-          customerGroup: customerGroup,
-          fallbackUsed: !currentUser?.customerGroup
+          personaId,
+          customerGroup
         });
 
-        const [productResult, pricingResult] = await Promise.all([
-          acoService.getProduct(sku),
-          acoService.getPricing({
-            productIds: [sku],
-            customerGroup: customerGroup,
-            quantity: 1
-          })
-        ]);
+        // Initialize catalog service with persona context
+        if (!catalogService.isInitialized) {
+          await catalogService.initialize(personaId || customerGroup);
+        }
+        console.log('[PDP] Using catalog strategy:', catalogService.getActiveStrategy());
 
-        const product = productResult;
-        const pricing = pricingResult.pricing[sku];
+        // Fetch product via catalogService (price included in response)
+        const rawProduct = await catalogService.getProduct(sku);
+
+        if (!rawProduct) {
+          throw new Error(`Product not found: ${sku}`);
+        }
+
+        // Transform mesh response to expected format
+        // Mesh returns attributes as array [{name, value}], convert to object
+        const attributesObj = {};
+        if (Array.isArray(rawProduct.attributes)) {
+          rawProduct.attributes.forEach(attr => {
+            attributesObj[attr.name] = attr.value;
+          });
+        } else if (rawProduct.attributes) {
+          // Already an object (mock data format)
+          Object.assign(attributesObj, rawProduct.attributes);
+        }
+
+        const product = {
+          sku: rawProduct.sku,
+          name: rawProduct.name,
+          description: rawProduct.description,
+          image: rawProduct.imageUrl || rawProduct.image,
+          inStock: rawProduct.inStock,
+          category: rawProduct.category,
+          attributes: attributesObj
+        };
+
+        // If category not in attributes but in product root, add it
+        if (product.category && !product.attributes.product_category) {
+          product.attributes.product_category = product.category;
+        }
+
+        // Price is embedded in product response from mesh
+        // Build pricing object in expected format
+        const priceValue = rawProduct.price?.value ?? rawProduct.price ?? 0;
+        const pricing = {
+          unitPrice: priceValue,
+          retailPrice: priceValue, // Tiered pricing handled server-side
+          savings: 0,
+          savingsPercent: 0
+        };
 
         document.getElementById('product-name').textContent = product.name;
         document.getElementById('product-sku').textContent = product.sku;
