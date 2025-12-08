@@ -196,11 +196,27 @@ class BuildConfigurator {
   
   async loadTemplateData(templateId) {
     try {
+      // Load templates, packages, variant images, and phases from single data file
       const response = await fetch('/data/templates.json');
       const data = await response.json();
       
       this.packages = data.packages || [];
       this.template = data.templates.find(t => t.id === templateId);
+      
+      // Load variant images from same data file
+      this.variantImages = data.variantImages || {};
+      
+      // Merge phase data (images and descriptions) from same data file
+      if (data.phases) {
+        this.phases = this.phases.map(phase => {
+          const phaseData = data.phases.find(p => p.id === phase.id);
+          return {
+            ...phase,
+            image: phaseData?.image || null,
+            description: phaseData?.description || phase.description
+          };
+        });
+      }
       
     } catch (error) {
       console.error('Error loading template data:', error);
@@ -292,27 +308,15 @@ class BuildConfigurator {
   }
   
   getVariantImageUrl(name) {
-    // Map variant names to appropriate images with optional background position and zoom class
-    // Updated: Covered Patio now uses screened porch image (IdWUP1SZ9uw) by Point3D Commercial Imaging Ltd.
-    // Updated: Extended Garage now uses modern SW home with 2-car garage (photo-1762810981576-1b07f76af9d2)
-    const imageMap = {
-      'Bonus Room': { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' },
-      'Extended Garage': { 
-        url: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop'
-      },
-      'Covered Patio': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
-      'Home Office': { url: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop' },
-      'Courtyard Entry': { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop' },
-      'Bonus Loft': { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' },
-      'Rooftop Deck': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
-      'Casita Addition': { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop' },
-      'Guest Casita': { url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop' },
-      'Outdoor Living': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
-      'Resort Package': { url: 'https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop' },
-      'Media Room': { url: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop' }
-    };
+    // Get variant image from loaded data (data/templates.json -> variantImages)
+    const variantData = this.variantImages?.[name];
     
-    return imageMap[name] || { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' };
+    if (variantData?.url) {
+      return { url: variantData.url };
+    }
+    
+    // Fallback to default house image
+    return { url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop' };
   }
   
   renderPackages() {
@@ -362,27 +366,26 @@ class BuildConfigurator {
   }
   
   getDefaultPackageImage(tier) {
-    // Fallback images if package doesn't have an image URL
-    const images = {
-      'builder_grade': 'https://images.unsplash.com/photo-1723257129172-6315cde654da?w=400&h=300&fit=crop&q=80',
-      'premium': 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=300&fit=crop&q=80',
-      'luxury': 'https://images.unsplash.com/photo-1628745277862-bc0b2d68c50c?w=400&h=300&fit=crop&q=80'
-    };
-    return images[tier] || images['builder_grade'];
+    // Find package by tier and return its image
+    // Package images are already defined in data/templates.json
+    const packageWithTier = this.packages.find(p => p.tier === tier);
+    if (packageWithTier?.image) {
+      return packageWithTier.image;
+    }
+    
+    // Fallback
+    return 'https://images.unsplash.com/photo-1723257129172-6315cde654da?w=400&h=300&fit=crop&q=80';
   }
   
   getPhaseImageUrl(name) {
-    // Map phase names to appropriate construction images
-    const imageMap = {
-      // Foundation & Framing - construction worker on wooden frame
-      'Foundation & Framing': 'https://images.unsplash.com/photo-1587582423116-ec07293f0395?w=400&h=300&fit=crop',
-      // Building Envelope - roofing work (same as "Roof a House" from home page)
-      'Building Envelope': 'https://images.unsplash.com/photo-1518736346281-76873166a64a?w=400&h=300&fit=crop',
-      // Interior Finish - painting, drywall, finish work
-      'Interior Finish': 'https://images.unsplash.com/photo-1652829069968-4ded3e30f411?w=400&h=300&fit=crop'
-    };
+    // Get phase image from loaded data (data/templates.json -> phases)
+    const phase = this.phases.find(p => p.name === name);
+    if (phase?.image) {
+      return phase.image;
+    }
     
-    return imageMap[name] || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop';
+    // Fallback to construction image
+    return 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop';
   }
   
   renderPhases() {

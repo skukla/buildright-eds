@@ -1,4 +1,81 @@
 {
+  "variantImages": {
+    "Standard": {
+      "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Bonus Room": {
+      "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Extended Garage": {
+      "url": "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "credit": "Pexels"
+    },
+    "Covered Patio": {
+      "url": "https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Home Office": {
+      "url": "https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Courtyard Entry": {
+      "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Bonus Loft": {
+      "url": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Rooftop Deck": {
+      "url": "https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Casita Addition": {
+      "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Guest Casita": {
+      "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Outdoor Living": {
+      "url": "https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Resort Package": {
+      "url": "https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Media Room": {
+      "url": "https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    }
+  },
+  "phases": [
+    {
+      "id": "foundation_framing",
+      "name": "Foundation & Framing",
+      "description": "Concrete foundation, structural framing, and load-bearing elements",
+      "image": "https://images.unsplash.com/photo-1587582423116-ec07293f0395?w=400&h=300&fit=crop",
+      "estimatedPercentage": 35
+    },
+    {
+      "id": "envelope",
+      "name": "Building Envelope",
+      "description": "Roofing, siding, windows, doors, and exterior waterproofing",
+      "image": "https://images.unsplash.com/photo-1518736346281-76873166a64a?w=400&h=300&fit=crop",
+      "estimatedPercentage": 30
+    },
+    {
+      "id": "interior_finish",
+      "name": "Interior Finish",
+      "description": "Drywall, flooring, paint, fixtures, and trim work",
+      "image": "https://images.unsplash.com/photo-1652829069968-4ded3e30f411?w=400&h=300&fit=crop",
+      "estimatedPercentage": 35
+    }
+  ],
   "packages": [
     {
       "id": "builders-choice",

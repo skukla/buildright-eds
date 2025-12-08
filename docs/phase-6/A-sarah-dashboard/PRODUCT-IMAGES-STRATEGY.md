@@ -1,6 +1,6 @@
 # Product Images Strategy for ACO Integration
 
-**Status**: ✅ Implemented (Strategy Pattern)  
+**Status**: ✅ Implemented (Data-Driven)  
 **Created**: December 8, 2025  
 **Related**: [Catalog Service Architecture](./CATALOG-SERVICE-ARCHITECTURE.md) | [Phase 6A Integration Plan](./PHASE-6A-INTEGRATION-PLAN.md)
 
@@ -16,16 +16,16 @@ Adobe provides **three primary approaches** for managing product images in Comme
 | **AEM Assets Integration** | AEM Assets as a Service | Enterprise, multi-channel | Medium |
 | **External DAM/CDN** | Custom URL attributes | Existing DAM, flexibility | Low |
 
-**Implementation**: We use a **strategy pattern** (like `catalogService`) that allows seamless switching between local demo images and AEM Assets when ready.
+**Implementation**: We use a **data-driven approach** where image URLs are stored in JSON data files. To migrate to AEM Assets, simply update the URLs in the data files—no code changes needed.
 
 ```
-imageService.initialize({ strategy: 'local' });     // Demo mode
-imageService.initialize({ strategy: 'aem-assets' }); // Production mode
+Demo:       data/templates.json → Unsplash URLs
+Production: data/templates.json → AEM Assets URLs
 ```
 
 ---
 
-## Implementation: Image Service (Strategy Pattern)
+## Implementation: Data-Driven Images
 
 ### Architecture
 
@@ -33,63 +33,59 @@ imageService.initialize({ strategy: 'aem-assets' }); // Production mode
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    buildright-eds Frontend                          │
 │                                                                     │
-│   build-configurator.js ──┐                                         │
-│   bom-review.js ──────────► imageService ──► LocalStrategy ────┐    │
-│   product-grid.js ────────┘       │                            │    │
-│                                   ▼                            │    │
-│                           AEMAssetsStrategy                    │    │
-│                           (future production)                  │    │
-└────────────────────────────────────────────────────────────────│────┘
-                                                                 │
-                                                                 ▼
-┌────────────────────────────────────┐    ┌──────────────────────────┐
-│         Local Sources              │    │    AEM Assets (Future)   │
-│  /images/products/{sku}.png        │    │  Dynamic Media CDN       │
-│  /images/templates/{id}.jpg        │    │  Smart Crop              │
-│  Unsplash (demo images)            │    │  Auto-format (webp)      │
-└────────────────────────────────────┘    └──────────────────────────┘
+│   build-configurator.js ─────┐                                      │
+│                              ├──► data/templates.json               │
+│   (variants, phases,         │    ├── variantImages{}  → Unsplash   │
+│    packages, templates)      │    ├── phases[]         → Unsplash   │
+│                              │    ├── packages[]       → Unsplash   │
+│                              │    └── templates[]      → Local      │
+│                                                                     │
+│   product-grid.js ───────────► data/mock-products.json → Local      │
+│   bom-review.js ─────────────► data/mock-products.json → Local      │
+└─────────────────────────────────────────────────────────────────────┘
+
+Migration to AEM Assets: Just update the URLs in data/templates.json!
 ```
 
-### File Location
+### Image Data Files
 
-```
-scripts/services/
-├── catalog-service.js   ← Product data (strategy pattern)
-├── image-service.js     ← Product images (strategy pattern) ✨ NEW
-├── mesh-client.js       ← GraphQL client
-└── mesh-integration.js  ← Auth bridge
-```
+| File | Contains | Image Sources |
+|------|----------|---------------|
+| `data/templates.json` | Variant images, phase images, package images, templates | Unsplash + local |
+| `data/mock-products.json` | Product images | Local `/images/products/{sku}.png` |
 
-### Usage
+### Example: data/templates.json (variantImages)
 
-```javascript
-import { imageService } from './services/image-service.js';
-
-// Initialize (once, typically in auth.js or app init)
-await imageService.initialize(); // Auto-detects strategy
-
-// Or explicitly set strategy
-await imageService.initialize({ strategy: 'local' });
-
-// Get image URLs (same API regardless of strategy)
-const productUrl = imageService.getProductImage('LBR-001');
-const templateUrl = imageService.getTemplateImage('sedona');
-const variantUrl = imageService.getVariantImage('Covered Patio');
-const packageUrl = imageService.getPackageImage('premium-select', 'premium');
-const phaseUrl = imageService.getPhaseImage('Foundation & Framing');
-const categoryUrl = imageService.getCategoryImage('structural_materials');
-
-// Check active strategy
-console.log(imageService.getActiveStrategy()); // 'local' or 'aem-assets'
-console.log(imageService.isUsingAEMAssets()); // true/false
+```json
+{
+  "variantImages": {
+    "Covered Patio": {
+      "url": "https://images.unsplash.com/photo-1635108199803-b1e5eebc8ccf?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    },
+    "Home Office": {
+      "url": "https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop",
+      "credit": "Unsplash"
+    }
+  }
+}
 ```
 
-### Strategies
+### Example: data/templates.json (phases)
 
-| Strategy | Description | When Used |
-|----------|-------------|-----------|
-| **LocalStrategy** | Local files + Unsplash demo images | Development, demos |
-| **AEMAssetsStrategy** | AEM Assets Dynamic Media URLs | Production (future) |
+```json
+{
+  "phases": [
+    {
+      "id": "foundation_framing",
+      "name": "Foundation & Framing",
+      "description": "Concrete foundation, structural framing, and load-bearing elements",
+      "image": "https://images.unsplash.com/photo-1587582423116-ec07293f0395?w=400&h=300&fit=crop",
+      "estimatedPercentage": 35
+    }
+  ]
+}
+```
 
 ---
 
@@ -99,18 +95,19 @@ console.log(imageService.isUsingAEMAssets()); // true/false
 
 ```
 buildright-eds/
-├── images/products/           ← Local placeholder SVGs
-├── scripts/services/
-│   ├── image-service.js       ← Strategy pattern (NEW)
-│   ├── catalog-service.js     ← Returns imageUrl from mesh or mock
-│   └── mesh-client.js         ← GraphQL includes imageUrl field
-└── scripts/data-mock.js       ← Legacy getProductImageUrl() (to be deprecated)
+├── data/
+│   ├── templates.json         ← ALL image URLs (variants, phases, packages)
+│   └── mock-products.json     ← Product images (local paths)
+├── images/products/           ← Local product image files
+└── scripts/
+    ├── build-configurator.js  ← Reads from data files
+    └── data-mock.js           ← getProductImageUrl() for products
 ```
 
 **Current Image Resolution Flow**:
-1. `imageService.getProductImage(sku)` called
-2. LocalStrategy returns `/images/products/{sku}.png`
-3. If file not found → CSS placeholder pattern (diagonal lines)
+1. Component loads data file (e.g., `data/variants.json`)
+2. Gets image URL from data
+3. If no image → CSS placeholder pattern (diagonal lines)
 
 ### What ACO Products Have
 
@@ -305,71 +302,64 @@ function transformProduct(meshProduct) {
 ## Recommended Strategy for BuildRight
 
 ### Phase 1: Demo/Development (Current) ✅ IMPLEMENTED
-**Use `imageService` with `LocalStrategy`**
+**Data-driven images with Unsplash and local files**
 
-```javascript
-// Auto-initializes with LocalStrategy
-const url = imageService.getProductImage('LBR-001');
-// Returns: /images/products/LBR-001.png (or CSS placeholder if missing)
-```
-
-**Image Resolution Priority**:
-1. LocalStrategy returns local path `/images/products/{sku}.png`
-2. If file not found → CSS placeholder pattern (diagonal lines)
-3. Variants/packages use curated Unsplash URLs
+All image URLs are defined in data files:
+- `data/templates.json` - Variant images, phase images, package images (Unsplash)
+- `data/mock-products.json` - Product images (local paths)
 
 **Completed**:
-- [x] Created `image-service.js` with strategy pattern
-- [x] LocalStrategy with all image types (product, template, variant, package, phase, category)
-- [x] AEMAssetsStrategy scaffold ready for production
-- [x] CSS placeholder fallback
-
-**Remaining**:
-- [ ] Integrate `imageService` into `build-configurator.js` (replace hardcoded URLs)
-- [ ] Integrate `imageService` into `bom-review.js`
-- [ ] Deprecate `getProductImageUrl()` in `data-mock.js`
+- [x] Added `variantImages` to `data/templates.json` with all variant images
+- [x] Added `phases[]` to `data/templates.json` with construction phase images
+- [x] Package images already in `data/templates.json`
+- [x] Updated `build-configurator.js` to read from single data file
+- [x] Removed hardcoded image URLs from code
+- [x] CSS placeholder fallback for missing images
 
 ### Phase 2: Production Pilot
-**Switch to `AEMAssetsStrategy`**
+**Update data file with AEM Assets URLs**
 
-```javascript
-// Configure AEM Assets
-await imageService.initialize({ 
-  strategy: 'aem-assets',
-  aemConfig: {
-    deliveryUrl: 'https://delivery.adobeassets.com',
-    assetPrefix: '/content/dam/buildright'
-  }
-});
-
-// Same API, different source
-const url = imageService.getProductImage('LBR-001');
-// Returns: https://delivery.adobeassets.com/dm/.../LBR-001?width=400&format=webp&crop=smart
+```json
+// data/templates.json - replace Unsplash with AEM Assets
+{
+  "variantImages": {
+    "Covered Patio": {
+      "url": "https://delivery.adobeassets.com/dm/buildright/variants/covered-patio?width=400&format=webp",
+      "credit": "AEM Assets"
+    }
+  },
+  "phases": [
+    {
+      "id": "foundation_framing",
+      "image": "https://delivery.adobeassets.com/dm/buildright/phases/foundation?width=400&format=webp"
+    }
+  ]
+}
 ```
 
 **Tasks**:
 - [ ] Set up AEM Assets as a Cloud Service
-- [ ] Create folder structure: `/content/dam/buildright/products/`, `/templates/`, etc.
-- [ ] Upload product images with SKU metadata
-- [ ] Configure Commerce integration
-- [ ] Set environment variable: `AEM_ASSETS_DELIVERY_URL`
-- [ ] Test with `{ strategy: 'aem-assets' }`
+- [ ] Upload images organized by type (variants, phases, products)
+- [ ] Update `data/templates.json` with AEM URLs for variants, phases, packages
+- [ ] Update `data/mock-products.json` with AEM URLs (or use ACO images)
 
 ### Phase 3: Full Production
-**AEM Assets as single source of truth**
+**AEM Assets + ACO product images**
 
+For products, images will come from ACO:
 ```javascript
-// Auto-detection (checks AEM_ASSETS_DELIVERY_URL)
-await imageService.initialize({ strategy: 'auto' });
-// Automatically uses AEMAssetsStrategy if configured
+// Mesh response includes imageUrl from ACO/Commerce
+{
+  "sku": "LBR-001",
+  "imageUrl": "https://delivery.adobeassets.com/dm/buildright/products/LBR-001"
+}
 ```
 
 Features enabled:
 - Dynamic Media for responsive delivery
 - AI-powered Smart Crop
 - Automatic format conversion (webp)
-- Workflow automation for approvals
-- Multi-channel delivery (web, mobile, print)
+- Commerce-AEM Assets sync via SKU matching
 
 ---
 
@@ -449,26 +439,19 @@ function resolveProductImage(product) {
 
 ## Next Steps
 
-### Immediate (Demo Phase)
+### Immediate (Demo Phase) ✅ DONE
 
-1. **Integrate `imageService` into components** ✅ Ready
-   ```javascript
-   // build-configurator.js
-   import { imageService } from './services/image-service.js';
-   
-   const url = imageService.getVariantImage('Covered Patio');
-   const packageUrl = imageService.getPackageImage('premium-select', 'premium');
-   ```
+1. **Consolidated all image URLs into `data/templates.json`** ✅
+   - `variantImages{}` - All variant images with Unsplash URLs
+   - `phases[]` - All phase images with Unsplash URLs
+   - `packages[]` - Package images (already present)
+   - Product images remain in `data/mock-products.json`
 
-2. **Replace hardcoded Unsplash URLs**
-   - `build-configurator.js` - variants, packages, phases
-   - `bom-review.js` - product images
-   - `product-grid.js` - product cards
-
-3. **Deprecate legacy functions**
-   - Remove `getProductImageUrl()` from `data-mock.js`
-   - Remove `getVariantImageUrl()` from `build-configurator.js`
-   - Consolidate all image logic in `imageService`
+2. **Updated `build-configurator.js`** ✅
+   - Loads single `data/templates.json` file
+   - `getVariantImageUrl()` reads from `this.variantImages`
+   - `getPhaseImageUrl()` reads from `this.phases`
+   - `getDefaultPackageImage()` reads from `this.packages`
 
 ### Future (Production Phase)
 
@@ -476,29 +459,32 @@ function resolveProductImage(product) {
    - Review licensing and provisioning
    - Create tenant and configure access
 
-2. **Set up folder structure**
-   ```
-   /content/dam/buildright/
-   ├── products/           # By SKU
-   │   ├── LBR-001.jpg
-   │   └── ...
-   ├── templates/          # Floor plans
-   │   ├── sedona.jpg
-   │   └── ...
-   └── categories/         # Category banners
+2. **Upload assets to AEM**
+   - Products: `/content/dam/buildright/products/{sku}.jpg`
+   - Variants: `/content/dam/buildright/variants/{name}.jpg`
+   - Phases: `/content/dam/buildright/phases/{id}.jpg`
+
+3. **Update `data/templates.json` with AEM URLs**
+   ```json
+   {
+     "variantImages": {
+       "Covered Patio": {
+         "url": "https://delivery.adobeassets.com/dm/buildright/variants/covered-patio?width=400&format=webp",
+         "credit": "AEM Assets"
+       }
+     },
+     "phases": [
+       {
+         "id": "foundation_framing",
+         "image": "https://delivery.adobeassets.com/dm/buildright/phases/foundation?width=400&format=webp"
+       }
+     ]
+   }
    ```
 
-3. **Configure integration**
-   - Set `AEM_ASSETS_DELIVERY_URL` environment variable
-   - Enable Commerce-AEM Assets sync
-   - Test Dynamic Media transformations
-
-4. **Switch strategy**
-   ```javascript
-   // Just change initialization
-   await imageService.initialize({ strategy: 'aem-assets' });
-   // All existing code continues to work!
-   ```
+4. **No code changes needed!**
+   - Components already read from data files
+   - Just update the URLs in `data/templates.json`
 
 ---
 
@@ -512,5 +498,5 @@ function resolveProductImage(product) {
 ---
 
 **Last Updated**: December 8, 2025  
-**Status**: ✅ Strategy Pattern Implemented
+**Status**: ✅ Data-Driven Images Implemented
 
