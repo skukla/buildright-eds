@@ -339,23 +339,29 @@ class BuildConfigurator {
     }
     
     container.innerHTML = compatiblePackages.map(pkg => this.renderPackageTile(pkg)).join('');
+    
+    // Set default selection (Builder's Choice is pre-selected)
+    if (!this.selectedPackage) {
+      this.selectedPackage = 'builders-choice';
+    }
   }
   
   renderPackageTile(pkg) {
     const { id, name, description, tier, addedCost, image } = pkg;
     
     // Use Card Stack tiles for Material Packages (image above, text below)
-    // No default selection - user must explicitly choose
+    // Pre-select Builder's Choice as the default (required field)
+    const isDefault = id === 'builders-choice';
     const imageUrl = image || this.getDefaultPackageImage(tier);
     
     return `
       <div class="card-tile card-tile--selection" 
            data-type="package" 
            data-id="${id}"
-           data-selected="false"
+           data-selected="${isDefault}"
            data-cost="${addedCost}"
            role="radio"
-           aria-checked="false"
+           aria-checked="${isDefault}"
            tabindex="0"
            aria-label="${name}, ${addedCost > 0 ? '+$' + addedCost.toLocaleString() : 'Base Price'}">
         <img src="${imageUrl}" alt="${name}" class="card-tile__image">
