@@ -20,6 +20,7 @@ export default async function decorate(block) {
   // Store current filters and persona context
   let currentFilters = {};
   let userContext = null;
+  let isValidating = false;
 
   // Show loading state
   function showLoading() {
@@ -27,6 +28,20 @@ export default async function decorate(block) {
     window.dispatchEvent(new CustomEvent('catalogLoading'));
     if (!container) return;
     container.innerHTML = ''; // Clear any existing content
+  }
+  
+  // Show validating state (for filter changes)
+  function showValidating() {
+    isValidating = true;
+    container?.classList.add('products-container--validating');
+    window.dispatchEvent(new CustomEvent('facetsValidating', { detail: { validating: true }}));
+  }
+  
+  // Hide validating state
+  function hideValidating() {
+    isValidating = false;
+    container?.classList.remove('products-container--validating');
+    window.dispatchEvent(new CustomEvent('facetsValidating', { detail: { validating: false }}));
   }
   
   // Render products using product-tile blocks
@@ -199,9 +214,14 @@ export default async function decorate(block) {
     }
   }
 
-  // Load and filter products
-  async function loadProducts() {
-    showLoading();
+  // Load and filter products using faceted search
+  async function loadProducts(isFilterUpdate = false) {
+    // Show appropriate loading state
+    if (isFilterUpdate) {
+      showValidating();
+    } else {
+      showLoading();
+    }
     
     try {
       // Initialize auth to get user context (this also initializes catalogService)
@@ -245,26 +265,45 @@ export default async function decorate(block) {
       const searchQuery = urlParams.get('q') || urlParams.get('search') || '';
       
       // Build search phrase - use category or search query
-      let searchPhrase = searchQuery || category || ' '; // Space = all products
+      let searchPhrase = searchQuery || '';
       
-      // Apply any additional filters from UI
-      if (currentFilters.category) {
-        searchPhrase = currentFilters.category;
+      // Build filter object for faceted search
+      const filter = {};
+      
+      // Add category from URL
+      if (category) {
+        filter.categoryUrlKey = category;
       }
       
-      // Query products via catalogService (uses mesh or mock based on strategy)
-      console.log('[Product Grid] Fetching products via catalogService:', { 
+      // Add category from UI filters
+      if (currentFilters.category?.length > 0) {
+        filter.product_category = currentFilters.category;
+      }
+      
+      // Add price range from UI filters
+      if (currentFilters.price_range) {
+        const { min, max } = currentFilters.price_range;
+        if (min !== null || max !== null) {
+          filter.price = [`${min || 0}-${max || 999999}`];
+        }
+      }
+      
+      // Query products with facets via catalogService
+      console.log('[Product Grid] Fetching products with facets via catalogService:', { 
         searchPhrase, 
+        filter,
         strategy: catalogService.getActiveStrategy() 
       });
       
-      const result = await catalogService.searchProducts(searchPhrase, {
-        pageSize: 100,
-        currentPage: 1
+      const result = await catalogService.searchWithFacets({
+        phrase: searchPhrase || undefined,
+        filter: Object.keys(filter).length > 0 ? filter : undefined,
+        limit: 100,
+        page: 1
       });
       
-      // Transform mesh response to expected format
-      const products = (result.items || []).map(item => ({
+      // Transform products to expected format
+      const products = (result.products?.items || []).map(item => ({
         sku: item.sku,
         name: item.name,
         description: item.description,
@@ -280,21 +319,31 @@ export default async function decorate(block) {
       
       console.log(`[Product Grid] Loaded ${products.length} products via ${catalogService.getActiveStrategy()}`);
       
+      // Emit facets for filter sidebar
+      if (result.facets?.facets) {
+        console.log('[Product Grid] Emitting facets:', result.facets.facets);
+        window.dispatchEvent(new CustomEvent('facetsUpdated', {
+          detail: { 
+            facets: result.facets.facets,
+            totalCount: result.totalCount
+          }
+        }));
+      }
+      
       if (products.length === 0) {
         renderProducts([]);
         window.dispatchEvent(new CustomEvent('catalogLoaded'));
+        hideValidating();
         return;
       }
 
-      // Build pricing map from mesh response (price already included in items)
+      // Build pricing map from response (price already included in items)
       const pricing = {};
-      (result.items || []).forEach(item => {
+      (result.products?.items || []).forEach(item => {
         if (item.price) {
           pricing[item.sku] = {
             unitPrice: item.price.value,
             currency: item.price.currency,
-            // Mesh includes tier-specific pricing, so no separate savings calculation needed here
-            // If mesh provides originalPrice, we can calculate savings
             retailPrice: null,
             savings: 0,
             savingsPercent: 0
@@ -307,11 +356,9 @@ export default async function decorate(block) {
       // Render products with pricing
       renderProducts(products, pricing);
       
-      // Emit facets for filter sidebar (if available from mesh)
-      // Note: Mesh may provide facets in future updates
-      
       // Emit catalog loaded event (for catalog page loading overlay)
       window.dispatchEvent(new CustomEvent('catalogLoaded'));
+      hideValidating();
       
     } catch (error) {
       console.error('[Product Grid] Error loading products:', error);
@@ -323,6 +370,7 @@ export default async function decorate(block) {
         </div>
       `;
       window.dispatchEvent(new CustomEvent('catalogLoaded'));
+      hideValidating();
     }
   }
 
@@ -335,10 +383,10 @@ export default async function decorate(block) {
       // Update filters
       currentFilters = event.detail.filters;
     }
-    loadProducts();
+    // Pass true to indicate this is a filter update (show validating state)
+    loadProducts(true);
   }, 'product-grid-filters');
 
   // Initial load
-  loadProducts();
+  loadProducts(false);
 }
-
