@@ -22,13 +22,8 @@ export default async function decorate(block) {
     
     // Ensure catalogService is initialized
     if (!catalogService.initialized) {
-      const personaId = currentUser?.persona?.id || null;
-      if (personaId) {
-        await catalogService.initialize(personaId);
-      } else {
-        // Use mock strategy for unauthenticated users
-        await catalogService.initialize('guest', { forceStrategy: 'mock' });
-      }
+      const personaId = currentUser?.persona?.id || 'guest';
+      await catalogService.initialize(personaId);
     }
     
     console.log('[Featured Products] Using strategy:', catalogService.getActiveStrategy());

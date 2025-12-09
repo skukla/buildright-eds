@@ -256,7 +256,8 @@ const DEMO_PERSONA_MAPPING = {
   'marcus': '2',     // General Contractor
   'lisa': '3',       // Remodeling Contractor
   'david': '4',      // DIY Homeowner
-  'kevin': '5'       // Store Manager
+  'kevin': '5',      // Store Manager
+  'guest': '4'       // Unauthenticated users see DIY Homeowner catalog (public view)
 };
 
 /**
