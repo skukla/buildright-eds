@@ -363,6 +363,8 @@ export default async function decorate(block) {
     } catch (error) {
       console.error('[Product Grid] Error loading products:', error);
       
+      // Remove min-height so error appears at top without scrolling
+      container.style.minHeight = 'auto';
       container.innerHTML = `
         <div class="state-container error-state" style="grid-column: 1 / -1;">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
