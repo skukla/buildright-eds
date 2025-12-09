@@ -1,10 +1,6 @@
-/* EDS Block: Filters Sidebar - Sticky below header */
+/* EDS Block: Filters Sidebar */
 #filters-aside {
   align-self: start;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 210px; /* Header height (143px) + spacing (67px) */
-  z-index: 10;
 }
 
 .filters-sidebar {
@@ -349,10 +345,6 @@ body.white-variant .filters-sidebar {
 
   #filters-aside {
     order: 2;
-    position: static;
-    top: auto;
-    max-height: none;
-    overflow-y: visible;
   }
 
   #filters-aside[style*="display: none"] {
