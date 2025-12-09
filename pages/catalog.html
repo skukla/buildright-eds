@@ -205,7 +205,7 @@
     // Update when URL changes (browser back/forward)
     window.addEventListener('popstate', () => updateCatalogTitle());
     
-    // Search functionality
+    // Search functionality - filters the product grid as you type
     const searchInput = document.getElementById('catalog-search-input');
     const searchClear = document.getElementById('search-clear');
     let searchTimeout;

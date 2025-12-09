@@ -10,6 +10,7 @@ export default async function decorate(block) {
   if (block._decorated) {
     cleanupEventListeners(window, 'projectFilterChanged');
     cleanupEventListeners(window, 'filtersChanged');
+    cleanupEventListeners(window, 'catalogSearch');
   }
   block._decorated = true;
   
@@ -19,6 +20,7 @@ export default async function decorate(block) {
 
   // Store current filters and persona context
   let currentFilters = {};
+  let currentSearchTerm = '';  // Track search term from catalog search bar
   let userContext = null;
   let isValidating = false;
 
@@ -262,10 +264,10 @@ export default async function decorate(block) {
       // Parse URL params for category/search filtering
       const urlParams = new URLSearchParams(window.location.search);
       const category = urlParams.get('category');
-      const searchQuery = urlParams.get('q') || urlParams.get('search') || '';
+      const urlSearchQuery = urlParams.get('q') || urlParams.get('search') || '';
       
-      // Build search phrase - use category or search query
-      let searchPhrase = searchQuery || '';
+      // Build search phrase - prioritize in-page search term over URL param
+      let searchPhrase = currentSearchTerm || urlSearchQuery || '';
       
       // Build filter object for faceted search
       const filter = {};
@@ -389,6 +391,7 @@ export default async function decorate(block) {
     if (event.detail?.reset) {
       // Reset filters
       currentFilters = {};
+      currentSearchTerm = '';
     } else if (event.detail?.filters) {
       // Update filters
       currentFilters = event.detail.filters;
@@ -396,6 +399,13 @@ export default async function decorate(block) {
     // Pass true to indicate this is a filter update (show validating state)
     loadProducts(true);
   }, 'product-grid-filters');
+
+  // Listen for catalog search bar input (filters grid without dropdown)
+  safeAddEventListener(window, 'catalogSearch', (event) => {
+    currentSearchTerm = event.detail?.searchTerm || '';
+    // Pass true to indicate this is a filter update (show validating state)
+    loadProducts(true);
+  }, 'product-grid-search');
 
   // Initial load
   loadProducts(false);
