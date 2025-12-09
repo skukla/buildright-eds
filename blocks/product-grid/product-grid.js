@@ -275,18 +275,20 @@ export default async function decorate(block) {
         filter.categoryUrlKey = category;
       }
       
-      // Add category from UI filters
-      if (currentFilters.category?.length > 0) {
-        filter.product_category = currentFilters.category;
-      }
-      
-      // Add price range from UI filters
-      if (currentFilters.price_range) {
-        const { min, max } = currentFilters.price_range;
-        if (min !== null || max !== null) {
-          filter.price = [`${min || 0}-${max || 999999}`];
+      // Pass through dynamic facet filters directly (they use correct attribute codes)
+      // e.g., product_category, manufacturer, etc.
+      Object.entries(currentFilters).forEach(([key, value]) => {
+        if (key === 'price_range') {
+          // Handle price range specially
+          const { min, max } = value;
+          if (min !== null || max !== null) {
+            filter.price = [`${min || 0}-${max || 999999}`];
+          }
+        } else if (Array.isArray(value) && value.length > 0) {
+          // Pass array filters directly (product_category, etc.)
+          filter[key] = value;
         }
-      }
+      });
       
       // Query products with facets via catalogService
       console.log('[Product Grid] Fetching products with facets via catalogService:', { 
