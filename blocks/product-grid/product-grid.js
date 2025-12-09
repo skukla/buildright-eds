@@ -370,8 +370,8 @@ export default async function decorate(block) {
             <line x1="15" y1="9" x2="9" y2="15"/>
             <line x1="9" y1="9" x2="15" y2="15"/>
           </svg>
-          <h2>Error Loading Products</h2>
-          <p>${error.message || 'Failed to load products. Please try again.'}</p>
+          <h2>Unable to Load Products</h2>
+          <p>We're having trouble loading the catalog. Please try again.</p>
           <button class="btn btn-primary" onclick="window.location.reload()">Reload Page</button>
         </div>
       `;
