@@ -41,10 +41,11 @@ This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) produ
 |-------|-------------|-----------|----------|
 | **1. Frontend Polish** | Layout, loading, edge cases, a11y | 1-2 days | ✅ COMPLETE |
 | **2. ACO Catalog Integration** | Real products, pricing, images | 3-5 days | ✅ COMPLETE |
-| **3. Commerce Storefront** | Product display, search, categories | 2-3 days | 🔴 HIGH |
+| **3. Commerce Storefront** | Product display, search, categories | 2-3 days | 🔄 IN PROGRESS |
 | **4. EDS Production Patterns** | 404 pages, blocks, Helix deploy | 2-3 days | 🟡 MEDIUM |
 | **5. Production Readiness** | Performance, docs, QA | 3-5 days | 🟡 MEDIUM |
 | **6. Cart & Orders** | Checkout, order history | 3-4 days | 🟢 LOW |
+| **7. Commerce Backend** | Bundle pricing, customer data | 2-3 days | 🔵 FUTURE |
 
 ---
 
@@ -145,10 +146,16 @@ All sub-phases completed:
 
 ### 3.2 Search Integration
 
-- [ ] **Commerce Search** (2h)
-  - [ ] Connect header search to Commerce
-  - [ ] Autocomplete suggestions
-  - [ ] Search results page
+- [x] **Live Search Integration** ✅
+  - [x] Faceted search via mesh
+  - [x] Dynamic facets from ACO
+  - [x] Filter application and loading states
+  - [x] Sort functionality (relevance, price, name)
+
+- [x] **Global Search** ✅
+  - [x] Header search with typeahead
+  - [x] Product suggestions dropdown
+  - [x] Debounced queries
 
 ### 3.3 Category Navigation
 
@@ -156,6 +163,22 @@ All sub-phases completed:
   - [ ] Fetch categories from Commerce
   - [ ] Navigation menu structure
   - [ ] Breadcrumb generation
+
+### 3.4 Bundle Pricing (Current Workaround)
+
+> ⚠️ **Migration Note**: See [BUNDLE-PRICING-ARCHITECTURE.md](../../../buildright-service/docs/BUNDLE-PRICING-ARCHITECTURE.md)
+
+- [x] **Current Solution**: Mesh calculates bundle prices dynamically
+  - [x] Detects `BUNDLE-*` SKUs
+  - [x] Fetches component structure from ACO
+  - [x] Calculates sum of (component_price × quantity)
+  - [x] Works around ACO returning `priceRange: null` for bundles
+
+- [ ] **Future Migration** (When Commerce backend added):
+  - [ ] Add Commerce as mesh source
+  - [ ] Query `BundleProduct.price_range` directly from Commerce
+  - [ ] Remove mesh calculation logic (`bundle-pricing.js`)
+  - [ ] Update frontend for min/max price display
 
 ---
 
@@ -226,6 +249,8 @@ All sub-phases completed:
 **Estimated Time**: 3-4 days  
 **Priority**: 🟢 LOW (can remain mocked for demo)
 
+> 📋 **Note**: When Commerce backend is added, see **Phase 7: Commerce Backend Integration** below for bundle pricing migration.
+
 ### 6.1 Cart Enhancements
 
 - [ ] Bundle quantity editing
@@ -246,6 +271,50 @@ All sub-phases completed:
 
 ---
 
+## Phase 7: Commerce Backend Integration (Future)
+**Estimated Time**: 2-3 days  
+**Priority**: 🔵 FUTURE (when Commerce backend is added)
+
+> 📖 **Documentation**: [BUNDLE-PRICING-ARCHITECTURE.md](../../../buildright-service/docs/BUNDLE-PRICING-ARCHITECTURE.md)
+
+### 7.1 Add Commerce as Mesh Source
+
+- [ ] **Mesh Configuration** (2h)
+  - [ ] Add Commerce GraphQL source to `mesh.config.js`
+  - [ ] Configure authentication (OAuth)
+  - [ ] Map Commerce types with `Commerce_` prefix
+
+### 7.2 Bundle Pricing Migration
+
+- [ ] **Switch to Commerce `BundleProduct`** (3h)
+  - [ ] Query `BundleProduct.price_range` for bundles
+  - [ ] Get native `minimum_price` / `maximum_price`
+  - [ ] Remove `enrichBundlePrices()` calls from resolvers
+  - [ ] Deprecate `mesh/resolvers-src/utils/bundle-pricing.js`
+
+- [ ] **Frontend Updates** (2h)
+  - [ ] Display price range ("$X - $Y") for bundles
+  - [ ] Handle `dynamic_price` flag
+  - [ ] Update product cards for range vs. single price
+
+### 7.3 Additional Commerce Features
+
+- [ ] **Customer Data** (optional)
+  - [ ] Customer groups from Commerce
+  - [ ] Order history from Commerce
+  - [ ] Wishlist integration
+
+### Why This Matters
+
+| Current (ACO-only) | Future (Commerce) |
+|--------------------|-------------------|
+| Bundle `priceRange: null` | Bundle `priceRange` computed |
+| Mesh calculates price | Commerce calculates price |
+| 2 extra ACO queries | No extra queries |
+| Default selection only | Full min/max range |
+
+---
+
 ## Execution Timeline (Revised)
 
 ```
@@ -254,7 +323,10 @@ WEEK 1: Catalog Integration
 └─ Phase 2: ACO Catalog Integration ✅ COMPLETE
 
 WEEK 2: Commerce Storefront
-└─ Phase 3: Commerce Storefront Integration ← CURRENT FOCUS
+└─ Phase 3: Commerce Storefront Integration 🔄 IN PROGRESS
+   ├─ Live Search ✅
+   ├─ Faceted Search ✅
+   └─ Bundle Pricing (mesh workaround) ✅
 
 WEEK 3: Production Prep
 ├─ Phase 4: EDS Production Patterns
@@ -262,6 +334,11 @@ WEEK 3: Production Prep
 
 FUTURE: Cart & Orders (as needed)
 └─ Phase 6: Cart & Orders
+
+FUTURE: Commerce Backend (when added)
+└─ Phase 7: Commerce Backend Integration
+   └─ ⚠️  Migrate bundle pricing from mesh calculation
+         to native Commerce BundleProduct.price_range
 ```
 
 ---
@@ -353,4 +430,7 @@ FUTURE: Cart & Orders (as needed)
 | Dec 7, 2025 | Initial plan created |
 | Dec 8, 2025 | Restructured: ACO/Catalog integration as priority, Cart/Orders deferred |
 | Dec 8, 2025 | Phase 2 (ACO Catalog Integration) completed - catalog service, mesh integration, product grids updated |
+| Dec 9, 2025 | Phase 3 updates: Live Search, Faceted Search completed |
+| Dec 9, 2025 | Added bundle pricing mesh workaround (ACO returns null priceRange for bundles) |
+| Dec 9, 2025 | Added Phase 7: Commerce Backend Integration - documents bundle pricing migration path |
 
