@@ -100,7 +100,7 @@
       "oldFilename": "generated-image (14).png",
       "newFilename": "INSUL-DE9C78C2.png",
       "sku": "INSUL-DE9C78C2",
-      "productName": "InsulPro Fiberglass Batt R-13",
+      "productName": "Fiberglass Insulation - R-19 15\" x 93\"",
       "category": "framing_insulation",
       "imageType": "insulation"
     },
@@ -124,33 +124,153 @@
       "oldFilename": "generated-image (17).png",
       "newFilename": "DOOR-AF7D27F6.png",
       "sku": "DOOR-AF7D27F6",
-      "productName": "PremiumBuild Steel Entry Door - 36\"x80\"",
+      "productName": "Entry Door - Steel 36\"x80\"",
       "category": "windows_doors",
       "imageType": "door"
     },
     {
-      "oldFilename": "generated-image (18).png",
-      "newFilename": "SAFE-54709A01.png",
-      "sku": "SAFE-54709A01",
-      "productName": "ToughGrip Hard Hat - Type 1 Class E",
-      "category": "safety_equipment",
-      "imageType": "ppe"
+      "newFilename": "DOOR-070629C1.png",
+      "sku": "DOOR-070629C1",
+      "productName": "Interior Door - Hollow Core 32\"x80\"",
+      "category": "windows_doors",
+      "imageType": "door",
+      "oldFilename": "DOOR-070629C1.png"
     },
     {
-      "oldFilename": "generated-image (19).png",
-      "newFilename": "SAFE-325D0586.png",
-      "sku": "SAFE-325D0586",
-      "productName": "SafeGuard Safety Glasses - ANSI Z87.1",
-      "category": "safety_equipment",
-      "imageType": "ppe"
+      "newFilename": "DOOR-34C72FD2.png",
+      "sku": "DOOR-34C72FD2",
+      "productName": "French Door - 60\"x80\"",
+      "category": "windows_doors",
+      "imageType": "door",
+      "oldFilename": "DOOR-34C72FD2.png"
     },
     {
-      "oldFilename": "generated-image (20).png",
-      "newFilename": "SAFE-AC3312B9.png",
-      "sku": "SAFE-AC3312B9",
-      "productName": "ReliaBuild Work Gloves - Heavy Duty",
-      "category": "safety_equipment",
-      "imageType": "ppe"
+      "newFilename": "DOOR-89357B1F.png",
+      "sku": "DOOR-89357B1F",
+      "productName": "Sliding Patio Door - 72\"x80\"",
+      "category": "windows_doors",
+      "imageType": "door",
+      "oldFilename": "DOOR-89357B1F.png"
+    },
+    {
+      "newFilename": "DRYWALL-038C3C6C.png",
+      "sku": "DRYWALL-038C3C6C",
+      "productName": "Drywall 5/8\" - 4x8",
+      "category": "framing_drywall",
+      "imageType": "drywall",
+      "oldFilename": "DRYWALL-038C3C6C.png"
+    },
+    {
+      "newFilename": "DRYWALL-1E512505.png",
+      "sku": "DRYWALL-1E512505",
+      "productName": "Moisture Resistant Drywall - 4x8",
+      "category": "framing_drywall",
+      "imageType": "drywall",
+      "oldFilename": "DRYWALL-1E512505.png"
+    },
+    {
+      "newFilename": "DRYWALL-439D9A62.png",
+      "sku": "DRYWALL-439D9A62",
+      "productName": "Fire Rated Drywall - 4x8",
+      "category": "framing_drywall",
+      "imageType": "drywall",
+      "oldFilename": "DRYWALL-439D9A62.png"
+    },
+    {
+      "newFilename": "DRYWALL-67027AF0.png",
+      "sku": "DRYWALL-67027AF0",
+      "productName": "Sound Dampening Drywall - 4x8",
+      "category": "framing_drywall",
+      "imageType": "drywall",
+      "oldFilename": "DRYWALL-67027AF0.png"
+    },
+    {
+      "newFilename": "DRYWALL-A8217B48.png",
+      "sku": "DRYWALL-A8217B48",
+      "productName": "Drywall 1/2\" - 4x12 Sheet",
+      "category": "framing_drywall",
+      "imageType": "drywall",
+      "oldFilename": "DRYWALL-A8217B48.png"
+    },
+    {
+      "newFilename": "WINDOW-51CD3FC4.png",
+      "sku": "WINDOW-51CD3FC4",
+      "productName": "Double Hung Window - 36\"x60\"",
+      "category": "windows_doors",
+      "imageType": "window",
+      "oldFilename": "WINDOW-51CD3FC4.png"
+    },
+    {
+      "newFilename": "WINDOW-6642736C.png",
+      "sku": "WINDOW-6642736C",
+      "productName": "Sliding Window - 48\"x36\"",
+      "category": "windows_doors",
+      "imageType": "window",
+      "oldFilename": "WINDOW-6642736C.png"
+    },
+    {
+      "newFilename": "WINDOW-888AFAE6.png",
+      "sku": "WINDOW-888AFAE6",
+      "productName": "Casement Window - 30\"x48\"",
+      "category": "windows_doors",
+      "imageType": "window",
+      "oldFilename": "WINDOW-888AFAE6.png"
+    },
+    {
+      "newFilename": "STUD-07E7F7E4.png",
+      "sku": "STUD-07E7F7E4",
+      "productName": "Metal Track 20ga - 6\" x 10ft",
+      "category": "framing_drywall",
+      "imageType": "metal_framing",
+      "oldFilename": "STUD-07E7F7E4.png"
+    },
+    {
+      "newFilename": "STUD-8DEC7739.png",
+      "sku": "STUD-8DEC7739",
+      "productName": "Steel C-Channel - 8ft",
+      "category": "framing_drywall",
+      "imageType": "metal_framing",
+      "oldFilename": "STUD-8DEC7739.png"
+    },
+    {
+      "newFilename": "STUD-984F2EC0.png",
+      "sku": "STUD-984F2EC0",
+      "productName": "Hat Channel - 12ft",
+      "category": "framing_drywall",
+      "imageType": "metal_framing",
+      "oldFilename": "STUD-984F2EC0.png"
+    },
+    {
+      "newFilename": "STUD-B6E3E673.png",
+      "sku": "STUD-B6E3E673",
+      "productName": "Metal Stud 20ga - 6\" x 10ft",
+      "category": "framing_drywall",
+      "imageType": "metal_framing",
+      "oldFilename": "STUD-B6E3E673.png"
+    },
+    {
+      "newFilename": "LBR-0C7A6DBC.png",
+      "sku": "LBR-0C7A6DBC",
+      "productName": "4x4 Post - 8ft",
+      "category": "structural_materials",
+      "imageType": "dimensional_lumber",
+      "oldFilename": "LBR-0C7A6DBC.png"
+    },
+    {
+      "newFilename": "PLY-4C31A6A6.png",
+      "sku": "PLY-4C31A6A6",
+      "productName": "Siding Panel 3/8\" - 4x8",
+      "category": "structural_materials",
+      "imageType": "sheet_goods",
+      "oldFilename": "PLY-4C31A6A6.png"
+    },
+    {
+      "newFilename": "PLY-E0240635.png",
+      "sku": "PLY-E0240635",
+      "productName": "Cement Board 1/2\" - 3x5",
+      "category": "structural_materials",
+      "imageType": "sheet_goods",
+      "oldFilename": "PLY-E0240635.png"
     }
   ],
   "summary": {
@@ -174,4 +294,3 @@
     "namingConvention": "SKU-based (e.g., LBR-D0414F1E.png)"
   }
 }
-

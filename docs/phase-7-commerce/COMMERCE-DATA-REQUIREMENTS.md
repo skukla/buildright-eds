@@ -199,7 +199,6 @@ Examples:
 | **Framing** | Complete Wall System, Bathroom Renovation Kit, Soundproofing Package |
 | **Windows & Doors** | Whole House Window Package, Complete Door Package, Energy Efficiency Upgrade |
 | **Fasteners** | Professional Framer Kit, Roofing Fastener Bundle, Cabinet Installation Kit |
-| **Safety** | Complete PPE Package, Fall Protection System, Site Safety Station |
 
 ### Bundle Structure
 
@@ -456,7 +455,7 @@ npm run import:all           # Import via Commerce API
 - [ ] Images uploaded and associated
 
 ### Bundle Products
-- [ ] All 15 bundles created
+- [ ] All 12 bundles created
 - [ ] Bundle options configured correctly
 - [ ] `price_range` returns computed values (not null)
 - [ ] Bundle components link to correct simple products
