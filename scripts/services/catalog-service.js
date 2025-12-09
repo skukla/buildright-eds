@@ -79,6 +79,16 @@ const MeshStrategy = {
   async generateBOM(config) {
     const { generateBOM } = await import('./mesh-client.js');
     return generateBOM(config);
+  },
+  
+  async searchWithFacets(options = {}) {
+    const { productSearchFilter } = await import('./mesh-client.js');
+    return productSearchFilter(options);
+  },
+  
+  async searchSuggestions(phrase) {
+    const { searchSuggestions } = await import('./mesh-client.js');
+    return searchSuggestions(phrase);
   }
 };
 
@@ -143,6 +153,92 @@ const MockStrategy = {
     }
     
     return null;
+  },
+  
+  async searchWithFacets(options = {}) {
+    const { phrase, filter, sort, limit = 20, page = 1 } = options;
+    const mockData = await loadMockProducts();
+    
+    // Filter by phrase
+    let filtered = phrase && phrase.trim()
+      ? mockData.filter(p => 
+          p.name?.toLowerCase().includes(phrase.toLowerCase()) ||
+          p.sku?.toLowerCase().includes(phrase.toLowerCase())
+        )
+      : mockData;
+    
+    // Apply filters
+    if (filter?.product_category?.length) {
+      filtered = filtered.filter(p => 
+        filter.product_category.includes(p.attributes?.product_category)
+      );
+    }
+    
+    // Pagination
+    const start = (page - 1) * limit;
+    const items = filtered.slice(start, start + limit);
+    const totalCount = filtered.length;
+    const totalPages = Math.ceil(totalCount / limit);
+    
+    // Generate mock facets from available data
+    const categoryFacets = mockData.reduce((acc, p) => {
+      const cat = p.attributes?.product_category || 'Uncategorized';
+      acc[cat] = (acc[cat] || 0) + 1;
+      return acc;
+    }, {});
+    
+    return {
+      products: {
+        items: items.map(transformMockProduct),
+        totalCount,
+        hasMoreItems: page < totalPages,
+        currentPage: page,
+        pageInfo: {
+          currentPage: page,
+          pageSize: limit,
+          totalPages
+        }
+      },
+      facets: {
+        facets: [{
+          key: 'product_category',
+          title: 'Category',
+          type: 'scalar',
+          attributeCode: 'product_category',
+          options: Object.entries(categoryFacets).map(([name, count]) => ({
+            id: name,
+            name,
+            count
+          }))
+        }],
+        totalCount
+      },
+      totalCount
+    };
+  },
+  
+  async searchSuggestions(phrase) {
+    if (!phrase || phrase.length < 2) {
+      return { suggestions: [], totalCount: 0 };
+    }
+    
+    const mockData = await loadMockProducts();
+    const filtered = mockData.filter(p => 
+      p.name?.toLowerCase().includes(phrase.toLowerCase()) ||
+      p.sku?.toLowerCase().includes(phrase.toLowerCase())
+    ).slice(0, 5);
+    
+    return {
+      suggestions: filtered.map(p => ({
+        id: p.sku,
+        name: p.name,
+        sku: p.sku,
+        urlKey: p.sku.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        price: p.price?.final?.amount?.value?.toFixed(2) || null,
+        image: p.images?.[0]?.url || null
+      })),
+      totalCount: filtered.length
+    };
   }
 };
 
@@ -365,6 +461,39 @@ class CatalogService {
       throw new Error('CatalogService not initialized. Call initialize() first.');
     }
     return this.strategy.generateBOM(config);
+  }
+  
+  /**
+   * Search products with facets (consolidated query)
+   * Similar to citisignal-nextjs useProductSearchFilter
+   * 
+   * @param {Object} options - Search options
+   * @param {string} options.phrase - Search phrase
+   * @param {Object} options.filter - Filter options
+   * @param {Object} options.sort - Sort options { attribute, direction }
+   * @param {number} options.limit - Page size
+   * @param {number} options.page - Page number
+   * @returns {Promise<Object>} Search results with products and facets
+   */
+  async searchWithFacets(options = {}) {
+    if (!this.initialized) {
+      throw new Error('CatalogService not initialized. Call initialize() first.');
+    }
+    return this.strategy.searchWithFacets(options);
+  }
+  
+  /**
+   * Get search suggestions for autocomplete
+   * Similar to citisignal-nextjs useSearchSuggestions
+   * 
+   * @param {string} phrase - Search phrase (min 2 chars)
+   * @returns {Promise<Object>} Suggestions
+   */
+  async searchSuggestions(phrase) {
+    if (!this.initialized) {
+      throw new Error('CatalogService not initialized. Call initialize() first.');
+    }
+    return this.strategy.searchSuggestions(phrase);
   }
 }
 

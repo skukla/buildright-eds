@@ -163,7 +163,7 @@ export const QUERY_GET_PERSONA_BY_ID = `
 `;
 
 /**
- * Search products
+ * Search products (legacy - backwards compatible)
  */
 export const QUERY_SEARCH_PRODUCTS = `
   query SearchProducts($phrase: String!, $pageSize: Int, $currentPage: Int) {
@@ -190,6 +190,89 @@ export const QUERY_SEARCH_PRODUCTS = `
         pageSize
         totalPages
       }
+    }
+  }
+`;
+
+/**
+ * Consolidated product search with facets
+ * Similar to Citisignal_productSearchFilter
+ */
+export const QUERY_PRODUCT_SEARCH_FILTER = `
+  query ProductSearchFilter(
+    $phrase: String
+    $filter: BuildRight_ProductFilter
+    $sort: BuildRight_SortInput
+    $limit: Int = 20
+    $page: Int = 1
+  ) {
+    BuildRight_productSearchFilter(
+      phrase: $phrase
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      page: $page
+    ) {
+      products {
+        items {
+          sku
+          name
+          description
+          imageUrl
+          price {
+            value
+            currency
+          }
+          inStock
+          category
+          attributes {
+            name
+            value
+          }
+        }
+        totalCount
+        hasMoreItems
+        currentPage
+        pageInfo {
+          currentPage
+          pageSize
+          totalPages
+        }
+      }
+      facets {
+        facets {
+          key
+          title
+          type
+          attributeCode
+          options {
+            id
+            name
+            count
+          }
+        }
+        totalCount
+      }
+      totalCount
+    }
+  }
+`;
+
+/**
+ * Search suggestions for autocomplete
+ */
+export const QUERY_SEARCH_SUGGESTIONS = `
+  query SearchSuggestions($phrase: String!) {
+    BuildRight_searchSuggestions(phrase: $phrase) {
+      suggestions {
+        id
+        name
+        sku
+        urlKey
+        price
+        image
+      }
+      totalCount
     }
   }
 `;
@@ -409,6 +492,48 @@ export async function generateBOM(config) {
   return data.BuildRight_generateBOMFromTemplate;
 }
 
+/**
+ * Search products with facets (consolidated query)
+ * Similar to citisignal-nextjs useProductSearchFilter
+ * 
+ * @param {Object} options - Search options
+ * @param {string} options.phrase - Search phrase
+ * @param {Object} options.filter - Filter options
+ * @param {Object} options.sort - Sort options { attribute, direction }
+ * @param {number} options.limit - Page size
+ * @param {number} options.page - Page number
+ * @returns {Promise<Object>} Search results with products and facets
+ */
+export async function productSearchFilter(options = {}) {
+  const { phrase, filter, sort, limit = 20, page = 1 } = options;
+  
+  const data = await meshQuery(QUERY_PRODUCT_SEARCH_FILTER, {
+    phrase,
+    filter,
+    sort,
+    limit,
+    page
+  });
+  
+  return data.BuildRight_productSearchFilter;
+}
+
+/**
+ * Get search suggestions for autocomplete
+ * Similar to citisignal-nextjs useSearchSuggestions
+ * 
+ * @param {string} phrase - Search phrase (min 2 chars)
+ * @returns {Promise<Object>} Suggestions
+ */
+export async function searchSuggestions(phrase) {
+  if (!phrase || phrase.length < 2) {
+    return { suggestions: [], totalCount: 0 };
+  }
+  
+  const data = await meshQuery(QUERY_SEARCH_SUGGESTIONS, { phrase });
+  return data.BuildRight_searchSuggestions;
+}
+
 // Export default for convenience
 export default {
   meshQuery,
@@ -417,11 +542,15 @@ export default {
   searchProducts,
   getProductBySKU,
   generateBOM,
+  productSearchFilter,
+  searchSuggestions,
   // Queries for direct use
   queries: {
     GET_PERSONA: QUERY_GET_PERSONA,
     GET_PERSONA_BY_ID: QUERY_GET_PERSONA_BY_ID,
     SEARCH_PRODUCTS: QUERY_SEARCH_PRODUCTS,
+    PRODUCT_SEARCH_FILTER: QUERY_PRODUCT_SEARCH_FILTER,
+    SEARCH_SUGGESTIONS: QUERY_SEARCH_SUGGESTIONS,
     GET_PRODUCT: QUERY_GET_PRODUCT,
     GENERATE_BOM: QUERY_GENERATE_BOM
   }

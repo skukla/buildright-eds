@@ -69,6 +69,9 @@ function debounce(fn, delay) {
 
 /**
  * Search for product suggestions
+ * Uses catalogService.searchSuggestions when available (mesh),
+ * falls back to searchProducts for mock data
+ * 
  * @param {string} phrase - Search phrase
  * @returns {Promise<Array>} Array of product suggestions
  */
@@ -93,21 +96,42 @@ async function searchSuggestions(phrase) {
   try {
     console.log('[LiveSearch] Fetching suggestions for:', phrase);
     
-    const result = await catalogService.searchProducts(phrase, {
-      pageSize: CONFIG.maxSuggestions,
-      currentPage: 1
-    });
+    let suggestions = [];
     
-    // Transform results to suggestion format
-    const suggestions = (result.items || []).map(item => ({
-      id: item.sku,
-      sku: item.sku,
-      name: item.name,
-      price: item.price?.value || item.price || null,
-      image: item.imageUrl || item.image || null,
-      category: item.category || null,
-      url: `${window.BASE_PATH || '/'}pages/product-detail.html?sku=${item.sku}`
-    }));
+    // Try dedicated searchSuggestions first (uses mesh when available)
+    try {
+      const result = await catalogService.searchSuggestions(phrase);
+      
+      if (result.suggestions?.length > 0) {
+        suggestions = result.suggestions.map(item => ({
+          id: item.sku,
+          sku: item.sku,
+          name: item.name,
+          price: item.price ? parseFloat(item.price) : null,
+          image: item.image || null,
+          category: null,
+          url: `${window.BASE_PATH || '/'}pages/product-detail.html?sku=${item.sku}`
+        }));
+      }
+    } catch (suggestError) {
+      console.warn('[LiveSearch] searchSuggestions failed, falling back to searchProducts:', suggestError.message);
+      
+      // Fallback to regular search
+      const result = await catalogService.searchProducts(phrase, {
+        pageSize: CONFIG.maxSuggestions,
+        currentPage: 1
+      });
+      
+      suggestions = (result.items || []).map(item => ({
+        id: item.sku,
+        sku: item.sku,
+        name: item.name,
+        price: item.price?.value || item.price || null,
+        image: item.imageUrl || item.image || null,
+        category: item.category || null,
+        url: `${window.BASE_PATH || '/'}pages/product-detail.html?sku=${item.sku}`
+      }));
+    }
     
     // Cache results
     setCachedResults(phrase, suggestions);
