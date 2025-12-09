@@ -362,9 +362,15 @@ export default async function decorate(block) {
       
     } catch (error) {
       console.error('[Product Grid] Error loading products:', error);
+      
       container.innerHTML = `
-        <div class="error-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xxlarge);">
-          <h3>Error Loading Products</h3>
+        <div class="state-container error-state" style="grid-column: 1 / -1;">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+          <h2>Error Loading Products</h2>
           <p>${error.message || 'Failed to load products. Please try again.'}</p>
           <button class="btn btn-primary" onclick="window.location.reload()">Reload Page</button>
         </div>
