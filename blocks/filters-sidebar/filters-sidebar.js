@@ -8,34 +8,18 @@ export default function decorate(block) {
   let activeFilters = {};
   
   // Elements
-  const dynamicFacetsContainer = block.querySelector('.dynamic-facets') || createDynamicFacetsContainer(block);
-  
-  /**
-   * Create container for dynamic facets if not present
-   */
-  function createDynamicFacetsContainer(block) {
-    const container = document.createElement('div');
-    container.className = 'dynamic-facets';
-    
-    // Insert after header, before static filters
-    const filterSections = block.querySelector('.filter-sections');
-    if (filterSections) {
-      filterSections.insertBefore(container, filterSections.firstChild);
-    } else {
-      block.appendChild(container);
-    }
-    
-    return container;
+  const dynamicFacetsContainer = block.querySelector('.dynamic-facets-container');
+  if (!dynamicFacetsContainer) {
+    console.warn('[Filters Sidebar] No dynamic-facets-container found');
+    return;
   }
   
   /**
    * Render facets from ACO response
    */
   function renderFacets(facets) {
-    if (!dynamicFacetsContainer) return;
-    
     if (!facets || facets.length === 0) {
-      dynamicFacetsContainer.innerHTML = '';
+      dynamicFacetsContainer.innerHTML = '<p class="no-facets">No filters available</p>';
       return;
     }
     
@@ -59,30 +43,27 @@ export default function decorate(block) {
     `).join('');
     
     // Bind toggle events
-    bindToggleEvents(dynamicFacetsContainer);
+    bindToggleEvents();
     
     // Bind checkbox events
-    bindCheckboxEvents(dynamicFacetsContainer);
+    bindCheckboxEvents();
   }
   
   /**
-   * Render facet options with counts and disabled state
+   * Render facet options
    */
   function renderFacetOptions(facet) {
     return facet.options.map(option => {
-      const isDisabled = option.count === 0;
       const isSelected = activeFilters[facet.key]?.includes(option.id);
       
       return `
-        <label class="filter-option ${isDisabled ? 'filter-option--disabled' : ''} ${isSelected ? 'filter-option--selected' : ''}">
+        <label class="filter-option ${isSelected ? 'filter-option--selected' : ''}">
           <input type="checkbox" 
                  name="${facet.key}" 
                  value="${option.id}"
-                 ${isSelected ? 'checked' : ''}
-                 ${isDisabled ? 'disabled' : ''}>
+                 ${isSelected ? 'checked' : ''}>
           <span class="filter-option-checkbox"></span>
           <span class="filter-option-label">${option.name}</span>
-          <span class="filter-count">(${option.count})</span>
         </label>
       `;
     }).join('');
@@ -91,12 +72,12 @@ export default function decorate(block) {
   /**
    * Bind toggle events for collapsible sections
    */
-  function bindToggleEvents(container) {
-    const toggles = container.querySelectorAll('.filter-toggle');
+  function bindToggleEvents() {
+    const toggles = dynamicFacetsContainer.querySelectorAll('.filter-toggle');
     toggles.forEach(toggle => {
       toggle.addEventListener('click', () => {
         const filterId = toggle.getAttribute('data-filter');
-        const content = container.querySelector(`#filter-${filterId}`);
+        const content = dynamicFacetsContainer.querySelector(`#filter-${filterId}`);
         const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
         
         toggle.setAttribute('aria-expanded', !isExpanded);
@@ -110,8 +91,8 @@ export default function decorate(block) {
   /**
    * Bind checkbox change events
    */
-  function bindCheckboxEvents(container) {
-    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+  function bindCheckboxEvents() {
+    const checkboxes = dynamicFacetsContainer.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
       checkbox.addEventListener('change', () => {
         const facetKey = checkbox.name;
@@ -171,78 +152,14 @@ export default function decorate(block) {
       if (spinner) spinner.remove();
     });
   }
-  
-  /**
-   * Update option counts without full re-render
-   */
-  function updateOptionCounts(facets) {
-    facets.forEach(facet => {
-      facet.options.forEach(option => {
-        const checkbox = dynamicFacetsContainer.querySelector(
-          `input[name="${facet.key}"][value="${option.id}"]`
-        );
-        
-        if (checkbox) {
-          const label = checkbox.closest('.filter-option');
-          const countEl = label?.querySelector('.filter-count');
-          
-          if (countEl) {
-            countEl.textContent = `(${option.count})`;
-          }
-          
-          // Update disabled state
-          const isDisabled = option.count === 0;
-          checkbox.disabled = isDisabled;
-          label?.classList.toggle('filter-option--disabled', isDisabled);
-        }
-      });
-    });
-  }
 
-  // Toggle filter sections (static)
-  const filterToggles = block.querySelectorAll('.filter-toggle');
-  filterToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const filterId = toggle.getAttribute('data-filter');
-      const content = block.querySelector(`#filter-${filterId}`);
-      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-      
-      toggle.setAttribute('aria-expanded', !isExpanded);
-      if (content) {
-        content.classList.toggle('active');
-      }
-    });
-    
-    // Set initial state based on HTML attribute
-    const filterId = toggle.getAttribute('data-filter');
-    const content = block.querySelector(`#filter-${filterId}`);
-    const isInitiallyExpanded = toggle.getAttribute('aria-expanded') === 'true';
-    if (content && isInitiallyExpanded) {
-      content.classList.add('active');
-    }
-  });
-
-  // Clear filters
+  // Clear filters button
   const clearBtn = block.querySelector('#clear-filters');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      // Clear static checkboxes
-      const checkboxes = block.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach(cb => {
-        if (cb.id.includes('all') || cb.id.includes('proj-all') || cb.id.includes('avail-all')) {
-          cb.checked = true;
-        } else {
-          cb.checked = false;
-        }
-      });
-      
-      // Clear dynamic checkboxes
-      const dynamicCheckboxes = dynamicFacetsContainer.querySelectorAll('input[type="checkbox"]');
-      dynamicCheckboxes.forEach(cb => cb.checked = false);
-      
-      // Clear price inputs
-      const priceInputs = block.querySelectorAll('#price-min, #price-max');
-      priceInputs.forEach(input => input.value = '');
+      // Clear all checkboxes
+      const checkboxes = dynamicFacetsContainer.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(cb => cb.checked = false);
       
       // Reset active filters
       activeFilters = {};
@@ -254,50 +171,11 @@ export default function decorate(block) {
     });
   }
 
-  // Collect active filters and emit event
+  /**
+   * Emit filters to product grid
+   */
   function emitFilters() {
     const filters = { ...activeFilters };
-    
-    // Category filters (static)
-    const categoryCheckboxes = block.querySelectorAll('input[name="category"]:checked');
-    const selectedCategories = Array.from(categoryCheckboxes)
-      .map(cb => cb.value)
-      .filter(v => v !== ''); // Exclude "all"
-    
-    if (selectedCategories.length > 0) {
-      filters.category = [...(filters.category || []), ...selectedCategories];
-    }
-    
-    // Project type filters (static)
-    const projectCheckboxes = block.querySelectorAll('input[name="project"]:checked');
-    const selectedProjects = Array.from(projectCheckboxes)
-      .map(cb => cb.value)
-      .filter(v => v !== '');
-    
-    if (selectedProjects.length > 0) {
-      filters.project_type = selectedProjects;
-    }
-    
-    // Availability filters (static)
-    const availCheckboxes = block.querySelectorAll('input[name="availability"]:checked');
-    const selectedAvail = Array.from(availCheckboxes)
-      .map(cb => cb.value)
-      .filter(v => v !== '');
-    
-    if (selectedAvail.length > 0) {
-      filters.availability = selectedAvail;
-    }
-    
-    // Price range filters (static)
-    const minPrice = block.querySelector('#price-min')?.value;
-    const maxPrice = block.querySelector('#price-max')?.value;
-    
-    if (minPrice || maxPrice) {
-      filters.price_range = {
-        min: minPrice ? parseFloat(minPrice) : null,
-        max: maxPrice ? parseFloat(maxPrice) : null
-      };
-    }
     
     console.log('[Filters Sidebar] Emitting filters:', filters);
     
@@ -305,37 +183,6 @@ export default function decorate(block) {
     window.dispatchEvent(new CustomEvent('filtersChanged', {
       detail: { filters }
     }));
-  }
-
-  // Filter change handlers for static checkboxes
-  const checkboxes = block.querySelectorAll('.filter-sections > .filter-section input[type="checkbox"]');
-  checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-      // Uncheck "all" if specific option is selected
-      if (!checkbox.id.includes('all') && checkbox.checked) {
-        const allCheckbox = checkbox.closest('.filter-content')?.querySelector('input[value=""]');
-        if (allCheckbox) {
-          allCheckbox.checked = false;
-        }
-      }
-      
-      // Check "all" if it's selected
-      if (checkbox.id.includes('all') && checkbox.checked) {
-        const otherCheckboxes = checkbox.closest('.filter-content')?.querySelectorAll('input:not([value=""])');
-        otherCheckboxes?.forEach(cb => cb.checked = false);
-      }
-      
-      // Emit filters
-      emitFilters();
-    });
-  });
-  
-  // Price range apply button
-  const priceApplyBtn = block.querySelector('.filter-price-apply');
-  if (priceApplyBtn) {
-    priceApplyBtn.addEventListener('click', () => {
-      emitFilters();
-    });
   }
   
   // Listen for facet updates from product-grid
@@ -352,15 +199,12 @@ export default function decorate(block) {
     if (facetsChanged || currentFacets.length === 0) {
       currentFacets = newFacets;
       renderFacets(newFacets);
-    } else {
-      // Just update counts
-      updateOptionCounts(newFacets);
     }
     
     hideValidating();
   });
   
-  // Listen for validating state from product-grid
+  // Listen for validating state
   window.addEventListener('facetsValidating', (event) => {
     if (event.detail?.validating) {
       showValidating();
@@ -368,4 +212,7 @@ export default function decorate(block) {
       hideValidating();
     }
   });
+  
+  // Show loading state initially
+  dynamicFacetsContainer.innerHTML = '<p class="facets-loading">Loading filters...</p>';
 }
