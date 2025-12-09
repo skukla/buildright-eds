@@ -540,23 +540,166 @@ export default async function decorate(block) {
     });
   }
 
-  // Search functionality
+  // Search functionality with live suggestions
   const searchInput = block.querySelector('#header-search-input');
   const searchButton = block.querySelector('.search-button');
+  const searchSuggestions = block.querySelector('#search-suggestions');
+  const suggestionsList = block.querySelector('#search-suggestions-list');
+  const suggestionsLoading = block.querySelector('#search-suggestions-loading');
+  const suggestionsFooter = block.querySelector('#search-suggestions-footer');
+  const viewAllLink = block.querySelector('#search-suggestions-view-all');
+  
   if (searchInput && searchButton) {
-    const performSearch = () => {
-      const query = searchInput.value.trim();
-      if (query) {
-        // Use clean URL with search param
-        window.location.href = `catalog?search=${encodeURIComponent(query)}`;
+    let highlightedIndex = -1;
+    let currentSuggestions = [];
+    
+    const performSearch = (query) => {
+      const searchQuery = query || searchInput.value.trim();
+      if (searchQuery) {
+        hideSuggestions();
+        window.location.href = `catalog?search=${encodeURIComponent(searchQuery)}`;
       }
     };
-
-    searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        performSearch();
+    
+    const showSuggestions = () => {
+      if (searchSuggestions) {
+        searchSuggestions.hidden = false;
       }
+    };
+    
+    const hideSuggestions = () => {
+      if (searchSuggestions) {
+        searchSuggestions.hidden = true;
+      }
+      highlightedIndex = -1;
+    };
+    
+    const renderSuggestions = (suggestions) => {
+      currentSuggestions = suggestions;
+      highlightedIndex = -1;
+      
+      if (!suggestionsList) return;
+      
+      if (suggestions.length === 0) {
+        const query = searchInput.value.trim();
+        if (query.length >= 2) {
+          suggestionsList.innerHTML = `
+            <div class="search-suggestions-empty">
+              No products found for "${query}"
+            </div>
+          `;
+          if (suggestionsFooter) suggestionsFooter.hidden = true;
+        } else {
+          suggestionsList.innerHTML = '';
+        }
+        return;
+      }
+      
+      suggestionsList.innerHTML = suggestions.map((item, index) => `
+        <a href="${item.url}" class="search-suggestion-item" data-index="${index}">
+          ${item.image 
+            ? `<img src="${item.image}" alt="${item.name}" class="search-suggestion-image" loading="lazy">`
+            : `<div class="search-suggestion-image-placeholder"></div>`
+          }
+          <div class="search-suggestion-info">
+            <div class="search-suggestion-name">${item.name}</div>
+            <div class="search-suggestion-sku">${item.sku}</div>
+          </div>
+          ${item.price ? `<div class="search-suggestion-price">$${item.price.toFixed(2)}</div>` : ''}
+        </a>
+      `).join('');
+      
+      // Show "View all results" link
+      if (suggestionsFooter && viewAllLink) {
+        const query = searchInput.value.trim();
+        viewAllLink.href = `catalog?search=${encodeURIComponent(query)}`;
+        suggestionsFooter.hidden = false;
+      }
+    };
+    
+    const updateHighlight = () => {
+      const items = suggestionsList?.querySelectorAll('.search-suggestion-item') || [];
+      items.forEach((item, index) => {
+        item.classList.toggle('highlighted', index === highlightedIndex);
+      });
+    };
+    
+    // Live search integration
+    let searchTimeout;
+    searchInput.addEventListener('input', async (e) => {
+      const query = e.target.value.trim();
+      
+      clearTimeout(searchTimeout);
+      
+      if (query.length < 2) {
+        hideSuggestions();
+        return;
+      }
+      
+      showSuggestions();
+      if (suggestionsLoading) suggestionsLoading.hidden = false;
+      if (suggestionsList) suggestionsList.innerHTML = '';
+      
+      // Debounce search
+      searchTimeout = setTimeout(async () => {
+        try {
+          // Dynamic import to avoid loading until needed
+          const { liveSearchService } = await import('../../scripts/services/live-search.js');
+          await liveSearchService.search(query);
+          const { suggestions } = liveSearchService.getState();
+          
+          if (suggestionsLoading) suggestionsLoading.hidden = true;
+          renderSuggestions(suggestions);
+        } catch (error) {
+          console.error('[Header] Live search error:', error);
+          if (suggestionsLoading) suggestionsLoading.hidden = true;
+          renderSuggestions([]);
+        }
+      }, 300);
+    });
+    
+    // Keyboard navigation
+    searchInput.addEventListener('keydown', (e) => {
+      const items = suggestionsList?.querySelectorAll('.search-suggestion-item') || [];
+      
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
+        updateHighlight();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        highlightedIndex = Math.max(highlightedIndex - 1, -1);
+        updateHighlight();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (highlightedIndex >= 0 && items[highlightedIndex]) {
+          items[highlightedIndex].click();
+        } else {
+          performSearch();
+        }
+      } else if (e.key === 'Escape') {
+        hideSuggestions();
+        searchInput.blur();
+      }
+    });
+    
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchSuggestions?.contains(e.target)) {
+        hideSuggestions();
+      }
+    });
+    
+    // Focus shows suggestions if there's a query
+    searchInput.addEventListener('focus', () => {
+      if (searchInput.value.trim().length >= 2 && currentSuggestions.length > 0) {
+        showSuggestions();
+      }
+    });
+
+    searchButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      performSearch();
     });
   }
 
