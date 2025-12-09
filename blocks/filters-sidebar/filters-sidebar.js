@@ -50,11 +50,12 @@ export default function decorate(block) {
   }
   
   /**
-   * Render facet options
+   * Render facet options with counts
    */
   function renderFacetOptions(facet) {
     return facet.options.map(option => {
       const isSelected = activeFilters[facet.key]?.includes(option.id);
+      const hasCount = option.count !== undefined && option.count !== null;
       
       return `
         <label class="filter-option ${isSelected ? 'filter-option--selected' : ''}">
@@ -64,6 +65,7 @@ export default function decorate(block) {
                  ${isSelected ? 'checked' : ''}>
           <span class="filter-option-checkbox"></span>
           <span class="filter-option-label">${option.name}</span>
+          ${hasCount ? `<span class="filter-count">(${option.count})</span>` : ''}
         </label>
       `;
     }).join('');
