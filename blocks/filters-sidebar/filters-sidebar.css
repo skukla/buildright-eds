@@ -1,10 +1,36 @@
-/* EDS Block: Filters Sidebar - Sticky below header */
+/* EDS Block: Filters Sidebar - Sticky below header with scroll */
 #filters-aside {
   align-self: start;
   position: -webkit-sticky;
   position: sticky;
   top: 210px; /* Header height (143px) + spacing (67px) */
   z-index: 10;
+  max-height: calc(100vh - 230px); /* Viewport minus header and spacing */
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+  /* Custom scrollbar for webkit browsers */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* Webkit scrollbar styling */
+#filters-aside::-webkit-scrollbar {
+  width: 6px;
+}
+
+#filters-aside::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#filters-aside::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 3px;
+}
+
+#filters-aside::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-tertiary);
 }
 
 .filters-sidebar {
@@ -351,8 +377,8 @@ body.white-variant .filters-sidebar {
     order: 2;
     position: static;
     top: auto;
-    max-height: none;
-    overflow-y: visible;
+    max-height: none !important;
+    overflow-y: visible !important;
   }
 
   #filters-aside[style*="display: none"] {
