@@ -11,6 +11,7 @@ export default async function decorate(block) {
     cleanupEventListeners(window, 'projectFilterChanged');
     cleanupEventListeners(window, 'filtersChanged');
     cleanupEventListeners(window, 'catalogSearch');
+    cleanupEventListeners(window, 'catalogSort');
   }
   block._decorated = true;
   
@@ -18,11 +19,32 @@ export default async function decorate(block) {
   const countEl = block.querySelector('.product-count');
   if (!container) return;
 
-  // Store current filters and persona context
+  // Store current filters, sort, and persona context
   let currentFilters = {};
   let currentSearchTerm = '';  // Track search term from catalog search bar
+  let currentSort = null;      // Track sort selection from dropdown
   let userContext = null;
   let isValidating = false;
+  
+  /**
+   * Map frontend sort values to GraphQL sort input
+   * Frontend: relevance, price-asc, price-desc, name-asc, name-desc
+   * GraphQL: { attribute: RELEVANCE|PRICE|NAME, direction: ASC|DESC }
+   */
+  function mapSortToGraphQL(sortValue) {
+    if (!sortValue || sortValue === 'relevance') {
+      return null; // Use ACO's default relevance sorting
+    }
+    
+    const sortMap = {
+      'price-asc': { attribute: 'PRICE', direction: 'ASC' },
+      'price-desc': { attribute: 'PRICE', direction: 'DESC' },
+      'name-asc': { attribute: 'NAME', direction: 'ASC' },
+      'name-desc': { attribute: 'NAME', direction: 'DESC' }
+    };
+    
+    return sortMap[sortValue] || null;
+  }
 
   // Show loading state
   function showLoading() {
@@ -294,16 +316,21 @@ export default async function decorate(block) {
         }
       });
       
+      // Map sort for GraphQL
+      const sort = mapSortToGraphQL(currentSort);
+      
       // Query products with facets via catalogService
       console.log('[Product Grid] Fetching products with facets via catalogService:', { 
         searchPhrase, 
         filter,
+        sort,
         strategy: catalogService.getActiveStrategy() 
       });
       
       const result = await catalogService.searchWithFacets({
         phrase: searchPhrase || undefined,
         filter: Object.keys(filter).length > 0 ? filter : undefined,
+        sort: sort || undefined,
         limit: 100,
         page: 1
       });
@@ -408,6 +435,13 @@ export default async function decorate(block) {
     // Pass true to indicate this is a filter update (show validating state)
     loadProducts(true);
   }, 'product-grid-search');
+
+  // Listen for sort changes from catalog dropdown
+  safeAddEventListener(window, 'catalogSort', (event) => {
+    currentSort = event.detail?.sortBy || null;
+    // Pass true to indicate this is a filter update (show validating state)
+    loadProducts(true);
+  }, 'product-grid-sort');
 
   // Initial load
   loadProducts(false);
