@@ -57,6 +57,8 @@ export default async function decorate(block) {
     
     try {
       container.innerHTML = '';
+      // Reset min-height after content is loaded to prevent large gaps
+      container.style.minHeight = 'auto';
 
       if (products.length === 0) {
         const emptyMessage = parseHTML(`
