@@ -1,17 +1,35 @@
 # Implementation Phase Plans - Summary
 
-## Completed Phase Plans ✅
+> **Updated December 2025**: Shifted to vertical slice approach.
+> See `docs/IMPLEMENTATION-PLAN-V2.md` for the current implementation strategy.
 
-1. **PERSONA-META-PLAN.md** - Overall orchestration
-2. **PHASE-0-RESEARCH-AND-DECISIONS.md** - Research & architecture decisions
-3. **PHASE-1-ACO-DATA-FOUNDATION.md** - Data generation (mocked)
-4. **PHASE-2-DESIGN-SYSTEM-AND-ICONS.md** - Custom icons & design system
-5. **PHASE-3-CORE-ARCHITECTURE.md** - Core architecture foundation
-6. **PHASE-4-SHARED-COMPONENTS.md** - Reusable EDS blocks
-7. **PHASE-5-EXISTING-PAGE-REFACTOR.md** - Audit and refactor existing pages
+## Phase Status Overview
+
+| Phase | Status | Notes |
+|-------|--------|-------|
+| Phase 0-5 | ✅ Complete | Foundation work done |
+| Phase 6A (Sarah) | 🔄 In Progress | Sub-Phase 1 complete |
+| Phase 6B-6E | Not Started | Other personas |
+| Phase 7 (Integration) | 🔄 Partial | Commerce data done |
+
+## Completed Implementation ✅
+
+1. **PHASE-0-RESEARCH-AND-DECISIONS.md** - Research & architecture decisions
+2. **PHASE-1-ACO-DATA-FOUNDATION.md** - Data generation (buildright-aco)
+3. **PHASE-2-DESIGN-SYSTEM-AND-ICONS.md** - Deferred (using emojis)
+4. **PHASE-3-CORE-ARCHITECTURE.md** - Core architecture foundation
+5. **PHASE-4-SHARED-COMPONENTS.md** - Reusable EDS blocks
+6. **PHASE-5-EXISTING-PAGE-REFACTOR.md** - Audit and refactor existing pages
+7. **Commerce Data Setup** - 158 products, bundles, categories in Commerce
+
+## In Progress 🔄
+
 8. **PHASE-6A-PERSONA-SARAH.md** - Sarah Martinez (Production Builder)
+   - See `docs/phase-6/A-sarah-dashboard/UPDATED-IMPLEMENTATION-PLAN.md`
+   - Sub-Phase 1: Dashboard Simplification ✅
+   - Sub-Phases 2-8: Pending
 
-## Remaining Phase Plans (Being Created)
+## Remaining Phases
 
 9. **PHASE-6B-PERSONA-MARCUS.md** - Marcus Johnson (General Contractor)
 10. **PHASE-6C-PERSONA-LISA.md** - Lisa Chen (Remodeling Contractor)

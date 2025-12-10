@@ -310,20 +310,35 @@ Each phase has specific testing requirements defined in its plan document.
 
 ## Progress Tracking
 
+> **Note**: Implementation approach has shifted to **vertical slices** (each persona end-to-end).
+> See `docs/IMPLEMENTATION-PLAN-V2.md` for the updated approach.
+
 | Phase | Status | Start Date | End Date | Notes |
 |-------|--------|------------|----------|-------|
-| Phase 0 | Not Started | - | - | Research & decisions |
-| Phase 1 | Not Started | - | - | ACO data foundation |
-| Phase 2 | Not Started | - | - | Design system & icons |
-| Phase 3 | Not Started | - | - | Core architecture |
-| Phase 4 | Not Started | - | - | Shared components |
-| Phase 5 | Not Started | - | - | Page refactor |
-| Phase 6A | Not Started | - | - | Sarah persona |
+| Phase 0 | ✅ Complete | Nov 2024 | Nov 2024 | Research & decisions, ADRs |
+| Phase 1 | ✅ Complete | Nov 2024 | Nov 2024 | ACO data foundation |
+| Phase 2 | ⏸️ Deferred | - | - | Icons deferred (using emojis) |
+| Phase 3 | ✅ Complete | Nov 2024 | Nov 2024 | Core architecture |
+| Phase 4 | ✅ Complete | Nov 2024 | Nov 2024 | Shared components |
+| Phase 5 | ✅ Complete | Nov 2024 | Dec 2024 | Page refactor |
+| Phase 6A | 🔄 In Progress | Dec 2024 | - | Sarah persona (Sub-Phase 1 done) |
 | Phase 6B | Not Started | - | - | Marcus persona |
 | Phase 6C | Not Started | - | - | Lisa persona |
 | Phase 6D | Not Started | - | - | David persona |
 | Phase 6E | Not Started | - | - | Kevin persona |
-| Phase 7 | Not Started | - | - | Integration & polish |
+| Phase 7 | 🔄 Partial | Dec 2024 | - | Commerce data ✅, Final polish pending |
+
+### Commerce Backend (Added Dec 2025)
+
+| Component | Status |
+|-----------|--------|
+| Commerce Instance | ✅ Provisioned (com750.adobedemo.com) |
+| Products | ✅ 158 imported |
+| Categories | ✅ 37 created |
+| Customer Groups | ✅ 5 configured |
+| Customers | ✅ 5 demo accounts |
+| Images | ✅ 35 uploaded |
+| Website/Store/View | ✅ BuildRight dedicated |
 
 ---
 
