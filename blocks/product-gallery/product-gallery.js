@@ -1,20 +1,27 @@
 // Product Gallery Block Decoration
-import { acoService } from '../../scripts/aco-service.js';
-import { authService } from '../../scripts/auth.js';
+// Uses product data passed from PDP (via mesh) rather than mock service
 import { resolveImagePath } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
   if (!sku) return;
 
-  // Get user context for ACO
-  const userContext = authService.isAuthenticated() 
-    ? authService.getAcoContext() 
-    : null;
-
-  // Get product from ACO service
-  const product = await acoService.getProduct(sku, userContext || undefined);
-  if (!product) return;
+  // Use product data passed from PDP (already fetched from ACO via mesh)
+  const product = block.productData;
+  
+  if (!product) {
+    console.warn('[product-gallery] No product data passed, showing placeholder');
+    // Show placeholder when no product data
+    const mainImageEl = block.querySelector('#product-gallery-main-image');
+    if (mainImageEl) {
+      mainImageEl.classList.add('hidden');
+      const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
+      if (wrapper) {
+        wrapper.classList.add('product-gallery-placeholder', 'image-placeholder-pattern');
+      }
+    }
+    return;
+  }
 
   const mainImageEl = block.querySelector('#product-gallery-main-image');
   const thumbnailsContainer = block.querySelector('#product-gallery-thumbnails');
