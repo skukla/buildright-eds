@@ -269,15 +269,18 @@
         // Build pricing object with persona context
         const priceValue = rawProduct.price?.value ?? rawProduct.price ?? 0;
         
-        // Get cached persona for volume pricing tiers
+        // Get cached persona for volume pricing tiers - ONLY if user is authenticated
+        // This prevents stale cache from affecting guest users
         let cachedPersona = null;
-        try {
-          const personaData = sessionStorage.getItem('buildright_persona');
-          if (personaData) {
-            cachedPersona = JSON.parse(personaData);
+        if (authService.isAuthenticated()) {
+          try {
+            const personaData = sessionStorage.getItem('buildright_persona');
+            if (personaData) {
+              cachedPersona = JSON.parse(personaData);
+            }
+          } catch (e) {
+            console.warn('[PDP] Could not parse cached persona');
           }
-        } catch (e) {
-          console.warn('[PDP] Could not parse cached persona');
         }
         
         // Map priceBookId to customer group for display purposes
@@ -290,7 +293,8 @@
         };
         
         // Use persona's priceBookId or fallback to user's customerGroup
-        const effectiveCustomerGroup = cachedPersona?.priceBookId 
+        // For unauthenticated users, always use 'US-Retail' (guest pricing)
+        const effectiveCustomerGroup = (authService.isAuthenticated() && cachedPersona?.priceBookId)
           ? priceBookToCustomerGroup[cachedPersona.priceBookId] || cachedPersona.priceBookId
           : (currentUser?.customerGroup || 'US-Retail');
         

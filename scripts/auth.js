@@ -11,6 +11,7 @@ import { getPersona, PERSONAS, isValidPersona } from './persona-config.js';
 import { acoService } from './aco-service.js';
 import { getCompanyForPersona, getDefaultLocation } from './company-config.js';
 import { initializeMeshForPersona } from './services/mesh-integration.js';
+import { catalogService } from './services/catalog-service.js';
 
 const AUTH_STORAGE_KEY = 'buildright_auth';
 const PERSONA_STORAGE_KEY = 'currentPersona';
@@ -250,6 +251,14 @@ class AuthService {
       // TODO: Call Auth Dropin logout
       // await window.commerce?.auth?.logout();
     }
+    
+    // Clear persona cache from sessionStorage (used by mesh-client)
+    sessionStorage.removeItem('buildright_persona');
+    sessionStorage.removeItem('buildright_persona_headers');
+    sessionStorage.removeItem('buildright_persona_email');
+    
+    // Reset catalog service to clear cached strategy and persona
+    catalogService.reset();
     
     const previousUser = this.currentUser;
     this.currentUser = null;

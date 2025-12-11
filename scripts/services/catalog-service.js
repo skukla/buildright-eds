@@ -548,6 +548,18 @@ class CatalogService {
     }
     return this.strategy.searchSuggestions(phrase);
   }
+  
+  /**
+   * Reset the catalog service state
+   * Called on logout to clear cached persona and strategy
+   */
+  reset() {
+    console.log('[CatalogService] Resetting service state');
+    this.strategy = null;
+    this.initialized = false;
+    this.initializing = null;
+    this.personaData = null;
+  }
 }
 
 // ============================================
