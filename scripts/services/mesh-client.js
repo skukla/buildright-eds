@@ -12,7 +12,7 @@
  */
 
 // Mesh endpoint from buildright-service
-const MESH_ENDPOINT = 'https://edge-sandbox-graph.adobe.io/api/f625cd2c-a812-459b-bdb9-dd7f9deeeb2e/graphql';
+const MESH_ENDPOINT = 'https://edge-sandbox-graph.adobe.io/api/2463edc1-5cf7-4393-af04-95a3d1b6973c/graphql';
 
 // Optional proxy endpoint for production (set via environment or config)
 // In production EDS, this would be an App Builder action URL
