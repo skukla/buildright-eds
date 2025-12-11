@@ -1,12 +1,11 @@
 // Pricing display block decoration
-import { acoService } from '../../scripts/aco-service.js';
-import { authService } from '../../scripts/auth.js';
+// Uses persona-aware pricing passed from PDP (no mock service needed)
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
   if (!sku) return;
 
-  // Get user context from data attribute or auth service
+  // Get user context from data attribute
   let userContext = block.getAttribute('data-user-context');
   if (userContext) {
     try {
@@ -16,31 +15,31 @@ export default async function decorate(block) {
     }
   }
 
-  if (!userContext && authService.isAuthenticated()) {
-    userContext = authService.getAcoContext();
-  }
+  // Store the base pricing data for quantity updates
+  const basePricing = block.pricingData;
 
   // Load product and update pricing
   async function updatePricing(quantity = 1) {
     try {
-      let pricing;
-      
-      // Use pre-fetched data if available (for initial load)
-      if (quantity === 1 && block.pricingData) {
-        pricing = block.pricingData;
-      } else {
-        // Fetch fresh pricing for quantity changes
-        const pricingResult = await acoService.getPricing({
-          productIds: [sku],
-          customerGroup: userContext?.customerGroup || 'US-Retail',
-          quantity: quantity
-        });
-        pricing = pricingResult.pricing[sku];
-      }
-      
-      if (!pricing) {
+      // Use pre-fetched data with persona context (from PDP)
+      if (!basePricing) {
         console.warn('[pricing-display] No pricing data available');
         return;
+      }
+      
+      // Calculate quantity-based price using volume tiers
+      let pricing = { ...basePricing };
+      
+      if (pricing.volumeTiers && pricing.volumeTiers.length > 0) {
+        // Find the applicable tier for the current quantity
+        const applicableTier = pricing.volumeTiers.find(tier => 
+          quantity >= tier.minQuantity && 
+          (tier.maxQuantity === null || quantity <= tier.maxQuantity)
+        );
+        
+        if (applicableTier) {
+          pricing.unitPrice = applicableTier.unitPrice;
+        }
       }
 
       console.log('[pricing-display] Updating pricing:', {
@@ -49,7 +48,8 @@ export default async function decorate(block) {
         customerGroup: pricing.customerGroup,
         unitPrice: pricing.unitPrice,
         hasVolumeTiers: !!pricing.volumeTiers,
-        tierCount: pricing.volumeTiers?.length || 0
+        tierCount: pricing.volumeTiers?.length || 0,
+        volumeTiers: pricing.volumeTiers
       });
 
       // Update current price
@@ -68,6 +68,7 @@ export default async function decorate(block) {
       if (tierIndicatorEl) {
         if (isB2C) {
           tierIndicatorEl.style.display = 'none';
+          console.log('[pricing-display] B2C user - hiding tier badge');
         } else {
           tierIndicatorEl.style.display = 'block';
           const groupNames = {
@@ -75,7 +76,9 @@ export default async function decorate(block) {
             'Production-Builder': 'Production Builder',
             'Wholesale-Reseller': 'Wholesale Pricing'
           };
-          tierIndicatorEl.textContent = groupNames[pricing.customerGroup] || 'Standard Pricing';
+          const badgeText = groupNames[pricing.customerGroup] || 'Standard Pricing';
+          tierIndicatorEl.textContent = badgeText;
+          console.log('[pricing-display] B2B user - tier badge set to:', badgeText);
         }
       }
 

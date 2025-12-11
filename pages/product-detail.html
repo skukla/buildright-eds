@@ -266,14 +266,83 @@
         }
 
         // Price is embedded in product response from mesh
-        // Build pricing object in expected format
+        // Build pricing object with persona context
         const priceValue = rawProduct.price?.value ?? rawProduct.price ?? 0;
+        
+        // Get cached persona for volume pricing tiers
+        let cachedPersona = null;
+        try {
+          const personaData = sessionStorage.getItem('buildright_persona');
+          if (personaData) {
+            cachedPersona = JSON.parse(personaData);
+          }
+        } catch (e) {
+          console.warn('[PDP] Could not parse cached persona');
+        }
+        
+        // Map priceBookId to customer group for display purposes
+        const priceBookToCustomerGroup = {
+          'Production-Builder': 'Production-Builder',
+          'Trade-Professional': 'Trade-Professional',
+          'Wholesale-Reseller': 'Wholesale-Reseller',
+          'Retail-Registered': 'Retail-Registered',
+          'US-Retail': 'US-Retail'
+        };
+        
+        // Use persona's priceBookId or fallback to user's customerGroup
+        const effectiveCustomerGroup = cachedPersona?.priceBookId 
+          ? priceBookToCustomerGroup[cachedPersona.priceBookId] || cachedPersona.priceBookId
+          : (currentUser?.customerGroup || 'US-Retail');
+        
+        // B2B groups that get volume pricing
+        const B2B_GROUPS = ['Production-Builder', 'Trade-Professional', 'Wholesale-Reseller'];
+        const isB2B = B2B_GROUPS.includes(effectiveCustomerGroup);
+        
+        // Generate volume tiers for B2B customers
+        // These represent quantity-based discounts available to trade customers
+        let volumeTiers = null;
+        if (isB2B) {
+          const baseMultiplier = effectiveCustomerGroup === 'Production-Builder' ? 0.85 
+            : effectiveCustomerGroup === 'Trade-Professional' ? 0.88 
+            : 0.90; // Wholesale-Reseller
+          
+          volumeTiers = [
+            {
+              minQuantity: 1,
+              maxQuantity: 99,
+              unitPrice: priceValue,
+              savingsPercent: 0
+            },
+            {
+              minQuantity: 100,
+              maxQuantity: 499,
+              unitPrice: parseFloat((priceValue * 0.95).toFixed(2)),
+              savingsPercent: 5
+            },
+            {
+              minQuantity: 500,
+              maxQuantity: null,
+              unitPrice: parseFloat((priceValue * 0.88).toFixed(2)),
+              savingsPercent: 12
+            }
+          ];
+        }
+        
         const pricing = {
           unitPrice: priceValue,
-          retailPrice: priceValue, // Tiered pricing handled server-side
+          retailPrice: priceValue,
+          customerGroup: effectiveCustomerGroup,
+          volumeTiers,
           savings: 0,
           savingsPercent: 0
         };
+        
+        console.log('[PDP] Built pricing with persona context:', {
+          customerGroup: effectiveCustomerGroup,
+          isB2B,
+          hasVolumeTiers: !!volumeTiers,
+          priceBookId: cachedPersona?.priceBookId
+        });
 
         document.getElementById('product-name').textContent = product.name;
         document.getElementById('product-sku').textContent = product.sku;
