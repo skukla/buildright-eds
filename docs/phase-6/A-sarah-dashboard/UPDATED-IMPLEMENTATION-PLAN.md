@@ -1,9 +1,8 @@
 # Phase 6A: Updated Implementation Plan (with Backend Integration)
 
 **Date**: December 2, 2025  
-**Status**: Active - Backend service integration  
-**Previous Plan**: Sub-phases 1-7 (local BOM calculations)  
-**Updated Plan**: Sub-phases 1-8 (GraphQL integration)
+**Last Updated**: December 10, 2025  
+**Status**: Active - Sub-Phase 5 (Build Configurator) next
 
 ---
 
@@ -24,7 +23,7 @@
 
 ### ✅ Sub-Phase 1: Dashboard Simplification (COMPLETE)
 
-**Status**: ✅ Done (2-3 hours)  
+**Status**: ✅ Done  
 **Changes**: None - this was pure UI work
 
 **Deliverables:**
@@ -36,66 +35,45 @@
 
 ---
 
-### 🆕 Sub-Phase 2: Persona Integration (NEW)
+### ✅ Sub-Phase 2: Persona Integration (COMPLETE)
 
-**Status**: 🚧 Next up  
-**Time**: 2 hours  
-**Prerequisites**: None
+**Status**: ✅ Done (December 10, 2025)
 
-**What**: Get persona information and cache it for headers
+**What was done:**
+- Created persona action as single source of truth (`buildright-service/actions/persona/`)
+- Added JSON and Commerce data sources with `PERSONA_DATA_SOURCE` toggle
+- New GraphQL queries: `personaByEmail`, `personas` list
+- Commerce customers have ACO attributes populated (`aco_catalog_view_id`, `aco_price_book_id`)
+- Updated `PERSONA-SERVICE.md` documentation
 
-**Tasks:**
-1. Create `scripts/services/persona-service.js`
-2. Implement `getPersonaForCustomer(customerGroupId)`
-3. Cache persona in localStorage (catalogViewId, priceBookId)
-4. Display persona info in header/user menu
-5. Test persona switching (for demo purposes)
-
-**Code Example:**
-```javascript
-// scripts/services/persona-service.js
-export async function getPersonaForUser() {
-  // In demo mode, use hardcoded customer group ID
-  // TODO: In production, get from Adobe Commerce session
-  const customerGroupId = '1'; // Sarah = Commercial Tier 2
-  
-  const persona = await fetch('/graphql', {
-    method: 'POST',
-    body: JSON.stringify({
-      query: GET_PERSONA_QUERY,
-      variables: { customerGroupId }
-    })
-  });
-  
-  // Cache for headers
-  localStorage.setItem('buildright_persona', JSON.stringify(persona));
-  
-  return persona;
-}
-```
-
-**Deliverables:**
-- persona-service.js
-- Persona cached in localStorage
-- Persona displayed in UI
-- Test with customerGroupId = "1" (Sarah)
+**Key Files:**
+- `buildright-service/actions/persona/index.js` - Persona action
+- `buildright-service/actions/persona/data/persona-mappings.json` - JSON mappings
+- `buildright-commerce/scripts/config/commerce-config.js` - Customer definitions with ACO attributes
+- `buildright-eds/scripts/services/mesh-client.js` - Already has persona header caching
 
 ---
 
-### 🆕 Sub-Phase 3: Apollo Client Setup (NEW)
+### ⏭️ Sub-Phase 3: Apollo Client Setup (SKIPPED)
 
-**Status**: ⏭️ Pending  
-**Time**: 2-3 hours  
-**Prerequisites**: Sub-Phase 2 complete
+**Status**: ⏭️ Skipped  
+**Reason**: `mesh-client.js` already provides GraphQL client functionality with persona headers.
+Using fetch-based approach is simpler and already working.
 
-**What**: Set up GraphQL client with persona headers
+---
 
-**Tasks:**
-1. Install dependencies: `npm install @apollo/client graphql`
-2. Create `scripts/graphql/apollo-client.js`
-3. Configure mesh endpoint
-4. Create persona header middleware
-5. Test connection with GetPersona query
+### ⏭️ Sub-Phase 4: GraphQL Query Hooks (SKIPPED)
+
+**Status**: ⏭️ Skipped  
+**Reason**: `mesh-client.js` already has query functions:
+- `initializePersona(customerGroupId)` - Gets and caches persona
+- `searchProducts(phrase, options)` - Product search
+- `generateBOM(config)` - BOM generation
+- `getProductBySKU(sku)` - Single product lookup
+
+---
+
+### 🚧 Sub-Phase 5: Build Configurator (NEXT)
 
 **Code Example:**
 ```javascript

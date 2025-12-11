@@ -53,8 +53,17 @@ Instead of implementing all persona UIs first and then integrating backends, we 
 |-----------|--------|
 | GraphQL Mesh | ✅ Deployed |
 | BOM Generation | ✅ Working |
-| Persona API | ✅ Working |
+| Persona API | ✅ Working (JSON + Commerce data sources) |
 | ACO Integration | ✅ Connected |
+| Persona Action | ✅ Single source of truth for ACO mapping |
+
+### ✅ Commerce Customer Data
+
+| Component | Status |
+|-----------|--------|
+| Customer Attributes | ✅ `aco_catalog_view_id`, `aco_price_book_id` created |
+| Demo Customers | ✅ 5 customers with ACO attributes + addresses |
+| Persona Data Source | ✅ Toggle between JSON and Commerce |
 
 ---
 
@@ -73,19 +82,29 @@ Each persona follows the same pattern:
 ## Phase 6A: Sarah Martinez (Production Builder)
 
 **Status**: 🔄 In Progress  
-**Estimated Remaining**: 1-2 weeks
+**Estimated Remaining**: 1 week
 
 ### Completed
-- ✅ Sub-Phase 1: Dashboard Simplification
+
+| Sub-Phase | Description | Status |
+|-----------|-------------|--------|
+| 1 | Dashboard Simplification | ✅ Complete |
+| 2 | Persona Integration | ✅ Complete |
+| 3 | Apollo Client Setup | ⏭️ Skipped (using mesh-client.js) |
+| 4 | GraphQL Query Hooks | ⏭️ Skipped (mesh-client.js has these) |
+
+**Sub-Phase 2 Details (Completed Dec 10)**:
+- Persona action as single source of truth (`buildright-service/actions/persona/`)
+- JSON and Commerce data sources with `PERSONA_DATA_SOURCE` toggle
+- New queries: `personaByEmail`, `personas` list
+- Commerce customer attributes populated
+- Documentation updated (`PERSONA-SERVICE.md`)
 
 ### Remaining Sub-Phases
 
 | Sub-Phase | Description | Time | Status |
 |-----------|-------------|------|--------|
-| 2 | Persona Integration | 2h | 🚧 Next |
-| 3 | Apollo Client Setup | 2-3h | Pending |
-| 4 | GraphQL Query Hooks | 1-2h | Pending |
-| 5 | Build Configurator | 4-6h | Pending |
+| 5 | Build Configurator | 4-6h | 🚧 Next |
 | 6 | My Builds Dashboard | 3-4h | Pending |
 | 7 | BOM Review Page | 2-3h | Pending |
 | 8 | Integration & Polish | 2-3h | Pending |
@@ -294,15 +313,15 @@ Railing:   → 89 products (aluminum selected)
 
 ## Next Steps
 
-1. **Continue Phase 6A**: Sub-Phase 2 (Persona Integration)
-2. **Complete Phase 6A**: All 8 sub-phases
+1. **Continue Phase 6A**: Sub-Phase 5 (Build Configurator UI)
+2. **Complete Phase 6A**: Sub-phases 5-8
 3. **Begin Phase 6B/6C**: Apply patterns from Sarah
 4. **Complete remaining personas**
 5. **Final polish and demo prep**
 
 ---
 
-**Document Version**: 2.0  
+**Document Version**: 2.1  
 **Last Updated**: December 10, 2025  
-**Status**: Active - Vertical slice approach
+**Status**: Active - Phase 6A Sub-Phase 5 (Build Configurator) next
 
