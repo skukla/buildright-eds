@@ -1,6 +1,24 @@
 // Product Gallery Block Decoration
 // Uses product data passed from PDP (via mesh) rather than mock service
 import { resolveImagePath } from '../../scripts/utils.js';
+import { handleImageError } from '../../scripts/image-placeholder.js';
+
+/**
+ * Show placeholder for gallery image wrapper
+ * Uses the reusable image-placeholder pattern with gallery-specific class
+ */
+function showGalleryPlaceholder(imgEl) {
+  if (!imgEl) return;
+  
+  // Use the reusable utility to hide image and add placeholder to parent
+  handleImageError(imgEl);
+  
+  // Add gallery-specific placeholder class
+  const wrapper = imgEl.closest('.product-gallery-image-wrapper');
+  if (wrapper) {
+    wrapper.classList.add('product-gallery-placeholder');
+  }
+}
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
@@ -11,15 +29,8 @@ export default async function decorate(block) {
   
   if (!product) {
     console.warn('[product-gallery] No product data passed, showing placeholder');
-    // Show placeholder when no product data
     const mainImageEl = block.querySelector('#product-gallery-main-image');
-    if (mainImageEl) {
-      mainImageEl.classList.add('hidden');
-      const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
-      if (wrapper) {
-        wrapper.classList.add('product-gallery-placeholder', 'image-placeholder-pattern');
-      }
-    }
+    showGalleryPlaceholder(mainImageEl);
     return;
   }
 
@@ -43,22 +54,11 @@ export default async function decorate(block) {
       mainImageEl.src = resolveImagePath(images[0]);
       mainImageEl.alt = product.name || 'Product image';
       
-      // Handle image load error - show placeholder
-      mainImageEl.addEventListener('error', () => {
-        mainImageEl.src = '';
-        mainImageEl.classList.add('hidden');
-        const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
-        if (wrapper) {
-          wrapper.classList.add('product-gallery-placeholder', 'image-placeholder-pattern');
-        }
-      });
+      // Handle image load error using reusable placeholder
+      mainImageEl.addEventListener('error', () => showGalleryPlaceholder(mainImageEl));
     } else {
-      // No image - show CSS placeholder
-      mainImageEl.classList.add('hidden');
-      const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
-      if (wrapper) {
-        wrapper.classList.add('product-gallery-placeholder');
-      }
+      // No image URL - show placeholder immediately
+      showGalleryPlaceholder(mainImageEl);
     }
   }
 
@@ -76,10 +76,10 @@ export default async function decorate(block) {
       img.alt = `${product.name || 'Product'} - Image ${index + 1}`;
       img.loading = index === 0 ? 'eager' : 'lazy';
       
-      // Handle image load error - show placeholder
+      // Handle image load error using reusable placeholder
       img.addEventListener('error', () => {
-        img.classList.add('hidden');
-        thumbnail.classList.add('product-gallery-thumbnail-placeholder', 'image-placeholder-pattern');
+        handleImageError(img);
+        thumbnail.classList.add('product-gallery-thumbnail-placeholder');
       });
       
       thumbnail.appendChild(img);
@@ -96,10 +96,10 @@ export default async function decorate(block) {
           mainImageEl.alt = img.alt;
           mainImageEl.classList.remove('hidden');
           
-          // Remove placeholder class from wrapper if it exists
+          // Remove placeholder classes from wrapper if it exists
           const wrapper = mainImageEl.closest('.product-gallery-image-wrapper');
           if (wrapper) {
-            wrapper.classList.remove('product-gallery-placeholder', 'image-placeholder-pattern');
+            wrapper.classList.remove('product-gallery-placeholder', 'image-placeholder');
           }
         }
         
