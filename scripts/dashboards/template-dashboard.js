@@ -149,6 +149,10 @@ class TemplateDashboard {
     const template = this.templates.find(t => t.id === templateId);
     if (!template) return;
     
+    // Clear any previous build data to start fresh
+    // This ensures the configurator doesn't restore old selections
+    localStorage.removeItem('buildright_current_build');
+    
     // Navigate to Build Configurator (Phase 6A)
     window.location.href = `/pages/build-configurator.html?template=${template.id}`;
   }

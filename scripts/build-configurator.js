@@ -141,6 +141,14 @@ class BuildConfigurator {
       // Check if we're editing an existing BOM bundle
       this.editingBundleId = buildData.editingBundleId || null;
       
+      // Only restore selections if we're editing an existing BOM
+      // For fresh builds, start with clean defaults
+      if (!this.editingBundleId) {
+        // Clear stored build data for fresh start
+        localStorage.removeItem('buildright_current_build');
+        return;
+      }
+      
       // Restore package selection
       if (buildData.packageId) {
         const packageTile = document.querySelector(`[data-type="package"][data-id="${buildData.packageId}"]`);
