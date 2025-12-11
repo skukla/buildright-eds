@@ -11,8 +11,10 @@
  * @module scripts/services/mesh-client
  */
 
-// Mesh endpoint from buildright-service
-const MESH_ENDPOINT = 'https://edge-sandbox-graph.adobe.io/api/2463edc1-5cf7-4393-af04-95a3d1b6973c/graphql';
+import { MESH_CONFIG } from '../site-config.js';
+
+// Mesh endpoint from site config (centralized, easy to update)
+const MESH_ENDPOINT = MESH_CONFIG.endpoint;
 
 // Optional proxy endpoint for production (set via environment or config)
 // In production EDS, this would be an App Builder action URL
