@@ -1,15 +1,20 @@
 # Phase 6A: Sarah Martinez - Complete Integration Plan
 
 **Created**: December 7, 2025  
-**Updated**: December 8, 2025  
+**Updated**: December 2024  
 **Status**: Active  
 **Goal**: Fully integrated, demo-ready Sarah persona with real ACO/Commerce catalog data
+
+> **Master Plan**: [MASTER-IMPLEMENTATION-PLAN.md](../../MASTER-IMPLEMENTATION-PLAN.md)  
+> **Dropins Integration**: See Phase 5.5 in master plan
 
 ---
 
 ## Overview
 
-This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) product data. The focus is on demonstrating real catalog integration — orders and cart can remain mocked for now.
+This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) product data. 
+
+**Key Update (December 2024):** Cart, checkout, and orders will now use Commerce Dropins instead of mocked localStorage. See [CODEBASE-AUDIT-DROPINS.md](../../CODEBASE-AUDIT-DROPINS.md) for details.
 
 ---
 
@@ -245,73 +250,68 @@ All sub-phases completed:
 
 ---
 
-## Phase 6: Cart & Orders (Lower Priority)
+## Phase 6: Cart & Orders (Commerce Dropins)
 **Estimated Time**: 3-4 days  
-**Priority**: 🟢 LOW (can remain mocked for demo)
+**Priority**: 🟡 MEDIUM (now part of Phase 5.5)
 
-> 📋 **Note**: When Commerce backend is added, see **Phase 7: Commerce Backend Integration** below for bundle pricing migration.
+> **Update (December 2024):** Cart and Orders will use Commerce Dropins instead of mocked localStorage.  
+> See [CODEBASE-AUDIT-DROPINS.md](../../CODEBASE-AUDIT-DROPINS.md) for implementation details.
 
-### 6.1 Cart Enhancements
+### 6.1 Cart — Use Cart Dropin
 
-- [ ] Bundle quantity editing
-- [ ] Remove individual items
-- [ ] Cart persistence
+- [ ] Initialize `@dropins/storefront-cart`
+- [ ] Replace `cart-manager.js` with Dropin
+- [ ] Wire add-to-cart buttons to `addProductsToCart(sku)`
+- [ ] Update `pages/cart.html` with Cart container
 
-### 6.2 Checkout Flow
+### 6.2 Checkout — Use Checkout Dropin
 
-- [ ] Checkout page
-- [ ] Order submission
-- [ ] Order confirmation
+- [ ] Initialize `@dropins/storefront-checkout`
+- [ ] Create `pages/checkout.html` with Checkout container
+- [ ] Configure Commerce payment/shipping methods
 
-### 6.3 Order History
+### 6.3 Order History — Use Order Dropin
 
-- [ ] Order history page
-- [ ] Reorder flow
-- [ ] Account integration
+- [ ] Initialize `@dropins/storefront-order`
+- [ ] Create `pages/order-history.html` with Orders container
+- [ ] Create `pages/order-detail.html` with OrderDetail container
 
 ---
 
-## Phase 7: Commerce Backend Integration (Future)
-**Estimated Time**: 2-3 days  
-**Priority**: 🔵 FUTURE (when Commerce backend is added)
+## Phase 7: Commerce Backend Integration (Now Part of Phase 5.5)
+**Estimated Time**: Included in Phase 5.5  
+**Priority**: 🔴 HIGH (integrated with Dropins)
+
+> **Update (December 2024):** Commerce backend integration is now handled via Commerce Dropins.  
+> Auth, Cart, Checkout, and Orders all connect to Commerce backend automatically.  
+> See [MASTER-IMPLEMENTATION-PLAN.md](../../MASTER-IMPLEMENTATION-PLAN.md) Phase 5.5.
+
+### 7.1 Commerce Dropins Handle Backend
+
+| Feature | Dropin | Status |
+|---------|--------|--------|
+| Authentication | `@dropins/storefront-auth` | Phase 5.5 |
+| Cart | `@dropins/storefront-cart` | Phase 5.5 |
+| Checkout | `@dropins/storefront-checkout` | Phase 5.5 |
+| Orders | `@dropins/storefront-order` | Phase 5.5 |
+| Account | `@dropins/storefront-account` | Phase 5.5 |
+
+### 7.2 Bundle Pricing Migration (Future)
 
 > 📖 **Documentation**: [BUNDLE-PRICING-ARCHITECTURE.md](../../../buildright-service/docs/BUNDLE-PRICING-ARCHITECTURE.md)
 
-### 7.1 Add Commerce as Mesh Source
-
-- [ ] **Mesh Configuration** (2h)
-  - [ ] Add Commerce GraphQL source to `mesh.config.js`
-  - [ ] Configure authentication (OAuth)
-  - [ ] Map Commerce types with `Commerce_` prefix
-
-### 7.2 Bundle Pricing Migration
-
-- [ ] **Switch to Commerce `BundleProduct`** (3h)
+- [ ] **Switch to Commerce `BundleProduct`** (when needed)
   - [ ] Query `BundleProduct.price_range` for bundles
-  - [ ] Get native `minimum_price` / `maximum_price`
-  - [ ] Remove `enrichBundlePrices()` calls from resolvers
-  - [ ] Deprecate `mesh/resolvers-src/utils/bundle-pricing.js`
+  - [ ] Remove mesh calculation workaround
 
-- [ ] **Frontend Updates** (2h)
-  - [ ] Display price range ("$X - $Y") for bundles
-  - [ ] Handle `dynamic_price` flag
-  - [ ] Update product cards for range vs. single price
+### 7.3 Key Architecture Note
 
-### 7.3 Additional Commerce Features
+| Data Source | Method |
+|-------------|--------|
+| **Commerce data** (auth, cart, orders) | Commerce Dropins |
+| **ACO data** (products, pricing, BOM) | Custom SDK Dropins (Phase 7) |
 
-- [ ] **Customer Data** (optional)
-  - [ ] Customer groups from Commerce
-  - [ ] Order history from Commerce
-  - [ ] Wishlist integration
-
-### Why This Matters
-
-| Current (ACO-only) | Future (Commerce) |
-|--------------------|-------------------|
-| Bundle `priceRange: null` | Bundle `priceRange` computed |
-| Mesh calculates price | Commerce calculates price |
-| 2 extra ACO queries | No extra queries |
-| Default selection only | Full min/max range |
+This hybrid approach ensures each data source uses the appropriate access method.
 
 ---
 
@@ -433,4 +433,5 @@ FUTURE: Commerce Backend (when added)
 | Dec 9, 2025 | Phase 3 updates: Live Search, Faceted Search completed |
 | Dec 9, 2025 | Added bundle pricing mesh workaround (ACO returns null priceRange for bundles) |
 | Dec 9, 2025 | Added Phase 7: Commerce Backend Integration - documents bundle pricing migration path |
+| Dec 2024 | **Major update**: Cart/Orders now use Commerce Dropins. Added references to MASTER-IMPLEMENTATION-PLAN.md |
 

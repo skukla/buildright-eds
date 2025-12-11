@@ -1,6 +1,15 @@
 # BuildRight Persona-Based Implementation Plan
 
-## Overview
+> **ARCHIVED**: This document has been superseded by [MASTER-IMPLEMENTATION-PLAN.md](../MASTER-IMPLEMENTATION-PLAN.md). Kept for historical reference.
+>
+> Key updates in the master plan:
+> - Commerce Dropins for auth, cart, checkout, orders
+> - Custom SDK Dropins for ACO components
+> - Consolidated phase structure and progress tracking
+
+---
+
+## Overview (Historical)
 
 Transform the BuildRight EDS prototype into a comprehensive, persona-driven experience that demonstrates Adobe Commerce Optimizer's CCDM capabilities. The implementation will support 5 distinct personas with unique user journeys, shared UI components following the existing design system, and a demo-ready authentication system.
 

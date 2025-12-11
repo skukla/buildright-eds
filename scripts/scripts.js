@@ -185,7 +185,9 @@ export function decorateBlocks(main) {
     '.project-bundle',
     '.wizard-progress',
     '.wizard-sidebar',
-    '.project-builder'
+    '.project-builder',
+    '.auth-dropin',
+    '.commerce-mini-cart'
   ];
   
   blockSelectors.forEach(selector => {
@@ -297,7 +299,9 @@ export async function loadBlocks(main) {
     'project-bundle',
     'wizard-progress',
     'wizard-sidebar',
-    'project-builder'
+    'project-builder',
+    'auth-dropin',
+    'commerce-mini-cart'
   ];
 
   for (const pattern of blockPatterns) {
@@ -326,6 +330,24 @@ export function decorateMain(main) {
 }
 
 /**
+ * Initialize Commerce Dropins if enabled
+ * Should be called early but doesn't block LCP
+ */
+async function initializeDropins() {
+  try {
+    const { shouldUseDropins, initializeDropins } = await import('./initializers/index.js');
+    
+    if (await shouldUseDropins()) {
+      console.log('[Scripts] Initializing Commerce Dropins...');
+      await initializeDropins();
+    }
+  } catch (error) {
+    console.warn('[Scripts] Failed to initialize Commerce Dropins:', error.message);
+    // Non-blocking - demo mode will be used as fallback
+  }
+}
+
+/**
  * Loads everything needed to get to LCP
  * @param {Document} doc - The document
  */
@@ -345,6 +367,10 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
   }
+  
+  // 5. Initialize Commerce Dropins (non-blocking)
+  // Start initialization but don't wait - blocks will await if needed
+  initializeDropins();
 }
 
 /**

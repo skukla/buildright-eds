@@ -1,8 +1,10 @@
 # BuildRight Demo System - Agent Handoff Document
 
 > **Created:** December 11, 2025  
+> **Updated:** December 2024  
 > **Purpose:** Comprehensive context for continuing development with a new AI agent  
-> **Current Focus:** Implementing Adobe Commerce Storefront Dropins
+> **Current Focus:** Commerce Dropins integration, then Persona implementations  
+> **Master Plan:** [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md)
 
 ---
 
@@ -224,22 +226,38 @@ buildright-commerce/
 | Persona Action | ✅ Complete | Dynamic ACO catalog view resolution |
 | Commerce Customer Setup | ✅ Complete | 5 demo customers with custom attributes |
 | Currency Formatting | ✅ Complete | `formatCurrency()` utility everywhere |
+| **Dropins Architecture Decisions** | ✅ Complete | Commerce + Custom SDK dropins strategy |
 
-### 🔄 In Progress
+### Key Decisions Made (December 2024)
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Commerce Dropins Integration | 🔄 Next | Replace demo auth with real Commerce auth |
-| Unified Personalization | 🔄 Planned | Event-driven architecture for persona changes |
+| Decision | Details |
+|----------|---------|
+| Use Commerce Dropins for Commerce data | Auth, Cart, Checkout, Orders |
+| Create Custom SDK Dropins for ACO data | Product Grid, PDP, Project Builder |
+| Keep Persona Service | Works WITH Auth Dropin (not replaced) |
+| No dual-mode auth | Dropins are primary; demo mode deprecated |
 
-### ❌ Not Started
+See [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md) for full decision log.
 
-| Feature | Notes |
-|---------|-------|
-| Real Cart Functionality | Will use `@dropins/storefront-cart` |
-| Checkout Flow | Will use `@dropins/storefront-checkout` |
-| Order History (real) | Needs Commerce integration |
-| EDS Authoring Migration | Currently using HTML pages, not Google Docs |
+### 🔄 Current Focus: Sarah End-to-End
+
+Complete Sarah's entire experience (including all infrastructure) before other personas.
+
+| Order | Phase | Status | Description |
+|-------|-------|--------|-------------|
+| 1 | Phase 5.5 | 🔲 Next | Commerce Dropins (for Sarah) |
+| 2 | Phase 6A | 🔄 In Progress | Sarah's features (configurator, BOM) |
+| 3 | Phase 7 | 🔲 Planned | Custom SDK Dropins (for Sarah) |
+| 4 | Phase 8 | 🔲 Planned | Polish Sarah's experience |
+
+### 🔲 Deferred: Other Personas (End of Project)
+
+| Phase | Persona | Status |
+|-------|---------|--------|
+| 6B | Marcus Johnson | 🔲 After Sarah |
+| 6C | Lisa Chen | 🔲 After Sarah |
+| 6D | David Thompson | 🔲 After Sarah |
+| 6E | Kevin Rodriguez | 🔲 After Sarah |
 
 ---
 
@@ -407,62 +425,83 @@ User configures build → build-configurator.js saves to localStorage
 
 ## Immediate Next Steps
 
-### Commerce Dropins Integration
+### Current Phase: 5.5 (Commerce Dropins) + 6A (Sarah Persona)
 
-The user wants to integrate Adobe Commerce Storefront Dropins **before** migrating to EDS-authored content. This is the hybrid approach:
+See [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md) for the full plan.
 
-#### What Dropins Will Replace
+### Phase 5.5: Commerce Dropins Integration
 
-| Current | Dropin |
-|---------|--------|
-| `scripts/auth.js` | `@dropins/storefront-auth` |
-| Manual `sessionStorage` persona cache | `@dropins/storefront-personalization` |
-| Mock cart state | `@dropins/storefront-cart` |
-| (Not implemented) | `@dropins/storefront-checkout` |
+| Task | Status |
+|------|--------|
+| Finalize `scripts/initializers/` structure | 🔲 |
+| Complete `auth-dropin` block | 🔲 |
+| Wire `authenticated` event to `initializeMeshForEmail()` | 🔲 |
+| Complete `commerce-mini-cart` block | 🔲 |
+| Create `pages/checkout.html` with Checkout dropin | 🔲 |
+| Implement order history with Order dropin | 🔲 |
 
-#### What Stays Custom
+### Phase 6A: Sarah Persona (In Progress)
 
-| Block | Reason |
-|-------|--------|
-| product-grid | Uses ACO, not Commerce Catalog Service |
-| pricing-display | Custom B2B pricing logic |
-| build-configurator | BuildRight-specific |
-| bom-review | BuildRight-specific |
+| Task | Status |
+|------|--------|
+| Build Configurator (Sub-Phase 5) | 🔲 |
+| My Builds Dashboard (Sub-Phase 6) | 🔲 |
+| BOM Review Page (Sub-Phase 7) | 🔲 |
+| Integration & Polish (Sub-Phase 8) | 🔲 |
 
-#### Integration Architecture
+### Architecture: Two Types of Dropins
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    Commerce Dropins                          │
-│  ┌──────────────┐ ┌───────────────────┐ ┌────────────────┐  │
-│  │ Auth Dropin  │ │ Personalization   │ │  Cart Dropin   │  │
-│  └──────┬───────┘ └─────────┬─────────┘ └───────┬────────┘  │
-└─────────┼───────────────────┼───────────────────┼───────────┘
-          │ authenticated     │ customer group    │ cart items
-          ▼                   ▼                   ▼
+│  (Auth, Cart, Checkout, Orders)                              │
+│  ┌──────────────┐ ┌────────────────┐ ┌────────────────┐     │
+│  │ Auth Dropin  │ │  Cart Dropin   │ │ Order Dropin   │     │
+│  └──────┬───────┘ └───────┬────────┘ └───────┬────────┘     │
+└─────────┼─────────────────┼──────────────────┼──────────────┘
+          │                 │                  │
+          │ authenticated   │ cart/data        │ orders
+          ▼                 ▼                  ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                       Event Bus                              │
-│  'authenticated' → trigger persona lookup via mesh           │
-│  'personalization/updated' → refresh catalog pricing         │
-│  'cart/data' → update cart badge                             │
+│  Standard @dropins/tools/event-bus.js                        │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   Custom BuildRight Blocks                   │
-│  product-grid → ACO via Mesh (with persona headers)          │
-│  pricing-display → persona-aware volume pricing              │
-│  build-configurator → BOM configuration                      │
+│                 Custom SDK Dropins (Phase 7)                 │
+│  (Product Grid, PDP, Project Builder)                        │
+│  ┌──────────────┐ ┌────────────────┐ ┌────────────────┐     │
+│  │ Product      │ │  Product       │ │ Project        │     │
+│  │ Discovery    │ │  Detail        │ │ Builder        │     │
+│  └──────┬───────┘ └───────┬────────┘ └───────┬────────┘     │
+└─────────┼─────────────────┼──────────────────┼──────────────┘
+          │                 │                  │
+          │ ACO data        │ persona pricing  │ BOM generation
+          ▼                 ▼                  ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   Catalog Service + Mesh Client              │
+│  catalog-service.js → mesh-client.js → API Mesh → ACO        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-#### Key Integration Points
+### Key Integration: Auth → Persona → Catalog
 
-1. **Auth Events:** When user logs in via Auth dropin, capture the `authenticated` event and call persona action to get ACO context.
+```javascript
+// In scripts/initializers/auth.js
+events.on('authenticated', async (payload) => {
+  if (payload?.customer?.email) {
+    // Auth Dropin fires event → Persona Service gets ACO context
+    await initializeMeshForEmail(payload.customer.email);
+    // Headers now set for all ACO queries
+  }
+});
+```
 
-2. **Customer Group:** The Personalization dropin will provide the Commerce customer group. Use this to call the persona action.
-
-3. **Cart SKUs:** Cart dropin will need to add products by SKU (since products are in ACO, not Commerce Catalog Service).
+**Why both Auth Dropin and Persona Service?**
+- Auth Dropin: Commerce authentication (login UI, tokens)
+- Persona Service: ACO context (catalogViewId, priceBookId)
+- They work together — neither replaces the other
 
 ---
 
@@ -632,19 +671,29 @@ npm run import:all
 - ✅ ACO product catalog working via API Mesh
 - ✅ Persona-based pricing and catalog views working
 - ✅ BOM Builder working end-to-end
-- ✅ Demo auth with 5 personas
-- 🔄 Ready to integrate Commerce Dropins
+- ✅ Key architecture decisions made (see below)
+- 🔄 Sarah persona (Phase 6A) in progress
+- 🔲 Commerce Dropins integration (Phase 5.5) ready to implement
 
-**Immediate task:**
-Integrate Adobe Commerce Storefront Dropins (`@dropins/storefront-auth`, `@dropins/storefront-personalization`, `@dropins/storefront-cart`) to replace the demo auth system. This is a hybrid integration where:
-- Dropins handle: auth, personalization, cart, checkout
-- Custom blocks handle: product catalog (ACO), BOM builder
+**Key decisions already made (December 2024):**
+1. Use Commerce Dropins for Commerce data (auth, cart, checkout, orders)
+2. Create Custom SDK Dropins for ACO data (product grid, PDP, project builder)
+3. Keep Persona Service — works WITH Auth Dropin, not replaced by it
+4. No dual-mode auth — Dropins are primary
+
+**Immediate tasks (Sarah end-to-end):**
+1. **Phase 5.5**: Commerce Dropins (auth, cart, checkout, orders)
+2. **Phase 6A**: Sarah's features (build configurator, BOM review)
+3. **Phase 7**: Custom SDK Dropins (product grid, PDP, project builder)
+4. **Phase 8**: Polish Sarah's complete experience
+
+**Deferred (after Sarah):** Other personas (Marcus, Lisa, David, Kevin)
 
 **Key constraint:**
 Products come from ACO, not Commerce Catalog Service. Cart dropin will add items by SKU.
 
 **Start by:**
-1. Reading the Commerce Dropin documentation
-2. Understanding how dropins emit events (`authenticated`, `personalization/updated`)
-3. Creating an integration layer that connects dropin events to the existing persona action
+1. Reading [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md) for the full plan
+2. Reading [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) for Dropins details
+3. Implementing Phase 5.5 tasks (Commerce Dropins) or Phase 6A tasks (Sarah persona)
 

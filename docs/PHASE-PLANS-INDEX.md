@@ -1,28 +1,47 @@
-# BuildRight Persona Implementation - Complete Phase Plans Index
+# BuildRight Phase Plans Index
+
+> **Authoritative Plan:** [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md)  
+> This index provides links to detailed phase documents.
 
 ## Overview
 
-This directory contains a comprehensive, phased implementation plan for transforming the BuildRight EDS prototype into a persona-driven experience. The plan is broken down into 13 focused, testable phases.
+BuildRight uses a phased implementation approach with two major tracks:
+
+1. **Commerce Dropins** — Standard Adobe dropins for Commerce data (auth, cart, checkout, orders)
+2. **Custom SDK Dropins** — BuildRight-specific dropins for ACO data (products, pricing, BOM)
 
 ---
 
-## Meta-Level Documents
+## Master Plan
 
-### 📋 PERSONA-META-PLAN.md
-**Overall orchestration document**
-- Phases overview and dependencies
-- Dependency graph
-- Mock ACO strategy
+### 📋 MASTER-IMPLEMENTATION-PLAN.md ⭐ **START HERE**
+**Single source of truth**
+- Executive summary and current state
+- Architecture overview (Commerce + ACO)
+- Key decisions log
+- All phases with tasks and timeline
 - Progress tracking
-- Risk management
-- Communication plan
 
-### 📋 PERSONA-IMPLEMENTATION-PLAN.md
-**Original comprehensive plan** (for reference)
-- Complete vision document
-- All personas defined
-- Full requirements
-- Success criteria
+---
+
+## Key Decision Documents
+
+### 📄 CODEBASE-AUDIT-DROPINS.md
+**Detailed Commerce Dropins integration plan**
+- File-by-file audit (DELETE, MODIFY, KEEP)
+- Services architecture analysis
+- Dropins to integrate
+- Custom SDK dropins to create
+
+### 📋 ADR-001: Use Dropins for Commerce
+**Decision:** Use Commerce Dropins for auth, cart, checkout, orders
+
+### 📋 ADR-007: Custom SDK Dropins for ACO
+**Decision:** Create custom SDK dropins for ACO-sourced components
+
+---
+
+## Persona Reference
 
 ### 📋 BUILDRIGHT-PERSONAS-AND-FLOWS.md
 **Persona definitions and user journeys**
@@ -32,374 +51,145 @@ This directory contains a comprehensive, phased implementation plan for transfor
 
 ---
 
-## Phase Plans (Detailed)
+## Phase Plans
 
-### Phase 0: Foundation
+### Phases 0-5: Foundation ✅ Complete
 
-#### 📄 PHASE-0-RESEARCH-AND-DECISIONS.md
-**Duration**: 1-2 weeks | **Dependencies**: None
-
-**Research & Architecture**
-- Adobe Commerce Storefront SDK (Dropins)
-- EDS DOM manipulation patterns
-- Block vs. Dropin decision matrix
-- Mock ACO service design
-- Authentication strategy
-- Architecture Decision Records (ADRs)
-
-**Deliverables**:
-- Technical documentation
-- Architecture decisions
-- Integration guides
-- Decision records
+| Phase | Status | Description |
+|-------|--------|-------------|
+| Phase 0 | ✅ | Research, ADRs, architecture decisions |
+| Phase 1 | ✅ | ACO data generation (buildright-aco) |
+| Phase 2 | ⏸️ | Design system icons (deferred, using emojis) |
+| Phase 3 | ✅ | Core architecture, persona config, auth |
+| Phase 4 | ✅ | Shared components |
+| Phase 5 | ✅ | Existing page refactors |
 
 ---
 
-### Phase 1: Data Foundation
+## Sarah End-to-End (Current Focus)
 
-#### 📄 PHASE-1-ACO-DATA-FOUNDATION.md
-**Duration**: 2-3 weeks | **Dependencies**: None (parallel to Phase 0)
+Complete Sarah's entire experience before other personas.
 
-**Mock Data Generation (buildright-aco repo)**
-- Product definitions with persona attributes
-- 6 customer group price books
-- Policy definitions documentation
-- EDS-compatible data generation
-- Documentation updates (BUILDRIGHT-CASE-STUDY, SETUP-GUIDE)
+### Phase 5.5: Commerce Dropins 🔲 Next
 
-**Deliverables**:
-- Enhanced product definitions
-- Generation & ingestion scripts
-- Mock data files
-- Updated documentation
+**Goal:** Commerce auth, cart, checkout, orders for Sarah  
+**Duration:** 2 weeks
 
----
+| Dropin | Status |
+|--------|--------|
+| Auth | 🔲 |
+| Cart | 🔲 |
+| Checkout | 🔲 |
+| Order | 🔲 |
 
-### Phase 2: Design System
+### Phase 6A: Sarah's Features 🔄 In Progress
 
-#### 📄 PHASE-2-DESIGN-SYSTEM-AND-ICONS.md
-**Duration**: 1 week | **Dependencies**: Phase 0
+**Goal:** Template dashboard, configurator, BOM review  
+**Details:** [implementation/sarah-end-to-end/features/](./implementation/sarah-end-to-end/features/)
 
-**Professional Custom Icons**
-- ~40 custom SVG icons (24x24px)
-- Icon library organization
-- Icon CSS classes and helpers
-- Emoji replacement strategy
-- Design system documentation
+### Phase 7: Custom SDK Dropins 🔲 Planned
 
-**Deliverables**:
-- Complete icon library
-- Icon helper utilities
-- Design system guide
-- Emoji removal checklist
+**Goal:** SDK-based product grid, PDP, project builder for Sarah  
+**Duration:** 2-3 weeks
+
+### Phase 8: Polish 🔲 Planned
+
+**Goal:** Complete Sarah's end-to-end experience  
+**Duration:** 1 week
 
 ---
 
-### Phase 3: Core Architecture
+## Other Personas (End of Project)
 
-#### 📄 PHASE-3-CORE-ARCHITECTURE.md
-**Duration**: 1-2 weeks | **Dependencies**: Phase 0, Phase 1
+After Sarah is complete, apply patterns to remaining personas.
 
-**Foundation Systems**
-- Persona configuration system
-- Mock ACO service layer (mirrors real API)
-- Authentication system (demo + production plan)
-- Generic dashboard & builder pages
-- Routing patterns
+| Phase | Persona | Key Feature |
+|-------|---------|-------------|
+| 6B | Marcus Johnson (GC) | Project wizard with phases |
+| 6C | Lisa Chen (Remodeler) | Good/Better/Best packages |
+| 6D | David Thompson (DIY) | Deck builder |
+| 6E | Kevin Rodriguez (Store Mgr) | Velocity-based restock |
 
-**Deliverables**:
-- persona-config.js
-- aco-service.js
-- auth.js
-- dashboard.js & builder.js
-- Unit tests
-
----
-
-### Phase 4: Shared Components
-
-#### 📄 PHASE-4-SHARED-COMPONENTS.md
-**Duration**: 2 weeks | **Dependencies**: Phase 2, Phase 3
-
-**Reusable EDS Blocks**
-- Loading overlay (CCDM demo)
-- Wizard vertical progress
-- Template card
-- Product tile
-- Package comparison
-
-**Deliverables**:
-- 5 shared EDS blocks
-- Block documentation
-- Component tests
-
----
-
-### Phase 5: Existing Page Refactor
-
-#### 📄 PHASE-5-EXISTING-PAGE-REFACTOR.md
-**Duration**: 2-3 weeks | **Dependencies**: Phase 3, Phase 4
-
-**Page Audit & Updates**
-- Complete page audit (PAGE-AUDIT-CHECKLIST.md)
-- Login page with persona selection
-- Catalog page (remove kit mode, add CCDM)
-- Product detail page (customer group pricing)
-- Cart page integration
-- Remove all emojis
-
-**Deliverables**:
-- Updated pages (login, catalog, PDP, cart, account)
-- Kit mode removed
-- Emoji-free codebase
-- Page audit document
-
----
-
-### Phase 6: Persona Implementations
-
-#### 📄 PHASE-6A-PERSONA-SARAH.md
-**Sarah Martinez - Production Builder**
-**Duration**: 1-2 weeks | **Dependencies**: Phase 4, Phase 5
-
-**Features**:
-- Template dashboard
-- Floor plan data (6 templates)
-- Floor plan diagrams
-- Finished home images
-- Template ordering with variants
-- Phase-based BOM generation
-
-**Customer Group**: Commercial Tier 2
-
----
-
-#### 📄 PHASES-6B-TO-7-CONSOLIDATED.md
-**Remaining Personas & Integration (Consolidated Document)**
-
-Contains detailed plans for:
-
-**Phase 6B: Marcus Johnson - General Contractor**
-- Duration: 2 weeks
-- Project wizard with phase selection
-- Educational content
-- CCDM filtering demonstration
-- Quality tier selection
-- Phase-based BOM
-- Customer Group: Residential Builder
-
-**Phase 6C: Lisa Chen - Remodeling Contractor**
-- Duration: 2 weeks
-- Good/Better/Best package builder
-- Complete bathroom package photos
-- Visual comparison
-- Customization within tier
-- Quote generation
-- Customer Group: Pro Specialty
-
-**Phase 6D: David Thompson - Pro Homeowner** ⭐ **PRIMARY CCDM DEMO**
-- Duration: 2-3 weeks
-- DIY deck builder
-- Large hero images
-- Progressive disclosure
-- **Product count visualization**
-- **Visible CCDM filtering**
-- Educational DIY content
-- Customer Group: Retail Homeowner
-
-**Phase 6E: Kevin Rodriguez - Store Manager**
-- Duration: 1 week
-- Velocity-based restock dashboard
-- Smart suggestions
-- Priority indicators
-- Category-based view
-- Customer Group: Retail Chain Buyer
-
-**Phase 7: Integration & Polish**
-- Duration: 2 weeks
-- Cross-persona testing
-- Performance optimization
-- Responsive design verification
-- Accessibility compliance
-- Demo walkthrough guide
-- Bug fixes & polish
+**Details:** [implementation/other-personas/](./implementation/other-personas/)
 
 ---
 
 ## Supporting Documents
 
-### 📄 PHASE-PLANS-SUMMARY.md
-Quick reference guide listing all phases with brief descriptions
-
-### 📄 DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md ⭐ **NEW**
-**Complete step-by-step migration from demo mode to production**
-- API Mesh setup and deployment
-- Authentication migration (mock → @dropins/storefront-auth)
-- Product data migration (static JSON → Adobe Commerce GraphQL)
-- Pricing migration (mock → ACO Price Books)
-- Cart/Checkout migration (localStorage → Commerce APIs)
-- Persona features migration
-- Testing & validation checklists
-- EDS deployment procedures
-- Rollback plan
-
-### 📄 DATA-SOURCE-MATRIX.md
-**Hybrid data architecture: Adobe Commerce PaaS + ACO**
-- What data comes from Commerce vs ACO
-- SaaS Data Export sync flow
-- ACO-only features (Price Books, Policies, Catalog Views)
-- Script strategy (Commerce vs ACO APIs)
-
-### 📄 CSS-ARCHITECTURE.md
-Existing design system documentation
-
-### 📄 EDS-MIGRATION-GUIDE.md
-Existing EDS patterns and best practices
-
-### 📄 TESTING-GUIDE.md
-Testing strategies and checklists
+| Document | Purpose |
+|----------|---------|
+| [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) | Dropins implementation docs |
+| [reference/backend/](./reference/backend/) | Backend reference docs |
+| [AGENT-HANDOFF.md](./AGENT-HANDOFF.md) | Context for new developers |
 
 ---
 
-## Implementation Strategy
+## Key Architectural Decisions
 
-### Parallel Work Opportunities
+### Two Types of Dropins
 
-```
-Phase 0 (Research)     ┐
-                       ├─→ Phase 2 (Icons) ─────┐
-Phase 1 (Data)         ┘                        │
-                                                ↓
-                                         Phase 3 (Architecture)
-                                                ↓
-                                         Phase 4 (Components)
-                                                ↓
-                                         Phase 5 (Page Refactor)
-                                                ↓
-                    ┌───────────────────────────┼────────────────────────┐
-                    ↓                           ↓                        ↓
-              Phase 6A (Sarah)          Phase 6B (Marcus)        Phase 6C (Lisa)
-                                        Phase 6D (David)         Phase 6E (Kevin)
-                                                ↓
-                                         Phase 7 (Integration)
-```
+| Data Source | Dropin Type | Why? |
+|-------------|-------------|------|
+| **Commerce** | Standard Commerce Dropins | Auth, Cart, Checkout live in Commerce |
+| **ACO** | Custom SDK Dropins | Native dropins can't query ACO |
 
-**Phases 6B-6E can run in parallel** (2-3 at a time with sufficient team resources)
+### Auth Dropin + Persona Service
 
----
+Both are needed:
+- **Auth Dropin:** Commerce authentication (login UI, tokens)
+- **Persona Service:** ACO context (catalogViewId, priceBookId)
 
-## Key Principles
+### SDK Dropins Over Plain EDS Blocks
 
-### 🎭 Mock-First Approach
-All ACO connections are **MOCKED** but designed to mirror production API format exactly. This enables seamless transition to real ACO when ready.
-
-### 🎯 Persona-Agnostic Architecture
-All file names, blocks, and components are generic. Persona-specific logic is isolated in configuration and dashboard/builder modules.
-
-### ✅ Testable Phases
-Each phase has explicit success criteria, testing checklists, and clear deliverables.
-
-### 📊 Incremental Delivery
-Phases deliver working, testable functionality that builds on previous phases.
-
-### 🎨 Professional UX
-- No emojis - custom SVG icons throughout
-- Immersive visual experiences
-- Educational content where appropriate
-- Mobile responsive
-- Accessibility compliant
-
----
-
-## CCDM Demonstration Strategy
-
-### Primary Demo: David's Deck Builder (Phase 6D)
-The deck builder provides the **clearest demonstration of CCDM filtering**:
-
-1. **Entry**: 2,847 products available (all deck products)
-2. **Shape Selection**: ⬇ to 643 products (rectangular only)
-3. **Material Selection**: ⬇ to 127 products (composite material)
-4. **Railing Selection**: ⬇ to 89 products (compatible railings)
-
-Each step shows:
-- Loading state with specific message
-- Visual product count change
-- Catalog progressively filtered
-
-### Supporting Demos:
-- **Marcus**: Phase-based filtering (foundation → envelope → interior)
-- **Lisa**: Package tier filtering (good → better → best)
-
----
-
-## Success Metrics
-
-### Technical
-- ✅ All 5 personas functional
-- ✅ Mock ACO mirrors production format
-- ✅ 6 customer groups with differentiated pricing
-- ✅ CCDM policies filter correctly
-- ✅ No emojis (professional icons)
-- ✅ Mobile responsive
-- ✅ Performance targets met
-
-### User Experience
-- ✅ Each persona has unique, optimized journey
-- ✅ Visual, immersive experiences
-- ✅ Educational content where needed
-- ✅ CCDM filtering clearly demonstrated
-- ✅ Professional UX throughout
-
-### Documentation
-- ✅ All phase plans complete
-- ✅ Architecture decisions documented
-- ✅ Component library documented
-- ✅ Demo walkthrough created
+For ACO components, use the Drop-in SDK to ensure:
+- Shared design tokens with Commerce dropins
+- Standard event bus integration
+- Slots for extensibility
 
 ---
 
 ## Timeline Summary
 
-| Phase Group | Duration | Can Parallelize? |
-|-------------|----------|------------------|
-| Phase 0-1 | 2-3 weeks | ✅ Yes |
-| Phase 2 | 1 week | Partial (during Phase 0) |
-| Phase 3 | 1-2 weeks | No |
-| Phase 4 | 2 weeks | No |
-| Phase 5 | 2-3 weeks | No |
-| Phase 6A-6E | 7-10 weeks | ✅ Yes (2-3 at once) |
-| Phase 7 | 2 weeks | No |
+### Sarah End-to-End (8 weeks)
 
-**Total Estimated Duration**: 17-23 weeks (4-6 months)
+| Phase | Duration | Status |
+|-------|----------|--------|
+| Phase 0-5 | Complete | ✅ Foundation |
+| Phase 5.5 | 2 weeks | 🔲 Commerce Dropins |
+| Phase 6A | 2-3 weeks | 🔄 Sarah features |
+| Phase 7 | 2 weeks | 🔲 Custom SDK Dropins |
+| Phase 8 | 1 week | 🔲 Polish |
 
-With parallel work on Phase 6: **15-20 weeks (4-5 months)**
+### Other Personas (8 weeks, after Sarah)
+
+| Phase | Duration | Status |
+|-------|----------|--------|
+| Phase 6B-6E | 8 weeks | 🔲 Deferred |
+
+**Sarah complete:** 8 weeks  
+**All personas:** 16 weeks total
 
 ---
 
 ## Getting Started
 
-1. **Review meta-plan**: Read `PERSONA-META-PLAN.md` for overall strategy
-2. **Understand personas**: Read `BUILDRIGHT-PERSONAS-AND-FLOWS.md`
-3. **Start with Phase 0**: Begin research and architecture decisions
-4. **Follow dependencies**: Each phase document lists what must complete first
-5. **Track progress**: Use the progress table in `PERSONA-META-PLAN.md`
+1. **Read the master plan:** [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md)
+2. **Understand personas:** [BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)
+3. **For Dropins details:** [CODEBASE-AUDIT-DROPINS.md](./CODEBASE-AUDIT-DROPINS.md)
 
 ---
 
-## Questions or Issues
+## Archived Documents
 
-Refer to:
-- **Architecture questions**: Phase 0 research documents
-- **Data questions**: Phase 1 documents
-- **UI/UX questions**: Phase 2 (icons), existing `CSS-ARCHITECTURE.md`
-- **Persona-specific questions**: Individual Phase 6 documents
-- **Integration questions**: Phase 7 document
+The following documents have been superseded by the master plan:
+
+| Document | Status | Notes |
+|----------|--------|-------|
+| `personas/PERSONA-META-PLAN.md` | Archived | Consolidated into MASTER |
+| `personas/PERSONA-IMPLEMENTATION-PLAN.md` | Archived | Consolidated into MASTER |
 
 ---
 
-**Index Version**: 1.0  
-**Created**: November 15, 2024  
-**Last Updated**: November 15, 2024
-
-**Total Phase Plans**: 13 detailed plans covering all aspects of implementation
+**Index Version**: 2.0  
+**Last Updated**: December 2024
 

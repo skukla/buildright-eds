@@ -550,6 +550,69 @@ class CatalogService {
   }
   
   /**
+   * Initialize the catalog service using customer email
+   * Used by Commerce Auth Dropin integration
+   * 
+   * @param {string} email - Customer email address
+   * @param {Object} options - Configuration options
+   */
+  async initializeByEmail(email, options = {}) {
+    // Already initialized - return immediately
+    if (this.initialized) {
+      console.log('[CatalogService] Already initialized, skipping email init');
+      return;
+    }
+    
+    // Initialization in progress - wait for it
+    if (this.initializing) {
+      console.log('[CatalogService] Initialization in progress, waiting...');
+      return this.initializing;
+    }
+    
+    // Start initialization with email
+    this.initializing = this._doInitializeByEmail(email, options);
+    
+    try {
+      await this.initializing;
+    } finally {
+      this.initializing = null;
+    }
+  }
+  
+  /**
+   * Internal email-based initialization logic
+   * Calls persona action directly with email
+   */
+  async _doInitializeByEmail(email, options = {}) {
+    const { forceStrategy } = options;
+    
+    // Try mesh first (preferred for email-based auth)
+    if (forceStrategy !== 'mock') {
+      try {
+        const { initializePersonaByEmail } = await import('./mesh-client.js');
+        
+        this.strategy = MeshStrategy;
+        console.log('[CatalogService] Initializing persona by email:', email);
+        
+        // Call persona action via mesh with email
+        const persona = await initializePersonaByEmail(email, options);
+        this.personaData = persona;
+        this.initialized = true;
+        console.log('[CatalogService] Initialized with MeshStrategy (email):', persona?.name || 'unknown');
+        return;
+      } catch (error) {
+        console.warn('[CatalogService] Mesh unavailable for email init, falling back to mock:', error.message);
+      }
+    }
+    
+    // Fallback to mock with guest
+    this.strategy = MockStrategy;
+    this.personaData = await this.strategy.initialize('guest', options);
+    this.initialized = true;
+    console.log('[CatalogService] Initialized with MockStrategy (fallback from email)');
+  }
+  
+  /**
    * Reset the catalog service state
    * Called on logout to clear cached persona and strategy
    */

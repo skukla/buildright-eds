@@ -20,6 +20,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@dropins/tools": "^0.2.0",
+    "@dropins/storefront-auth": "^1.0.0",
+    "@dropins/storefront-cart": "^1.0.0",
+    "@dropins/storefront-checkout": "^1.0.0",
+    "@dropins/storefront-account": "^1.0.0",
     "glob": "^10.4.5"
   },
   "devDependencies": {

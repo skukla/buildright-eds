@@ -1,8 +1,12 @@
 /**
  * Authentication System
  * 
- * DEMO MODE: Select persona from login page (current implementation)
- * PRODUCTION MODE: Integrate with Adobe Commerce Auth Dropin (future)
+ * Supports multiple authentication modes:
+ * - DEMO MODE: Select persona from login page (default for development)
+ * - DROPIN MODE: Use Adobe Commerce Auth Dropin (for real Commerce integration)
+ * - HYBRID MODE: Demo UI with real Commerce backend calls
+ * 
+ * Mode is determined by config.features.useDemoAuth in /config/env.json
  * 
  * This file handles both modes with clear separation for easy transition.
  */
@@ -12,25 +16,43 @@ import { acoService } from './aco-service.js';
 import { getCompanyForPersona, getDefaultLocation } from './company-config.js';
 import { initializeMeshForPersona } from './services/mesh-integration.js';
 import { catalogService } from './services/catalog-service.js';
+import { loadConfig } from './site-config.js';
 
 const AUTH_STORAGE_KEY = 'buildright_auth';
 const PERSONA_STORAGE_KEY = 'currentPersona';
 
+// Track if dropins are being used
+let _useDropins = false;
+
 class AuthService {
   constructor() {
     this.currentUser = null;
-    this.isDemo = true; // Set to false for production
+    this.isDemo = true; // Default to demo, can be overridden by config
     this.initialized = false;
   }
   
   /**
    * Initialize auth service
    * Checks for existing session and restores user state
+   * Determines mode from config.features.useDemoAuth
    */
   async initialize() {
     if (this.initialized) return;
     
     console.log('[Auth] Initializing...');
+    
+    // Load config to determine mode
+    try {
+      const config = await loadConfig();
+      this.isDemo = config.features?.useDemoAuth !== false;
+      _useDropins = config.features?.useCommerceDropins === true;
+      
+      console.log('[Auth] Mode:', this.isDemo ? 'demo' : 'production', 
+                  ', Dropins:', _useDropins ? 'enabled' : 'disabled');
+    } catch (error) {
+      console.warn('[Auth] Failed to load config, using demo mode:', error.message);
+      this.isDemo = true;
+    }
     
     if (this.isDemo) {
       await this._initializeDemoMode();
@@ -38,7 +60,42 @@ class AuthService {
       await this._initializeProductionMode();
     }
     
+    // Set up event listeners for dropin events if dropins are enabled
+    if (_useDropins) {
+      this._setupDropinEventListeners();
+    }
+    
     this.initialized = true;
+  }
+  
+  /**
+   * Set up event listeners for Commerce Dropin events
+   * Bridges dropin auth events with BuildRight auth state
+   * @private
+   */
+  _setupDropinEventListeners() {
+    // Listen for dropin auth:login events (from auth.js initializers)
+    window.addEventListener('auth:login', (event) => {
+      if (event.detail?.user && !this.currentUser) {
+        console.log('[Auth] Received dropin login event');
+        // Dropin already set up the user via initializeMeshForEmail
+        // We just need to sync our state
+        this.currentUser = {
+          ...event.detail.user,
+          isDropinUser: true
+        };
+      }
+    });
+    
+    // Listen for dropin auth:logout events
+    window.addEventListener('auth:logout', (event) => {
+      if (this.currentUser?.isDropinUser) {
+        console.log('[Auth] Received dropin logout event');
+        this.currentUser = null;
+      }
+    });
+    
+    console.log('[Auth] Dropin event listeners set up');
   }
   
   /**
@@ -81,35 +138,49 @@ class AuthService {
   }
   
   /**
-   * Production mode: Use Commerce Auth Dropin (future)
+   * Production mode: Use Commerce Auth Dropin
+   * Initializes dropins and checks for existing session
    * @private
    */
   async _initializeProductionMode() {
-    // TODO: Initialize Adobe Commerce Auth Dropin
-    // Example implementation:
-    /*
+    console.log('[Auth] Initializing production mode with Commerce Dropins');
+    
+    if (!_useDropins) {
+      console.log('[Auth] Dropins not enabled, skipping production init');
+      return;
+    }
+    
     try {
-      const authDropin = await window.commerce?.auth?.initialize();
-      const user = await authDropin.getUser();
+      // Wait for dropins to be initialized
+      const { waitForDropins, areDropinsInitialized } = await import('./initializers/index.js');
       
-      if (user) {
-        // Map Commerce user to our user structure
-        this.currentUser = {
-          id: user.id,
-          name: `${user.firstname} ${user.lastname}`,
-          email: user.email,
-          customerGroup: user.group_id,
-          commerceUser: user
-        };
-        
-        console.log('[Auth] Restored Commerce session:', this.currentUser.name);
+      if (!areDropinsInitialized()) {
+        console.log('[Auth] Waiting for dropins to initialize...');
+        await waitForDropins();
+      }
+      
+      // Check if user is already authenticated via cookies
+      const { isAuthenticated, getCurrentCustomer } = await import('./initializers/auth.js');
+      
+      if (isAuthenticated()) {
+        const customer = getCurrentCustomer();
+        if (customer) {
+          this.currentUser = {
+            id: customer.id,
+            name: `${customer.firstname || ''} ${customer.lastname || ''}`.trim(),
+            email: customer.email,
+            customerGroup: customer.group_id,
+            isDropinUser: true,
+            commerceUser: customer
+          };
+          console.log('[Auth] Restored Commerce session:', this.currentUser.name);
+        }
+      } else {
+        console.log('[Auth] No active Commerce session');
       }
     } catch (error) {
-      console.error('[Auth] Failed to initialize Commerce Auth:', error);
+      console.error('[Auth] Failed to initialize production mode:', error);
     }
-    */
-    
-    console.log('[Auth] Production mode not yet implemented');
   }
   
   /**

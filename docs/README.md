@@ -6,31 +6,26 @@ A functional HTML/CSS/JavaScript prototype for BuildRight Solutions, demonstrati
 
 ## 🎯 Quick Start: Documentation Navigation
 
-### 🚀 For Developers: Implementing Features
+### 🚀 Primary Entry Point
 
-**You're implementing personas or features?** 
+**Start here**: **[MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md)** ⭐ **THE AUTHORITATIVE PLAN**
 
-**Start here**: **[IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md)** ⭐ **YOUR MAIN ENTRY POINT**
+This plan consolidates all decisions and phases:
+- Current state and key decisions (December 2024)
+- Phase 5.5: Commerce Dropins integration
+- Phase 6: Persona implementations
+- Phase 7: Custom SDK Dropins for ACO
+- Progress tracking and timeline
 
-This guide routes you directly to what you need:
-- Implementing personas (Marcus, Lisa, David, Kevin)
-- Understanding what's already built
-- Setting up backend
-- Deploying to production
+### For Context and Implementation Details
 
-**Fast lookups**: Check [quick-reference/](./quick-reference/) for 1-page guides on common tasks.
-
----
-
-### 📚 For Everyone: Understanding the Project
-
-| What You Need | Start Here |
-|---------------|------------|
+| Need | Document |
+|------|----------|
+| **New to project?** | [AGENT-HANDOFF.md](./AGENT-HANDOFF.md) |
+| **Dropins technical details** | [CODEBASE-AUDIT-DROPINS.md](./CODEBASE-AUDIT-DROPINS.md) |
 | **Persona profiles** | [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md) |
-| **Implementation plans** | [PHASES-6B-TO-7-CONSOLIDATED.md](./PHASES-6B-TO-7-CONSOLIDATED.md) 🚧 **CURRENT WORK** |
-| **Complete roadmap** | [PHASE-PLANS-INDEX.md](./PHASE-PLANS-INDEX.md) |
-| **Architecture overview** | [quick-reference/architecture-overview.md](./quick-reference/architecture-overview.md) |
-| **Visual navigation** | [NAVIGATION-MAP.md](./NAVIGATION-MAP.md) |
+| **Phase overview** | [PHASE-PLANS-INDEX.md](./PHASE-PLANS-INDEX.md) |
+| **Quick references** | [quick-reference/](./quick-reference/) |
 
 ---
 
@@ -38,42 +33,59 @@ This guide routes you directly to what you need:
 
 | Role | You Need | Go Here |
 |------|----------|---------|
-| **Developer (implementing)** | Implementation entry point | [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md) ⭐ |
-| **Developer (reference)** | What exists, APIs | [quick-reference/what-exists.md](./quick-reference/what-exists.md) |
+| **Developer (implementing)** | Master plan | [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md) ⭐ |
+| **New to project** | Context and handoff | [AGENT-HANDOFF.md](./AGENT-HANDOFF.md) |
+| **Dropins integration** | Technical details | [CODEBASE-AUDIT-DROPINS.md](./CODEBASE-AUDIT-DROPINS.md) |
 | **Product/UX** | Personas & flows | [personas/](./personas/) |
 | **Architect** | Architectural decisions | [adr/](./adr/) |
 | **Frontend Dev** | CSS & coding standards | [standards/](./standards/) |
-| **Frontend Dev** | Component architecture | [component-architecture/](./component-architecture/) |
 | **Backend Dev** | Commerce + ACO setup | [phase-8-backend/](./phase-8-backend/) |
-| **QA/Testing** | Testing strategies | [testing/](./testing/) |
-| **DevOps** | Production deployment | [phase-9-deployment/](./phase-9-deployment/) |
 
-**Not sure where to start?** 
-- **Implementing?** → [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md)
-- **Learning?** → [quick-reference/architecture-overview.md](./quick-reference/architecture-overview.md)
+### Current Work (December 2024)
+
+| Phase | Status | Focus |
+|-------|--------|-------|
+| Phase 5.5 | 🔲 Next | Commerce Dropins (Auth, Cart, Checkout, Orders) |
+| Phase 6A | 🔄 In Progress | Sarah Martinez persona |
+| Phase 7 | 🔲 Planned | Custom SDK Dropins for ACO |
 
 ---
 
 ## 📁 Documentation Organization
 
-This documentation is organized by implementation phase and topic:
+### Primary Documents ⭐
 
-### Root Level (Master Planning & Current Work)
-- **Master Planning** - Navigation, phase plans, core docs index
-- **Current Work** - Phases 6-7 (active implementation)
+| Document | Purpose |
+|----------|---------|
+| [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md) | **Authoritative plan** — phases, decisions, doc links |
+| [AGENT-HANDOFF.md](./AGENT-HANDOFF.md) | Context for new developers |
 
-### Cross-Phase Reference Folders ⭐ **USED THROUGHOUT**
-- **[component-architecture/](./component-architecture/)** - EDS blocks, component extraction, utilities vs blocks
-- **[personas/](./personas/)** - All 5 personas, flows, UX patterns, implementation plans
-- **[standards/](./standards/)** - CSS architecture, coding principles, components, animations
-- **[testing/](./testing/)** - Testing strategies, QA checklists
-- **[adr/](./adr/)** - Architectural Decision Records (ADR-001 through ADR-006)
+### Implementation (Active Work)
 
-### Phase Folders (Organized by When Needed)
-- **[phase-0-5-foundation/](./phase-0-5-foundation/)** - ✅ Completed foundation work (reference)
-- **[phase-8-backend/](./phase-8-backend/)** - 📋 Backend setup docs (ACO, Commerce, Dropins, EDS)
-- **[phase-9-deployment/](./phase-9-deployment/)** - 📋 Production deployment & migration
-- **[phase-10-authoring/](./phase-10-authoring/)** - 📋 Content authoring transition
+| Folder | Purpose |
+|--------|---------|
+| [implementation/sarah-end-to-end/](./implementation/sarah-end-to-end/) | **Current focus** — dropins, features, SDK |
+| [implementation/completed/](./implementation/completed/) | Phases 0-5 (done) |
+| [implementation/other-personas/](./implementation/other-personas/) | Phases 6B-6E (deferred) |
+
+### Reference (Technical Docs)
+
+| Folder | Purpose |
+|--------|---------|
+| [reference/backend/](./reference/backend/) | Backend, ACO, Mesh docs |
+| [reference/deployment/](./reference/deployment/) | Deployment guides |
+| [reference/authoring/](./reference/authoring/) | Content authoring |
+| [reference/research/](./reference/research/) | Industry research |
+
+### Standards & Guides
+
+| Folder | Purpose |
+|--------|---------|
+| [adr/](./adr/) | Architecture Decision Records (7 ADRs) |
+| [personas/](./personas/) | All 5 persona profiles |
+| [standards/](./standards/) | CSS, coding, design standards |
+| [testing/](./testing/) | Testing guides |
+| [quick-reference/](./quick-reference/) | Quick lookup guides |
 
 ### Archive
 - **[archive/](./archive/)** - Historical/superseded documentation

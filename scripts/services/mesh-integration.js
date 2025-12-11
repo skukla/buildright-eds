@@ -40,6 +40,33 @@ export async function initializeMeshForPersona(personaId, options = {}) {
 }
 
 /**
+ * Initialize catalog service using customer email
+ * Used by Commerce Auth Dropin integration to bridge to BuildRight persona system
+ * 
+ * @param {string} email - Customer email address
+ * @param {Object} options - Options to pass to catalog service
+ * @returns {Promise<Object>} Persona data from mesh
+ */
+export async function initializeMeshForEmail(email, options = {}) {
+  console.log('[MeshIntegration] Initializing for email:', email);
+  
+  try {
+    // Use catalog service's email-based initialization
+    // This calls the persona action via mesh to get ACO context
+    await catalogService.initializeByEmail(email, options);
+    
+    return {
+      email,
+      persona: catalogService.personaData,
+      dataSource: catalogService.getActiveStrategy()
+    };
+  } catch (error) {
+    console.error('[MeshIntegration] Failed to initialize for email:', error);
+    throw error;
+  }
+}
+
+/**
  * Get products using the active strategy
  * Delegates to catalog service
  */
@@ -82,6 +109,7 @@ export { catalogService };
 
 export default {
   initializeMeshForPersona,
+  initializeMeshForEmail,
   getProducts,
   getProduct,
   getBOM,

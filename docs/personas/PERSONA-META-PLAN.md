@@ -1,6 +1,15 @@
 # BuildRight Persona Implementation - Meta Plan
 
-## Overview
+> **ARCHIVED**: This document has been superseded by [MASTER-IMPLEMENTATION-PLAN.md](../MASTER-IMPLEMENTATION-PLAN.md). Kept for historical reference.
+>
+> Key updates in the master plan:
+> - Phase 5.5: Commerce Dropins integration (new)
+> - Phase 7: Custom SDK Dropins for ACO (new)
+> - Consolidated phase structure and progress tracking
+
+---
+
+## Overview (Historical)
 
 This meta-plan orchestrates the implementation of the BuildRight persona-driven experience across 7 major phases and 13 implementation plans. Each phase is designed to be independently testable with clear success criteria.
 

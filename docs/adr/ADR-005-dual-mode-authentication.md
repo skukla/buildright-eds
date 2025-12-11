@@ -1,14 +1,25 @@
 # ADR-005: Dual-Mode Authentication (Demo + Production)
 
-**Status**: Accepted
+**Status**: Superseded
 
 **Date**: 2024-11-15
+
+**Superseded By**: Commerce Dropins integration (December 2024)
 
 **Decision Makers**: BuildRight Implementation Team
 
 ---
 
-## Context
+> **Note:** This ADR has been superseded. BuildRight now uses Adobe Commerce Storefront Dropins as the primary authentication method. The dual-mode approach (demo + production) has been deprecated in favor of a single Commerce-based authentication flow.
+>
+> See:
+> - [MASTER-IMPLEMENTATION-PLAN.md](../MASTER-IMPLEMENTATION-PLAN.md) — Current implementation plan
+> - [ADR-001](./ADR-001-use-dropins-for-commerce.md) — Use Dropins for Commerce
+> - [ADR-007](./ADR-007-custom-sdk-dropins-for-aco.md) — Custom SDK Dropins for ACO
+
+---
+
+## Context (Historical)
 
 BuildRight must function in two distinct modes:
 
