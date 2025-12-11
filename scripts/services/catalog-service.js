@@ -53,16 +53,48 @@ const MeshStrategy = {
   name: 'mesh',
   
   async initialize(identifier, options = {}) {
-    const { initializePersona } = await import('./mesh-client.js');
-    const { isProductionMode = false } = options;
+    const { initializePersonaByEmail, initializePersona } = await import('./mesh-client.js');
+    const { isProductionMode = false, email: providedEmail } = options;
     
-    const customerGroupId = resolveCustomerGroupId(identifier, isProductionMode);
-    
-    if (!customerGroupId) {
-      throw new Error(`Cannot resolve customer group for: ${identifier} (production mode: ${isProductionMode})`);
+    // Handle guest/unauthenticated users
+    if (identifier === 'guest' || !identifier) {
+      console.log('[CatalogService] Initializing guest persona via action');
+      // Call persona action with NOT_LOGGED_IN customer group
+      // Action returns the default public catalog view
+      const persona = await initializePersona(NOT_LOGGED_IN_GROUP, options);
+      return persona;
     }
     
-    const persona = await initializePersona(customerGroupId);
+    // Determine email for persona lookup
+    // Priority: 1) Provided email, 2) Demo mapping
+    let email = providedEmail;
+    
+    if (!email && !isProductionMode) {
+      // Demo mode: map persona ID to email
+      email = DEMO_EMAIL_MAPPING[identifier];
+    }
+    
+    if (email) {
+      // Use email-based lookup (calls persona action which handles JSON/Commerce data source)
+      console.log('[CatalogService] Initializing persona by email:', email);
+      const persona = await initializePersonaByEmail(email, options);
+      if (persona) {
+        return persona;
+      }
+      console.warn('[CatalogService] Email lookup returned no persona');
+    }
+    
+    // Fallback: try customer group lookup
+    const customerGroupId = isProductionMode ? identifier : DEMO_PERSONA_MAPPING[identifier];
+    if (customerGroupId) {
+      console.log('[CatalogService] Falling back to customer group ID:', customerGroupId);
+      const persona = await initializePersona(customerGroupId, options);
+      return persona;
+    }
+    
+    // Last resort: use guest/public
+    console.warn('[CatalogService] No persona found, using guest/public');
+    const persona = await initializePersona(NOT_LOGGED_IN_GROUP, options);
     return persona;
   },
   
@@ -247,9 +279,29 @@ const MockStrategy = {
 // ============================================
 
 /**
+ * Map frontend persona IDs to Commerce customer emails
+ * This is used to call the persona action which then queries Commerce
+ * for the customer's ACO attributes (aco_catalog_view_id, aco_price_book_id)
+ * 
+ * Note: 'guest' is NOT included - guests use default public catalog view
+ */
+const DEMO_EMAIL_MAPPING = {
+  'sarah': 'sarah.martinez@sunbelthomes.com',
+  'marcus': 'marcus.johnson@johnsonconstruction.com',
+  'lisa': 'lisa.chen@chendesignbuild.com',
+  'david': 'david.thompson@email.com',
+  'kevin': 'kevin.rodriguez@precisionlumber.com'
+};
+
+/**
+ * Customer group ID for unauthenticated users in Commerce
+ */
+const NOT_LOGGED_IN_GROUP = '0';
+
+/**
  * Map frontend persona IDs to Commerce customer group IDs
- * This mapping is ONLY used in demo mode (persona names like "sarah")
- * In production mode, the customer group ID comes directly from Commerce Auth
+ * DEPRECATED: Use DEMO_EMAIL_MAPPING instead for persona action calls
+ * Kept for backwards compatibility with older code paths
  */
 const DEMO_PERSONA_MAPPING = {
   'sarah': '1',      // Production Builder

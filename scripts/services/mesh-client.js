@@ -8,24 +8,50 @@
  * - For development: Can call mesh directly (CORS enabled)
  * - For production: Should use a proxy (App Builder action or edge worker)
  * 
+ * Configuration:
+ * - Mesh endpoint loaded from /config/env.json (EDS best practice)
+ * - Config file can differ per branch for environment-specific endpoints
+ * 
  * @module scripts/services/mesh-client
  */
 
-import { MESH_CONFIG } from '../site-config.js';
+import { getMeshEndpoint } from '../site-config.js';
+import * as queries from './queries.js';
 
-// Mesh endpoint from site config (centralized, easy to update)
-const MESH_ENDPOINT = MESH_CONFIG.endpoint;
+// Re-export queries for backwards compatibility
+export const QUERY_GET_PERSONA = queries.GET_PERSONA;
+export const QUERY_GET_PERSONA_BY_ID = queries.GET_PERSONA_BY_ID;
+export const QUERY_GET_PERSONA_BY_EMAIL = queries.GET_PERSONA_BY_EMAIL;
+export const QUERY_SEARCH_PRODUCTS = queries.SEARCH_PRODUCTS;
+export const QUERY_PRODUCT_SEARCH_FILTER = queries.PRODUCT_SEARCH_FILTER;
+export const QUERY_SEARCH_SUGGESTIONS = queries.SEARCH_SUGGESTIONS;
+export const QUERY_GET_PRODUCT = queries.GET_PRODUCT;
+export const QUERY_GENERATE_BOM = queries.GENERATE_BOM;
 
-// Optional proxy endpoint for production (set via environment or config)
-// In production EDS, this would be an App Builder action URL
-const PROXY_ENDPOINT = window.BUILDRIGHT_MESH_PROXY || null;
+// Cache for loaded endpoint
+let _meshEndpoint = null;
 
 /**
  * Get the effective mesh endpoint
- * Uses proxy if configured, otherwise direct mesh
+ * Uses proxy if configured, otherwise loads from config
+ * @returns {Promise<string>} The mesh endpoint URL
  */
-function getEndpoint() {
-  return PROXY_ENDPOINT || MESH_ENDPOINT;
+async function getEndpoint() {
+  // Check for proxy override first
+  const proxyEndpoint = window.BUILDRIGHT_MESH_PROXY || null;
+  if (proxyEndpoint) {
+    return proxyEndpoint;
+  }
+  
+  // Load from config if not cached
+  if (!_meshEndpoint) {
+    _meshEndpoint = await getMeshEndpoint();
+    if (!_meshEndpoint) {
+      throw new Error('Mesh endpoint not configured. Check /config/env.json');
+    }
+  }
+  
+  return _meshEndpoint;
 }
 
 /**
@@ -86,14 +112,17 @@ export async function meshQuery(query, variables = {}, options = {}) {
     Object.assign(headers, personaHeaders);
   }
   
+  // Get endpoint (async - loaded from /config/env.json)
+  const endpoint = await getEndpoint();
+  
   console.log('[MeshClient] Executing query:', {
-    endpoint: getEndpoint(),
+    endpoint,
     headers: Object.keys(headers),
     variables
   });
   
   try {
-    const response = await fetch(getEndpoint(), {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers,
       body: JSON.stringify({ query, variables })
@@ -125,257 +154,6 @@ export async function meshQuery(query, variables = {}, options = {}) {
     throw error;
   }
 }
-
-// ============================================
-// GRAPHQL QUERIES
-// ============================================
-
-/**
- * Get persona by customer group ID
- * This should be called first to get catalog/pricing headers
- */
-export const QUERY_GET_PERSONA = `
-  query GetPersona($customerGroupId: String!) {
-    BuildRight_personaForCustomer(customerGroupId: $customerGroupId) {
-      id
-      name
-      tier
-      catalogViewId
-      priceBookId
-      features
-    }
-  }
-`;
-
-/**
- * Get persona by persona ID
- */
-export const QUERY_GET_PERSONA_BY_ID = `
-  query GetPersonaById($personaId: String!) {
-    BuildRight_personaById(personaId: $personaId) {
-      id
-      name
-      tier
-      catalogViewId
-      priceBookId
-      policies
-      features
-    }
-  }
-`;
-
-/**
- * Search products (legacy - backwards compatible)
- */
-export const QUERY_SEARCH_PRODUCTS = `
-  query SearchProducts($phrase: String!, $pageSize: Int, $currentPage: Int) {
-    BuildRight_searchProducts(phrase: $phrase, pageSize: $pageSize, currentPage: $currentPage) {
-      totalCount
-      items {
-        sku
-        name
-        description
-        imageUrl
-        price {
-          value
-          currency
-        }
-        inStock
-        category
-        attributes {
-          name
-          value
-        }
-      }
-      pageInfo {
-        currentPage
-        pageSize
-        totalPages
-      }
-    }
-  }
-`;
-
-/**
- * Consolidated product search with facets
- * Similar to Citisignal_productSearchFilter
- */
-export const QUERY_PRODUCT_SEARCH_FILTER = `
-  query ProductSearchFilter(
-    $phrase: String
-    $filter: BuildRight_ProductFilter
-    $sort: BuildRight_SortInput
-    $limit: Int = 20
-    $page: Int = 1
-  ) {
-    BuildRight_productSearchFilter(
-      phrase: $phrase
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      page: $page
-    ) {
-      products {
-        items {
-          sku
-          name
-          description
-          imageUrl
-          price {
-            value
-            currency
-          }
-          inStock
-          category
-          attributes {
-            name
-            value
-          }
-        }
-        totalCount
-        hasMoreItems
-        currentPage
-        pageInfo {
-          currentPage
-          pageSize
-          totalPages
-        }
-      }
-      facets {
-        facets {
-          key
-          title
-          type
-          attributeCode
-          options {
-            id
-            name
-            count
-          }
-        }
-        totalCount
-      }
-      totalCount
-    }
-  }
-`;
-
-/**
- * Search suggestions for autocomplete
- */
-export const QUERY_SEARCH_SUGGESTIONS = `
-  query SearchSuggestions($phrase: String!) {
-    BuildRight_searchSuggestions(phrase: $phrase) {
-      suggestions {
-        id
-        name
-        sku
-        urlKey
-        price
-        image
-      }
-      totalCount
-    }
-  }
-`;
-
-/**
- * Get product by SKU
- */
-export const QUERY_GET_PRODUCT = `
-  query GetProduct($sku: String!) {
-    BuildRight_getProductBySKU(sku: $sku) {
-      sku
-      name
-      description
-      imageUrl
-      price {
-        value
-        currency
-      }
-      inStock
-      category
-      attributes {
-        name
-        value
-      }
-    }
-  }
-`;
-
-/**
- * Generate BOM from template
- */
-export const QUERY_GENERATE_BOM = `
-  query GenerateBOM(
-    $templateId: String!
-    $variantId: String
-    $packageId: String!
-    $selectedPhases: [ConstructionPhase!]
-  ) {
-    BuildRight_generateBOMFromTemplate(
-      templateId: $templateId
-      variantId: $variantId
-      packageId: $packageId
-      selectedPhases: $selectedPhases
-    ) {
-      totalCost {
-        value
-        currency
-      }
-      lineItems {
-        sku
-        name
-        quantity
-        unit
-        unitPrice {
-          value
-          currency
-        }
-        totalPrice {
-          value
-          currency
-        }
-        category
-        phase
-        specifications {
-          brand
-          qualityTier
-          constructionPhase
-        }
-      }
-      phases {
-        phase
-        lineItems {
-          sku
-          name
-          quantity
-          unitPrice {
-            value
-          }
-          totalPrice {
-            value
-          }
-        }
-        totalCost {
-          value
-          currency
-        }
-        percentageOfTotal
-      }
-      metadata {
-        templateId
-        packageId
-        squareFootage
-        generatedAt
-        personaId
-        variantId
-        selectedPhases
-        appliedOverrides
-      }
-    }
-  }
-`;
 
 // ============================================
 // CONVENIENCE FUNCTIONS
@@ -413,7 +191,7 @@ export async function initializePersona(customerGroupId, options = {}) {
   
   console.log('[MeshClient] Fetching persona from mesh for:', customerGroupId);
   
-  const data = await meshQuery(QUERY_GET_PERSONA, { customerGroupId }, {
+  const data = await meshQuery(queries.GET_PERSONA, { customerGroupId }, {
     includePersonaHeaders: false // Don't need persona headers to GET persona
   });
   
@@ -436,6 +214,63 @@ export async function initializePersona(customerGroupId, options = {}) {
 }
 
 /**
+ * Initialize persona by email address
+ * This is the recommended approach - calls the persona action which
+ * internally decides whether to use JSON or Commerce data source.
+ * 
+ * @param {string} email - Customer email address
+ * @param {Object} options - Options { forceRefresh: boolean }
+ * @returns {Promise<Object>} Persona data
+ */
+export async function initializePersonaByEmail(email, options = {}) {
+  const { forceRefresh = false } = options;
+  
+  // Check cache first (unless force refresh requested)
+  if (!forceRefresh) {
+    try {
+      const cachedPersona = sessionStorage.getItem('buildright_persona');
+      const cachedHeaders = sessionStorage.getItem('buildright_persona_headers');
+      const cachedEmail = sessionStorage.getItem('buildright_persona_email');
+      
+      // Only use cache if it's for the same email
+      if (cachedPersona && cachedHeaders && cachedEmail === email) {
+        const persona = JSON.parse(cachedPersona);
+        console.log('[MeshClient] Using cached persona for:', email, '-', persona.name);
+        return persona;
+      }
+    } catch (e) {
+      console.warn('[MeshClient] Cache read failed, fetching fresh:', e);
+    }
+  }
+  
+  console.log('[MeshClient] Fetching persona by email:', email);
+  
+  const data = await meshQuery(queries.GET_PERSONA_BY_EMAIL, { email }, {
+    includePersonaHeaders: false // Don't need persona headers to GET persona
+  });
+  
+  const persona = data.BuildRight_personaByEmail;
+  
+  if (persona) {
+    // Store persona headers for future requests
+    setPersonaHeaders({
+      catalogViewId: persona.catalogViewId,
+      priceBookId: persona.priceBookId
+    });
+    
+    // Store full persona info and email for cache validation
+    sessionStorage.setItem('buildright_persona', JSON.stringify(persona));
+    sessionStorage.setItem('buildright_persona_email', email);
+    
+    console.log('[MeshClient] Persona fetched and cached:', persona.name);
+  } else {
+    console.warn('[MeshClient] No persona found for email:', email);
+  }
+  
+  return persona;
+}
+
+/**
  * Search products using mesh
  * 
  * @param {string} phrase - Search phrase (use " " for all products)
@@ -445,7 +280,7 @@ export async function initializePersona(customerGroupId, options = {}) {
 export async function searchProducts(phrase, options = {}) {
   const { pageSize = 20, currentPage = 1 } = options;
   
-  const data = await meshQuery(QUERY_SEARCH_PRODUCTS, {
+  const data = await meshQuery(queries.SEARCH_PRODUCTS, {
     phrase: phrase || ' ',
     pageSize,
     currentPage
@@ -461,7 +296,7 @@ export async function searchProducts(phrase, options = {}) {
  * @returns {Promise<Object|null>} Product or null
  */
 export async function getProductBySKU(sku) {
-  const data = await meshQuery(QUERY_GET_PRODUCT, { sku });
+  const data = await meshQuery(queries.GET_PRODUCT, { sku });
   return data.BuildRight_getProductBySKU;
 }
 
@@ -484,7 +319,7 @@ export async function generateBOM(config) {
   
   const mappedPhases = selectedPhases?.map(p => phaseMap[p] || p.toUpperCase()) || null;
   
-  const data = await meshQuery(QUERY_GENERATE_BOM, {
+  const data = await meshQuery(queries.GENERATE_BOM, {
     templateId,
     variantId,
     packageId,
@@ -509,7 +344,7 @@ export async function generateBOM(config) {
 export async function productSearchFilter(options = {}) {
   const { phrase, filter, sort, limit = 20, page = 1 } = options;
   
-  const data = await meshQuery(QUERY_PRODUCT_SEARCH_FILTER, {
+  const data = await meshQuery(queries.PRODUCT_SEARCH_FILTER, {
     phrase,
     filter,
     sort,
@@ -532,7 +367,7 @@ export async function searchSuggestions(phrase) {
     return { suggestions: [], totalCount: 0 };
   }
   
-  const data = await meshQuery(QUERY_SEARCH_SUGGESTIONS, { phrase });
+  const data = await meshQuery(queries.SEARCH_SUGGESTIONS, { phrase });
   return data.BuildRight_searchSuggestions;
 }
 
@@ -541,20 +376,11 @@ export default {
   meshQuery,
   setPersonaHeaders,
   initializePersona,
+  initializePersonaByEmail,
   searchProducts,
   getProductBySKU,
   generateBOM,
   productSearchFilter,
   searchSuggestions,
-  // Queries for direct use
-  queries: {
-    GET_PERSONA: QUERY_GET_PERSONA,
-    GET_PERSONA_BY_ID: QUERY_GET_PERSONA_BY_ID,
-    SEARCH_PRODUCTS: QUERY_SEARCH_PRODUCTS,
-    PRODUCT_SEARCH_FILTER: QUERY_PRODUCT_SEARCH_FILTER,
-    SEARCH_SUGGESTIONS: QUERY_SEARCH_SUGGESTIONS,
-    GET_PRODUCT: QUERY_GET_PRODUCT,
-    GENERATE_BOM: QUERY_GENERATE_BOM
-  }
+  queries
 };
-
