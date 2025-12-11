@@ -8,9 +8,10 @@
   <title>Shopping Cart - BuildRight Solutions</title>
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
-  <link rel="stylesheet" href="../styles/cart-bundle.css">
+  <!-- Cart Dropin styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/dist/index.css">
 </head>
-<body>
+<body class="page-cart">
   <!-- Header loaded dynamically from blocks/header/ -->
   <header></header>
 
@@ -20,82 +21,8 @@
       <div class="container cart-container">
         <h1 class="cart-title">Shopping Cart</h1>
         
-        <div class="cart-layout">
-          <!-- Cart Items -->
-          <div class="cart-items-wrapper">
-            <div id="cart-items" class="cart-items-list">
-              <!-- Cart items will be populated by JavaScript -->
-            </div>
-            <div id="empty-cart" class="cart-empty-state" style="display: none;">
-              <div class="empty-cart-icon">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <circle cx="9" cy="21" r="1"/>
-                  <circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-              </div>
-              <h2 class="empty-cart-title">Your cart is empty</h2>
-              <p class="empty-cart-text">Start adding products to your cart to see them here.</p>
-              <a href="catalog.html" class="btn btn-primary">Browse Catalog</a>
-            </div>
-          </div>
-
-          <!-- Order Summary -->
-          <div class="cart-summary-wrapper">
-            <div class="cart-summary" data-block-name="cart-summary" data-block-status="loading">
-              <div>
-                <div>
-                <h2 class="cart-summary-title">Order Summary</h2>
-                <div class="summary-items">
-                  <!-- Cart items will be populated by JavaScript -->
-                </div>
-                <div class="promo-code-section">
-                  <label for="promo-code" class="promo-label">Promo Code</label>
-                  <div class="promo-input-group">
-                    <input type="text" id="promo-code" class="promo-input" placeholder="Enter code">
-                    <button class="btn btn-secondary btn-sm">Apply</button>
-                  </div>
-                  <div class="promo-message promo-success" style="display: none;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M20 6L9 17l-5-5"/>
-                    </svg>
-                    <span>Promo code "SAVE10" applied</span>
-                  </div>
-                </div>
-                
-                <div class="summary-totals">
-                  <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span class="subtotal">$0.00</span>
-                  </div>
-                  <div class="summary-row summary-discount" style="display: none;">
-                    <span>
-                      Discount
-                      <span class="discount-badge">SAVE10</span>
-                    </span>
-                    <span class="discount-amount">-$10.00</span>
-                  </div>
-                  <div class="summary-row">
-                    <span>Estimated Savings</span>
-                    <span class="savings">$0.00</span>
-                  </div>
-                  <div class="summary-row summary-shipping">
-                    <span>Shipping</span>
-                    <span class="shipping-amount">Free</span>
-                  </div>
-                  <div class="summary-row summary-total">
-                    <span>Total</span>
-                    <span class="total-amount">$0.00</span>
-                  </div>
-                </div>
-                <div class="summary-actions">
-                  <button class="btn btn-cta btn-lg" onclick="alert('Checkout functionality coming soon!')">Proceed to Checkout</button>
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
+        <!-- Commerce Cart Dropin -->
+        <div id="cart-dropin" class="cart-dropin-container"></div>
       </div>
     </section>
   </main>
@@ -104,295 +31,64 @@
   <footer></footer>
 
   <script type="module">
-    import { getCart, updateCartItem, removeFromCart } from '../scripts/cart-manager.js';
-    import { getProductBySKU, getPrice } from '../scripts/data-mock.js';
-    import { removeBundleFromCart, updateBundleItemQuantity } from '../scripts/project-builder.js';
-    import { decorateBlock } from '../scripts/scripts.js';
-    import '../scripts/image-placeholder.js'; // Registers global handleImageError
+    import { loadConfig } from '../scripts/site-config.js';
+    import { waitForDropins } from '../scripts/initializers/index.js';
     
-    // Load cart items
-    async function loadCartItems() {
-      const cart = getCart();
-      const itemsContainer = document.getElementById('cart-items');
-      const emptyCart = document.getElementById('empty-cart');
-      const cartSummary = document.querySelector('.cart-summary');
-
-      if (cart.length === 0) {
-        itemsContainer.style.display = 'none';
-        emptyCart.style.display = 'block';
-        if (cartSummary) cartSummary.style.display = 'none';
-        return;
-      }
-
-      itemsContainer.style.display = 'flex';
-      emptyCart.style.display = 'none';
-      if (cartSummary) cartSummary.style.display = 'block';
-      itemsContainer.innerHTML = '';
-
-      for (const item of cart) {
-        // Handle bundles
-        if (item.type === 'bundle') {
-          const bundleCard = document.createElement('div');
-          bundleCard.className = 'cart-item-card cart-bundle-card cart-bundle-clickable';
-          
-          // Get template image from metadata
-          const templateId = item.metadata?.templateId || 'sedona';
-          const templateImage = `/images/floor-plans/${templateId}.png`;
-          
-          // Store bundle data for edit link
-          const bundleDataForEdit = JSON.stringify({
-            templateId: item.metadata?.templateId,
-            packageId: item.metadata?.packageId,
-            variants: item.metadata?.variants || [],
-            phases: item.metadata?.phases || [],
-            bundleId: item.bundleId
-          });
-          
-          // Add data attribute to the card for click handling
-          bundleCard.dataset.bundleEdit = bundleDataForEdit;
-          
-          bundleCard.innerHTML = `
-            <div class="bundle-header">
-              <div class="bundle-thumbnail">
-                <img src="${templateImage}" alt="Floor plan" onerror="handleImageError(this)">
-              </div>
-              <div class="bundle-header-info">
-                <h3 class="bundle-title">${item.bundleName}</h3>
-                <p class="bundle-meta">${item.itemCount} items</p>
-              </div>
-              <button class="cart-item-remove" onclick="event.stopPropagation(); removeBundle('${item.bundleId}')" aria-label="Remove bundle">×</button>
-            </div>
-            
-            <button class="bundle-toggle-btn" data-bundle-id="${item.bundleId}">
-              <span class="toggle-text">View Bundle Contents</span>
-              <span class="toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
-            </button>
-            
-            <div class="bundle-items-list" data-bundle-id="${item.bundleId}" style="display: none;">
-              ${(() => {
-                const INITIAL_ITEMS = 5;
-                const visibleItems = item.items.slice(0, INITIAL_ITEMS);
-                const hiddenItems = item.items.slice(INITIAL_ITEMS);
-                const hasMore = hiddenItems.length > 0;
-                
-                let html = visibleItems.map(bundleItem => `
-                  <div class="bundle-item-row">
-                    <div class="bundle-item-info">
-                      <div class="bundle-item-name">${bundleItem.name}</div>
-                      <div class="bundle-item-sku">${bundleItem.sku}</div>
-                    </div>
-                    <span class="bundle-item-qty">× ${bundleItem.quantity}</span>
-                    <span class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                  </div>
-                `).join('');
-                
-                if (hasMore) {
-                  html += `
-                    <button class="bundle-show-more-btn" data-bundle-id="${item.bundleId}">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                      <span>Show ${hiddenItems.length} more item${hiddenItems.length > 1 ? 's' : ''}</span>
-                    </button>
-                    <div class="bundle-items-hidden" data-bundle-id="${item.bundleId}" style="display: none;">
-                      ${hiddenItems.map(bundleItem => `
-                        <div class="bundle-item-row">
-                          <div class="bundle-item-info">
-                            <div class="bundle-item-name">${bundleItem.name}</div>
-                            <div class="bundle-item-sku">${bundleItem.sku}</div>
-                          </div>
-                          <span class="bundle-item-qty">× ${bundleItem.quantity}</span>
-                          <span class="bundle-item-price">$${(bundleItem.unitPrice * bundleItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                        </div>
-                      `).join('')}
-                    </div>
-                  `;
-                }
-                
-                return html;
-              })()}
-            </div>
-            
-            <div class="bundle-footer">
-              <span class="bundle-total">$${item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-            </div>
-          `;
-          
-          itemsContainer.appendChild(bundleCard);
-          
-          // Setup toggle
-          const toggle = bundleCard.querySelector('.bundle-toggle-btn');
-          const itemsDiv = bundleCard.querySelector('.bundle-items-list');
-          const toggleText = toggle.querySelector('.toggle-text');
-          toggle.addEventListener('click', () => {
-            const isExpanded = itemsDiv.style.display !== 'none';
-            itemsDiv.style.display = isExpanded ? 'none' : 'block';
-            toggleText.textContent = isExpanded ? 'View Bundle Contents' : 'Hide Bundle Contents';
-            toggle.classList.toggle('expanded', !isExpanded);
-          });
-          
-          // Setup "Show more" toggle for hidden items
-          const showMoreBtn = bundleCard.querySelector('.bundle-show-more-btn');
-          if (showMoreBtn) {
-            const hiddenItemsDiv = bundleCard.querySelector('.bundle-items-hidden');
-            showMoreBtn.addEventListener('click', () => {
-              const isShowingMore = hiddenItemsDiv.style.display !== 'none';
-              hiddenItemsDiv.style.display = isShowingMore ? 'none' : 'block';
-              showMoreBtn.classList.toggle('expanded', !isShowingMore);
-              
-              // Update button text
-              const hiddenCount = hiddenItemsDiv.querySelectorAll('.bundle-item-row').length;
-              showMoreBtn.querySelector('span').textContent = isShowingMore 
-                ? `Show ${hiddenCount} more item${hiddenCount > 1 ? 's' : ''}`
-                : 'Show less';
-            });
-          }
-          
-          // Setup quantity inputs (with min/max validation)
-          bundleCard.querySelectorAll('.bundle-qty-input').forEach(input => {
-            input.addEventListener('change', (e) => {
-              const bundleId = e.target.dataset.bundleId;
-              const sku = e.target.dataset.sku;
-              const MIN_QUANTITY = 1;
-              const MAX_QUANTITY = 9999;
-              let quantity = parseInt(e.target.value) || MIN_QUANTITY;
-              quantity = Math.max(MIN_QUANTITY, Math.min(MAX_QUANTITY, quantity));
-              updateBundleItemQuantity(bundleId, sku, quantity);
-              loadCartItems();
-            });
-          });
-          
-          continue;
-        }
-
-        // Handle regular products
-        const product = await getProductBySKU(item.sku);
-        if (!product) continue;
-
-        const price = getPrice(product, item.quantity);
-        const total = price * item.quantity;
-
-        // Get product image
-        const imagePath = product.image || `../images/products/${product.sku}.png`;
-
-        const card = document.createElement('div');
-        card.className = 'cart-item-card cart-item-clickable';
-        card.dataset.href = `/pages/pdp.html?sku=${item.sku}`;
-        card.innerHTML = `
-          <div class="cart-item-main">
-            <div class="cart-item-image-wrapper">
-              <img src="${imagePath}" alt="${product.name}" class="cart-item-img" 
-                   onerror="this.parentElement.innerHTML='<div class=\\'cart-item-image-placeholder\\'><svg width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\'/><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'/><path d=\\'M21 15l-5-5L5 21\\'/></svg></div>'">
-            </div>
-            <div class="cart-item-details">
-              <div class="cart-item-header">
-                <div class="cart-item-title-group">
-                  <h3 class="cart-item-title">${product.name}</h3>
-                </div>
-                <button class="cart-item-remove" onclick="removeItem('${item.sku}')" aria-label="Remove item">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12"/>
-                  </svg>
-                </button>
-              </div>
-              <p class="cart-item-meta">SKU: ${product.sku}</p>
-              <p class="cart-item-price">$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} per unit</p>
-              
-              <div class="cart-item-footer">
-                <div class="quantity-controls">
-                  <button class="qty-btn qty-decrease" data-sku="${item.sku}" ${item.quantity <= 1 ? 'disabled' : ''}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M5 12h14"/>
-                    </svg>
-                  </button>
-                  <div class="qty-display">${item.quantity}</div>
-                  <button class="qty-btn qty-increase" data-sku="${item.sku}">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 5v14M5 12h14"/>
-                    </svg>
-                  </button>
-                </div>
-                <div class="cart-item-total">$${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-              </div>
-            </div>
+    async function initializeCartPage() {
+      const config = await loadConfig();
+      const container = document.getElementById('cart-dropin');
+      
+      if (!config.features?.useCommerceDropins) {
+        // Fallback to static message if dropins disabled
+        container.innerHTML = `
+          <div class="cart-empty-state">
+            <p>Commerce Dropins are not enabled.</p>
+            <a href="catalog.html" class="btn btn-primary">Browse Catalog</a>
           </div>
         `;
-        itemsContainer.appendChild(card);
+        return;
       }
-
-      if (cartSummary) await decorateBlock(cartSummary, 'cart-summary');
+      
+      // Wait for Commerce Dropins to initialize
+      await waitForDropins();
+      
+      try {
+        // Import and render Cart container
+        const { render } = await import('@dropins/storefront-cart/render.js');
+        const Cart = (await import('@dropins/storefront-cart/containers/Cart.js')).default;
+        
+        // Define routes
+        const basePath = window.BASE_PATH || '/';
+        
+        await render(Cart, {
+          routeEmptyCartCTA: () => `${basePath}catalog`,
+          routeCheckout: () => `${basePath}pages/checkout.html`,
+          routeProduct: (product) => `${basePath}pages/product-detail.html?sku=${product.topLevelSku || product.sku}`,
+          // Enable quantity editing
+          enableQuantityUpdate: true,
+          // Enable item removal
+          enableRemoveItem: true,
+        })(container);
+        
+        console.log('[Cart Page] Commerce Cart Dropin rendered');
+        
+      } catch (error) {
+        console.error('[Cart Page] Failed to render Cart Dropin:', error);
+        container.innerHTML = `
+          <div class="cart-error">
+            <p>Failed to load cart. Please try again later.</p>
+            <a href="catalog.html" class="btn btn-primary">Browse Catalog</a>
+          </div>
+        `;
+      }
     }
-
-    // Handle quantity button clicks using event delegation
-    document.addEventListener('click', (e) => {
-      const decreaseBtn = e.target.closest('.qty-decrease');
-      const increaseBtn = e.target.closest('.qty-increase');
-      const bundleEditLink = e.target.closest('.bundle-link');
-      
-      if (decreaseBtn) {
-        const sku = decreaseBtn.getAttribute('data-sku');
-        const cart = getCart();
-        const item = cart.find(i => i.sku === sku);
-        if (item && item.quantity > 1) {
-          updateCartItem(sku, item.quantity - 1);
-          loadCartItems();
-        }
-      } else if (increaseBtn) {
-        const sku = increaseBtn.getAttribute('data-sku');
-        const cart = getCart();
-        const item = cart.find(i => i.sku === sku);
-        const MAX_QUANTITY = 9999;
-        if (item && item.quantity < MAX_QUANTITY) {
-          updateCartItem(sku, item.quantity + 1);
-          loadCartItems();
-        }
-      }
-      
-      // Handle clickable cart item cards (individual products)
-      const clickableCard = e.target.closest('.cart-item-clickable');
-      if (clickableCard && !e.target.closest('button') && !e.target.closest('.quantity-controls')) {
-        window.location.href = clickableCard.dataset.href;
-      }
-      
-      // Handle clickable bundle cards (entire bundle card is clickable)
-      const bundleCard = e.target.closest('.cart-bundle-clickable');
-      if (bundleCard && !e.target.closest('button') && !e.target.closest('.bundle-toggle-btn')) {
-        navigateToBomEdit(bundleCard.dataset.bundleEdit);
-      }
-    });
     
-    // Helper function to navigate to BOM review for editing
-    function navigateToBomEdit(bundleEditJson) {
-      const bundleData = JSON.parse(bundleEditJson);
-      
-      // Restore build configuration to localStorage for BOM review
-      const buildConfig = {
-        templateId: bundleData.templateId,
-        packageId: bundleData.packageId,
-        variants: bundleData.variants,
-        phases: bundleData.phases,
-        editingBundleId: bundleData.bundleId,
-        createdAt: new Date().toISOString()
-      };
-      localStorage.setItem('buildright_current_build', JSON.stringify(buildConfig));
-      
-      // Navigate to BOM review
-      window.location.href = '/pages/bom-review.html';
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeCartPage);
+    } else {
+      initializeCartPage();
     }
-
-    window.removeItem = function(sku) {
-      removeFromCart(sku);
-      loadCartItems();
-    };
-
-    window.removeBundle = function(bundleId) {
-      removeBundleFromCart(bundleId);
-      loadCartItems();
-    };
-
-    // Listen for cart updates
-    window.addEventListener('cartUpdated', loadCartItems);
-
-    // Initial load
-    document.addEventListener('DOMContentLoaded', loadCartItems);
   </script>
 </body>
 </html>

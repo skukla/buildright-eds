@@ -1,4 +1,14 @@
-// BuildRight Solutions - Mock Data Manager
+/**
+ * @deprecated This file is deprecated and will be removed in a future release.
+ * 
+ * BuildRight now uses Commerce Dropins and API Mesh for real data.
+ * This mock data manager is only used as a fallback when mesh is unavailable.
+ * 
+ * See: scripts/services/catalog-service.js (MeshStrategy)
+ * See: scripts/services/mesh-client.js
+ */
+
+// BuildRight Solutions - Mock Data Manager (DEPRECATED)
 
 let mockData = null;
 let customerContext = {

@@ -1,9 +1,8 @@
 // Header block decoration
 import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyRedirect } from '../../scripts/url-router.js';
-import { authService } from '../../scripts/auth.js';
 import { parseHTMLFragment, formatCurrency } from '../../scripts/utils.js';
 import { getCompany } from '../../scripts/company-config.js';
-import { showCartNotification } from '../../scripts/cart-notification.js';
+import { decorateBlock } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   // Check for legacy URLs and redirect if needed
@@ -11,324 +10,37 @@ export default async function decorate(block) {
   
   // URLs are now handled by base tag - no path fixing needed
   
-  // Show/hide location selector based on login status AND persona
+  // Show/hide location selector based on login status
+  // Note: With Commerce Dropins, we listen to auth events directly
   async function updateAuthenticatedElements() {
-    // Wait for auth to initialize
-    await authService.initialize();
-    
-    const loggedIn = authService.isAuthenticated();
-    const currentUser = authService.getCurrentUser();
-    
     // Find location section - try ID first, then fallback to class
     const locationSection = block.querySelector('#header-location') || 
                            block.querySelector('.header-location');
     
-    // Only show location selector for Kevin (Store Manager persona)
-    // Location management is specific to his multi-store use case
-    const hasLocationFeature = loggedIn && currentUser?.persona?.id === 'kevin';
-      
+    // Location selector is now only shown for specific use cases
+    // Default to hidden, will be shown by persona-specific logic if needed
     if (locationSection) {
-      locationSection.style.visibility = hasLocationFeature ? 'visible' : 'hidden';
-      
-      // If location feature is enabled, refresh location display and dropdown
-      if (hasLocationFeature) {
-        initializeLocationDisplay();
-        populateLocationDropdown();
-      }
+      locationSection.style.visibility = 'hidden';
     }
   }
   
-  // Check login state on load (async)
+  // Check login state on load
   updateAuthenticatedElements();
   
-  // Listen for login state changes (e.g., after login/logout)
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'buildright_auth') {
-      updateAuthenticatedElements();
-    }
-  });
-  
-  // Also check on custom login/logout events
+  // Listen for auth events from Commerce Dropins
   window.addEventListener('auth:login', updateAuthenticatedElements);
   window.addEventListener('auth:logout', updateAuthenticatedElements);
-  window.addEventListener('auth:signup-complete', updateAuthenticatedElements);
   
-  // Use absolute URL to avoid path resolution issues with dynamic imports
-  const basePath = window.BASE_PATH || '/';
-  const baseUrl = window.location.origin + basePath;
-  const utilsModule = await import(new URL('scripts/utils.js', baseUrl).href);
-  const { loadBlockHTML, loadBlockCSS } = utilsModule;
-  
-  // User Menu functionality
-  let userMenuToggle = block.querySelector('#user-menu-toggle');
-  let userMenu = null;
-  
-  // Load user-menu block
-  const userMenuContainer = block.querySelector('#user-menu-container');
-  if (userMenuContainer) {
-    try {
-      // Load CSS first
-      loadBlockCSS('user-menu');
-      
-      // Load and parse HTML
-      const userMenuHTML = await loadBlockHTML('user-menu');
-      if (userMenuHTML) {
-        const userMenuFragment = parseHTMLFragment(userMenuHTML);
-        userMenuContainer.appendChild(userMenuFragment);
-        userMenu = userMenuContainer.querySelector('.user-menu');
-        
-        // Decorate the user-menu block
-        if (userMenu) {
-          const userMenuModule = await import(new URL('blocks/user-menu/user-menu.js', baseUrl).href);
-          const decorateUserMenu = userMenuModule.default;
-          await decorateUserMenu(userMenu);
-          
-          // Setup user menu toggle AFTER user-menu is loaded
-          setupUserMenuToggle();
-        }
-      }
-    } catch (error) {
-      console.error('Error loading user menu:', error);
-    }
+  // Decorate Commerce Dropin blocks in header
+  const authDropinBlock = block.querySelector('.auth-dropin');
+  if (authDropinBlock) {
+    await decorateBlock(authDropinBlock, 'auth-dropin');
   }
   
-  // Mini Cart functionality
-  let cartLinkToggle = block.querySelector('#cart-link-toggle');
-  let miniCart = null;
-  
-  // Load mini-cart block
-  const miniCartContainer = block.querySelector('#mini-cart-container');
-  if (miniCartContainer) {
-    try {
-      
-      // Load CSS first
-      loadBlockCSS('mini-cart');
-      
-      // Load and parse HTML
-      const miniCartHTML = await loadBlockHTML('mini-cart');
-      if (miniCartHTML) {
-        const miniCartFragment = parseHTMLFragment(miniCartHTML);
-        miniCartContainer.appendChild(miniCartFragment);
-        miniCart = miniCartContainer.querySelector('.mini-cart');
-        
-        // Decorate the mini-cart block
-        if (miniCart) {
-          const miniCartModule = await import(new URL('blocks/mini-cart/mini-cart.js', baseUrl).href);
-          const decorateMiniCart = miniCartModule.default;
-          await decorateMiniCart(miniCart);
-          
-          // Setup cart link toggle AFTER mini-cart is loaded
-          setupCartToggle();
-        }
-      }
-    } catch (error) {
-      console.error('Error loading mini-cart block:', error);
-    }
+  const miniCartBlock = block.querySelector('.commerce-mini-cart');
+  if (miniCartBlock) {
+    await decorateBlock(miniCartBlock, 'commerce-mini-cart');
   }
-  
-  // Legacy: If no button exists, convert anchor tag to button (mini-cart is now loaded separately)
-  if (!cartLinkToggle) {
-    const cartAnchor = block.querySelector('a.cart-link');
-    if (cartAnchor) {
-      const cartCountEl = cartAnchor.querySelector('.cart-count');
-      const cartIcon = cartAnchor.querySelector('.cart-icon');
-      const cartLabel = cartAnchor.querySelector('.cart-label');
-      
-      const button = document.createElement('button');
-      button.className = 'cart-link';
-      button.id = 'cart-link-toggle';
-      button.setAttribute('aria-expanded', 'false');
-      button.setAttribute('aria-label', 'Shopping cart');
-      
-      // Copy content from anchor or create if missing
-      if (cartIcon) {
-        button.appendChild(cartIcon.cloneNode(true));
-      } else {
-        const iconSpan = document.createElement('span');
-        iconSpan.className = 'cart-icon';
-        iconSpan.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>';
-        button.appendChild(iconSpan);
-      }
-      
-      if (cartLabel) {
-        button.appendChild(cartLabel.cloneNode(true));
-      } else {
-        const labelSpan = document.createElement('span');
-        labelSpan.className = 'cart-label';
-        labelSpan.textContent = 'Cart';
-        button.appendChild(labelSpan);
-      }
-      
-      // Add count badge after the label
-      if (cartCountEl) {
-        button.appendChild(cartCountEl.cloneNode(true));
-      } else {
-        const countSpan = document.createElement('span');
-        countSpan.className = 'cart-count';
-        countSpan.textContent = '0';
-        button.appendChild(countSpan);
-      }
-      
-      cartAnchor.parentNode.replaceChild(button, cartAnchor);
-      cartLinkToggle = button;
-      
-      // If mini-cart was already loaded, setup toggle now
-      if (miniCart) {
-        setupCartToggle();
-      }
-    }
-  }
-  
-  // Get cart count element
-  const cartCountEl = block.querySelector('.cart-count');
-
-  // Update cart count from localStorage
-  function updateCartCount() {
-    const countEl = cartCountEl || (cartLinkToggle ? cartLinkToggle.querySelector('.cart-count') : null);
-    if (countEl) {
-      try {
-        const cart = JSON.parse(localStorage.getItem('buildright_cart') || '[]');
-        const count = cart.reduce((sum, item) => {
-          if (item.type === 'bundle') {
-            return sum + (item.itemCount || 0);
-          }
-          return sum + (item.quantity || 0);
-        }, 0);
-        // Cap display at 99+ for large numbers
-        countEl.textContent = count > 99 ? '99+' : count;
-      } catch (e) {
-        countEl.textContent = '0';
-      }
-    }
-  }
-
-  // Use pre-loaded cart count if available (prevents layout shift)
-  const countEl = cartCountEl || (cartLinkToggle ? cartLinkToggle.querySelector('.cart-count') : null);
-  if (countEl && typeof window.__INITIAL_CART_COUNT__ !== 'undefined') {
-    countEl.textContent = window.__INITIAL_CART_COUNT__;
-  } else {
-    // Fallback to loading from localStorage
-    updateCartCount();
-  }
-
-  // Also update after a short delay to ensure mini-cart has initialized
-  setTimeout(() => {
-    updateCartCount();
-  }, 100);
-
-
-  // Toggle mini cart
-  function toggleMiniCart() {
-    if (!cartLinkToggle || !miniCart) return;
-    
-    const isActive = miniCart.classList.toggle('active');
-    cartLinkToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
-    
-    if (isActive) {
-      // Close user menu if it's open
-      if (userMenu && userMenu.classList.contains('active')) {
-        userMenu.classList.remove('active');
-        if (userMenuToggle) {
-          userMenuToggle.setAttribute('aria-expanded', 'false');
-        }
-      }
-      
-      // CSS handles positioning automatically
-    }
-  }
-
-  // Adobe Best Practice: Mini-cart positioning now handled by pure CSS
-  // No JavaScript positioning needed - see mini-cart.css
-
-  // Setup cart link toggle (called after mini-cart is loaded)
-  // Setup user menu toggle
-  function setupUserMenuToggle() {
-    if (!userMenuToggle || !userMenu) return;
-    
-    function toggleUserMenu() {
-      const isActive = userMenu.classList.contains('active');
-      
-      if (isActive) {
-        userMenu.classList.remove('active');
-        userMenuToggle.setAttribute('aria-expanded', 'false');
-      } else {
-        // Close mini cart if it's open
-        if (miniCart && miniCart.classList.contains('active')) {
-          miniCart.classList.remove('active');
-          if (cartLinkToggle) {
-            cartLinkToggle.setAttribute('aria-expanded', 'false');
-          }
-        }
-        
-        userMenu.classList.add('active');
-        userMenuToggle.setAttribute('aria-expanded', 'true');
-      }
-    }
-    
-    userMenuToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleUserMenu();
-    });
-
-    // Close when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!userMenu.contains(e.target) && !userMenuToggle.contains(e.target)) {
-        userMenu.classList.remove('active');
-        userMenuToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-  
-  function setupCartToggle() {
-    if (!cartLinkToggle || !miniCart) return;
-    
-    cartLinkToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleMiniCart();
-    });
-
-    // Close when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!miniCart.contains(e.target) && !cartLinkToggle.contains(e.target)) {
-        miniCart.classList.remove('active');
-        cartLinkToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Adobe Best Practice: No scroll/resize listeners needed
-    // CSS positioning handles this automatically
-  }
-
-  // Listen for cart updates
-  window.addEventListener('cartUpdated', () => {
-    updateCartCount();
-  });
-
-
-  // Listen for open mini cart event (from kit sidebar and add-to-cart)
-  window.addEventListener('openMiniCart', (e) => {
-    const highlightBundleId = e.detail?.highlightBundleId;
-    if (miniCart && cartLinkToggle) {
-      // Close user menu if it's open
-      if (userMenu && userMenu.classList.contains('active')) {
-        userMenu.classList.remove('active');
-        if (userMenuToggle) {
-          userMenuToggle.setAttribute('aria-expanded', 'false');
-        }
-      }
-      
-      if (highlightBundleId) {
-        miniCart.setAttribute('data-highlight-bundle', highlightBundleId);
-      }
-      miniCart.classList.add('active');
-      cartLinkToggle.setAttribute('aria-expanded', 'true');
-      positionMiniCart();
-      // Re-dispatch event so mini-cart block can handle highlighting
-      window.dispatchEvent(new CustomEvent('cartUpdated'));
-    }
-  });
 
   // Initialize location display from customer context
   function initializeLocationDisplay() {
@@ -510,7 +222,7 @@ export default async function decorate(block) {
         existingIcon.remove();
       }
       const iconHTML = '<span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>';
-      const iconSpan = parseHTML(iconHTML);
+      const iconSpan = parseHTMLFragment(iconHTML);
       industryToggle.textContent = label;
       industryToggle.appendChild(iconSpan);
     }
@@ -777,11 +489,8 @@ export default async function decorate(block) {
     }
   });
   
-  // Listen for cart item added events to show notification
-  window.addEventListener('cartItemAdded', (e) => {
-    const { productName, quantity } = e.detail;
-    showCartNotification(productName, quantity);
-  });
+  // Cart notifications are now handled by the Commerce Mini-Cart Dropin
+  // The dropin listens to cart/product/added events and shows notifications
   
   // Mark header as loaded to prevent FOUC
   document.body.classList.add('header-loaded');

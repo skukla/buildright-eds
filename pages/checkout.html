@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Critical initialization: BASE_PATH, cart preload, variant detection -->
+  <script src="../scripts/critical-init.js"></script>
+  <title>Checkout - BuildRight Solutions</title>
+  <script src="../scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="../styles/styles.css">
+  <!-- Checkout Dropin styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/dist/index.css">
+</head>
+<body class="page-checkout">
+  <!-- Header loaded dynamically from blocks/header/ -->
+  <header></header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="section checkout-section">
+      <div class="container checkout-container">
+        <h1 class="checkout-title">Checkout</h1>
+        
+        <!-- Commerce Checkout Dropin -->
+        <div id="checkout-dropin" class="checkout-dropin-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer loaded dynamically from blocks/footer/ -->
+  <footer></footer>
+
+  <script type="module">
+    import { loadConfig } from '../scripts/site-config.js';
+    import { waitForDropins } from '../scripts/initializers/index.js';
+    
+    async function initializeCheckoutPage() {
+      const config = await loadConfig();
+      const container = document.getElementById('checkout-dropin');
+      
+      if (!config.features?.useCommerceDropins) {
+        container.innerHTML = `
+          <div class="checkout-disabled">
+            <p>Commerce Dropins are not enabled.</p>
+            <a href="cart.html" class="btn btn-secondary">Return to Cart</a>
+          </div>
+        `;
+        return;
+      }
+      
+      // Wait for Commerce Dropins to initialize
+      await waitForDropins();
+      
+      try {
+        // Import and render Checkout container
+        const { render } = await import('@dropins/storefront-checkout/render.js');
+        const Checkout = (await import('@dropins/storefront-checkout/containers/Checkout.js')).default;
+        
+        // Define routes
+        const basePath = window.BASE_PATH || '/';
+        
+        await render(Checkout, {
+          routeCart: () => `${basePath}pages/cart.html`,
+          routeSignIn: () => `${basePath}pages/login.html`,
+          routeProduct: (product) => `${basePath}pages/product-detail.html?sku=${product.topLevelSku || product.sku}`,
+          onOrderSuccess: (order) => {
+            console.log('[Checkout] Order placed successfully:', order.number);
+            // Redirect to order confirmation
+            window.location.href = `${basePath}pages/order-confirmation.html?order=${order.number}`;
+          },
+          onOrderError: (error) => {
+            console.error('[Checkout] Order failed:', error);
+            // Show error message (handled by dropin)
+          },
+        })(container);
+        
+        console.log('[Checkout Page] Commerce Checkout Dropin rendered');
+        
+      } catch (error) {
+        console.error('[Checkout Page] Failed to render Checkout Dropin:', error);
+        container.innerHTML = `
+          <div class="checkout-error">
+            <p>Failed to load checkout. Please try again later.</p>
+            <a href="cart.html" class="btn btn-secondary">Return to Cart</a>
+          </div>
+        `;
+      }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeCheckoutPage);
+    } else {
+      initializeCheckoutPage();
+    }
+  </script>
+</body>
+</html>
+

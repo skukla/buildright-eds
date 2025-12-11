@@ -1,5 +1,16 @@
 /**
- * Mock ACO Service Layer
+ * @deprecated This file is deprecated and will be removed in a future release.
+ * 
+ * BuildRight now uses Commerce Dropins and API Mesh for real data.
+ * This mock service is only used as a fallback when mesh is unavailable.
+ * 
+ * Use instead:
+ * - scripts/services/catalog-service.js (unified interface)
+ * - scripts/services/mesh-client.js (real ACO via API Mesh)
+ * 
+ * ============================================
+ * 
+ * Mock ACO Service Layer (DEPRECATED)
  * Simulates Adobe Commerce Optimizer API behavior
  * 
  * NOTE: This is a MOCK for frontend development.

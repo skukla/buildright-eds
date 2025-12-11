@@ -426,8 +426,8 @@ async function loadLazy(doc) {
     await loadFooter(footer);
   }
   
-  // Initialize cart manager (BuildRight-specific)
-  await import('./cart-manager.js');
+  // Cart is now managed by Commerce Cart Dropin
+  // See scripts/initializers/cart.js for cart initialization
   
   // Adobe Best Practice: Handle URL hash navigation after layout is stable
   // Delay scroll to prevent jumps during initial page render
