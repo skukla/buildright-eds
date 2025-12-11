@@ -127,7 +127,8 @@ class BOMReview {
     
     // Load templates and packages directly from JSON
     try {
-      const response = await fetch('/data/templates.json');
+      const basePath = window.BASE_PATH || '/';
+      const response = await fetch(`${basePath}data/templates.json`.replace('//', '/'));
       const data = await response.json();
       
       this.packagesData = data.packages || [];

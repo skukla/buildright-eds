@@ -43,7 +43,8 @@ class TemplateBuilder {
   
   async loadTemplate(templateId) {
     try {
-      const response = await fetch('/data/templates.json');
+      const basePath = window.BASE_PATH || '/';
+      const response = await fetch(`${basePath}data/templates.json`.replace('//', '/'));
       const data = await response.json();
       this.template = data.templates.find(t => t.id === templateId);
       
