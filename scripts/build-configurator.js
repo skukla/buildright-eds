@@ -80,8 +80,8 @@ class BuildConfigurator {
     
     // Render all sections
     this.renderTemplateSummary();
-    this.renderVariants();
     this.renderPackages();
+    this.renderVariants();
     this.renderPhases();
     
     // Setup event listeners
