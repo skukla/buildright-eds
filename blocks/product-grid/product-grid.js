@@ -1,9 +1,12 @@
 // Product grid block decoration
 import { parseCatalogPath } from '../../scripts/url-router.js';
-import { parseHTMLFragment, parseHTML, safeAddEventListener, cleanupEventListeners, cleanElementListeners, resolveImagePath } from '../../scripts/utils.js';
+import { parseHTMLFragment, parseHTML, safeAddEventListener, cleanupEventListeners, cleanElementListeners, resolveImagePath, formatCurrency } from '../../scripts/utils.js';
 import { catalogService } from '../../scripts/services/catalog-service.js';
 import { authService } from '../../scripts/auth.js';
 import { getPersona } from '../../scripts/persona-config.js';
+
+// Infinite scroll configuration
+const PAGE_SIZE = 48; // Products per page load
 
 export default async function decorate(block) {
   // Ensure idempotent - if already decorated, cleanup first
@@ -25,6 +28,15 @@ export default async function decorate(block) {
   let currentSort = null;      // Track sort selection from dropdown
   let userContext = null;
   let isValidating = false;
+  
+  // Infinite scroll state
+  let currentPage = 1;
+  let totalCount = 0;
+  let loadedProducts = [];
+  let isLoadingMore = false;
+  let hasMoreProducts = true;
+  let loadMoreSentinel = null;
+  let infiniteScrollObserver = null;
   
   /**
    * Map frontend sort values to GraphQL sort input
@@ -70,7 +82,14 @@ export default async function decorate(block) {
   
   // Render products using product-tile blocks
   let isRendering = false;
-  async function renderProducts(products, pricing = {}) {
+  
+  /**
+   * Render products to the grid
+   * @param {Array} products - Products to render
+   * @param {Object} pricing - Pricing data keyed by SKU
+   * @param {boolean} append - If true, append to existing products; if false, replace
+   */
+  async function renderProducts(products, pricing = {}, append = false) {
     if (!container) return;
     
     // Prevent concurrent execution
@@ -78,11 +97,20 @@ export default async function decorate(block) {
     isRendering = true;
     
     try {
-      container.innerHTML = '';
-      // Reset min-height after content is loaded to prevent large gaps
-      container.style.minHeight = 'auto';
+      // Only clear container if not appending
+      if (!append) {
+        container.innerHTML = '';
+        // Reset min-height after content is loaded to prevent large gaps
+        container.style.minHeight = 'auto';
+      } else {
+        // Remove existing sentinel before appending
+        const existingSentinel = container.querySelector('.load-more-sentinel');
+        if (existingSentinel) {
+          existingSentinel.remove();
+        }
+      }
 
-      if (products.length === 0) {
+      if (products.length === 0 && !append) {
         const emptyMessage = parseHTML(`
           <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xxlarge);">
             <p>No products found matching your criteria.</p>
@@ -101,8 +129,14 @@ export default async function decorate(block) {
         return;
       }
 
+      // Update count to show loaded vs total
       if (countEl) {
-        countEl.textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
+        const displayCount = append ? loadedProducts.length : products.length;
+        if (totalCount > displayCount) {
+          countEl.textContent = `Showing ${displayCount} of ${totalCount} products`;
+        } else {
+          countEl.textContent = `${displayCount} product${displayCount !== 1 ? 's' : ''}`;
+        }
         countEl.style.visibility = 'visible';
       }
 
@@ -166,13 +200,13 @@ export default async function decorate(block) {
           if (productPricing.savings > 0 && productPricing.retailPrice) {
             const listPrice = document.createElement('div');
             listPrice.className = 'product-card-list-price';
-            listPrice.textContent = `List: $${productPricing.retailPrice.toFixed(2)}`;
+            listPrice.textContent = `List: ${formatCurrency(productPricing.retailPrice)}`;
             pricingContainer.appendChild(listPrice);
           }
           
           const priceValue = document.createElement('div');
           priceValue.className = 'product-card-price';
-          priceValue.textContent = `$${productPricing.unitPrice.toFixed(2)}`;
+          priceValue.textContent = formatCurrency(productPricing.unitPrice);
           
           const priceLabel = document.createElement('div');
           priceLabel.className = 'product-card-price-label';
@@ -193,7 +227,7 @@ export default async function decorate(block) {
         } else if (product.price) {
           const priceValue = document.createElement('div');
           priceValue.className = 'product-card-price';
-          priceValue.textContent = `$${product.price.toFixed(2)}`;
+          priceValue.textContent = formatCurrency(product.price);
           
           const priceLabel = document.createElement('span');
           priceLabel.className = 'product-card-price-label';
@@ -235,8 +269,154 @@ export default async function decorate(block) {
         
         container.appendChild(card);
       });
+      
+      // Add infinite scroll sentinel if there are more products
+      if (hasMoreProducts && loadedProducts.length < totalCount) {
+        loadMoreSentinel = document.createElement('div');
+        loadMoreSentinel.className = 'load-more-sentinel';
+        loadMoreSentinel.innerHTML = `
+          <div class="load-more-spinner">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="20">
+                <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+            <span>Loading more products...</span>
+          </div>
+        `;
+        loadMoreSentinel.style.cssText = 'grid-column: 1 / -1; display: flex; justify-content: center; padding: var(--spacing-large); opacity: 0;';
+        container.appendChild(loadMoreSentinel);
+        
+        // Set up intersection observer
+        setupInfiniteScroll();
+      }
     } finally {
       isRendering = false;
+    }
+  }
+  
+  /**
+   * Set up IntersectionObserver for infinite scroll
+   */
+  function setupInfiniteScroll() {
+    // Clean up existing observer
+    if (infiniteScrollObserver) {
+      infiniteScrollObserver.disconnect();
+    }
+    
+    if (!loadMoreSentinel) return;
+    
+    infiniteScrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !isLoadingMore && hasMoreProducts) {
+          loadMoreProducts();
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '200px', // Start loading before user reaches the bottom
+      threshold: 0
+    });
+    
+    infiniteScrollObserver.observe(loadMoreSentinel);
+  }
+  
+  /**
+   * Load more products for infinite scroll
+   */
+  async function loadMoreProducts() {
+    if (isLoadingMore || !hasMoreProducts) return;
+    
+    isLoadingMore = true;
+    
+    // Show loading indicator
+    if (loadMoreSentinel) {
+      loadMoreSentinel.style.opacity = '1';
+    }
+    
+    try {
+      currentPage += 1;
+      
+      // Build search phrase
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlSearchQuery = urlParams.get('q') || urlParams.get('search') || '';
+      const searchPhrase = currentSearchTerm || urlSearchQuery || '';
+      
+      // Build filter object
+      const category = urlParams.get('category');
+      const filter = {};
+      if (category) {
+        filter.categoryUrlKey = category;
+      }
+      Object.entries(currentFilters).forEach(([key, value]) => {
+        if (key === 'price_range') {
+          const { min, max } = value;
+          if (min !== null || max !== null) {
+            filter.price = [`${min || 0}-${max || 999999}`];
+          }
+        } else if (Array.isArray(value) && value.length > 0) {
+          filter[key] = value;
+        }
+      });
+      
+      const sort = mapSortToGraphQL(currentSort);
+      
+      console.log(`[Product Grid] Loading page ${currentPage}...`);
+      
+      const result = await catalogService.searchWithFacets({
+        phrase: searchPhrase || undefined,
+        filter: Object.keys(filter).length > 0 ? filter : undefined,
+        sort: sort || undefined,
+        limit: PAGE_SIZE,
+        page: currentPage
+      });
+      
+      const newProducts = (result.products?.items || []).map(item => ({
+        sku: item.sku,
+        name: item.name,
+        description: item.description,
+        image: item.imageUrl,
+        price: item.price?.value || 0,
+        inStock: item.inStock,
+        category: item.category,
+        attributes: item.attributes?.reduce((acc, attr) => {
+          acc[attr.name] = attr.value;
+          return acc;
+        }, {}) || {}
+      }));
+      
+      // Build pricing map
+      const pricing = {};
+      (result.products?.items || []).forEach(item => {
+        if (item.price) {
+          pricing[item.sku] = {
+            unitPrice: item.price.value,
+            currency: item.price.currency,
+            retailPrice: null,
+            savings: 0,
+            savingsPercent: 0
+          };
+        }
+      });
+      
+      // Add to loaded products
+      loadedProducts = [...loadedProducts, ...newProducts];
+      
+      // Check if we've loaded all products
+      if (newProducts.length < PAGE_SIZE || loadedProducts.length >= totalCount) {
+        hasMoreProducts = false;
+      }
+      
+      console.log(`[Product Grid] Loaded ${newProducts.length} more products (${loadedProducts.length}/${totalCount} total)`);
+      
+      // Render new products (append mode)
+      await renderProducts(newProducts, pricing, true);
+      
+    } catch (error) {
+      console.error('[Product Grid] Error loading more products:', error);
+      hasMoreProducts = false; // Stop trying on error
+    } finally {
+      isLoadingMore = false;
     }
   }
 
@@ -247,6 +427,18 @@ export default async function decorate(block) {
       showValidating();
     } else {
       showLoading();
+    }
+    
+    // Reset infinite scroll state on new search/filter
+    currentPage = 1;
+    loadedProducts = [];
+    hasMoreProducts = true;
+    isLoadingMore = false;
+    
+    // Clean up existing observer
+    if (infiniteScrollObserver) {
+      infiniteScrollObserver.disconnect();
+      infiniteScrollObserver = null;
     }
     
     try {
@@ -326,9 +518,12 @@ export default async function decorate(block) {
         phrase: searchPhrase || undefined,
         filter: Object.keys(filter).length > 0 ? filter : undefined,
         sort: sort || undefined,
-        limit: 100,
+        limit: PAGE_SIZE,
         page: 1
       });
+      
+      // Store total count for infinite scroll
+      totalCount = result.totalCount || 0;
       
       // Transform products to expected format
       const products = (result.products?.items || []).map(item => ({
@@ -345,7 +540,15 @@ export default async function decorate(block) {
         }, {}) || {}
       }));
       
-      console.log(`[Product Grid] Loaded ${products.length} products via ${catalogService.getActiveStrategy()}`);
+      // Store loaded products for infinite scroll
+      loadedProducts = products;
+      
+      // Check if we've loaded all products
+      if (products.length < PAGE_SIZE || products.length >= totalCount) {
+        hasMoreProducts = false;
+      }
+      
+      console.log(`[Product Grid] Loaded ${products.length}/${totalCount} products via ${catalogService.getActiveStrategy()}`);
       
       // Emit facets for filter sidebar
       if (result.facets?.facets) {
@@ -359,6 +562,7 @@ export default async function decorate(block) {
       }
       
       if (products.length === 0) {
+        totalCount = 0;
         renderProducts([]);
         window.dispatchEvent(new CustomEvent('catalogLoaded'));
         hideValidating();
@@ -381,8 +585,8 @@ export default async function decorate(block) {
       
       console.log('[Product Grid] Got pricing for', Object.keys(pricing).length, 'products');
       
-      // Render products with pricing
-      renderProducts(products, pricing);
+      // Render products with pricing (not append mode for initial load)
+      renderProducts(products, pricing, false);
       
       // Emit catalog loaded event (for catalog page loading overlay)
       window.dispatchEvent(new CustomEvent('catalogLoaded'));

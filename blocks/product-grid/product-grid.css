@@ -46,7 +46,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--spacing-large);
-  min-height: 1200px; /* CLS prevention - accommodates typical catalog product count */
+  min-height: 800px; /* CLS prevention - initial page load with infinite scroll */
   align-items: start; /* Don't stretch cards to full row height */
 }
 
@@ -281,5 +281,40 @@
   .product-count {
     white-space: nowrap; /* Prevent wrapping */
   }
+}
+
+/* Infinite Scroll Loading Indicator */
+.load-more-sentinel {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-large);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.load-more-spinner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.load-more-spinner svg {
+  color: var(--color-primary);
+}
+
+/* When validating/loading more, show subtle overlay */
+.products-container--validating {
+  position: relative;
+}
+
+.products-container--validating::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
 }
 
