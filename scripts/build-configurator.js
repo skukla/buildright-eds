@@ -18,7 +18,6 @@ class BuildConfigurator {
     this.editingBundleId = null; // Track if editing existing BOM
     this.isSubmitting = false; // Prevent double-submit
     this.hasUnsavedChanges = false; // Track for navigation guard
-    this.hasAttemptedSubmit = false; // Only show validation errors after first submit attempt
     
     // Form data
     this.buildInfo = {
@@ -662,23 +661,6 @@ class BuildConfigurator {
     } else {
       btn.textContent = 'Generate BOM';
     }
-    
-    // Show/hide validation hint
-    let hint = document.getElementById('generate-btn-hint');
-    if (!hint) {
-      hint = document.createElement('p');
-      hint.id = 'generate-btn-hint';
-      hint.className = 'form-hint form-hint--error';
-      btn.parentNode.insertBefore(hint, btn.nextSibling);
-    }
-    
-    // Only show validation error after user has attempted to submit
-    if (!isValid && !this.isSubmitting && this.hasAttemptedSubmit) {
-      hint.textContent = 'Select at least one construction phase';
-      hint.hidden = false;
-    } else {
-      hint.hidden = true;
-    }
   }
   
   // ============================================
@@ -686,14 +668,8 @@ class BuildConfigurator {
   // ============================================
   
   async generateBOM() {
-    // Mark that user has attempted to submit (for validation display)
-    this.hasAttemptedSubmit = true;
-    
-    // Validate required selections
-    if (this.selectedPhases.size === 0) {
-      this.updateGenerateButton(); // Show validation error now
-      return;
-    }
+    // Button should be disabled if no phases selected, but double-check
+    if (this.selectedPhases.size === 0) return;
     
     // Prevent double-submit
     if (this.isSubmitting) return;

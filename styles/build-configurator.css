@@ -138,11 +138,6 @@ body.white-variant #build-info-section .section-title {
   color: var(--color-text-secondary);
 }
 
-.form-hint--error {
-  color: var(--color-negative-500);
-  margin-top: var(--spacing-small);
-  margin-top: var(--spacing-xsmall);
-}
 
 /* Enhanced form inputs - mini cart inspired */
 .config-section .form-input,
