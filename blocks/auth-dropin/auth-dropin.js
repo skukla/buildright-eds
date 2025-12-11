@@ -80,24 +80,26 @@ function getBlockVariant(block) {
  */
 async function renderSignInForm(block) {
   try {
-    const { render } = await import('@dropins/storefront-auth/render.js');
+    // The render export is an object with a render method
+    const { render: authRenderer } = await import('@dropins/storefront-auth/render.js');
     const SignIn = (await import('@dropins/storefront-auth/containers/SignIn.js')).default;
     
     block.innerHTML = '';
     
-    await render(SignIn, {
+    await authRenderer.render(SignIn, {
       routeForgotPassword: () => './reset-password.html',
-      routeCreateAccount: () => './signup.html',
+      renderSignUpLink: true,
+      routeSignUp: () => './signup.html',
       routeRedirectOnSignIn: () => {
         // Get redirect URL from session storage or default to dashboard
         const redirectUrl = sessionStorage.getItem('auth_redirect') || './dashboard.html';
         sessionStorage.removeItem('auth_redirect');
         return redirectUrl;
       },
-      onSuccess: () => {
+      onSuccessCallback: () => {
         console.log('[AuthDropin] Sign in successful');
       },
-      onError: (error) => {
+      onErrorCallback: (error) => {
         console.error('[AuthDropin] Sign in error:', error);
       }
     })(block);
@@ -114,18 +116,18 @@ async function renderSignInForm(block) {
  */
 async function renderRegisterForm(block) {
   try {
-    const { render } = await import('@dropins/storefront-auth/render.js');
+    const { render: authRenderer } = await import('@dropins/storefront-auth/render.js');
     const SignUp = (await import('@dropins/storefront-auth/containers/SignUp.js')).default;
     
     block.innerHTML = '';
     
-    await render(SignUp, {
+    await authRenderer.render(SignUp, {
       routeSignIn: () => './login.html',
       routeRedirectOnSignIn: () => './dashboard.html',
-      onSuccess: () => {
+      onSuccessCallback: () => {
         console.log('[AuthDropin] Registration successful');
       },
-      onError: (error) => {
+      onErrorCallback: (error) => {
         console.error('[AuthDropin] Registration error:', error);
       }
     })(block);
@@ -142,17 +144,17 @@ async function renderRegisterForm(block) {
  */
 async function renderResetPasswordForm(block) {
   try {
-    const { render } = await import('@dropins/storefront-auth/render.js');
+    const { render: authRenderer } = await import('@dropins/storefront-auth/render.js');
     const ResetPassword = (await import('@dropins/storefront-auth/containers/ResetPassword.js')).default;
     
     block.innerHTML = '';
     
-    await render(ResetPassword, {
+    await authRenderer.render(ResetPassword, {
       routeSignIn: () => './login.html',
-      onSuccess: () => {
+      onSuccessCallback: () => {
         console.log('[AuthDropin] Password reset email sent');
       },
-      onError: (error) => {
+      onErrorCallback: (error) => {
         console.error('[AuthDropin] Password reset error:', error);
       }
     })(block);

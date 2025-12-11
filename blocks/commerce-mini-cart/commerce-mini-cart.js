@@ -46,7 +46,7 @@ export default async function decorate(block) {
  * @param {HTMLElement} block
  */
 async function renderCommerceMiniCart(block) {
-  const { render } = await import('@dropins/storefront-cart/render.js');
+  const { render: cartRenderer } = await import('@dropins/storefront-cart/render.js');
   const MiniCart = (await import('@dropins/storefront-cart/containers/MiniCart.js')).default;
   
   // Get URLs from block config or use defaults
@@ -82,7 +82,7 @@ async function renderCommerceMiniCart(block) {
   dropdown.hidden = true;
   
   // Render MiniCart dropin into dropdown
-  await render(MiniCart, {
+  await cartRenderer.render(MiniCart, {
     routeEmptyCartCTA: () => startShoppingURL,
     routeCart: () => cartURL,
     routeCheckout: () => checkoutURL,
