@@ -18,6 +18,7 @@ class BuildConfigurator {
     this.editingBundleId = null; // Track if editing existing BOM
     this.isSubmitting = false; // Prevent double-submit
     this.hasUnsavedChanges = false; // Track for navigation guard
+    this.hasAttemptedSubmit = false; // Only show validation errors after first submit attempt
     
     // Form data
     this.buildInfo = {
@@ -671,7 +672,8 @@ class BuildConfigurator {
       btn.parentNode.insertBefore(hint, btn.nextSibling);
     }
     
-    if (!isValid && !this.isSubmitting) {
+    // Only show validation error after user has attempted to submit
+    if (!isValid && !this.isSubmitting && this.hasAttemptedSubmit) {
       hint.textContent = 'Select at least one construction phase';
       hint.hidden = false;
     } else {
@@ -684,9 +686,12 @@ class BuildConfigurator {
   // ============================================
   
   async generateBOM() {
+    // Mark that user has attempted to submit (for validation display)
+    this.hasAttemptedSubmit = true;
+    
     // Validate required selections
     if (this.selectedPhases.size === 0) {
-      alert('Please select at least one construction phase.');
+      this.updateGenerateButton(); // Show validation error now
       return;
     }
     
