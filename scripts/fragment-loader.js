@@ -58,6 +58,17 @@ export async function loadFragment(container, fragmentPath) {
     // Force a reflow to ensure styles are applied
     void containerEl.offsetHeight;
     
+    // Fix all absolute links in the fragment to use BASE_PATH
+    const basePath = window.BASE_PATH || '/';
+    const absoluteLinks = containerEl.querySelectorAll('a[href^="/"]');
+    absoluteLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      // Skip external absolute URLs and already-fixed paths
+      if (!href.startsWith('//') && !href.startsWith(basePath)) {
+        link.setAttribute('href', `${basePath}${href.substring(1)}`);
+      }
+    });
+    
     // Decorate any blocks within the fragment (skip for footer to prevent duplication)
     const isFooterFragment = fragmentPath.includes('footer');
     const blocks = containerEl.querySelectorAll('[data-block-name]');
@@ -66,20 +77,8 @@ export async function loadFragment(container, fragmentPath) {
       await decorateBlocks(containerEl);
     }
     
-    // For footer fragments, just fix the links and mark as already loaded
+    // For footer fragments, mark as already loaded to prevent re-decoration
     if (isFooterFragment) {
-      const basePath = window.BASE_PATH || '/';
-      const pageLinks = containerEl.querySelectorAll('a[href^="pages/"], a[href^="/pages/"]');
-      pageLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href.startsWith('/pages/')) {
-          link.setAttribute('href', href.replace(/^\/pages\//, `${basePath}pages/`));
-        } else if (href.startsWith('pages/')) {
-          link.setAttribute('href', `${basePath}${href}`);
-        }
-      });
-      
-      // Mark the footer as already loaded to prevent re-decoration
       const footerElement = containerEl.querySelector('.site-footer');
       if (footerElement) {
         footerElement.dataset.blockStatus = 'loaded';

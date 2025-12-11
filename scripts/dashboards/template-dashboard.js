@@ -40,7 +40,8 @@ class TemplateDashboard {
     const errorEl = document.getElementById('templates-error');
     
     try {
-      const response = await fetch('/data/templates.json');
+      const basePath = window.BASE_PATH || '/';
+      const response = await fetch(`${basePath}data/templates.json`);
       if (!response.ok) throw new Error('Failed to fetch templates');
       const data = await response.json();
       this.templates = data.templates;
@@ -154,7 +155,8 @@ class TemplateDashboard {
     localStorage.removeItem('buildright_current_build');
     
     // Navigate to Build Configurator (Phase 6A)
-    window.location.href = `/pages/build-configurator.html?template=${template.id}`;
+    const basePath = window.BASE_PATH || '/';
+    window.location.href = `${basePath}pages/build-configurator.html?template=${template.id}`;
   }
   
   loadActiveBuilds() {

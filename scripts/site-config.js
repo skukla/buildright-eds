@@ -32,7 +32,9 @@ export async function loadConfig() {
   
   _configPromise = (async () => {
     try {
-      const response = await fetch('/config/env.json');
+      // Use BASE_PATH for GitHub Pages subdirectory support
+      const basePath = window.BASE_PATH || '/';
+      const response = await fetch(`${basePath}config/env.json`);
       if (!response.ok) {
         throw new Error(`Failed to load config: ${response.status}`);
       }

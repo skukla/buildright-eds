@@ -43,7 +43,8 @@ class TemplateBuilder {
   
   async loadTemplate(templateId) {
     try {
-      const response = await fetch('/data/templates.json');
+      const basePath = window.BASE_PATH || '/';
+      const response = await fetch(`${basePath}data/templates.json`);
       const data = await response.json();
       this.template = data.templates.find(t => t.id === templateId);
       
@@ -380,7 +381,8 @@ class TemplateBuilder {
       alert(`Success! Added ${allProducts.length} sample items to cart for ${this.template.name} (${this.selectedVariant.name})\n\nIn production, this would add all ${this.bom.reduce((sum, p) => sum + p.totalItems, 0)} items from the complete BOM.`);
       
       // Redirect to cart
-      window.location.href = '/pages/cart.html';
+      const cartPath = window.BASE_PATH || '/';
+      window.location.href = `${cartPath}pages/cart.html`;
       
     } catch (error) {
       console.error('Error adding to cart:', error);
