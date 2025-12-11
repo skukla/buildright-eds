@@ -330,6 +330,7 @@
 
   <script type="module">
     import { decorateBlock } from '../scripts/scripts.js';
+    import { formatCurrency } from '../scripts/utils.js';
 
     // Load orders from localStorage
     function loadOrders() {
@@ -397,7 +398,7 @@
                     <span class="order-items-count">${order.itemCount} items</span>
                   </div>
                 </td>
-                <td data-label="Total" class="order-total">$${order.total.toFixed(2)}</td>
+                <td data-label="Total" class="order-total">${formatCurrency(order.total)}</td>
                 <td data-label="Status">
                   <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
                 </td>
@@ -460,7 +461,7 @@
               </div>
               <div>
                 <div style="font: var(--type-body-2-default-font); color: var(--color-text-secondary); margin-bottom: 0.25rem;">Total</div>
-                <div style="font-weight: 700; font-size: 1.125rem; color: var(--color-brand-500);">$${order.total.toFixed(2)}</div>
+                <div style="font-weight: 700; font-size: 1.125rem; color: var(--color-brand-500);">${formatCurrency(order.total)}</div>
               </div>
             </div>
           </div>
@@ -483,8 +484,8 @@
                     <td>${product.name}</td>
                     <td style="font: normal normal 400 0.75rem/1.33 var(--type-font-family-base);">${product.sku}</td>
                     <td>${product.quantity}</td>
-                    <td>$${product.unitPrice.toFixed(2)}</td>
-                    <td style="font-weight: 600;">$${product.subtotal.toFixed(2)}</td>
+                    <td>${formatCurrency(product.unitPrice)}</td>
+                    <td style="font-weight: 600;">${formatCurrency(product.subtotal)}</td>
                   </tr>
                 `).join('')}
               </tbody>

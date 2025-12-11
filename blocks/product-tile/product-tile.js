@@ -13,6 +13,7 @@
 import { createIcon } from '../../scripts/icon-helper.js';
 import { acoService } from '../../scripts/aco-service.js';
 import { authService } from '../../scripts/auth.js';
+import { formatCurrency } from '../../scripts/utils.js';
 
 // Configuration
 const CONFIG = {
@@ -157,9 +158,9 @@ export default function decorate(block) {
         const priceEl = block.querySelector(':scope > .product-tile-content .product-tile-price');
         if (priceEl) {
           if (pricing) {
-            priceEl.textContent = `$${pricing.unitPrice.toFixed(2)}`;
+            priceEl.textContent = formatCurrency(pricing.unitPrice);
           } else if (this.data.price) {
-            priceEl.textContent = `$${this.data.price.toFixed(2)}`;
+            priceEl.textContent = formatCurrency(this.data.price);
           }
         }
         

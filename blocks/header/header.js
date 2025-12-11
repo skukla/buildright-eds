@@ -1,7 +1,7 @@
 // Header block decoration
 import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyRedirect } from '../../scripts/url-router.js';
 import { authService } from '../../scripts/auth.js';
-import { parseHTMLFragment } from '../../scripts/utils.js';
+import { parseHTMLFragment, formatCurrency } from '../../scripts/utils.js';
 import { getCompany } from '../../scripts/company-config.js';
 import { showCartNotification } from '../../scripts/cart-notification.js';
 
@@ -605,7 +605,7 @@ export default async function decorate(block) {
             <div class="search-suggestion-name">${item.name}</div>
             <div class="search-suggestion-sku">${item.sku}</div>
           </div>
-          ${item.price ? `<div class="search-suggestion-price">$${item.price.toFixed(2)}</div>` : ''}
+          ${item.price ? `<div class="search-suggestion-price">${formatCurrency(item.price)}</div>` : ''}
         </a>
       `).join('');
       

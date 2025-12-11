@@ -5,6 +5,7 @@
 
 import { authService } from '../auth.js';
 import { acoService } from '../aco-service.js';
+import { formatCurrency } from '../utils.js';
 
 export async function initialize(container) {
   const builder = new TemplateBuilder(container);
@@ -350,7 +351,7 @@ class TemplateBuilder {
   
   formatPrice(product) {
     if (product.price) {
-      return `$${product.price.toFixed(2)}`;
+      return formatCurrency(product.price);
     }
     return 'Price on request';
   }

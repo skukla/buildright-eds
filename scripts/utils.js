@@ -193,6 +193,21 @@ function cleanElementListeners(element) {
   return newElement;
 }
 
+/**
+ * Format a number as currency (USD)
+ * @param {number} amount - Amount to format
+ * @param {boolean} showCents - Whether to show cents (default: true)
+ * @returns {string} Formatted currency string (e.g., "$1,234.56")
+ */
+function formatCurrency(amount, showCents = true) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: showCents ? 2 : 0,
+    maximumFractionDigits: showCents ? 2 : 0,
+  }).format(amount || 0);
+}
+
 // ES6 exports - only actively used utilities
 export {
   getUrlParameter,
@@ -203,6 +218,7 @@ export {
   safeAddEventListener,
   cleanupEventListeners,
   cleanElementListeners,
+  formatCurrency,
   // Path resolution utilities already exported above as named exports
   // getBasePath,
   // resolvePath,
@@ -222,7 +238,8 @@ if (typeof module !== 'undefined' && module.exports) {
     parseHTMLFragment,
     safeAddEventListener,
     cleanupEventListeners,
-    cleanElementListeners
+    cleanElementListeners,
+    formatCurrency
   };
 }
 

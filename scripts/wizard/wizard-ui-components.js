@@ -5,6 +5,7 @@ import { escapeHtml, getLabel, getProjectDetailLabel, COMPONENT_GROUPS, CATEGORY
 import { getProductImageUrl, getInventoryStatus, getPrimaryWarehouse } from '../data-mock.js';
 import { parseHTML, formatCategoryName } from './wizard-utils.js';
 import { getWizardState } from '../project-builder.js';
+import { formatCurrency } from '../utils.js';
 
 /**
  * Create simple product row for clean list view
@@ -37,8 +38,8 @@ export function createSimpleProductRow(item) {
           <button class="simple-qty-btn" data-sku="${itemSku}" data-action="increase" tabindex="-1">+</button>
         </div>
       </div>
-      <div class="simple-list-col-price">$${unitPrice.toFixed(2)}</div>
-      <div class="simple-list-col-total">$${item.subtotal.toFixed(2)}</div>
+      <div class="simple-list-col-price">${formatCurrency(unitPrice)}</div>
+      <div class="simple-list-col-total">${formatCurrency(item.subtotal)}</div>
       <div class="simple-list-col-actions">
         <button class="simple-remove-btn" data-sku="${itemSku}" aria-label="Remove ${itemName}">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -96,10 +97,10 @@ export function createProductCard(item, mode = 'list') {
         </div>
       </div>
       <div class="product-card-list-price">
-        <span class="unit-price">$${unitPrice.toFixed(2)}</span>
+        <span class="unit-price">${formatCurrency(unitPrice)}</span>
       </div>
       <div class="product-card-list-subtotal">
-        <span>$${item.subtotal.toFixed(2)}</span>
+        <span>${formatCurrency(item.subtotal)}</span>
       </div>
     </div>
   `;
@@ -172,7 +173,7 @@ export function createBundleSummary(bundle) {
     <div class="bundle-summary">
       <div class="bundle-total">
         <div class="bundle-total-label">Total Price</div>
-        <div class="bundle-total-value" id="bundle-total-value">$${bundle.totalPrice.toFixed(2)}</div>
+        <div class="bundle-total-value" id="bundle-total-value">${formatCurrency(bundle.totalPrice)}</div>
       </div>
       <button class="btn btn-cta btn-lg" id="add-bundle-btn">Add Kit to Cart</button>
     </div>
@@ -203,7 +204,7 @@ export function createComponentToggles(componentPrices, includedGroups, bundle) 
             <input type="checkbox" class="component-toggle-checkbox" data-group="${groupEscaped}" ${checked}>
             <span>${groupEscaped}</span>
           </label>
-          <span class="component-toggle-price">$${price.toFixed(2)}</span>
+          <span class="component-toggle-price">${formatCurrency(price)}</span>
         </div>
       `;
     })
@@ -215,7 +216,7 @@ export function createComponentToggles(componentPrices, includedGroups, bundle) 
       ${toggleItems}
       <div class="component-toggle-item">
         <span class="component-toggle-label">Total:</span>
-        <span class="component-toggle-price" id="component-total-price">$${bundle.totalPrice.toFixed(2)}</span>
+        <span class="component-toggle-price" id="component-total-price">${formatCurrency(bundle.totalPrice)}</span>
       </div>
     </div>
   `;
@@ -270,7 +271,7 @@ export function createBundleProducts(itemsByCategory, includedGroups, bundle) {
           <div class="category-toggle ${excludedClass}" data-category="${categoryEscaped}">
             <span class="category-name">${categoryName}</span>
             <span class="category-count">${itemCount} items</span>
-            <span class="category-price">$${categoryTotal.toFixed(2)}</span>
+            <span class="category-price">${formatCurrency(categoryTotal)}</span>
           </div>
           <div class="category-items ${excludedClass}" id="category-${categoryEscaped}" style="display: ${displayStyle};">
             ${tableHTML}
@@ -283,7 +284,7 @@ export function createBundleProducts(itemsByCategory, includedGroups, bundle) {
       <div class="bundle-group-section" data-group="${groupNameEscaped}">
         <div class="bundle-group-header">
           <h4 class="bundle-group-title">${groupNameEscaped}</h4>
-          <span class="bundle-group-meta">${groupItemCount} items • $${groupTotal.toFixed(2)}</span>
+          <span class="bundle-group-meta">${groupItemCount} items • ${formatCurrency(groupTotal)}</span>
         </div>
         <div class="bundle-group-categories">
           ${categorySections}
@@ -379,8 +380,8 @@ export function createProductRow(item) {
           <button class="qty-btn" data-sku="${itemSku}" data-action="increase">+</button>
         </div>
       </td>
-      <td class="product-unit-price">$${unitPrice.toFixed(2)}</td>
-      <td class="product-subtotal">$${item.subtotal.toFixed(2)}</td>
+      <td class="product-unit-price">${formatCurrency(unitPrice)}</td>
+      <td class="product-subtotal">${formatCurrency(item.subtotal)}</td>
     </tr>
   `;
   

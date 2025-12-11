@@ -1,5 +1,6 @@
 // Pricing display block decoration
 // Uses persona-aware pricing passed from PDP (no mock service needed)
+import { formatCurrency } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
   const sku = block.getAttribute('data-sku');
@@ -57,7 +58,7 @@ export default async function decorate(block) {
       const tierIndicatorEl = block.querySelector('.tier-indicator') || block.querySelector('.tier-badge-clean');
       
       if (currentPriceEl) {
-        currentPriceEl.textContent = `$${pricing.unitPrice.toFixed(2)}`;
+        currentPriceEl.textContent = formatCurrency(pricing.unitPrice);
       }
 
       // B2C customer groups should not see volume pricing or tier badges (not relevant for homeowners)
@@ -129,7 +130,7 @@ export default async function decorate(block) {
         return `
           <tr class="${activeClass}">
             <td>${rangeText}</td>
-            <td>$${tier.unitPrice.toFixed(2)}</td>
+            <td>${formatCurrency(tier.unitPrice)}</td>
             <td><span class="tier-savings">${savingsText}</span></td>
           </tr>
         `;

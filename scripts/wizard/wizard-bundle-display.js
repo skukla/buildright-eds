@@ -6,6 +6,7 @@ import { escapeHtml, COMPONENT_GROUPS } from '../project-builder-constants.js';
 import { parseHTML, parseHTMLFragment } from './wizard-utils.js';
 import { updateSidebar } from './wizard-sidebar.js';
 import { getCurrentStep } from './wizard-core.js';
+import { formatCurrency } from '../utils.js';
 import {
   createSimpleProductRow,
   createPrintHeader,
@@ -193,7 +194,7 @@ export function displayListView(bundle, itemsByCategory, componentPrices, includ
           <p class="simple-list-subtitle">${bundle.itemCount} ${bundle.itemCount === 1 ? 'item' : 'items'}</p>
           ${projectDetailsHTML}
         </div>
-        <div class="simple-list-total">$${bundle.totalPrice.toFixed(2)}</div>
+        <div class="simple-list-total">${formatCurrency(bundle.totalPrice)}</div>
       </div>
       
       <div class="simple-list-table">

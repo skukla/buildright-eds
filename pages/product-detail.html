@@ -201,7 +201,7 @@
     import { decorateBlock } from '../scripts/scripts.js';
     import { catalogService } from '../scripts/services/catalog-service.js';
     import { authService } from '../scripts/auth.js';
-    import { cleanElementListeners } from '../scripts/utils.js';
+    import { cleanElementListeners, formatCurrency } from '../scripts/utils.js';
 
     async function loadProductDetail() {
       try {
@@ -398,7 +398,7 @@
         
         const currentPriceEl = document.querySelector('.current-price-clean');
         if (currentPriceEl && pricing) {
-          currentPriceEl.textContent = `$${pricing.unitPrice.toFixed(2)}`;
+          currentPriceEl.textContent = formatCurrency(pricing.unitPrice);
         }
         
         document.getElementById('product-description-full').textContent = product.description || 'No description available.';

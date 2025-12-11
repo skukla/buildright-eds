@@ -6,7 +6,7 @@
 
 import { authService } from '../../scripts/auth.js';
 import { catalogService } from '../../scripts/services/catalog-service.js';
-import { resolveImagePath } from '../../scripts/utils.js';
+import { resolveImagePath, formatCurrency } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
   const container = block.querySelector('.products-container');
@@ -124,13 +124,13 @@ export default async function decorate(block) {
         if (productPricing.savings > 0 && productPricing.retailPrice) {
           const listPrice = document.createElement('div');
           listPrice.className = 'product-card-list-price';
-          listPrice.textContent = `List: $${productPricing.retailPrice.toFixed(2)}`;
+          listPrice.textContent = `List: ${formatCurrency(productPricing.retailPrice)}`;
           pricingContainer.appendChild(listPrice);
         }
         
         const priceValue = document.createElement('div');
         priceValue.className = 'product-card-price';
-        priceValue.textContent = `$${productPricing.unitPrice.toFixed(2)}`;
+        priceValue.textContent = formatCurrency(productPricing.unitPrice);
         
         const priceLabel = document.createElement('div');
         priceLabel.className = 'product-card-price-label';
@@ -149,7 +149,7 @@ export default async function decorate(block) {
       } else if (product.price) {
         const priceValue = document.createElement('div');
         priceValue.className = 'product-card-price';
-        priceValue.textContent = `$${product.price.toFixed(2)}`;
+        priceValue.textContent = formatCurrency(product.price);
         
         const priceLabel = document.createElement('div');
         priceLabel.className = 'product-card-price-label';

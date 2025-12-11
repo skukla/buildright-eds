@@ -4,7 +4,7 @@
 import { getWizardState, saveWizardState, clearWizardState, getFullKit, hasKitItems } from '../project-builder.js';
 import { handleError } from './wizard-utils.js';
 import { STEP_STATE_MAP } from '../project-builder-constants.js';
-import { parseHTML } from '../utils.js';
+import { parseHTML, formatCurrency } from '../utils.js';
 
 // Current step tracker (can be overridden by state)
 let currentStep = 1;
@@ -362,7 +362,7 @@ function showProjectBuilderResumeBanner(showResults, showStep) {
           <div class="project-builder-resume-details">
             <span class="project-builder-resume-count">${itemCount} items</span>
             <span class="project-builder-resume-separator">•</span>
-            <span class="project-builder-resume-price">$${totalPrice.toFixed(2)}</span>
+            <span class="project-builder-resume-price">${formatCurrency(totalPrice)}</span>
           </div>
         </div>
         <div class="project-builder-resume-actions">

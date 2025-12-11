@@ -1,6 +1,7 @@
 // Project Bundle Block - Display and interaction for bundle products
 
 import { updateBundleItemQuantity, removeBundleFromCart } from '../../scripts/project-builder.js';
+import { formatCurrency } from '../../scripts/utils.js';
 
 export default async function decorate(block) {
   const bundleData = block.dataset.bundle;
@@ -24,7 +25,7 @@ export default async function decorate(block) {
 
   if (bundleName) bundleName.textContent = bundle.bundleName || 'Project Bundle';
   if (bundleItemCount) bundleItemCount.textContent = `${bundle.itemCount || 0} items`;
-  if (bundleTotalPrice) bundleTotalPrice.textContent = `$${(bundle.totalPrice || 0).toFixed(2)}`;
+  if (bundleTotalPrice) bundleTotalPrice.textContent = formatCurrency(bundle.totalPrice || 0);
 
   // Populate bundle items
   const bundleItemsContainer = block.querySelector('.bundle-items');
@@ -42,8 +43,8 @@ export default async function decorate(block) {
           </div>
         </div>
       <div class="bundle-item-pricing">
-        <div class="bundle-item-unit-price">$${(item.unitPrice || 0).toFixed(2)} each</div>
-        <div class="bundle-item-subtotal">$${(item.subtotal || 0).toFixed(2)}</div>
+        <div class="bundle-item-unit-price">${formatCurrency(item.unitPrice || 0)} each</div>
+        <div class="bundle-item-subtotal">${formatCurrency(item.subtotal || 0)}</div>
       </div>
     </div>
     `).join('');
@@ -69,13 +70,13 @@ export default async function decorate(block) {
           const itemEl = e.target.closest('.bundle-item');
           const subtotalEl = itemEl.querySelector('.bundle-item-subtotal');
           if (subtotalEl) {
-            subtotalEl.textContent = `$${item.subtotal.toFixed(2)}`;
+            subtotalEl.textContent = formatCurrency(item.subtotal);
           }
           
           // Recalculate bundle total
           bundle.totalPrice = bundle.items.reduce((sum, i) => sum + i.subtotal, 0);
           if (bundleTotalPrice) {
-            bundleTotalPrice.textContent = `$${bundle.totalPrice.toFixed(2)}`;
+            bundleTotalPrice.textContent = formatCurrency(bundle.totalPrice);
           }
         }
       });

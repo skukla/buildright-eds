@@ -7,6 +7,7 @@ import { getResourceLinks } from '../educational-content.js';
 import { parseHTMLFragment, parseHTML, handleError, showToast } from './wizard-utils.js';
 import { getCurrentStep } from './wizard-core.js';
 import { createEmptyState } from './wizard-ui-components.js';
+import { formatCurrency } from '../utils.js';
 
 /**
  * Save order to history
@@ -101,12 +102,12 @@ function formatMaterialsList(bundle, wizardState) {
     text += `${group.toUpperCase()}\n`;
     itemsByGroup[group].forEach(item => {
       const unitPrice = item.unitPrice || (item.subtotal / item.quantity);
-      text += `- ${item.name} (${item.sku}) x${item.quantity} @ $${unitPrice.toFixed(2)} = $${item.subtotal.toFixed(2)}\n`;
+      text += `- ${item.name} (${item.sku}) x${item.quantity} @ ${formatCurrency(unitPrice)} = ${formatCurrency(item.subtotal)}\n`;
     });
     text += `\n`;
   });
 
-  text += `TOTAL: $${bundle.totalPrice.toFixed(2)}\n`;
+  text += `TOTAL: ${formatCurrency(bundle.totalPrice)}\n`;
   
   return text;
 }
@@ -323,7 +324,7 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
     if (row) {
       const subtotalEl = row.querySelector('.simple-list-col-total');
       if (subtotalEl) {
-        subtotalEl.textContent = `$${item.subtotal.toFixed(2)}`;
+        subtotalEl.textContent = formatCurrency(item.subtotal);
       }
       
       // Ensure the input value matches the updated quantity
@@ -341,7 +342,7 @@ export function setupSimpleListViewEventListeners(bundle, allItems, displayBundl
     
     const totalEl = document.querySelector('.simple-list-total');
     if (totalEl) {
-      totalEl.textContent = `$${bundle.totalPrice.toFixed(2)}`;
+      totalEl.textContent = formatCurrency(bundle.totalPrice);
     }
 
     const wizardState = getWizardState() || {};
@@ -482,7 +483,7 @@ export function setupListViewEventListeners(bundle, itemsByGroup) {
         if (card) {
           const subtotalEl = card.querySelector('.subtotal, .product-card-list-subtotal span');
           if (subtotalEl) {
-            subtotalEl.textContent = `$${item.subtotal.toFixed(2)}`;
+            subtotalEl.textContent = formatCurrency(item.subtotal);
           }
         }
         
@@ -492,7 +493,7 @@ export function setupListViewEventListeners(bundle, itemsByGroup) {
         // Update header total if exists
         const headerSubtitle = document.querySelector('.list-view-subtitle');
         if (headerSubtitle) {
-          headerSubtitle.textContent = `${bundle.itemCount} items • Total: $${bundle.totalPrice.toFixed(2)}`;
+          headerSubtitle.textContent = `${bundle.itemCount} items • Total: ${formatCurrency(bundle.totalPrice)}`;
         }
         
         const wizardState = getWizardState() || {};
@@ -607,14 +608,14 @@ export function setupBundleEventListeners(bundle, itemsByCategory, includedGroup
           if (row) {
             const subtotalCell = row.querySelector('.product-subtotal');
             if (subtotalCell) {
-              subtotalCell.textContent = `$${item.subtotal.toFixed(2)}`;
+              subtotalCell.textContent = formatCurrency(item.subtotal);
             }
           }
           
           bundle.totalPrice = bundle.items.reduce((sum, i) => sum + i.subtotal, 0);
           const totalValue = document.querySelector('.bundle-total-value');
           if (totalValue) {
-            totalValue.textContent = `$${bundle.totalPrice.toFixed(2)}`;
+            totalValue.textContent = formatCurrency(bundle.totalPrice);
           }
           
           const wizardState = getWizardState() || {};
@@ -719,8 +720,8 @@ export function updateComponentToggles(bundle, itemsByCategory, includedGroups) 
     
     const totalValue = document.getElementById('bundle-total-value');
     const componentTotal = document.getElementById('component-total-price');
-    if (totalValue) totalValue.textContent = `$${newTotal.toFixed(2)}`;
-    if (componentTotal) componentTotal.textContent = `$${newTotal.toFixed(2)}`;
+    if (totalValue) totalValue.textContent = formatCurrency(newTotal);
+    if (componentTotal) componentTotal.textContent = formatCurrency(newTotal);
     
     bundle.totalPrice = newTotal;
     const wizardState = getWizardState() || {};

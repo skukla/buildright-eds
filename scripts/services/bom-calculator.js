@@ -9,6 +9,7 @@
  */
 
 import { findProductByName, findProductByCategory, getProductPrice } from './product-lookup.js';
+import { formatCurrency } from '../utils.js';
 
 /**
  * Calculate BOM for a house template
@@ -236,7 +237,7 @@ async function calculateFoundationFraming(measurements, selectionPackage) {
   
   const totalCost = items.reduce((sum, item) => sum + item.totalCost, 0);
   
-  console.log(`  ✅ ${items.length} line items, $${totalCost.toFixed(2)}`);
+  console.log(`  ✅ ${items.length} line items, ${formatCurrency(totalCost)}`);
   
   return { items, totalCost };
 }
@@ -360,7 +361,7 @@ async function calculateEnvelope(measurements, selectionPackage) {
   
   const totalCost = items.reduce((sum, item) => sum + item.totalCost, 0);
   
-  console.log(`  ✅ ${items.length} line items, $${totalCost.toFixed(2)}`);
+  console.log(`  ✅ ${items.length} line items, ${formatCurrency(totalCost)}`);
   
   return { items, totalCost };
 }
@@ -450,7 +451,7 @@ async function calculateInteriorFinish(measurements, selectionPackage) {
   
   const totalCost = items.reduce((sum, item) => sum + item.totalCost, 0);
   
-  console.log(`  ✅ ${items.length} line items, $${totalCost.toFixed(2)}`);
+  console.log(`  ✅ ${items.length} line items, ${formatCurrency(totalCost)}`);
   
   return { items, totalCost };
 }
