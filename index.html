@@ -6,12 +6,27 @@
   <!-- Critical initialization: BASE_PATH, cart preload, variant detection -->
   <script src="./scripts/critical-init.js"></script>
   <title>BuildRight Solutions - Building Materials Distributor</title>
+  
+  <!-- Commerce Dropins Import Maps -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@dropins/tools/": "https://cdn.jsdelivr.net/npm/@dropins/tools@latest/",
+      "@dropins/storefront-auth/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/",
+      "@dropins/storefront-cart/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/",
+      "@dropins/storefront-checkout/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/",
+      "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
+      "@dropins/storefront-order/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order@latest/"
+    }
+  }
+  </script>
+  
   <!-- Note: scripts.js NOT loaded here - this page uses personalization system instead -->
   <link rel="stylesheet" href="./styles/styles.css">
+  <!-- Commerce Dropins Base Styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/tools@latest/styles/tokens.css">
   <!-- Critical CSS for inlined header -->
   <link rel="stylesheet" href="./blocks/header/header.css">
-  <link rel="stylesheet" href="./blocks/mini-cart/mini-cart.css">
-  <link rel="stylesheet" href="./blocks/user-menu/user-menu.css">
   <link rel="stylesheet" href="./styles/blocks/hero-banner.css">
   <link rel="stylesheet" href="./styles/blocks/ideas-center.css">
   <link rel="stylesheet" href="./styles/blocks/shop-by-job.css">
