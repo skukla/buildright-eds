@@ -155,7 +155,8 @@ class TemplateDashboard {
     localStorage.removeItem('buildright_current_build');
     
     // Navigate to Build Configurator (Phase 6A)
-    window.location.href = `/pages/build-configurator.html?template=${template.id}`;
+    const basePath = window.BASE_PATH || '/';
+    window.location.href = `${basePath}pages/build-configurator.html?template=${template.id}`;
   }
   
   loadActiveBuilds() {

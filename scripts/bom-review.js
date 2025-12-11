@@ -401,7 +401,8 @@ class BOMReview {
     
     // Set breadcrumb link for Configure Build
     if (this.elements.configureBreadcrumb) {
-      this.elements.configureBreadcrumb.href = `/pages/build-configurator.html?template=${this.bomData.templateId}`;
+      const basePath = window.BASE_PATH || '/';
+      this.elements.configureBreadcrumb.href = `${basePath}pages/build-configurator.html?template=${this.bomData.templateId}`;
     }
   }
   
@@ -645,7 +646,8 @@ class BOMReview {
     
     // Edit config button
     this.elements.editConfigBtn.addEventListener('click', () => {
-      window.location.href = `/pages/build-configurator.html?template=${this.bomData.templateId}`;
+      const basePath = window.BASE_PATH || '/';
+      window.location.href = `${basePath}pages/build-configurator.html?template=${this.bomData.templateId}`;
     });
     
     // Add to cart button
@@ -788,8 +790,9 @@ class BOMReview {
     }
     
     // Redirect after delay
+    const basePath = window.BASE_PATH || '/';
     setTimeout(() => {
-      window.location.href = '/pages/cart.html';
+      window.location.href = `${basePath}pages/cart.html`;
     }, 2000);
   }
   

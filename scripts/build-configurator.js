@@ -512,7 +512,8 @@ class BuildConfigurator {
     document.getElementById('cancel-btn')?.addEventListener('click', () => {
       // Clear unsaved changes flag before navigating
       this.hasUnsavedChanges = false;
-      window.location.href = '/pages/dashboard-templates.html';
+      const basePath = window.BASE_PATH || '/';
+      window.location.href = `${basePath}pages/dashboard-templates.html`;
     });
     
     // Navigation guard - warn before leaving with unsaved changes
@@ -740,7 +741,8 @@ class BuildConfigurator {
       this.hasUnsavedChanges = false;
       
       // Navigate to BOM review with pre-generated data
-      window.location.href = `/pages/bom-review.html?buildId=${buildId}`;
+      const basePath = window.BASE_PATH || '/';
+      window.location.href = `${basePath}pages/bom-review.html?buildId=${buildId}`;
       
     } catch (error) {
       console.error('Error generating BOM:', error);

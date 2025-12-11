@@ -381,7 +381,8 @@ class TemplateBuilder {
       alert(`Success! Added ${allProducts.length} sample items to cart for ${this.template.name} (${this.selectedVariant.name})\n\nIn production, this would add all ${this.bom.reduce((sum, p) => sum + p.totalItems, 0)} items from the complete BOM.`);
       
       // Redirect to cart
-      window.location.href = '/pages/cart.html';
+      const basePath = window.BASE_PATH || '/';
+      window.location.href = `${basePath}pages/cart.html`;
       
     } catch (error) {
       console.error('Error adding to cart:', error);
