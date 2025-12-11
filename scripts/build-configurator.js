@@ -208,7 +208,8 @@ class BuildConfigurator {
   async loadTemplateData(templateId) {
     try {
       // Load templates, packages, variant images, and phases from single data file
-      const response = await fetch('/data/templates.json');
+      const basePath = window.BASE_PATH || '/';
+      const response = await fetch(`${basePath}data/templates.json`.replace('//', '/'));
       const data = await response.json();
       
       this.packages = data.packages || [];

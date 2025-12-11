@@ -32,14 +32,17 @@ export async function loadConfig() {
   
   _configPromise = (async () => {
     try {
-      const response = await fetch('/config/env.json');
+      // Use BASE_PATH for GitHub Pages subdirectory support
+      const basePath = window.BASE_PATH || '/';
+      const configPath = `${basePath}config/env.json`.replace('//', '/');
+      const response = await fetch(configPath);
       if (!response.ok) {
         throw new Error(`Failed to load config: ${response.status}`);
       }
       _cachedConfig = await response.json();
       return _cachedConfig;
     } catch (error) {
-      console.warn('[SiteConfig] Failed to load /config/env.json, using defaults:', error.message);
+      console.warn('[SiteConfig] Failed to load config/env.json, using defaults:', error.message);
       // Fallback defaults for development
       _cachedConfig = {
         meshEndpoint: null,

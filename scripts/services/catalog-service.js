@@ -336,7 +336,10 @@ function resolveCustomerGroupId(identifier, isProductionMode = false) {
  */
 async function loadMockProducts() {
   try {
-    const response = await fetch('/data/mock-products.json');
+    // Use BASE_PATH for GitHub Pages subdirectory support
+    const basePath = window.BASE_PATH || '/';
+    const dataPath = `${basePath}data/mock-products.json`.replace('//', '/');
+    const response = await fetch(dataPath);
     if (response.ok) {
       const data = await response.json();
       return data.products || data;

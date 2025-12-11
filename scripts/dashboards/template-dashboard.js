@@ -40,7 +40,8 @@ class TemplateDashboard {
     const errorEl = document.getElementById('templates-error');
     
     try {
-      const response = await fetch('/data/templates.json');
+      const basePath = window.BASE_PATH || '/';
+      const response = await fetch(`${basePath}data/templates.json`.replace('//', '/'));
       if (!response.ok) throw new Error('Failed to fetch templates');
       const data = await response.json();
       this.templates = data.templates;
