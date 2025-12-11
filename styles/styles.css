@@ -23,6 +23,9 @@
 /* Import signup wizard styles */
 @import url('signup-wizard.css');
 
+/* Commerce Dropin design token overrides - ensures dropins match BuildRight design */
+@import url('dropin-overrides.css');
+
 /* Import dashboard styles */
 @import url('dashboards/template-dashboard.css');
 @import url('dashboards/template-builder.css');
