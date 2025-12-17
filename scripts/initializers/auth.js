@@ -37,11 +37,47 @@ export async function initializeAuthDropin(initializers) {
     // Listen for authentication events
     setupAuthEventListeners();
     
+    // CRITICAL: Initialize guest persona for anonymous users
+    // This ensures that EVERY page has persona headers set before any queries run
+    await initializeGuestPersonaIfNeeded();
+    
     console.log('[Auth Dropin] Registered');
     
   } catch (error) {
     console.error('[Auth Dropin] Failed to initialize:', error);
     throw error;
+  }
+}
+
+/**
+ * Initialize guest persona if no persona is currently set
+ * This ensures anonymous users can browse the catalog
+ */
+async function initializeGuestPersonaIfNeeded() {
+  try {
+    // Check if persona headers are already set (from cache or previous session)
+    const existingHeaders = sessionStorage.getItem('buildright_persona_headers');
+    if (existingHeaders) {
+      console.log('[Auth Dropin] Persona headers already set, skipping guest initialization');
+      return;
+    }
+    
+    // Check if user is authenticated via token
+    const token = getAuthTokenFromCookie();
+    if (token) {
+      console.log('[Auth Dropin] Auth token found, skipping guest initialization (will authenticate)');
+      return;
+    }
+    
+    // Initialize guest persona (customer group 0 = BuildRight-Default catalog view)
+    console.log('[Auth Dropin] Initializing guest persona for anonymous user...');
+    const { initializePersona } = await import('../services/mesh-client.js');
+    await initializePersona('0'); // Customer group 0 = guest
+    console.log('[Auth Dropin] Guest persona initialized');
+    
+  } catch (error) {
+    console.error('[Auth Dropin] Failed to initialize guest persona:', error);
+    // Don't throw - allow page to continue, but queries may fail
   }
 }
 
@@ -128,6 +164,16 @@ async function handleCustomerLoggedOut() {
   sessionStorage.removeItem('buildright_persona');
   sessionStorage.removeItem('buildright_persona_headers');
   sessionStorage.removeItem('buildright_persona_email');
+  
+  // Reinitialize guest persona (customer group 0)
+  // This ensures the site continues to work after logout
+  try {
+    const { initializePersona } = await import('../services/mesh-client.js');
+    await initializePersona('0');
+    console.log('[Auth Dropin] Reinitialized guest persona after logout');
+  } catch (error) {
+    console.error('[Auth Dropin] Failed to reinitialize guest persona:', error);
+  }
   
   // Reset catalog service to use default persona
   catalogService.reset();
