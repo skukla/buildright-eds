@@ -91,26 +91,28 @@
   overflow: hidden;
 }
 
-/* Only show placeholder pattern when no image is set - pattern from .image-placeholder-pattern */
-.product-card-image:not([style*="background-image"]),
+/* Placeholder pattern for missing images */
 .product-card-image-placeholder {
   position: relative;
 }
 
-.product-card-image:not([style*="background-image"])::before,
 .product-card-image-placeholder::before {
   content: '';
   position: absolute;
-  width: 60%;
-  height: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
   background: repeating-linear-gradient(
     45deg,
-    var(--color-text-disabled),
+    var(--color-text-disabled) 0px,
     var(--color-text-disabled) 2px,
     transparent 2px,
-    transparent 8px
+    transparent 12px
   );
-  opacity: 0.4;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .product-card-header {

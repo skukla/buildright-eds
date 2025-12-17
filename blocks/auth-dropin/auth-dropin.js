@@ -62,11 +62,15 @@ export default async function decorate(block) {
 }
 
 /**
- * Get block variant from class names
+ * Get block variant from class names or context
  * @param {HTMLElement} block
  * @returns {string}
  */
 function getBlockVariant(block) {
+  // Check for header context first
+  if (block.dataset.headerContext === 'true') return 'user-menu';
+  
+  // Check for specific variants
   if (block.classList.contains('register')) return 'register';
   if (block.classList.contains('reset-password')) return 'reset-password';
   if (block.classList.contains('user-menu')) return 'user-menu';
@@ -167,67 +171,211 @@ async function renderResetPasswordForm(block) {
 
 /**
  * Render the User Menu (for header)
- * Shows user name and logout option when authenticated
+ * BuildRight Pattern: Updates the existing custom button and populates the dropdown
  * @param {HTMLElement} block
  */
 async function renderUserMenu(block) {
   const { isAuthenticated, getCurrentCustomer, logout } = await import('../../scripts/initializers/auth.js');
   
-  block.innerHTML = '';
+  // Check if we're in header context (BuildRight's custom design)
+  const isHeaderContext = block.dataset.headerContext === 'true';
   
-  if (isAuthenticated()) {
-    const customer = getCurrentCustomer();
-    const name = customer?.firstname || 'User';
+  if (isHeaderContext) {
+    // BuildRight Pattern: Work with existing custom HTML
+    const userMenuToggle = document.getElementById('user-menu-toggle');
+    const userLabel = document.querySelector('.user-label');
+    const basePath = window.BASE_PATH || '/';
     
-    const menu = document.createElement('div');
-    menu.className = 'auth-dropin-user-menu';
-    menu.innerHTML = `
-      <button class="user-menu-trigger" aria-expanded="false" aria-haspopup="true">
-        <span class="user-name">${name}</span>
-        <svg class="icon-chevron" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-          <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-      </button>
-      <div class="user-menu-dropdown" hidden>
-        <a href="./account.html" class="menu-item">My Account</a>
-        <a href="./order-history.html" class="menu-item">Order History</a>
-        <hr>
-        <button class="menu-item logout-btn">Sign Out</button>
-      </div>
-    `;
-    
-    // Set up event handlers
-    const trigger = menu.querySelector('.user-menu-trigger');
-    const dropdown = menu.querySelector('.user-menu-dropdown');
-    const logoutBtn = menu.querySelector('.logout-btn');
-    
-    trigger.addEventListener('click', () => {
-      const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-      trigger.setAttribute('aria-expanded', !isExpanded);
-      dropdown.hidden = isExpanded;
-    });
-    
-    logoutBtn.addEventListener('click', async () => {
-      await logout();
-      window.location.href = './login.html';
-    });
-    
-    // Close on click outside
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target)) {
-        trigger.setAttribute('aria-expanded', 'false');
-        dropdown.hidden = true;
+    if (isAuthenticated()) {
+      const customer = getCurrentCustomer();
+      const firstname = customer?.firstname || 'User';
+      const lastname = customer?.lastname || '';
+      const fullName = `${firstname} ${lastname}`.trim();
+      const company = customer?.company || '';
+      
+      // Get initials for avatar
+      const initials = `${firstname.charAt(0)}${lastname.charAt(0)}`.toUpperCase() || '--';
+      
+      // Update button label with user's first name
+      if (userLabel) {
+        userLabel.textContent = firstname;
       }
-    });
+      
+      // Populate the dropdown with BuildRight's exact logged-in design
+      block.innerHTML = `
+        <div class="user-menu">
+          <div class="user-menu-logged-in">
+            <div class="user-menu-header">
+              <div class="user-menu-greeting">
+                <div class="user-avatar">
+                  <span class="user-initials">${initials}</span>
+                </div>
+                <div class="user-info">
+                  <div class="user-name">${fullName}</div>
+                  <div class="user-company">${company || 'BuildRight Customer'}</div>
+                </div>
+              </div>
+            </div>
+            <div class="user-menu-content">
+              <a href="${basePath}pages/account.html" class="user-menu-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>My Account</span>
+              </a>
+              <a href="${basePath}pages/dashboard-templates.html" class="user-menu-link user-menu-link--persona" id="user-menu-new-build" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Start New Build</span>
+              </a>
+              <button class="user-menu-link user-menu-logout" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      const menu = block.querySelector('.user-menu');
+      const logoutBtn = block.querySelector('.user-menu-logout');
+      
+      // Wire up the toggle button
+      if (userMenuToggle && menu) {
+        userMenuToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isActive = menu.classList.contains('active');
+          menu.classList.toggle('active');
+          userMenuToggle.setAttribute('aria-expanded', !isActive);
+        });
+      }
+      
+      // Wire up logout
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          await logout();
+          window.location.href = `${basePath}pages/login.html`;
+        });
+      }
+      
+      // Close on click outside
+      document.addEventListener('click', (e) => {
+        if (!block.parentElement.contains(e.target)) {
+          if (userMenuToggle) {
+            userMenuToggle.setAttribute('aria-expanded', 'false');
+          }
+          menu.classList.remove('active');
+        }
+      });
+      
+    } else {
+      // Not authenticated - show BuildRight's exact logged-out design
+      block.innerHTML = `
+        <div class="user-menu">
+          <div class="user-menu-logged-out">
+            <div class="user-menu-header">
+              <h3 class="user-menu-title">Welcome to BuildRight</h3>
+            </div>
+            <div class="user-menu-content">
+              <a href="${basePath}pages/login.html" class="btn btn-cta btn-sm user-menu-action">
+                Login
+              </a>
+              <a href="${basePath}pages/signup.html" class="btn btn-secondary btn-sm user-menu-action">
+                Create Account
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      const menu = block.querySelector('.user-menu');
+      
+      // Wire up the toggle button
+      if (userMenuToggle && menu) {
+        userMenuToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isActive = menu.classList.contains('active');
+          menu.classList.toggle('active');
+          userMenuToggle.setAttribute('aria-expanded', !isActive);
+        });
+      }
+      
+      // Close on click outside
+      document.addEventListener('click', (e) => {
+        if (!block.parentElement.contains(e.target)) {
+          if (userMenuToggle) {
+            userMenuToggle.setAttribute('aria-expanded', 'false');
+          }
+          menu.classList.remove('active');
+        }
+      });
+    }
     
-    block.appendChild(menu);
   } else {
-    // Show sign in link
-    const signInLink = document.createElement('a');
-    signInLink.href = './login.html';
-    signInLink.className = 'auth-dropin-signin-link';
-    signInLink.textContent = 'Sign In';
-    block.appendChild(signInLink);
+    // Standalone context: Render Dropin's own UI
+    block.innerHTML = '';
+    
+    if (isAuthenticated()) {
+      const customer = getCurrentCustomer();
+      const name = customer?.firstname || 'User';
+      
+      const menu = document.createElement('div');
+      menu.className = 'auth-dropin-user-menu';
+      menu.innerHTML = `
+        <button class="user-menu-trigger" aria-expanded="false" aria-haspopup="true">
+          <span class="user-name">${name}</span>
+          <svg class="icon-chevron" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+        </button>
+        <div class="user-menu-dropdown" hidden>
+          <a href="./account.html" class="menu-item">My Account</a>
+          <a href="./order-history.html" class="menu-item">Order History</a>
+          <hr>
+          <button class="menu-item logout-btn">Sign Out</button>
+        </div>
+      `;
+      
+      // Set up event handlers
+      const trigger = menu.querySelector('.user-menu-trigger');
+      const dropdown = menu.querySelector('.user-menu-dropdown');
+      const logoutBtn = menu.querySelector('.logout-btn');
+      
+      trigger.addEventListener('click', () => {
+        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+        trigger.setAttribute('aria-expanded', !isExpanded);
+        dropdown.hidden = isExpanded;
+      });
+      
+      logoutBtn.addEventListener('click', async () => {
+        await logout();
+        window.location.href = './login.html';
+      });
+      
+      // Close on click outside
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target)) {
+          trigger.setAttribute('aria-expanded', 'false');
+          dropdown.hidden = true;
+        }
+      });
+      
+      block.appendChild(menu);
+    } else {
+      // Show sign in link
+      const signInLink = document.createElement('a');
+      signInLink.href = './login.html';
+      signInLink.className = 'auth-dropin-signin-link';
+      signInLink.textContent = 'Sign In';
+      block.appendChild(signInLink);
+    }
   }
 }
 

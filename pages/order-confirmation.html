@@ -11,13 +11,13 @@
   <script type="importmap">
   {
     "imports": {
-      "@dropins/tools/": "https://cdn.jsdelivr.net/npm/@dropins/tools@latest/",
-      "@dropins/storefront-auth/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/",
-      "@dropins/storefront-cart/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/",
-      "@dropins/storefront-checkout/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/",
+      "@dropins/tools/": "/node_modules/@dropins/tools/",
+      "@dropins/storefront-auth/": "/node_modules/@dropins/storefront-auth/",
+      "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
+      "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
       "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order@latest/",
-      "@dropins/storefront-order-confirmation/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order-confirmation@latest/"
+      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/",
+      "@dropins/storefront-order-confirmation/": "/node_modules/@dropins/storefront-order/"
     }
   }
   </script>
@@ -25,8 +25,8 @@
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
   <!-- Commerce Dropins Base Styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/tools@latest/styles/tokens.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/storefront-order-confirmation@latest/dist/index.css">
+  <link rel="stylesheet" href="/node_modules/@dropins/tools/styles/tokens.css">
+  <link rel="stylesheet" href="/node_modules/@dropins/storefront-order/dist/index.css">
 </head>
 <body class="page-order-confirmation">
   <!-- Header loaded dynamically from blocks/header/ -->
@@ -36,140 +36,14 @@
   <main>
     <section class="section order-confirmation-section">
       <div class="container order-confirmation-container">
-        <!-- Commerce Order Confirmation Dropin -->
-        <div id="order-confirmation-dropin" class="order-confirmation-dropin-container"></div>
+        <!-- Commerce Order Confirmation Dropin Block -->
+        <div class="order-confirmation-dropin"></div>
       </div>
     </section>
   </main>
 
   <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
-
-  <script type="module">
-    import { loadConfig } from '../scripts/site-config.js';
-    import { waitForDropins } from '../scripts/initializers/index.js';
-    
-    async function initializeOrderConfirmationPage() {
-      const config = await loadConfig();
-      const container = document.getElementById('order-confirmation-dropin');
-      
-      // Get order number from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const orderNumber = urlParams.get('order');
-      
-      if (!orderNumber) {
-        container.innerHTML = `
-          <div class="order-confirmation-error">
-            <h2>Order Not Found</h2>
-            <p>No order number was provided.</p>
-            <a href="order-history.html" class="btn btn-secondary">View Order History</a>
-          </div>
-        `;
-        return;
-      }
-      
-      if (!config.features?.useCommerceDropins) {
-        container.innerHTML = `
-          <div class="order-confirmation-success">
-            <h1>Thank You for Your Order!</h1>
-            <p>Your order <strong>${orderNumber}</strong> has been placed successfully.</p>
-            <div class="order-confirmation-actions">
-              <a href="catalog.html" class="btn btn-primary">Continue Shopping</a>
-              <a href="order-history.html" class="btn btn-secondary">View Order History</a>
-            </div>
-          </div>
-        `;
-        return;
-      }
-      
-      // Wait for Commerce Dropins to initialize
-      await waitForDropins();
-      
-      try {
-        // Import and render Order Confirmation container
-        const { render } = await import('@dropins/storefront-order-confirmation/render.js');
-        const OrderConfirmation = (await import('@dropins/storefront-order-confirmation/containers/OrderConfirmation.js')).default;
-        
-        // Define routes
-        const basePath = window.BASE_PATH || '/';
-        
-        await render(OrderConfirmation, {
-          orderRef: orderNumber,
-          routeContinueShopping: () => `${basePath}catalog`,
-          routeOrderHistory: () => `${basePath}pages/order-history.html`,
-          routeSupport: () => `${basePath}pages/support.html`,
-        })(container);
-        
-        console.log('[Order Confirmation] Dropin rendered for order:', orderNumber);
-        
-      } catch (error) {
-        console.error('[Order Confirmation] Failed to render:', error);
-        container.innerHTML = `
-          <div class="order-confirmation-success">
-            <h1>Thank You for Your Order!</h1>
-            <p>Your order <strong>${orderNumber}</strong> has been placed successfully.</p>
-            <p class="order-confirmation-note">We'll send you an email confirmation shortly.</p>
-            <div class="order-confirmation-actions">
-              <a href="catalog.html" class="btn btn-primary">Continue Shopping</a>
-              <a href="order-history.html" class="btn btn-secondary">View Order History</a>
-            </div>
-          </div>
-        `;
-      }
-    }
-    
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeOrderConfirmationPage);
-    } else {
-      initializeOrderConfirmationPage();
-    }
-  </script>
-  
-  <style>
-    .order-confirmation-section {
-      padding: 4rem 0;
-    }
-    
-    .order-confirmation-container {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    
-    .order-confirmation-success h1 {
-      color: var(--color-positive-600, #22c55e);
-      margin-bottom: 1rem;
-    }
-    
-    .order-confirmation-success p {
-      font-size: 1.125rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .order-confirmation-note {
-      color: var(--color-text-secondary);
-      margin-bottom: 2rem !important;
-    }
-    
-    .order-confirmation-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-    
-    .order-confirmation-error {
-      padding: 3rem;
-      background: var(--color-surface);
-      border-radius: var(--shape-border-radius-3);
-    }
-    
-    .order-confirmation-error h2 {
-      color: var(--color-negative-600, #dc2626);
-      margin-bottom: 1rem;
-    }
-  </style>
 </body>
 </html>
 

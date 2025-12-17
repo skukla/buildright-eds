@@ -187,7 +187,13 @@ export function decorateBlocks(main) {
     '.wizard-sidebar',
     '.project-builder',
     '.auth-dropin',
-    '.commerce-mini-cart'
+    '.commerce-mini-cart',
+    '.login-form',
+    '.cart-dropin',
+    '.cart-page',
+    '.checkout-dropin',
+    '.order-confirmation-dropin',
+    '.state-message'
   ];
   
   blockSelectors.forEach(selector => {
@@ -301,7 +307,12 @@ export async function loadBlocks(main) {
     'wizard-sidebar',
     'project-builder',
     'auth-dropin',
-    'commerce-mini-cart'
+    'commerce-mini-cart',
+    'login-form',
+    'cart-dropin',
+    'cart-page',
+    'checkout-dropin',
+    'order-confirmation-dropin'
   ];
 
   for (const pattern of blockPatterns) {

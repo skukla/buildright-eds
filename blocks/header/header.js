@@ -31,14 +31,34 @@ export default async function decorate(block) {
   window.addEventListener('auth:login', updateAuthenticatedElements);
   window.addEventListener('auth:logout', updateAuthenticatedElements);
   
-  // Decorate Commerce Dropin blocks in header
-  const authDropinBlock = block.querySelector('.auth-dropin');
-  if (authDropinBlock) {
+  // Initialize cart badge to hidden state (prevent race condition)
+  const cartBadge = block.querySelector('.cart-badge, [data-cart-badge]');
+  if (cartBadge) {
+    cartBadge.textContent = '';
+    cartBadge.classList.remove('has-items');
+    console.log('[Header] Cart badge initialized to hidden state');
+  }
+  
+  // Initialize Commerce Dropins in custom BuildRight containers
+  // This is the BuildRight pattern: Keep our design, use Dropin APIs
+  
+  const userMenuContainer = block.querySelector('#user-menu-container');
+  if (userMenuContainer) {
+    // Create auth-dropin block and insert into custom container
+    const authDropinBlock = document.createElement('div');
+    authDropinBlock.className = 'auth-dropin';
+    authDropinBlock.dataset.headerContext = 'true'; // Signal this is in header
+    userMenuContainer.appendChild(authDropinBlock);
     await decorateBlock(authDropinBlock, 'auth-dropin');
   }
   
-  const miniCartBlock = block.querySelector('.commerce-mini-cart');
-  if (miniCartBlock) {
+  const miniCartContainer = block.querySelector('#mini-cart-container');
+  if (miniCartContainer) {
+    // Create commerce-mini-cart block and insert into custom container
+    const miniCartBlock = document.createElement('div');
+    miniCartBlock.className = 'commerce-mini-cart';
+    miniCartBlock.dataset.headerContext = 'true'; // Signal this is in header
+    miniCartContainer.appendChild(miniCartBlock);
     await decorateBlock(miniCartBlock, 'commerce-mini-cart');
   }
 

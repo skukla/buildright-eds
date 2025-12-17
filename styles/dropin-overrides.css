@@ -1,205 +1,21 @@
 /**
  * Commerce Dropins Overrides
  * 
- * Override dropin default styling to EXACTLY match BuildRight design system.
- * These styles replicate the exact look from login.css and components.css.
+ * Override dropin default styling to match BuildRight design system.
+ * These styles ONLY apply to actual dropin containers (SignIn, MiniCart, etc.),
+ * NOT to the custom login form on the login page.
  */
 
 /* ============================================
-   AUTH DROPIN: SignIn Form
-   Match EXACTLY: .login-form-input, .login-form-label, .btn.btn-cta
+   DESIGN TOKENS - Map BuildRight tokens to Dropin tokens
+   These are read by all dropin components
    ============================================ */
 
-/* Reset dropin container styling when inside login card */
-#email-login .auth-dropin,
-.login-tab-content .auth-dropin {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-/* Make dropin form flex like original */
-#email-login .auth-dropin form,
-.login-tab-content .auth-dropin form {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 !important;
-}
-
-/* Form field containers - match .login-form-group */
-#email-login .auth-dropin form > div,
-#email-login .auth-dropin form > fieldset,
-.login-tab-content .auth-dropin form > div,
-.login-tab-content .auth-dropin form > fieldset {
-  margin-bottom: var(--spacing-medium) !important;
-  flex-shrink: 0 !important;
-}
-
-/* Labels - EXACT match to .login-form-label */
-#email-login .auth-dropin label,
-.login-tab-content .auth-dropin label {
-  display: block !important;
-  margin-bottom: var(--spacing-small) !important;
-  font-weight: 600 !important;
-  font-size: 0.9375rem !important;
-  color: var(--color-text) !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-}
-
-/* Input fields - EXACT match to .login-form-input */
-#email-login .auth-dropin input[type="text"],
-#email-login .auth-dropin input[type="email"],
-#email-login .auth-dropin input[type="password"],
-#email-login .auth-dropin input[type="tel"],
-.login-tab-content .auth-dropin input[type="text"],
-.login-tab-content .auth-dropin input[type="email"],
-.login-tab-content .auth-dropin input[type="password"],
-.login-tab-content .auth-dropin input[type="tel"] {
-  width: 100% !important;
-  height: 48px !important;
-  padding: 0 1rem !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  border-radius: var(--shape-border-radius-3) !important;
-  font-size: 1rem !important;
-  line-height: 1.5 !important;
-  color: var(--color-text) !important;
-  background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%) !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-  transition: all var(--transition-fast) !important;
-  box-sizing: border-box !important;
-}
-
-#email-login .auth-dropin input:focus,
-.login-tab-content .auth-dropin input:focus {
-  outline: none !important;
-  border-color: var(--color-brand-500) !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(15, 91, 167, 0.12) !important;
-}
-
-#email-login .auth-dropin input::placeholder,
-.login-tab-content .auth-dropin input::placeholder {
-  color: var(--color-text-secondary) !important;
-}
-
-/* Checkbox - match .login-checkbox-group */
-#email-login .auth-dropin input[type="checkbox"],
-.login-tab-content .auth-dropin input[type="checkbox"] {
-  width: 18px !important;
-  height: 18px !important;
-  cursor: pointer !important;
-}
-
-/* Submit button - EXACT match to .btn.btn-cta.btn-lg */
-#email-login .auth-dropin button[type="submit"],
-.login-tab-content .auth-dropin button[type="submit"] {
-  width: 100% !important;
-  height: 48px !important;
-  padding: 0 2rem !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  background: var(--color-cta-500) !important;
-  color: white !important;
-  border: none !important;
-  border-radius: var(--shape-border-radius-3) !important;
-  cursor: pointer !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-  transition: all var(--transition-fast) !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  margin-top: auto !important; /* Push to bottom like original */
-}
-
-#email-login .auth-dropin button[type="submit"]:hover,
-.login-tab-content .auth-dropin button[type="submit"]:hover {
-  background: var(--color-cta-600) !important;
-  box-shadow: 0 4px 12px rgba(237, 108, 2, 0.3) !important;
-  transform: translateY(-1px) !important;
-}
-
-#email-login .auth-dropin button[type="submit"]:active,
-.login-tab-content .auth-dropin button[type="submit"]:active {
-  transform: translateY(0) !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-}
-
-#email-login .auth-dropin button[type="submit"]:disabled,
-.login-tab-content .auth-dropin button[type="submit"]:disabled {
-  background: var(--color-text-secondary) !important;
-  cursor: not-allowed !important;
-  opacity: 0.5 !important;
-  transform: none !important;
-}
-
-/* Secondary/link buttons - brand blue links */
-#email-login .auth-dropin a,
-#email-login .auth-dropin button:not([type="submit"]),
-.login-tab-content .auth-dropin a,
-.login-tab-content .auth-dropin button:not([type="submit"]) {
-  color: var(--color-brand-500) !important;
-  text-decoration: none !important;
-  font-weight: 500 !important;
-  background: transparent !important;
-  border: none !important;
-  cursor: pointer !important;
-  padding: 0 !important;
-  font-size: 0.9375rem !important;
-}
-
-#email-login .auth-dropin a:hover,
-#email-login .auth-dropin button:not([type="submit"]):hover,
-.login-tab-content .auth-dropin a:hover,
-.login-tab-content .auth-dropin button:not([type="submit"]):hover {
-  text-decoration: underline !important;
-  color: var(--color-brand-600) !important;
-}
-
-/* Error messages */
-#email-login .auth-dropin [class*="error"],
-#email-login .auth-dropin [class*="Error"],
-.login-tab-content .auth-dropin [class*="error"],
-.login-tab-content .auth-dropin [class*="Error"] {
-  color: var(--color-negative-500) !important;
-  font-size: 0.875rem !important;
-  margin-top: var(--spacing-xsmall) !important;
-}
-
-/* Hide "Don't have an account?" from dropin - we have it in card footer */
-#email-login .auth-dropin [class*="signUp"],
-#email-login .auth-dropin [class*="signup"],
-#email-login .auth-dropin [class*="create-account"],
-.login-tab-content .auth-dropin [class*="signUp"],
-.login-tab-content .auth-dropin [class*="signup"],
-.login-tab-content .auth-dropin [class*="create-account"] {
-  /* Keep visible - let dropin show sign up link */
-}
+/* Note: Design tokens are defined in base.css - no need to redefine them here */
+/* Only override dropin-specific tokens that need to be different */
 
 /* ============================================
-   AUTH DROPIN: User Menu in Header
-   ============================================ */
-
-.auth-dropin.user-menu .user-menu-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  min-width: 180px;
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: var(--shape-border-radius-3);
-  box-shadow: var(--shape-shadow-3);
-  z-index: 1000;
-}
-
-.auth-dropin.user-menu .logout-btn {
-  color: var(--color-negative-500) !important;
-}
-
-/* ============================================
-   CART DROPIN: MiniCart
+   CART/MINI-CART DROPIN
    ============================================ */
 
 .commerce-mini-cart .mini-cart-wrapper {
@@ -221,10 +37,10 @@
   width: 380px;
   max-height: 480px;
   overflow-y: auto;
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: var(--shape-border-radius-3);
-  box-shadow: var(--shape-shadow-3);
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 }
 
@@ -235,7 +51,7 @@
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
-  background: var(--color-cta-500);
+  background: #ed6c02;
   color: white;
   font-size: 11px;
   font-weight: 700;
@@ -249,16 +65,16 @@
   display: none;
 }
 
-/* Checkout button in cart dropins - orange CTA */
-.commerce-mini-cart button[type="submit"],
-.commerce-cart button[type="submit"] {
-  background: var(--color-cta-500) !important;
+/* Cart checkout button */
+.cart-mini-cart__footer button,
+.cart-cart__footer button {
+  background: #ed6c02 !important;
   color: white !important;
-  border-radius: var(--shape-border-radius-3) !important;
+  border-radius: 8px !important;
   font-weight: 600 !important;
 }
 
-.commerce-mini-cart button[type="submit"]:hover,
-.commerce-cart button[type="submit"]:hover {
-  background: var(--color-cta-600) !important;
+.cart-mini-cart__footer button:hover,
+.cart-cart__footer button:hover {
+  background: #d45a00 !important;
 }

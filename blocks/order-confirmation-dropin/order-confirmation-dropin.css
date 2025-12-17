@@ -1,0 +1,9 @@
+/* Order Confirmation Dropin Block */
+
+.order-confirmation-dropin {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+/* Error and success states are handled by components.css (.state-container, .error-state) */
+

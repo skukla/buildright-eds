@@ -51,11 +51,12 @@ export async function initializeDropins() {
       const { initializers } = await import('@dropins/tools/initializer.js');
       const { setEndpoint, setFetchGraphQlHeaders } = await import('@dropins/tools/fetch-graphql.js');
       
-      // Configure GraphQL endpoint for Commerce
+      // Configure GraphQL endpoint - Commerce Dropins use Commerce directly (best practice)
+      // BuildRight custom queries (ACO, persona, BOM) use the API Mesh
       const commerceEndpoint = config.commerceEndpoint;
       if (commerceEndpoint) {
         setEndpoint(commerceEndpoint);
-        console.log('[Dropins] Commerce endpoint:', commerceEndpoint);
+        console.log('[Dropins] Using Commerce endpoint directly:', commerceEndpoint);
         
         // Set store code header if configured
         if (config.commerceStoreCode) {

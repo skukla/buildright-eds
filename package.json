@@ -8,6 +8,7 @@
     "build": "node scripts/tools/build.js",
     "prebuild": "echo 'Injecting blocks...'",
     "get-aco-data": "cd ../buildright-aco && npm run generate:eds-data",
+    "sync:images": "bash scripts/sync-product-images.sh",
     "validate-paths": "node scripts/tools/validate-html-paths.js",
     "prepare": "husky"
   },
@@ -23,6 +24,11 @@
     "glob": "^10.4.5"
   },
   "devDependencies": {
+    "@dropins/storefront-auth": "^2.1.5",
+    "@dropins/storefront-cart": "^1.5.1",
+    "@dropins/storefront-checkout": "^2.1.0",
+    "@dropins/storefront-order": "^1.4.0",
+    "@dropins/tools": "^1.5.3",
     "husky": "^9.1.7"
   }
 }

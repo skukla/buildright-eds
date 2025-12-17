@@ -1,0 +1,13 @@
+/* State Message Block */
+
+/* All state styling is defined in styles/components.css:
+ * - .state-container (base container)
+ * - .error-state (red error icon/text)
+ * - .loading-state (loading spinner)
+ * - .empty-state (empty state styling)
+ */
+
+.state-message {
+  margin: 2rem 0;
+}
+

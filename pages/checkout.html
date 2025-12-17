@@ -11,13 +11,13 @@
   <script type="importmap">
   {
     "imports": {
-      "@dropins/tools/": "https://cdn.jsdelivr.net/npm/@dropins/tools@latest/",
-      "@dropins/storefront-auth/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/",
-      "@dropins/storefront-cart/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/",
-      "@dropins/storefront-checkout/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/",
+      "@dropins/tools/": "/node_modules/@dropins/tools/",
+      "@dropins/storefront-auth/": "/node_modules/@dropins/storefront-auth/",
+      "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
+      "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
       "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order@latest/",
-      "@dropins/storefront-order-confirmation/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order-confirmation@latest/"
+      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/",
+      "@dropins/storefront-order-confirmation/": "/node_modules/@dropins/storefront-order/"
     }
   }
   </script>
@@ -25,8 +25,8 @@
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
   <!-- Commerce Dropins Base Styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/tools@latest/styles/tokens.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/dist/index.css">
+  <link rel="stylesheet" href="/node_modules/@dropins/tools/styles/tokens.css">
+  <link rel="stylesheet" href="/node_modules/@dropins/storefront-checkout/dist/index.css">
 </head>
 <body class="page-checkout">
   <!-- Header loaded dynamically from blocks/header/ -->
@@ -38,79 +38,14 @@
       <div class="container checkout-container">
         <h1 class="checkout-title">Checkout</h1>
         
-        <!-- Commerce Checkout Dropin -->
-        <div id="checkout-dropin" class="checkout-dropin-container"></div>
+        <!-- Commerce Checkout Dropin Block -->
+        <div class="checkout-dropin"></div>
       </div>
     </section>
   </main>
 
   <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
-
-  <script type="module">
-    import { loadConfig } from '../scripts/site-config.js';
-    import { waitForDropins } from '../scripts/initializers/index.js';
-    
-    async function initializeCheckoutPage() {
-      const config = await loadConfig();
-      const container = document.getElementById('checkout-dropin');
-      
-      if (!config.features?.useCommerceDropins) {
-        container.innerHTML = `
-          <div class="checkout-disabled">
-            <p>Commerce Dropins are not enabled.</p>
-            <a href="cart.html" class="btn btn-secondary">Return to Cart</a>
-          </div>
-        `;
-        return;
-      }
-      
-      // Wait for Commerce Dropins to initialize
-      await waitForDropins();
-      
-      try {
-        // Import and render Checkout container
-        const { render } = await import('@dropins/storefront-checkout/render.js');
-        const Checkout = (await import('@dropins/storefront-checkout/containers/Checkout.js')).default;
-        
-        // Define routes
-        const basePath = window.BASE_PATH || '/';
-        
-        await render(Checkout, {
-          routeCart: () => `${basePath}pages/cart.html`,
-          routeSignIn: () => `${basePath}pages/login.html`,
-          routeProduct: (product) => `${basePath}pages/product-detail.html?sku=${product.topLevelSku || product.sku}`,
-          onOrderSuccess: (order) => {
-            console.log('[Checkout] Order placed successfully:', order.number);
-            // Redirect to order confirmation
-            window.location.href = `${basePath}pages/order-confirmation.html?order=${order.number}`;
-          },
-          onOrderError: (error) => {
-            console.error('[Checkout] Order failed:', error);
-            // Show error message (handled by dropin)
-          },
-        })(container);
-        
-        console.log('[Checkout Page] Commerce Checkout Dropin rendered');
-        
-      } catch (error) {
-        console.error('[Checkout Page] Failed to render Checkout Dropin:', error);
-        container.innerHTML = `
-          <div class="checkout-error">
-            <p>Failed to load checkout. Please try again later.</p>
-            <a href="cart.html" class="btn btn-secondary">Return to Cart</a>
-          </div>
-        `;
-      }
-    }
-    
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeCheckoutPage);
-    } else {
-      initializeCheckoutPage();
-    }
-  </script>
 </body>
 </html>
 

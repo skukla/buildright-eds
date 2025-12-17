@@ -11,12 +11,12 @@
   <script type="importmap">
   {
     "imports": {
-      "@dropins/tools/": "https://cdn.jsdelivr.net/npm/@dropins/tools@latest/",
-      "@dropins/storefront-auth/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/",
-      "@dropins/storefront-cart/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/",
-      "@dropins/storefront-checkout/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/",
+      "@dropins/tools/": "/node_modules/@dropins/tools/",
+      "@dropins/storefront-auth/": "/node_modules/@dropins/storefront-auth/",
+      "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
+      "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
       "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order@latest/"
+      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/"
     }
   }
   </script>
@@ -484,7 +484,7 @@
         const addToCartBtn = document.getElementById('add-to-cart-btn');
         const cleanBtn = cleanElementListeners(addToCartBtn);
         
-        cleanBtn.addEventListener('click', () => {
+        cleanBtn.addEventListener('click', async () => {
           const quantity = parseInt(document.getElementById('quantity').value) || 1;
           
           // Close volume pricing modal when adding to cart
@@ -493,9 +493,64 @@
             volumePricingModal.style.display = 'none';
           }
           
-          window.dispatchEvent(new CustomEvent('addToCart', {
-            detail: { sku, quantity, productName: product.name }
-          }));
+          // Disable button and show loading state
+          const button = cleanBtn;
+          const originalHTML = button.innerHTML;
+          button.disabled = true;
+          button.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" opacity="0.25"/>
+              <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round">
+                <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+              </path>
+            </svg>
+            Adding to Cart...
+          `;
+          
+          try {
+            // Use commerce-helpers for unified cart handling
+            const { addProductToCart, showAddToCartNotification } = await import('../scripts/commerce-helpers.js');
+            await addProductToCart(product, quantity);
+            
+            // Show success state
+            button.innerHTML = `
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"></path>
+              </svg>
+              Added to Cart!
+            `;
+            button.classList.add('success');
+            
+            // Show notification
+            showAddToCartNotification(product, quantity);
+            
+            // Reset button after delay
+            setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.classList.remove('success');
+              button.disabled = false;
+            }, 2000);
+            
+          } catch (error) {
+            console.error('[Product Detail] Failed to add to cart:', error);
+            
+            // Show error state
+            button.innerHTML = `
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4M12 16h.01"/>
+              </svg>
+              Error - Try Again
+            `;
+            button.classList.add('error');
+            
+            // Reset button after delay
+            setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.classList.remove('error');
+              button.disabled = false;
+            }, 3000);
+          }
         });
 
         const quantityInput = document.getElementById('quantity');

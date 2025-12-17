@@ -14,33 +14,38 @@ A **persona-driven B2B commerce demo** showcasing Adobe Commerce + ACO + EDS int
 
 ---
 
-## 🏗️ Three-Layer Architecture
+## 🏗️ Dual-Endpoint Architecture
 
 ```
-┌─────────────────────────────────────────┐
-│   Frontend (Adobe EDS)                  │
-│   - EDS Blocks (content)                │
-│   - Commerce Dropins (commerce)         │
-│   - Persona-driven dashboards           │
-└──────────────┬──────────────────────────┘
-               │ GraphQL via API Mesh
-┌──────────────┴──────────────────────────┐
-│   Integration Layer (API Mesh)          │
-│   - Aggregates Commerce + ACO           │
-│   - Single GraphQL endpoint             │
-└──────────────┬──────────────────────────┘
-               │
-    ┌──────────┴──────────┐
-    │                     │
-┌───┴────────────┐  ┌────┴──────────────┐
-│ Adobe Commerce │  │ Adobe Commerce    │
-│ PaaS           │  │ Optimizer (ACO)   │
-│ - Products     │  │ - Pricing         │
-│ - Inventory    │  │ - Policies        │
-│ - Customers    │  │ - Catalog Views   │
-│ - B2B          │  │ - Price Books     │
-└────────────────┘  └───────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                Frontend (Adobe EDS)                      │
+│   - EDS Blocks (content)                                │
+│   - Commerce Dropins (cart, auth, checkout)             │
+│   - Persona-driven dashboards                           │
+└────────────┬─────────────────────────────┬──────────────┘
+             │                             │
+             │ Commerce Dropins            │ BuildRight Custom
+             │ (unprefixed)                │ (ACO_, BuildRight_)
+             ▼                             ▼
+    ┌────────────────┐          ┌──────────────────┐
+    │   Commerce     │          │    API Mesh      │
+    │   GraphQL      │          │  (ACO + Custom)  │
+    │                │          └──────────┬───────┘
+    │ - Customer     │                     │
+    │ - Cart         │                     ▼
+    │ - Checkout     │          ┌──────────────────┐
+    │ - Orders       │          │      ACO         │
+    └────────────────┘          │ - Products       │
+                                │ - Pricing        │
+                                │ - Catalog Views  │
+                                │ - Price Books    │
+                                └──────────────────┘
 ```
+
+**Key Design:** Commerce Dropins connect directly to Commerce (best practice),
+while BuildRight custom queries (catalog, persona, BOM) use API Mesh.
+
+**See**: [ADR-008](../reference/decisions/ADR-008-COMMERCE-DROPINS-DIRECT-CONNECTION.md) for rationale
 
 ---
 
@@ -67,22 +72,29 @@ A **persona-driven B2B commerce demo** showcasing Adobe Commerce + ACO + EDS int
 
 ---
 
-## 🔌 Integration: Adobe API Mesh
+## 🔌 Integration: Dual Endpoints
 
-### Role
-Single GraphQL endpoint aggregating Commerce PaaS + ACO
+### Commerce Direct (Commerce Dropins)
+**Purpose**: Customer, cart, checkout, order operations  
+**Endpoint**: `https://com750.adobedemo.com/graphql`  
+**Operations**: Unprefixed GraphQL queries (standard Commerce)  
+**Pattern**: Dropins → Commerce (no adapter needed)
 
-### Resolves
-- Product queries → Commerce PaaS
-- Pricing queries → ACO Price Books
-- CCDM policies → ACO Catalog Optimizer
-- Inventory → Commerce MSI
+### API Mesh (BuildRight Custom + ACO)
+**Purpose**: Product catalog, persona resolution, BOM generation  
+**Endpoint**: `https://edge-sandbox-graph.adobe.io/api/.../graphql`  
+**Operations**: Prefixed queries (`BuildRight_*`, `ACO_*`)  
+**Pattern**: Custom queries → Mesh → ACO
 
-### Current Status
-**Demo Mode**: Mocked in `scripts/aco-service.js`  
-**Production**: Configured in Phase 8
+### Why Two Endpoints?
+1. **Best Practice**: Commerce Dropins designed for direct Commerce connection
+2. **Simpler**: No query transformation adapter needed
+3. **Faster**: Eliminates unnecessary mesh hop for cart operations
+4. **Clear Separation**: Commerce (customer/cart) vs ACO (catalog/pricing)
 
-**See**: [phase-8-backend/DROPIN-ARCHITECTURE.md](../phase-8-backend/DROPIN-ARCHITECTURE.md)
+**See**: 
+- [ADR-008: Commerce Dropins Direct Connection](../reference/decisions/ADR-008-COMMERCE-DROPINS-DIRECT-CONNECTION.md)
+- [COMMERCE-MESH-INTEGRATION.md](../implementation/sarah-end-to-end/dropins/COMMERCE-MESH-INTEGRATION.md) (previous approach)
 
 ---
 
@@ -259,11 +271,15 @@ Enforces: BEM naming, semantic tokens, responsive patterns
 **Decision**: Demo mode (company select) + production mode (real auth)  
 **Why**: Better demo UX, but ready for production
 
-### ADR-006: Multi-Location Store Manager
-**Decision**: Kevin manages multiple store locations  
-**Why**: Demonstrates complex B2B use case, MSI fulfillment
+### ADR-007: Custom SDK Dropins for ACO
+**Decision**: Build custom dropins using Adobe Commerce SDK for ACO-sourced components  
+**Why**: Visual consistency with Commerce Dropins, leverages SDK design tokens
 
-**See**: [adr/README.md](../adr/README.md)
+### ADR-008: Commerce Dropins Direct Connection
+**Decision**: Connect Commerce Dropins directly to Commerce, not through API Mesh  
+**Why**: Best practice, simpler, faster, standard integration pattern
+
+**See**: [reference/decisions/](../reference/decisions/)
 
 ---
 

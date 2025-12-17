@@ -11,13 +11,13 @@
   <script type="importmap">
   {
     "imports": {
-      "@dropins/tools/": "https://cdn.jsdelivr.net/npm/@dropins/tools@latest/",
-      "@dropins/storefront-auth/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/",
-      "@dropins/storefront-cart/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/",
-      "@dropins/storefront-checkout/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/",
+      "@dropins/tools/": "/node_modules/@dropins/tools/",
+      "@dropins/storefront-auth/": "/node_modules/@dropins/storefront-auth/",
+      "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
+      "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
       "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order@latest/",
-      "@dropins/storefront-order-confirmation/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order-confirmation@latest/"
+      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/",
+      "@dropins/storefront-order-confirmation/": "/node_modules/@dropins/storefront-order/"
     }
   }
   </script>
@@ -25,8 +25,8 @@
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
   <!-- Commerce Dropins Base Styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/tools@latest/styles/tokens.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/dist/index.css">
+  <link rel="stylesheet" href="/node_modules/@dropins/tools/styles/tokens.css">
+  <link rel="stylesheet" href="/node_modules/@dropins/storefront-cart/dist/index.css">
 </head>
 <body class="page-cart">
   <!-- Header loaded dynamically from blocks/header/ -->
@@ -38,74 +38,13 @@
       <div class="container cart-container">
         <h1 class="cart-title">Shopping Cart</h1>
         
-        <!-- Commerce Cart Dropin -->
-        <div id="cart-dropin" class="cart-dropin-container"></div>
+        <!-- Cart Page Block (API-only Commerce Dropin integration) -->
+        <div class="cart-page"></div>
       </div>
     </section>
   </main>
 
   <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
-
-  <script type="module">
-    import { loadConfig } from '../scripts/site-config.js';
-    import { waitForDropins } from '../scripts/initializers/index.js';
-    
-    async function initializeCartPage() {
-      const config = await loadConfig();
-      const container = document.getElementById('cart-dropin');
-      
-      if (!config.features?.useCommerceDropins) {
-        // Fallback to static message if dropins disabled
-        container.innerHTML = `
-          <div class="cart-empty-state">
-            <p>Commerce Dropins are not enabled.</p>
-            <a href="catalog.html" class="btn btn-primary">Browse Catalog</a>
-          </div>
-        `;
-        return;
-      }
-      
-      // Wait for Commerce Dropins to initialize
-      await waitForDropins();
-      
-      try {
-        // Import and render Cart container
-        const { render } = await import('@dropins/storefront-cart/render.js');
-        const Cart = (await import('@dropins/storefront-cart/containers/Cart.js')).default;
-        
-        // Define routes
-        const basePath = window.BASE_PATH || '/';
-        
-        await render(Cart, {
-          routeEmptyCartCTA: () => `${basePath}catalog`,
-          routeCheckout: () => `${basePath}pages/checkout.html`,
-          routeProduct: (product) => `${basePath}pages/product-detail.html?sku=${product.topLevelSku || product.sku}`,
-          // Enable quantity editing
-          enableQuantityUpdate: true,
-          // Enable item removal
-          enableRemoveItem: true,
-        })(container);
-        
-        console.log('[Cart Page] Commerce Cart Dropin rendered');
-        
-      } catch (error) {
-        console.error('[Cart Page] Failed to render Cart Dropin:', error);
-        container.innerHTML = `
-          <div class="cart-error">
-            <p>Failed to load cart. Please try again later.</p>
-            <a href="catalog.html" class="btn btn-primary">Browse Catalog</a>
-          </div>
-        `;
-      }
-    }
-    
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeCartPage);
-    } else {
-      initializeCartPage();
-    }
-  </script>
 </body>
 </html>

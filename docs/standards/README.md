@@ -13,6 +13,22 @@ This folder contains all architectural and design standards that apply across th
 
 ## Key Documents
 
+### Commerce Dropins Integration (Phase 5.5+)
+
+**DROPIN-INTEGRATION-PATTERN.md** ⭐ **CRITICAL FOR DROPINS**
+- **The BuildRight pattern**: Keep our design, use Dropin APIs
+- How to integrate Commerce Dropins with existing design
+- Context-aware rendering (header vs. standalone)
+- Step-by-step implementation checklist
+- Anti-patterns to avoid
+- Validated by Perplexity research
+
+**Related**:
+- [reference/decisions/AUTH-DROPIN-API-ONLY.md](../reference/decisions/AUTH-DROPIN-API-ONLY.md) - Why we chose API-only for auth
+- [reference/research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md](../reference/research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md) - Research validation
+
+---
+
 ### Architecture & Design System
 
 **CSS-ARCHITECTURE.md** ⭐ **ESSENTIAL**
@@ -61,6 +77,7 @@ This folder contains all architectural and design standards that apply across th
 
 ## When to Reference
 
+- **Integrating Commerce Dropins** ⭐ → Read DROPIN-INTEGRATION-PATTERN.md
 - **Writing CSS** → Read CSS-ARCHITECTURE.md
 - **Writing JavaScript** → Read CODING-PRINCIPLES.md
 - **Creating components** → Read COMPONENT-DESIGN-LIBRARY.md

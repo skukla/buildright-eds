@@ -1,7 +1,6 @@
 // Main Application Script
 
 import { decorateBlock } from './utils.js';
-import './cart-manager.js';
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {

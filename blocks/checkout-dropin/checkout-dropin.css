@@ -1,0 +1,8 @@
+/* Checkout Dropin Block */
+
+.checkout-dropin {
+  margin: 2rem 0;
+}
+
+/* Error and empty states are handled by components.css (.state-container, .error-state) */
+

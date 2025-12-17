@@ -111,14 +111,19 @@ export default async function decorate(block) {
       }
 
       if (products.length === 0 && !append) {
+        // Check if filters or search are applied
+        const hasFilters = Object.keys(currentFilters).length > 0 || currentSearchTerm;
+        
         const emptyMessage = parseHTML(`
           <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xxlarge);">
-            <p>No products found matching your criteria.</p>
-            <p style="margin-top: var(--spacing-medium);">
-              <button class="btn btn-secondary" onclick="window.dispatchEvent(new CustomEvent('filtersChanged', { detail: { reset: true }}))">
-                Clear Filters
-              </button>
-            </p>
+            <p>${hasFilters ? 'No products found matching your criteria.' : 'No products available.'}</p>
+            ${hasFilters ? `
+              <p style="margin-top: var(--spacing-medium);">
+                <button class="btn btn-secondary" onclick="window.dispatchEvent(new CustomEvent('filtersChanged', { detail: { reset: true }}))">
+                  Clear Filters
+                </button>
+              </p>
+            ` : ''}
           </div>
         `);
         container.appendChild(emptyMessage);
@@ -156,12 +161,22 @@ export default async function decorate(block) {
         // Only set background image if we have a valid image URL
         const imageUrl = resolveImagePath(product.image || '');
         if (imageUrl && imageUrl.trim() !== '' && !imageUrl.includes('placeholder.png')) {
-          imageContainer.style.backgroundImage = `url('${imageUrl}')`;
-          imageContainer.style.backgroundSize = 'cover';
-          imageContainer.style.backgroundPosition = 'center';
-          imageContainer.style.backgroundRepeat = 'no-repeat';
+          // Create a temporary image to test if the image loads
+          const testImg = new Image();
+          testImg.onload = () => {
+            // Image loaded successfully
+            imageContainer.style.backgroundImage = `url('${imageUrl}')`;
+            imageContainer.style.backgroundSize = 'cover';
+            imageContainer.style.backgroundPosition = 'center';
+            imageContainer.style.backgroundRepeat = 'no-repeat';
+          };
+          testImg.onerror = () => {
+            // Image failed to load (404) - add placeholder class
+            imageContainer.classList.add('product-card-image-placeholder');
+          };
+          testImg.src = imageUrl;
         } else {
-          // Add placeholder class if no image
+          // Add placeholder class if no image URL
           imageContainer.classList.add('product-card-image-placeholder');
         }
         
@@ -243,18 +258,76 @@ export default async function decorate(block) {
         
         const addToCartBtn = document.createElement('button');
         addToCartBtn.className = 'btn btn-primary';
+        addToCartBtn.dataset.sku = product.sku;
         addToCartBtn.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 5v14M5 12h14"></path>
           </svg>
           Add to Cart
         `;
-        addToCartBtn.addEventListener('click', (e) => {
+        addToCartBtn.addEventListener('click', async (e) => {
           e.preventDefault();
           e.stopPropagation();
-          window.dispatchEvent(new CustomEvent('addToCart', {
-            detail: { sku: product.sku, quantity: 1, productName: product.name }
-          }));
+          
+          const button = e.currentTarget;
+          const originalHTML = button.innerHTML;
+          
+          // Disable button and show loading state
+          button.disabled = true;
+          button.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" opacity="0.25"/>
+              <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round">
+                <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+              </path>
+            </svg>
+            Adding...
+          `;
+          
+          try {
+            // Use commerce-helpers for unified cart handling
+            const { addProductToCart, showAddToCartNotification } = await import('../../scripts/commerce-helpers.js');
+            await addProductToCart(product, 1);
+            
+            // Show success state
+            button.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"></path>
+              </svg>
+              Added!
+            `;
+            button.classList.add('success');
+            
+            // Show notification
+            showAddToCartNotification(product, 1);
+            
+            // Reset button after delay
+            setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.classList.remove('success');
+              button.disabled = false;
+            }, 1500);
+            
+          } catch (error) {
+            console.error('[Product Grid] Failed to add to cart:', error);
+            
+            // Show error state
+            button.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4M12 16h.01"/>
+              </svg>
+              Error
+            `;
+            button.classList.add('error');
+            
+            // Reset button after delay
+            setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.classList.remove('error');
+              button.disabled = false;
+            }, 2000);
+          }
         });
         actions.appendChild(addToCartBtn);
         
@@ -564,7 +637,8 @@ export default async function decorate(block) {
       if (products.length === 0) {
         totalCount = 0;
         renderProducts([]);
-        window.dispatchEvent(new CustomEvent('catalogLoaded'));
+        // Dispatch error event to hide sidebar when no products found
+        window.dispatchEvent(new CustomEvent('catalogError'));
         hideValidating();
         return;
       }
@@ -609,7 +683,8 @@ export default async function decorate(block) {
           <button class="btn btn-primary" onclick="window.location.reload()">Reload Page</button>
         </div>
       `;
-      window.dispatchEvent(new CustomEvent('catalogLoaded'));
+      // Dispatch error event instead of loaded event to hide sidebar
+      window.dispatchEvent(new CustomEvent('catalogError'));
       hideValidating();
     }
   }

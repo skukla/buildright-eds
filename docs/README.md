@@ -75,7 +75,8 @@ This plan consolidates all decisions and phases:
 | [reference/backend/](./reference/backend/) | Backend, ACO, Mesh docs |
 | [reference/deployment/](./reference/deployment/) | Deployment guides |
 | [reference/authoring/](./reference/authoring/) | Content authoring |
-| [reference/research/](./reference/research/) | Industry research |
+| [reference/research/](./reference/research/) | Industry research, Perplexity findings |
+| [reference/decisions/](./reference/decisions/) | **Implementation decisions** (Dropin patterns) |
 
 ### Standards & Guides
 
@@ -83,9 +84,14 @@ This plan consolidates all decisions and phases:
 |--------|---------|
 | [adr/](./adr/) | Architecture Decision Records (7 ADRs) |
 | [personas/](./personas/) | All 5 persona profiles |
-| [standards/](./standards/) | CSS, coding, design standards |
+| [standards/](./standards/) | **CSS, coding, Dropin integration patterns** |
 | [testing/](./testing/) | Testing guides |
 | [quick-reference/](./quick-reference/) | Quick lookup guides |
+
+**Key Standards:**
+- **[standards/DROPIN-INTEGRATION-PATTERN.md](./standards/DROPIN-INTEGRATION-PATTERN.md)** ⭐ - How to integrate Commerce Dropins with BuildRight design
+- [standards/CSS-ARCHITECTURE.md](./standards/CSS-ARCHITECTURE.md) - EDS block-first CSS architecture
+- [standards/CODING-PRINCIPLES.md](./standards/CODING-PRINCIPLES.md) - JavaScript patterns
 
 ### Archive
 - **[archive/](./archive/)** - Historical/superseded documentation

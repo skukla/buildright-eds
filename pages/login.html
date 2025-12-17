@@ -11,13 +11,13 @@
   <script type="importmap">
   {
     "imports": {
-      "@dropins/tools/": "https://cdn.jsdelivr.net/npm/@dropins/tools@latest/",
-      "@dropins/storefront-auth/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/",
-      "@dropins/storefront-cart/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/",
-      "@dropins/storefront-checkout/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/",
+      "@dropins/tools/": "/node_modules/@dropins/tools/",
+      "@dropins/storefront-auth/": "/node_modules/@dropins/storefront-auth/",
+      "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
+      "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
       "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order@latest/",
-      "@dropins/storefront-order-confirmation/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order-confirmation@latest/"
+      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/",
+      "@dropins/storefront-order-confirmation/": "/node_modules/@dropins/storefront-order/"
     }
   }
   </script>
@@ -26,8 +26,7 @@
   <link rel="stylesheet" href="../styles/styles.css">
   <link rel="stylesheet" href="../styles/login.css">
   <!-- Commerce Dropins Base Styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/tools@latest/styles/tokens.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/dist/index.css">
+  <link rel="stylesheet" href="/node_modules/@dropins/tools/styles/tokens.css">
 </head>
 <body class="page-login">
   <!-- Header loaded dynamically from blocks/header/ -->
@@ -43,211 +42,14 @@
           <p>Access your personalized catalog and pricing</p>
         </div>
 
-        <!-- Single Combined Login Card -->
-        <div class="login-card-single">
-          <div class="login-card">
-            <div class="login-card-body">
-              
-              <!-- Login Method Tabs -->
-              <div class="login-tabs">
-                <button type="button" class="login-tab active" data-tab="email">
-                  Email Login
-                </button>
-                <button type="button" class="login-tab" data-tab="persona">
-                  Quick Login (Demo)
-                </button>
-              </div>
-              
-              <!-- Email Login Form - Commerce Auth Dropin -->
-              <div id="email-login" class="login-tab-content active">
-                <div class="auth-dropin sign-in"></div>
-              </div>
-              
-              <!-- Persona Login Form -->
-              <div id="persona-login" class="login-tab-content">
-                <div class="login-form-group">
-                  <label for="persona-select" class="login-form-label">Choose a Persona</label>
-                  <select id="persona-select" class="login-form-input">
-                    <option value="">-- Select a persona --</option>
-                  </select>
-                </div>
-                
-                <div id="persona-info" class="persona-info" style="display: none;">
-                  <!-- Persona details will be shown here -->
-                </div>
-                
-                <div class="login-form-group">
-                  <button id="quick-login-btn" class="btn btn-cta btn-lg" style="width: 100%;" disabled>
-                    Login as Selected Persona
-                  </button>
-                </div>
-              </div>
-              
-            </div>
-            <div class="login-card-footer">
-              <p>
-                Don't have an account? <a href="/pages/signup.html">Create an account</a>
-              </p>
-            </div>
-          </div>
-        </div>
+        <!-- Login Form Block -->
+        <div class="login-form"></div>
+
       </div>
     </section>
   </main>
 
   <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
-
-  <script type="module">
-    import { authService } from '../scripts/auth.js';
-    import { PERSONAS } from '../scripts/persona-config.js';
-    
-    // Populate persona dropdown
-    function populatePersonaDropdown() {
-      const select = document.getElementById('persona-select');
-      if (!select) return;
-      
-      const personaOrder = ['sarah', 'marcus', 'lisa', 'david', 'kevin'];
-      
-      personaOrder.forEach(personaId => {
-        const persona = Object.values(PERSONAS).find(p => p.id === personaId);
-        if (!persona) return;
-        
-        const option = document.createElement('option');
-        option.value = persona.id;
-        option.textContent = `${persona.name} - ${persona.role}`;
-        select.appendChild(option);
-      });
-    }
-    
-    // Show persona details when selected
-    function showPersonaDetails(personaId) {
-      const persona = Object.values(PERSONAS).find(p => p.id === personaId);
-      const infoDiv = document.getElementById('persona-info');
-      const loginBtn = document.getElementById('quick-login-btn');
-      
-      if (!persona || !infoDiv || !loginBtn) return;
-      
-      infoDiv.style.display = 'block';
-      
-      infoDiv.innerHTML = `
-        <p class="persona-info-name">${persona.name}</p>
-        <p class="persona-info-detail"><strong>Company:</strong> ${persona.company}</p>
-        <p class="persona-info-detail"><strong>Role:</strong> ${persona.role}</p>
-        <p class="persona-info-description">${persona.description}</p>
-      `;
-      
-      loginBtn.disabled = false;
-      loginBtn.textContent = `Login as ${persona.name.split(' ')[0]}`;
-    }
-    
-    // Hide persona details
-    function hidePersonaDetails() {
-      const infoDiv = document.getElementById('persona-info');
-      const loginBtn = document.getElementById('quick-login-btn');
-      
-      if (infoDiv) infoDiv.style.display = 'none';
-      if (loginBtn) {
-        loginBtn.disabled = true;
-        loginBtn.textContent = 'Login as Selected Persona';
-      }
-    }
-    
-    // Handle quick persona login
-    async function handleQuickLogin() {
-      const select = document.getElementById('persona-select');
-      const loginBtn = document.getElementById('quick-login-btn');
-      
-      if (!select || !loginBtn) return;
-      
-      const personaId = select.value;
-      if (!personaId) {
-        alert('Please select a persona');
-        return;
-      }
-      
-      const originalText = loginBtn.textContent;
-      loginBtn.disabled = true;
-      loginBtn.textContent = 'Logging in...';
-      
-      try {
-        console.log('[Quick Login] Logging in as persona:', personaId);
-        const success = await authService.loginWithPersona(personaId);
-        
-        if (success) {
-          console.log('[Quick Login] Successfully authenticated as:', personaId);
-          
-          const urlParams = new URLSearchParams(window.location.search);
-          const redirect = urlParams.get('redirect');
-          const defaultRoute = authService.getDefaultRoute();
-          
-          await new Promise(resolve => setTimeout(resolve, 100));
-          
-          if (redirect) {
-            window.location.href = decodeURIComponent(redirect);
-          } else {
-            window.location.href = window.BASE_PATH || '/';
-          }
-        } else {
-          throw new Error('Login failed');
-        }
-      } catch (error) {
-        console.error('[Quick Login] Error:', error);
-        alert('Login failed. Please try again.');
-        loginBtn.disabled = false;
-        loginBtn.textContent = originalText;
-      }
-    }
-    
-    // Handle tab switching
-    function switchTab(tabName) {
-      document.querySelectorAll('.login-tab').forEach(tab => {
-        if (tab.dataset.tab === tabName) {
-          tab.classList.add('active');
-        } else {
-          tab.classList.remove('active');
-        }
-      });
-      
-      document.querySelectorAll('.login-tab-content').forEach(content => {
-        if (content.id === `${tabName}-login`) {
-          content.classList.add('active');
-        } else {
-          content.classList.remove('active');
-        }
-      });
-    }
-    
-    // Initialize on DOM ready
-    document.addEventListener('DOMContentLoaded', () => {
-      populatePersonaDropdown();
-      
-      // Handle tab clicks
-      document.querySelectorAll('.login-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          switchTab(tab.dataset.tab);
-        });
-      });
-      
-      // Handle persona selection change
-      const personaSelect = document.getElementById('persona-select');
-      if (personaSelect) {
-        personaSelect.addEventListener('change', (e) => {
-          const personaId = e.target.value;
-          if (personaId) {
-            showPersonaDetails(personaId);
-          } else {
-            hidePersonaDetails();
-          }
-        });
-      }
-      
-      // Handle quick login button click
-      const quickLoginBtn = document.getElementById('quick-login-btn');
-      if (quickLoginBtn) {
-        quickLoginBtn.addEventListener('click', handleQuickLogin);
-      }
-    });
-  </script>
 </body>
 </html>
