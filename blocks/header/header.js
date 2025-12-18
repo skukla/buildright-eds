@@ -516,7 +516,23 @@ export default async function decorate(block) {
   // Load dynamic categories from ACO
   async function loadDynamicCategories() {
     try {
-      console.log('[Header] Loading categories from ACO...');
+      console.log('[Header] Waiting for catalog service to initialize...');
+      
+      // Wait for catalog service to be initialized (which sets persona headers)
+      const { catalogService } = await import('../../scripts/services/catalog-service.js');
+      
+      // Wait up to 10 seconds for catalog service initialization
+      const maxWait = 10000;
+      const startTime = Date.now();
+      while (!catalogService.isInitialized && (Date.now() - startTime) < maxWait) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      
+      if (!catalogService.isInitialized) {
+        throw new Error('Catalog service failed to initialize within 10 seconds');
+      }
+      
+      console.log('[Header] Catalog service initialized, loading categories from ACO...');
       const result = await getCategories();
       const categories = result.categories || [];
       
@@ -529,6 +545,8 @@ export default async function decorate(block) {
         console.warn('[Header] No top-level categories found');
         return;
       }
+      
+      console.log(`[Header] Loaded ${topCategories.length} top-level categories from ACO`);
       
       // Find the main nav container
       const mainNav = block.querySelector('.main-nav');
@@ -578,8 +596,8 @@ export default async function decorate(block) {
       
       console.log(`[Header] Loaded ${topCategories.length} categories from ACO`);
     } catch (error) {
-      console.error('[Header] Error loading categories:', error);
-      // Keep static navigation on error
+      console.error('[Header] Error loading dynamic categories from ACO:', error);
+      console.error('[Header] Navigation will not work until categories load from ACO');
     }
   }
   

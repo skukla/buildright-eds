@@ -583,6 +583,7 @@ export default async function decorate(block) {
       console.log('[Product Grid] Fetching products with facets via catalogService:', { 
         searchPhrase, 
         filter,
+        currentFilters, // DEBUG: Show what filters were set
         sort,
         strategy: catalogService.getActiveStrategy() 
       });
@@ -691,6 +692,7 @@ export default async function decorate(block) {
 
   // Listen for filter changes using safe listener management
   safeAddEventListener(window, 'filtersChanged', (event) => {
+    console.log('[Product Grid] filtersChanged event received:', event.detail);
     if (event.detail?.reset) {
       // Reset filters
       currentFilters = {};
@@ -698,6 +700,7 @@ export default async function decorate(block) {
     } else if (event.detail?.filters) {
       // Update filters
       currentFilters = event.detail.filters;
+      console.log('[Product Grid] Updated currentFilters:', currentFilters);
     }
     // Pass true to indicate this is a filter update (show validating state)
     loadProducts(true);
