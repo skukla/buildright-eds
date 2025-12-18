@@ -3,6 +3,7 @@ import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyR
 import { parseHTMLFragment, formatCurrency } from '../../scripts/utils.js';
 import { getCompany } from '../../scripts/company-config.js';
 import { decorateBlock } from '../../scripts/scripts.js';
+import { getCategories } from '../../scripts/services/mesh-client.js';
 
 export default async function decorate(block) {
   // Check for legacy URLs and redirect if needed
@@ -511,6 +512,79 @@ export default async function decorate(block) {
   
   // Cart notifications are now handled by the Commerce Mini-Cart Dropin
   // The dropin listens to cart/product/added events and shows notifications
+  
+  // Load dynamic categories from ACO
+  async function loadDynamicCategories() {
+    try {
+      console.log('[Header] Loading categories from ACO...');
+      const result = await getCategories();
+      const categories = result.categories || [];
+      
+      // Filter to get only top-level categories (no parent)
+      const topCategories = categories
+        .filter(cat => !cat.parentSlug)
+        .slice(0, 6); // Limit to 6 for navigation bar
+      
+      if (topCategories.length === 0) {
+        console.warn('[Header] No top-level categories found');
+        return;
+      }
+      
+      // Find the main nav container
+      const mainNav = block.querySelector('.main-nav');
+      if (!mainNav) {
+        console.warn('[Header] Main nav not found');
+        return;
+      }
+      
+      // Build new navigation HTML (keep "All Products" first)
+      const navHTML = `
+        <div class="nav-item">
+          <a href="catalog" class="nav-link" data-category="all">All Products</a>
+        </div>
+        ${topCategories.map(cat => `
+          <div class="nav-item">
+            <button class="nav-link" data-category="${cat.slug}" data-category-name="${cat.name}">
+              ${cat.name}
+            </button>
+          </div>
+        `).join('')}
+      `;
+      
+      // Replace navigation
+      mainNav.innerHTML = navHTML;
+      
+      // Add click handlers for category filtering
+      mainNav.querySelectorAll('button.nav-link').forEach(button => {
+        button.addEventListener('click', () => {
+          const categoryName = button.dataset.categoryName;
+          
+          // Navigate to catalog page if not already there
+          if (!window.location.pathname.includes('/catalog')) {
+            window.location.href = 'catalog';
+            return;
+          }
+          
+          // Dispatch filter change event to apply category filter
+          window.dispatchEvent(new CustomEvent('filtersChanged', {
+            detail: {
+              filters: {
+                br_product_category: [categoryName]
+              }
+            }
+          }));
+        });
+      });
+      
+      console.log(`[Header] Loaded ${topCategories.length} categories from ACO`);
+    } catch (error) {
+      console.error('[Header] Error loading categories:', error);
+      // Keep static navigation on error
+    }
+  }
+  
+  // Load categories after persona is initialized
+  loadDynamicCategories();
   
   // Mark header as loaded to prevent FOUC
   document.body.classList.add('header-loaded');

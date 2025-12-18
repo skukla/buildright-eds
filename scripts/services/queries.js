@@ -159,6 +159,24 @@ export const PRODUCT_SEARCH_FILTER = `
 `;
 
 /**
+ * Get categories from ACO
+ */
+export const GET_CATEGORIES = `
+  query GetCategories {
+    BuildRight_getCategories {
+      categories {
+        slug
+        name
+        parentSlug
+        path
+        productCount
+      }
+      totalCount
+    }
+  }
+`;
+
+/**
  * Search suggestions for autocomplete
  */
 export const SEARCH_SUGGESTIONS = `

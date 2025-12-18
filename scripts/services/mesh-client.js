@@ -371,6 +371,15 @@ export async function searchSuggestions(phrase) {
   return data.BuildRight_searchSuggestions;
 }
 
+/**
+ * Get categories from ACO
+ * @returns {Promise<Object>} Categories result
+ */
+export async function getCategories() {
+  const data = await meshQuery(queries.GET_CATEGORIES, {});
+  return data.BuildRight_getCategories;
+}
+
 // Export default for convenience
 export default {
   meshQuery,
@@ -382,5 +391,6 @@ export default {
   generateBOM,
   productSearchFilter,
   searchSuggestions,
+  getCategories,
   queries
 };
