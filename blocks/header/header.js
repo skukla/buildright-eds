@@ -541,8 +541,13 @@ export default async function decorate(block) {
         .filter(cat => !cat.parentSlug)
         .slice(0, 6); // Limit to 6 for navigation bar
       
+      // Hide the entire nav bar if no categories found
       if (topCategories.length === 0) {
-        console.warn('[Header] No top-level categories found');
+        console.warn('[Header] No top-level categories found - hiding navigation bar');
+        const navBar = block.querySelector('.header-nav-bar');
+        if (navBar) {
+          navBar.style.display = 'none';
+        }
         return;
       }
       
@@ -553,6 +558,12 @@ export default async function decorate(block) {
       if (!mainNav) {
         console.warn('[Header] Main nav not found');
         return;
+      }
+      
+      // Show nav bar (in case it was hidden)
+      const navBar = block.querySelector('.header-nav-bar');
+      if (navBar) {
+        navBar.style.display = '';
       }
       
       // Build new navigation HTML (keep "All Products" first)
@@ -597,7 +608,12 @@ export default async function decorate(block) {
       console.log(`[Header] Loaded ${topCategories.length} categories from ACO`);
     } catch (error) {
       console.error('[Header] Error loading dynamic categories from ACO:', error);
-      console.error('[Header] Navigation will not work until categories load from ACO');
+      console.error('[Header] Hiding navigation bar due to error');
+      // Hide nav bar on error
+      const navBar = block.querySelector('.header-nav-bar');
+      if (navBar) {
+        navBar.style.display = 'none';
+      }
     }
   }
   
