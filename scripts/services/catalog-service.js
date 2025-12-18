@@ -457,15 +457,16 @@ class CatalogService {
         console.log('[CatalogService] Initialized with MeshStrategy');
         return;
       } catch (error) {
-        console.warn('[CatalogService] Mesh unavailable, falling back to mock:', error.message);
+        console.error('[CatalogService] Mesh initialization failed:', error.message);
+        throw new Error('Unable to initialize catalog service: Mesh unavailable');
       }
     }
     
-    // Fallback to mock
+    // Only use mock if explicitly forced
     this.strategy = MockStrategy;
     this.personaData = await this.strategy.initialize(identifier, { isProductionMode });
     this.initialized = true;
-    console.log('[CatalogService] Initialized with MockStrategy (fallback)');
+    console.log('[CatalogService] Initialized with MockStrategy (forced)');
   }
   
   /**
