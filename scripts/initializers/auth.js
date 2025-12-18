@@ -165,18 +165,17 @@ async function handleCustomerLoggedOut() {
   sessionStorage.removeItem('buildright_persona_headers');
   sessionStorage.removeItem('buildright_persona_email');
   
-  // Reinitialize guest persona (customer group 0)
+  // Reset catalog service first
+  catalogService.reset();
+  
+  // Reinitialize catalog service with guest persona (customer group 0)
   // This ensures the site continues to work after logout
   try {
-    const { initializePersona } = await import('../services/mesh-client.js');
-    await initializePersona('0');
+    await catalogService.initialize('guest');
     console.log('[Auth Dropin] Reinitialized guest persona after logout');
   } catch (error) {
     console.error('[Auth Dropin] Failed to reinitialize guest persona:', error);
   }
-  
-  // Reset catalog service to use default persona
-  catalogService.reset();
   
   // Dispatch event for BuildRight UI updates
   window.dispatchEvent(new CustomEvent('auth:logout', {

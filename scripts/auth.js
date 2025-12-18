@@ -328,8 +328,14 @@ class AuthService {
     sessionStorage.removeItem('buildright_persona_headers');
     sessionStorage.removeItem('buildright_persona_email');
     
-    // Reset catalog service to clear cached strategy and persona
+    // Reset and reinitialize catalog service with guest persona
     catalogService.reset();
+    try {
+      await catalogService.initialize('guest');
+      console.log('[Auth] Reinitialized catalog service with guest persona');
+    } catch (error) {
+      console.error('[Auth] Failed to reinitialize catalog service:', error);
+    }
     
     const previousUser = this.currentUser;
     this.currentUser = null;
