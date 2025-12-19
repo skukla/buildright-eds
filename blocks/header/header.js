@@ -561,43 +561,133 @@ export default async function decorate(block) {
         return;
       }
       
-      // Build navigation HTML with "All Products" + categories
+      // Build navigation HTML with "All Products" + categories with dropdowns
       const navHTML = `
         <div class="nav-item">
           <a href="catalog" class="nav-link" data-category="all">All Products</a>
         </div>
-        ${topCategories.map(cat => `
-          <div class="nav-item">
-            <button class="nav-link" data-category="${cat.slug}" data-category-name="${cat.name}">
-              ${cat.name}
-            </button>
-          </div>
-        `).join('')}
+        ${topCategories.map(cat => {
+          // Get subcategories for this category
+          const subcategories = categories.filter(sub => sub.parentSlug === cat.slug);
+          
+          return `
+            <div class="nav-item nav-item-with-dropdown">
+              <button class="nav-link" data-category="${cat.slug}" data-category-name="${cat.name}">
+                ${cat.name}
+                ${subcategories.length > 0 ? '<span class="dropdown-icon">▼</span>' : ''}
+              </button>
+              ${subcategories.length > 0 ? `
+                <div class="category-dropdown" data-parent="${cat.slug}">
+                  <div class="category-dropdown-content">
+                    <ul class="subcategory-list">
+                      ${subcategories.map(sub => `
+                        <li><a href="#" data-subcategory="${sub.slug}" data-subcategory-name="${sub.name}">${sub.name}</a></li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('')}
       `;
       
       // Replace navigation
       mainNav.innerHTML = navHTML;
       
-      // Add click handlers for category filtering
-      mainNav.querySelectorAll('button.nav-link').forEach(button => {
-        button.addEventListener('click', () => {
-          const categoryName = button.dataset.categoryName;
+      // Add hover and click handlers for category dropdowns
+      mainNav.querySelectorAll('.nav-item-with-dropdown').forEach(navItem => {
+        const button = navItem.querySelector('.nav-link');
+        const dropdown = navItem.querySelector('.category-dropdown');
+        
+        if (!dropdown) return;
+        
+        let hoverTimeout;
+        
+        // Desktop: Hover behavior
+        if (window.matchMedia('(min-width: 1024px)').matches) {
+          navItem.addEventListener('mouseenter', () => {
+            clearTimeout(hoverTimeout);
+            dropdown.classList.add('active');
+          });
+          
+          navItem.addEventListener('mouseleave', () => {
+            hoverTimeout = setTimeout(() => {
+              dropdown.classList.remove('active');
+            }, 200);
+          });
+        }
+        
+        // Mobile/Tablet: Click behavior
+        button.addEventListener('click', (e) => {
+          if (window.matchMedia('(max-width: 1023px)').matches) {
+            e.stopPropagation();
+            
+            // Close other dropdowns
+            mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
+              if (d !== dropdown) d.classList.remove('active');
+            });
+            
+            dropdown.classList.toggle('active');
+          } else {
+            // Desktop: Navigate to category
+            const categoryName = button.dataset.categoryName;
+            
+            // Navigate to catalog page if not already there
+            if (!window.location.pathname.includes('/catalog')) {
+              window.location.href = 'catalog';
+              return;
+            }
+            
+            // Dispatch filter change event to apply category filter
+            window.dispatchEvent(new CustomEvent('filtersChanged', {
+              detail: {
+                filters: {
+                  br_product_category: [categoryName]
+                }
+              }
+            }));
+          }
+        });
+      });
+      
+      // Add click handlers for subcategory links
+      mainNav.querySelectorAll('[data-subcategory]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const subcategoryName = link.dataset.subcategoryName;
           
           // Navigate to catalog page if not already there
           if (!window.location.pathname.includes('/catalog')) {
             window.location.href = 'catalog';
+            // Store filter to apply after page load
+            sessionStorage.setItem('pendingCategoryFilter', subcategoryName);
             return;
           }
           
-          // Dispatch filter change event to apply category filter
+          // Close all dropdowns
+          mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
+            d.classList.remove('active');
+          });
+          
+          // Dispatch filter change event to apply subcategory filter
           window.dispatchEvent(new CustomEvent('filtersChanged', {
             detail: {
               filters: {
-                br_product_category: [categoryName]
+                br_product_category: [subcategoryName]
               }
             }
           }));
         });
+      });
+      
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-item-with-dropdown')) {
+          mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
+            d.classList.remove('active');
+          });
+        }
       });
       
       console.log(`[Header] Loaded ${topCategories.length} categories from ACO`);

@@ -741,6 +741,72 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
   color: var(--color-brand-500);
 }
 
+/* ============================================
+   CATEGORY DROPDOWNS
+   ============================================ */
+
+.nav-item-with-dropdown {
+  position: relative;
+}
+
+.nav-link .dropdown-icon {
+  font-size: 0.75rem;
+  margin-left: var(--spacing-xsmall);
+  transition: transform 0.2s;
+}
+
+.nav-item-with-dropdown:hover .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.category-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 250px;
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-brand-500);
+  box-shadow: var(--shape-shadow-3);
+  z-index: 1000;
+  margin-top: 0;
+}
+
+.category-dropdown.active {
+  display: block;
+}
+
+.category-dropdown-content {
+  padding: var(--spacing-medium);
+}
+
+.subcategory-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.subcategory-list li {
+  margin-bottom: 0;
+}
+
+.subcategory-list a {
+  display: block;
+  padding: var(--spacing-small) var(--spacing-medium);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--shape-border-radius-small);
+  transition: all 0.2s;
+  font: var(--type-body-1-default-font);
+}
+
+.subcategory-list a:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-brand-500);
+  padding-left: calc(var(--spacing-medium) + var(--spacing-xsmall));
+}
+
 /* Responsive */
 @media (max-width: 1280px) {
   /* Show hamburger menu */
@@ -761,6 +827,26 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 
   .main-nav.active {
     display: flex;
+  }
+  
+  /* Category dropdowns in mobile menu */
+  .category-dropdown {
+    position: static;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
+    min-width: auto;
+  }
+  
+  .subcategory-list a {
+    color: white;
+    padding-left: var(--spacing-large);
+  }
+  
+  .subcategory-list a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
   }
 }
 
