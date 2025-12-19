@@ -538,8 +538,7 @@ export default async function decorate(block) {
       
       // Filter to get only top-level categories (no parent)
       const topCategories = categories
-        .filter(cat => !cat.parentSlug)
-        .slice(0, 6); // Limit to 6 for navigation bar
+        .filter(cat => !cat.parentSlug);
       
       console.log(`[Header] Loaded ${topCategories.length} top-level categories from ACO`);
       
