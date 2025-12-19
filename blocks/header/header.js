@@ -541,16 +541,6 @@ export default async function decorate(block) {
         .filter(cat => !cat.parentSlug)
         .slice(0, 6); // Limit to 6 for navigation bar
       
-      // Hide the entire nav bar if no categories found
-      if (topCategories.length === 0) {
-        console.warn('[Header] No top-level categories found - hiding navigation bar');
-        const navBar = block.querySelector('.header-nav-bar');
-        if (navBar) {
-          navBar.style.display = 'none';
-        }
-        return;
-      }
-      
       console.log(`[Header] Loaded ${topCategories.length} top-level categories from ACO`);
       
       // Find the main nav container
@@ -560,24 +550,24 @@ export default async function decorate(block) {
         return;
       }
       
-      // Show nav bar (in case it was hidden)
+      // Always show nav bar (keep blue bar visible)
       const navBar = block.querySelector('.header-nav-bar');
       if (navBar) {
         navBar.style.display = '';
       }
       
-      // Build new navigation HTML (keep "All Products" first)
+      // Build navigation HTML (always include "All Products", add categories if available)
       const navHTML = `
         <div class="nav-item">
           <a href="catalog" class="nav-link" data-category="all">All Products</a>
         </div>
-        ${topCategories.map(cat => `
+        ${topCategories.length > 0 ? topCategories.map(cat => `
           <div class="nav-item">
             <button class="nav-link" data-category="${cat.slug}" data-category-name="${cat.name}">
               ${cat.name}
             </button>
           </div>
-        `).join('')}
+        `).join('') : ''}
       `;
       
       // Replace navigation
@@ -608,11 +598,21 @@ export default async function decorate(block) {
       console.log(`[Header] Loaded ${topCategories.length} categories from ACO`);
     } catch (error) {
       console.error('[Header] Error loading dynamic categories from ACO:', error);
-      console.error('[Header] Hiding navigation bar due to error');
-      // Hide nav bar on error
+      
+      // On error, keep nav bar visible but show only "All Products"
+      const mainNav = block.querySelector('.main-nav');
+      if (mainNav) {
+        mainNav.innerHTML = `
+          <div class="nav-item">
+            <a href="catalog" class="nav-link" data-category="all">All Products</a>
+          </div>
+        `;
+      }
+      
+      // Ensure nav bar is visible
       const navBar = block.querySelector('.header-nav-bar');
       if (navBar) {
-        navBar.style.display = 'none';
+        navBar.style.display = '';
       }
     }
   }
