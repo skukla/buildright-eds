@@ -742,7 +742,6 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 .industry-column a:hover {
   background-color: #EBF4FB;
   color: var(--color-brand-500);
-  transform: translateX(2px);
   box-shadow: 0 2px 4px rgba(15, 91, 167, 0.08);
 }
 
@@ -815,7 +814,6 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 .subcategory-list a:hover {
   background-color: #EBF4FB;
   color: var(--color-brand-500);
-  transform: translateX(2px);
   box-shadow: 0 2px 4px rgba(15, 91, 167, 0.08);
 }
 
