@@ -556,18 +556,24 @@ export default async function decorate(block) {
         navBar.style.display = '';
       }
       
-      // Build navigation HTML (always include "All Products", add categories if available)
+      // Only show navigation if we have categories (empty blue bar if no categories)
+      if (topCategories.length === 0) {
+        mainNav.innerHTML = ''; // Empty nav bar
+        return;
+      }
+      
+      // Build navigation HTML with "All Products" + categories
       const navHTML = `
         <div class="nav-item">
           <a href="catalog" class="nav-link" data-category="all">All Products</a>
         </div>
-        ${topCategories.length > 0 ? topCategories.map(cat => `
+        ${topCategories.map(cat => `
           <div class="nav-item">
             <button class="nav-link" data-category="${cat.slug}" data-category-name="${cat.name}">
               ${cat.name}
             </button>
           </div>
-        `).join('') : ''}
+        `).join('')}
       `;
       
       // Replace navigation
@@ -599,14 +605,10 @@ export default async function decorate(block) {
     } catch (error) {
       console.error('[Header] Error loading dynamic categories from ACO:', error);
       
-      // On error, keep nav bar visible but show only "All Products"
+      // On error, keep nav bar visible but show nothing (empty blue bar)
       const mainNav = block.querySelector('.main-nav');
       if (mainNav) {
-        mainNav.innerHTML = `
-          <div class="nav-item">
-            <a href="catalog" class="nav-link" data-category="all">All Products</a>
-          </div>
-        `;
+        mainNav.innerHTML = '';
       }
       
       // Ensure nav bar is visible

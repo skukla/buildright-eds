@@ -294,8 +294,25 @@
   </script>
   
   <script>
-    // Handle catalog loading overlay
-    (function() {
+    // Handle catalog loading overlay and breadcrumbs
+    (async function() {
+      // Check categories and hide breadcrumbs if empty
+      try {
+        const { getCategories } = await import('../scripts/services/catalog-service.js');
+        const result = await getCategories();
+        const categories = result.categories || [];
+        
+        // Hide breadcrumbs if no categories
+        if (categories.length === 0) {
+          const breadcrumbs = document.querySelector('.breadcrumbs');
+          if (breadcrumbs) {
+            breadcrumbs.style.display = 'none';
+          }
+        }
+      } catch (error) {
+        console.warn('[Catalog] Could not check categories for breadcrumbs:', error);
+      }
+      
       const overlay = document.getElementById('catalog-loading');
       const controlsWrapper = document.querySelector('.catalog-controls-wrapper');
       const filtersAside = document.getElementById('filters-aside');
@@ -307,20 +324,23 @@
         if (overlay) {
           overlay.classList.remove('hidden');
         }
-        // Hide controls, filters, products, and count during reload
-        if (controlsWrapper) {
-          controlsWrapper.style.visibility = 'hidden';
-        }
-        if (filtersAside) {
-          filtersAside.style.visibility = 'hidden';
-        }
-        if (productGridWrapper) {
-          productGridWrapper.style.visibility = 'hidden';
-        }
-        if (productCount) {
-          productCount.style.visibility = 'hidden';
-        }
-      });
+      // Hide controls, filters, products, and count during reload
+      if (controlsWrapper) {
+        controlsWrapper.style.visibility = 'hidden';
+      }
+      if (filtersAside) {
+        filtersAside.style.visibility = 'hidden';
+      }
+      if (productGridWrapper) {
+        productGridWrapper.style.visibility = 'hidden';
+      }
+      if (productCount) {
+        productCount.style.visibility = 'hidden';
+      }
+      
+      // Check if we have categories - if not, hide breadcrumbs
+      checkCategoriesAndHideBreadcrumbs();
+    });
       
       // Listen for catalog loaded event (hide spinner, show content)
       window.addEventListener('catalogLoaded', () => {
