@@ -734,11 +734,15 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
   text-decoration: none;
   font: var(--type-body-1-default-font);
   display: block;
-  padding: var(--spacing-xsmall) 0;
+  padding: var(--spacing-small) var(--spacing-medium);
+  border-radius: var(--shape-border-radius-small);
+  transition: all 0.2s;
 }
 
 .industry-column a:hover {
+  background-color: var(--color-gray-100);
   color: var(--color-brand-500);
+  padding-left: calc(var(--spacing-medium) + var(--spacing-xsmall));
 }
 
 /* ============================================
