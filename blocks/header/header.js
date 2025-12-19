@@ -574,7 +574,7 @@ export default async function decorate(block) {
             <div class="nav-item nav-item-with-dropdown">
               <button class="nav-link" data-category="${cat.slug}" data-category-name="${cat.name}">
                 ${cat.name}
-                ${subcategories.length > 0 ? '<span class="dropdown-icon">▼</span>' : ''}
+                ${subcategories.length > 0 ? '<span class="dropdown-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>' : ''}
               </button>
               ${subcategories.length > 0 ? `
                 <div class="category-dropdown" data-parent="${cat.slug}">
