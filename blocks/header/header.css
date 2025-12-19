@@ -740,7 +740,7 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 }
 
 .industry-column a:hover {
-  background-color: var(--color-gray-200);
+  background-color: var(--color-surface-hover);
   color: var(--color-brand-500);
   padding-left: calc(var(--spacing-medium) + var(--spacing-xsmall));
 }
@@ -805,7 +805,7 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 }
 
 .subcategory-list a:hover {
-  background-color: var(--color-gray-200);
+  background-color: var(--color-surface-hover);
   color: var(--color-brand-500);
   padding-left: calc(var(--spacing-medium) + var(--spacing-xsmall));
 }
