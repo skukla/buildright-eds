@@ -770,7 +770,7 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
   border-top: 3px solid var(--color-brand-500);
   box-shadow: var(--shape-shadow-3);
   z-index: 1000;
-  margin-top: 0;
+  margin-top: 2px; /* Space to preserve blue nav border */
 }
 
 .category-dropdown.active {

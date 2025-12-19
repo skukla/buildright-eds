@@ -608,6 +608,12 @@ export default async function decorate(block) {
         if (window.matchMedia('(min-width: 1024px)').matches) {
           navItem.addEventListener('mouseenter', () => {
             clearTimeout(hoverTimeout);
+            
+            // Close all other dropdowns first to prevent bleed
+            mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
+              if (d !== dropdown) d.classList.remove('active');
+            });
+            
             dropdown.classList.add('active');
           });
           
