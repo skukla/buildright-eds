@@ -90,13 +90,15 @@ async function renderSignInForm(block) {
     
     block.innerHTML = '';
     
+    const basePath = window.BASE_PATH || '/';
+    
     await authRenderer.render(SignIn, {
-      routeForgotPassword: () => './reset-password.html',
+      routeForgotPassword: () => `${basePath}pages/reset-password.html`,
       renderSignUpLink: true,
-      routeSignUp: () => './signup.html',
+      routeSignUp: () => `${basePath}pages/signup.html`,
       routeRedirectOnSignIn: () => {
         // Get redirect URL from session storage or default to dashboard
-        const redirectUrl = sessionStorage.getItem('auth_redirect') || './dashboard.html';
+        const redirectUrl = sessionStorage.getItem('auth_redirect') || `${basePath}pages/dashboard.html`;
         sessionStorage.removeItem('auth_redirect');
         return redirectUrl;
       },
