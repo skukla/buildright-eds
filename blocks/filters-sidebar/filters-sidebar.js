@@ -19,7 +19,7 @@ export default function decorate(block) {
    */
   function renderFacets(facets) {
     if (!facets || facets.length === 0) {
-      dynamicFacetsContainer.innerHTML = '<p class="no-facets">No filters available</p>';
+      dynamicFacetsContainer.innerHTML = '';
       return;
     }
     

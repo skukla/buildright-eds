@@ -648,7 +648,7 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 
 .nav-industry {
   margin-left: auto;
-  display: flex;
+  display: none; /* Hidden by default until categories load */
   align-items: stretch;
 }
 
@@ -1116,4 +1116,43 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 
 .search-suggestions-footer a:hover {
   text-decoration: underline;
+}
+
+
+/* Ensure mini-cart-container doesnt affect layout when closed */
+#mini-cart-container {
+  position: relative;
+}
+
+#mini-cart-container:empty {
+  display: none;
+}
+
+
+/* Force mini cart to be completely invisible and non-layout affecting until active */
+#mini-cart-container .mini-cart:not(.active) {
+  display: none !important;
+}
+
+#mini-cart-container .mini-cart.active {
+  display: flex !important;
+}
+
+/* Nuclear option: Make mini-cart-container not affect layout at all */
+#mini-cart-container {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  pointer-events: none !important;
+}
+
+#mini-cart-container.cart-open {
+  pointer-events: auto !important;
+}
+
+/* Ensure all children are absolutely positioned too */
+#mini-cart-container > * {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
 }

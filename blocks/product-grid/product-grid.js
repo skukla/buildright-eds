@@ -114,19 +114,26 @@ export default async function decorate(block) {
         // Check if filters or search are applied
         const hasFilters = Object.keys(currentFilters).length > 0 || currentSearchTerm;
         
-        const emptyMessage = parseHTML(`
-          <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xxlarge);">
-            <p>${hasFilters ? 'No products found matching your criteria.' : 'No products available.'}</p>
-            ${hasFilters ? `
+        if (hasFilters) {
+          // User applied filters but no results - show "no matches" message
+          const emptyMessage = parseHTML(`
+            <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: var(--spacing-xxlarge);">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 1rem; opacity: 0.5;">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+                <path d="M11 8v6M8 11h6"/>
+              </svg>
+              <p>No products found matching your criteria.</p>
               <p style="margin-top: var(--spacing-medium);">
                 <button class="btn btn-secondary" onclick="window.dispatchEvent(new CustomEvent('filtersChanged', { detail: { reset: true }}))">
                   Clear Filters
                 </button>
               </p>
-            ` : ''}
-          </div>
-        `);
-        container.appendChild(emptyMessage);
+            </div>
+          `);
+          container.appendChild(emptyMessage);
+        }
+        
         if (countEl) {
           countEl.textContent = '0 products';
           countEl.style.visibility = 'visible';
@@ -557,6 +564,8 @@ export default async function decorate(block) {
       const filter = {};
       
       // Add category from URL
+      // Note: Products are only assigned to parent categories, not subcategories
+      // So we use categoryUrlKey which the backend resolver maps to categoryPath
       if (category) {
         filter.categoryUrlKey = category;
       }

@@ -46,7 +46,7 @@ export default async function decorate(block) {
     }));
     
     if (products.length === 0) {
-      container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">No products available</p>';
+      container.innerHTML = '';
       return;
     }
     

@@ -555,10 +555,21 @@ export default async function decorate(block) {
         navBar.style.display = '';
       }
       
-      // Only show navigation if we have categories (empty blue bar if no categories)
+      // Only show navigation if we have categories
       if (topCategories.length === 0) {
-        mainNav.innerHTML = ''; // Empty nav bar
+        mainNav.innerHTML = '';
+        // Hide "Shop By Industry" when no categories
+        const industrySection = block.querySelector('.nav-industry');
+        if (industrySection) {
+          industrySection.style.display = 'none';
+        }
         return;
+      }
+      
+      // Show "Shop By Industry" when we have categories
+      const industrySection = block.querySelector('.nav-industry');
+      if (industrySection) {
+        industrySection.style.display = 'flex';
       }
       
       // Build navigation HTML with "All Products" + categories with dropdowns
@@ -581,7 +592,7 @@ export default async function decorate(block) {
                   <div class="category-dropdown-content">
                     <ul class="subcategory-list">
                       ${subcategories.map(sub => `
-                        <li><a href="#" data-subcategory="${sub.slug}" data-subcategory-name="${sub.name}">${sub.name}</a></li>
+                        <li><a href="#" data-subcategory="${sub.slug}" data-parent-slug="${cat.slug}">${sub.name}</a></li>
                       `).join('')}
                     </ul>
                   </div>
@@ -636,23 +647,16 @@ export default async function decorate(block) {
             
             dropdown.classList.toggle('active');
           } else {
-            // Desktop: Navigate to category
-            const categoryName = button.dataset.categoryName;
+            // Desktop: Navigate to category using slug (categoryUrlKey filter)
+            const categorySlug = button.dataset.category;
             
-            // Navigate to catalog page if not already there
-            if (!window.location.pathname.includes('/catalog')) {
-              window.location.href = 'catalog';
-              return;
-            }
+            // Build catalog URL with category slug parameter
+            const catalogUrl = window.location.pathname.includes('/catalog') 
+              ? `${window.location.pathname}?category=${categorySlug}`
+              : `catalog?category=${categorySlug}`;
             
-            // Dispatch filter change event to apply category filter
-            window.dispatchEvent(new CustomEvent('filtersChanged', {
-              detail: {
-                filters: {
-                  br_product_category: [categoryName]
-                }
-              }
-            }));
+            // Navigate to catalog with category filter
+            window.location.href = catalogUrl;
           }
         });
       });
@@ -661,29 +665,18 @@ export default async function decorate(block) {
       mainNav.querySelectorAll('[data-subcategory]').forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
-          const subcategoryName = link.dataset.subcategoryName;
           
-          // Navigate to catalog page if not already there
-          if (!window.location.pathname.includes('/catalog')) {
-            window.location.href = 'catalog';
-            // Store filter to apply after page load
-            sessionStorage.setItem('pendingCategoryFilter', subcategoryName);
-            return;
-          }
+          // Products are assigned to full hierarchical paths (parent/subcategory)
+          // When clicking "Lumber" (subcategory), filter by "structural-materials/lumber"
+          const subcategorySlug = link.dataset.subcategory;
           
-          // Close all dropdowns
-          mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
-            d.classList.remove('active');
-          });
+          // Build catalog URL with full subcategory path parameter
+          const catalogUrl = window.location.pathname.includes('/catalog') 
+            ? `${window.location.pathname}?category=${subcategorySlug}`
+            : `catalog?category=${subcategorySlug}`;
           
-          // Dispatch filter change event to apply subcategory filter
-          window.dispatchEvent(new CustomEvent('filtersChanged', {
-            detail: {
-              filters: {
-                br_product_category: [subcategoryName]
-              }
-            }
-          }));
+          // Navigate to catalog with subcategory filter
+          window.location.href = catalogUrl;
         });
       });
       
