@@ -19,7 +19,26 @@ export default function decorate(block) {
    */
   function renderFacets(facets) {
     if (!facets || facets.length === 0) {
-      dynamicFacetsContainer.innerHTML = '';
+      // Show skeleton filters (looks professional, not broken)
+      dynamicFacetsContainer.innerHTML = `
+        <div class="filter-section filter-section--skeleton">
+          <div class="filter-skeleton-header skeleton-shimmer" style="height: 20px; width: 80%; margin-bottom: 1rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 100%; margin-bottom: 0.5rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 90%; margin-bottom: 0.5rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 95%; margin-bottom: 0.5rem;"></div>
+        </div>
+        <div class="filter-section filter-section--skeleton">
+          <div class="filter-skeleton-header skeleton-shimmer" style="height: 20px; width: 70%; margin-bottom: 1rem; margin-top: 1rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 100%; margin-bottom: 0.5rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 85%; margin-bottom: 0.5rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 92%; margin-bottom: 0.5rem;"></div>
+        </div>
+        <div class="filter-section filter-section--skeleton">
+          <div class="filter-skeleton-header skeleton-shimmer" style="height: 20px; width: 75%; margin-bottom: 1rem; margin-top: 1rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 100%; margin-bottom: 0.5rem;"></div>
+          <div class="filter-skeleton-option skeleton-shimmer" style="height: 16px; width: 88%; margin-bottom: 0.5rem;"></div>
+        </div>
+      `;
       return;
     }
     

@@ -1119,6 +1119,40 @@ body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"]
 }
 
 
+/* Placeholder/Loading States */
+.nav-item .nav-link-skeleton {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: var(--spacing-3) var(--spacing-medium);
+}
+
+.nav-link-skeleton::before {
+  content: '';
+  display: block;
+  height: 20px;
+  width: 150px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-nav 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer-nav {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+
 /* Ensure mini-cart-container doesnt affect layout when closed */
 #mini-cart-container {
   position: relative;

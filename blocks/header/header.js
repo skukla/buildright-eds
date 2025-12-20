@@ -557,7 +557,24 @@ export default async function decorate(block) {
       
       // Only show navigation if we have categories
       if (topCategories.length === 0) {
-        mainNav.innerHTML = '';
+        // Show subtle placeholder navigation (minimal, not intrusive)
+        mainNav.innerHTML = `
+          <div class="nav-item">
+            <span class="nav-link-skeleton"></span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-link-skeleton" style="width: 140px;"></span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-link-skeleton" style="width: 120px;"></span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-link-skeleton" style="width: 160px;"></span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-link-skeleton" style="width: 130px;"></span>
+          </div>
+        `;
         // Hide "Shop By Industry" when no categories
         const industrySection = block.querySelector('.nav-industry');
         if (industrySection) {
