@@ -46,7 +46,30 @@ export default async function decorate(block) {
     }));
     
     if (products.length === 0) {
+      // Show skeleton cards (looks professional, not broken)
       container.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'product-card product-card-skeleton';
+        skeleton.innerHTML = `
+          <div class="product-card-image skeleton-shimmer"></div>
+          <div class="product-card-header">
+            <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+          </div>
+          <div class="product-card-body" style="min-height: 40px;"></div>
+          <div class="product-card-footer">
+            <div class="product-card-pricing">
+              <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+              <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+            </div>
+            <div class="product-card-actions">
+              <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+            </div>
+          </div>
+        `;
+        container.appendChild(skeleton);
+      }
       return;
     }
     

@@ -320,3 +320,48 @@
   pointer-events: none;
 }
 
+
+/* Skeleton loading state */
+.product-card-skeleton {
+  pointer-events: none;
+  opacity: 1;
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e8e8e8 50%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+  border-radius: var(--shape-border-radius-2);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Stagger skeleton animation for visual interest (first 12 cards) */
+.product-card-skeleton:nth-child(1) { animation-delay: 0ms; }
+.product-card-skeleton:nth-child(2) { animation-delay: 50ms; }
+.product-card-skeleton:nth-child(3) { animation-delay: 100ms; }
+.product-card-skeleton:nth-child(4) { animation-delay: 150ms; }
+.product-card-skeleton:nth-child(5) { animation-delay: 200ms; }
+.product-card-skeleton:nth-child(6) { animation-delay: 250ms; }
+.product-card-skeleton:nth-child(7) { animation-delay: 300ms; }
+.product-card-skeleton:nth-child(8) { animation-delay: 350ms; }
+.product-card-skeleton:nth-child(9) { animation-delay: 400ms; }
+.product-card-skeleton:nth-child(10) { animation-delay: 450ms; }
+.product-card-skeleton:nth-child(11) { animation-delay: 500ms; }
+.product-card-skeleton:nth-child(12) { animation-delay: 550ms; }
+
