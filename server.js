@@ -29,8 +29,10 @@ const server = http.createServer((req, res) => {
   }
 
   // Handle path-based routing for catalog and project-builder
-  if (filePath.startsWith('/catalog')) {
+  if (filePath === '/catalog') {
     filePath = '/pages/catalog.html';
+  } else if (filePath === '/catalog-dropin') {
+    filePath = '/pages/catalog-dropin.html';
   } else if (filePath.startsWith('/project-builder')) {
     filePath = '/pages/project-builder.html';
   }
