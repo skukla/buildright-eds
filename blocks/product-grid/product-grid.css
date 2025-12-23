@@ -44,7 +44,7 @@
 
 .products-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-large);
   min-height: 800px; /* CLS prevention - initial page load with infinite scroll */
   align-items: start; /* Don't stretch cards to full row height */

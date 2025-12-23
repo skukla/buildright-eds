@@ -39,6 +39,14 @@ export function resolvePath(path) {
  * @returns {string} Full image URL
  */
 export function resolveImagePath(imagePath) {
+  if (!imagePath) return '';
+  
+  // If it's an absolute URL (from ACO/Commerce), return as-is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // Otherwise, resolve relative paths normally
   return resolvePath(imagePath);
 }
 

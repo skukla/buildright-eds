@@ -16,7 +16,8 @@
       "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
       "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
       "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/"
+      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/",
+      "@dropins/storefront-product-discovery/": "/node_modules/@dropins/storefront-product-discovery/"
     }
   }
   </script>
@@ -96,19 +97,18 @@
                 <div>
                   <div class="filters-header">
                     <h3>Refine Results</h3>
-                    <button class="clear-filters" id="clear-filters">Clear All</button>
+                    <button class="clear-filters" id="clear-filters" style="display: none;">Clear All</button>
                   </div>
                   
-                  <!-- Dynamic facets from ACO will be rendered here -->
                   <div class="dynamic-facets-container">
-                    <p class="facets-loading">Loading filters...</p>
+                    <!-- Dynamic facets loaded here from ACO -->
                   </div>
                 </div>
               </div>
             </div>
           </aside>
 
-          <!-- Product Grid -->
+          <!-- Product Grid (BuildRight Design) -->
           <div style="visibility: hidden;" id="product-grid-wrapper">
             <div class="product-grid" data-block-name="product-grid" data-block-status="loading">
               <div>
@@ -117,10 +117,11 @@
                     <div class="grid-header-controls">
                       <button class="btn btn-secondary btn-sm" id="mobile-filter-toggle">Filters</button>
                     </div>
-                    <div class="product-count" style="visibility: hidden;">0 products</div>
+                    <div class="product-count">Loading products...</div>
                   </div>
+                  
                   <div class="products-container">
-                    <!-- Products will be populated by JavaScript -->
+                    <!-- Products loaded dynamically -->
                   </div>
                 </div>
               </div>
@@ -337,9 +338,6 @@
       if (productCount) {
         productCount.style.visibility = 'hidden';
       }
-      
-      // Check if we have categories - if not, hide breadcrumbs
-      checkCategoriesAndHideBreadcrumbs();
     });
       
       // Listen for catalog loaded event (hide spinner, show content)

@@ -629,6 +629,11 @@ export default async function decorate(block) {
         page: 1
       });
       
+      // DEBUG: Log first product to see price structure
+      if (result.products?.items?.[0]) {
+        console.log('[Product Grid] First product raw data:', JSON.stringify(result.products.items[0], null, 2));
+      }
+      
       // Store total count for infinite scroll
       totalCount = result.totalCount || 0;
       
