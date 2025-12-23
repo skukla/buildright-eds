@@ -72,6 +72,30 @@ export default function decorate(block) {
    * Render facet options with counts
    */
   function renderFacetOptions(facet) {
+    // Special handling for price ranges
+    if (facet.key === 'price' && facet.options.some(opt => opt.min !== undefined)) {
+      return facet.options.map(option => {
+        const isSelected = activeFilters.price_range?.min === option.min && 
+                          activeFilters.price_range?.max === option.max;
+        const hasCount = option.count !== undefined && option.count !== null;
+        
+        return `
+          <label class="filter-option ${isSelected ? 'filter-option--selected' : ''}">
+            <input type="checkbox" 
+                   name="price_range" 
+                   value="${option.id}"
+                   data-min="${option.min}"
+                   data-max="${option.max}"
+                   ${isSelected ? 'checked' : ''}>
+            <span class="filter-option-checkbox"></span>
+            <span class="filter-option-label">${option.name}</span>
+            ${hasCount ? `<span class="filter-count">(${option.count})</span>` : ''}
+          </label>
+        `;
+      }).join('');
+    }
+    
+    // Regular facet options
     return facet.options.map(option => {
       const isSelected = activeFilters[facet.key]?.includes(option.id);
       const hasCount = option.count !== undefined && option.count !== null;
@@ -120,7 +144,27 @@ export default function decorate(block) {
         const value = checkbox.value;
         const isChecked = checkbox.checked;
         
-        // Update active filters
+        // Special handling for price ranges
+        if (facetKey === 'price_range') {
+          if (isChecked) {
+            // Only allow one price range at a time
+            checkboxes.forEach(cb => {
+              if (cb.name === 'price_range' && cb !== checkbox) {
+                cb.checked = false;
+              }
+            });
+            
+            const min = parseInt(checkbox.dataset.min);
+            const max = parseInt(checkbox.dataset.max);
+            activeFilters.price_range = { min, max };
+          } else {
+            delete activeFilters.price_range;
+          }
+          emitFilters();
+          return;
+        }
+        
+        // Regular facet handling
         if (!activeFilters[facetKey]) {
           activeFilters[facetKey] = [];
         }
