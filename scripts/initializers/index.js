@@ -51,25 +51,59 @@ export async function initializeDropins() {
       const { initializers } = await import('@dropins/tools/initializer.js');
       const { setEndpoint, setFetchGraphQlHeaders } = await import('@dropins/tools/fetch-graphql.js');
       
-      // Configure GraphQL endpoint - Commerce Dropins use Commerce directly (best practice)
-      // BuildRight custom queries (ACO, persona, BOM) use the API Mesh
+      // Configure GraphQL endpoint
+      // ARCHITECTURE: All dropins now go through the mesh
+      // - Mesh exposes ACO for Product Discovery (productSearch)
+      // - Mesh exposes Commerce for Auth and Cart (createEmptyCart, generateCustomerToken)
+      const meshEndpoint = config.meshEndpoint;
       const commerceEndpoint = config.commerceEndpoint;
-      if (commerceEndpoint) {
-        setEndpoint(commerceEndpoint);
-        console.log('[Dropins] Using Commerce endpoint directly:', commerceEndpoint);
-        
-        // Set store code header if configured
-        if (config.commerceStoreCode) {
-          setFetchGraphQlHeaders({
-            'Store': config.commerceStoreCode
-          });
-        }
-      } else {
-        console.warn('[Dropins] No Commerce endpoint configured');
+      
+      if (!meshEndpoint && !commerceEndpoint) {
+        console.warn('[Dropins] No endpoints configured');
         return;
       }
       
+      // Use mesh endpoint (preferred) or fallback to Commerce
+      const endpoint = meshEndpoint || commerceEndpoint;
+      setEndpoint(endpoint);
+      console.log('[Dropins] Using endpoint:', endpoint);
+      
+      // Set initial headers (store code + persona headers if available)
+      const headers = {};
+      
+      if (config.commerceStoreCode) {
+        headers['Store'] = config.commerceStoreCode;
+      }
+      
+      // Get persona headers from mesh client (if already initialized)
+      const { getPersonaHeaders } = await import('../services/mesh-client.js');
+      const personaHeaders = getPersonaHeaders();
+      if (personaHeaders['X-Catalog-View-Id']) {
+        headers['x-catalog-view-id'] = personaHeaders['X-Catalog-View-Id'];
+      }
+      if (personaHeaders['X-Price-Book-Id']) {
+        headers['x-price-book-id'] = personaHeaders['X-Price-Book-Id'];
+      }
+      
+      setFetchGraphQlHeaders(headers);
+      console.log('[Dropins] Set headers:', Object.keys(headers));
+      
+      // Listen for persona header updates and update dropin headers
+      window.addEventListener('personaHeadersUpdated', (event) => {
+        const updatedHeaders = { ...headers };
+        if (event.detail.catalogViewId) {
+          updatedHeaders['x-catalog-view-id'] = event.detail.catalogViewId;
+        }
+        if (event.detail.priceBookId) {
+          updatedHeaders['x-price-book-id'] = event.detail.priceBookId;
+        }
+        setFetchGraphQlHeaders(updatedHeaders);
+        console.log('[Dropins] Updated persona headers:', Object.keys(updatedHeaders));
+      });
+      
       // Initialize individual dropins
+      // All dropins now use the same mesh endpoint
+      
       // Auth dropin
       const authInit = await import('./auth.js');
       await authInit.initializeAuthDropin(initializers);
@@ -77,6 +111,10 @@ export async function initializeDropins() {
       // Cart dropin
       const cartInit = await import('./cart.js');
       await cartInit.initializeCartDropin(initializers);
+      
+      // Product Discovery dropin
+      const searchInit = await import('./search.js');
+      await searchInit.initializeSearchDropin(initializers);
       
       // Mount all initializers
       initializers.mount();

@@ -24,6 +24,7 @@ export const QUERY_GET_PERSONA_BY_ID = queries.GET_PERSONA_BY_ID;
 export const QUERY_GET_PERSONA_BY_EMAIL = queries.GET_PERSONA_BY_EMAIL;
 export const QUERY_SEARCH_PRODUCTS = queries.SEARCH_PRODUCTS;
 export const QUERY_PRODUCT_SEARCH_FILTER = queries.PRODUCT_SEARCH_FILTER;
+export const QUERY_PRODUCT_SEARCH_WITH_DROPIN = queries.PRODUCT_SEARCH_WITH_DROPIN;
 export const QUERY_SEARCH_SUGGESTIONS = queries.SEARCH_SUGGESTIONS;
 export const QUERY_GET_PRODUCT = queries.GET_PRODUCT;
 export const QUERY_GENERATE_BOM = queries.GENERATE_BOM;
@@ -61,7 +62,7 @@ async function getEndpoint() {
  * 
  * @throws {Error} If headers are not set (must call initializePersona first)
  */
-function getPersonaHeaders() {
+export function getPersonaHeaders() {
   try {
     const personaData = sessionStorage.getItem('buildright_persona_headers');
     if (personaData) {
@@ -71,8 +72,8 @@ function getPersonaHeaders() {
     console.warn('[MeshClient] Failed to parse persona headers:', e);
   }
   
-  // No hardcoded defaults - headers must come from mesh
-  throw new Error('Persona headers not set. Call initializePersona() first.');
+  // Return empty object instead of throwing (headers may not be set yet)
+  return {};
 }
 
 /**
@@ -88,6 +89,14 @@ export function setPersonaHeaders(headers) {
   };
   sessionStorage.setItem('buildright_persona_headers', JSON.stringify(meshHeaders));
   console.log('[MeshClient] Persona headers set:', meshHeaders);
+  
+  // Notify dropins to update their headers
+  window.dispatchEvent(new CustomEvent('personaHeadersUpdated', {
+    detail: {
+      catalogViewId: headers.catalogViewId,
+      priceBookId: headers.priceBookId
+    }
+  }));
 }
 
 /**
