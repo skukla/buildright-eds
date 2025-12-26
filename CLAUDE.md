@@ -114,7 +114,7 @@ AC-Price-Book-Id: [from persona, e.g., "US-Retail"]
 **Mesh Architecture:**
 The mesh has three sources (see `buildright-service/mesh/README.md` for details):
 - `ACO_Dropins` - Unprefixed ACO queries for Adobe dropins
-- `ACO_CustomBlocks` - Prefixed (`BuildRight_*`) ACO queries for custom blocks
+- `ACO_BuildRight` - Prefixed (`BuildRight_*`) ACO queries for custom blocks
 - `Commerce` - Adobe Commerce for cart/auth (catalog filtered out)
 
 ---
