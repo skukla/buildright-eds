@@ -566,11 +566,13 @@ docs/
 |-------|----------|
 | **Getting Started** | [AGENT-HANDOFF.md](./AGENT-HANDOFF.md) |
 | **Dropins Integration** | [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) |
+| **Dropin CSS Refactoring** | [implementation/DROPIN-CSS-REFACTOR-PLAN.md](./implementation/DROPIN-CSS-REFACTOR-PLAN.md) |
 | **Sarah Implementation** | [implementation/sarah-end-to-end/features/](./implementation/sarah-end-to-end/features/) |
 | **Backend Reference** | [reference/backend/](./reference/backend/) |
 | **Personas** | [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md) |
 | **Architecture Decisions** | [adr/](./adr/) |
 | **Completed Work** | [implementation/completed/](./implementation/completed/) |
+| **Research** | [../.rptc/research/](../../.rptc/research/) |
 
 ### Backend Services (External)
 

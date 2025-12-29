@@ -69,16 +69,20 @@ buildright-eds/
 
 ---
 
-## Catalog Implementations
+## Catalog Implementation
 
-Two catalog pages exist for comparison:
+| Route | Implementation | Block | Status |
+|-------|----------------|-------|--------|
+| `/catalog` | Adobe Product Discovery dropin | `product-list` | **Production** |
 
-| Route | Implementation | Status | Use Case |
-|-------|----------------|--------|----------|
-| `/catalog` | Custom product-grid block | Working | **Production** - full design control |
-| `/catalog-dropin` | Adobe Product Discovery dropin | Working | Reference/comparison |
+**Architecture:**
+- Uses Adobe's SearchResults, Facets, SortBy, and Pagination dropins
+- Custom slot rendering for BuildRight design (`.buildright-*` classes)
+- Mesh adapter resolvers intercept queries for extensibility control
 
-**Decision:** Use `/catalog` (custom) for production per design requirements.
+**Deprecated (in `pages/_deprecated/` and `blocks/_deprecated/`):**
+- `catalog-custom.html` + `product-grid` block - Direct ACO queries, superseded by dropin approach
+- `filters-sidebar` block - Superseded by Facets dropin
 
 ---
 
@@ -107,9 +111,11 @@ https://edge-sandbox-graph.adobe.io/api/2463edc1-5cf7-4393-af04-95a3d1b6973c/gra
 
 **Headers Required for ACO Pricing:**
 ```
-AC-View-Id: [from persona, e.g., "default"]
+AC-View-Id: [UUID from persona service, e.g., "6792f1d5-9e79-4813-8d8e-df5ed76e5692"]
 AC-Price-Book-Id: [from persona, e.g., "US-Retail"]
 ```
+
+> **Critical:** `AC-View-Id` must be a UUID, not a human-readable string like "default". The persona service resolves human-readable identifiers to UUIDs.
 
 **Mesh Architecture:**
 The mesh has three sources (see `buildright-service/mesh/README.md` for details):
@@ -123,12 +129,11 @@ The mesh has three sources (see `buildright-service/mesh/README.md` for details)
 
 | Document | When to Read |
 |----------|--------------|
+| `docs/DROPIN-ARCHITECTURE.md` | **Canonical** dropin reference (containers, slots, patterns) |
 | `docs/MASTER-IMPLEMENTATION-PLAN.md` | Understanding overall project scope |
 | `docs/adr/ADR-001-use-dropins-for-commerce.md` | Commerce dropin decisions |
 | `docs/adr/ADR-007.md` | Custom SDK dropin decisions |
-| `docs/CATALOG-VS-CATALOG-DROPIN-COMPARISON.md` | PLP architecture decisions |
-| `docs/CODEBASE-AUDIT-DROPINS.md` | File-by-file migration plan |
-| `docs/DATA-SOURCE-STATUS.md` | Data source limitations |
+| `buildright-service/mesh/README.md` | Mesh adapter pattern for dropin queries |
 
 ---
 
@@ -140,9 +145,11 @@ The mesh has three sources (see `buildright-service/mesh/README.md` for details)
 
 3. **Demo Mode:** Auth currently uses demo mode fallback. Phase 5.5 will integrate real Auth dropin.
 
-4. **Dropin Pricing Architecture:** Product Discovery dropins receive pricing through a mesh adapter layer (`dropin-search.js`). If dropins show products without prices, verify:
-   - Mesh is deployed with latest `dropin-search.js` resolver
-   - `AC-Price-Book-Id` header is being sent (check `scripts/initializers/index.js`)
+4. **Dropin Pricing Architecture:** ACO returns pricing natively when correct headers are provided. If dropins show products without prices, verify:
+   - `AC-View-Id` header contains **UUID** (not human-readable like "default") - persona service resolves this
+   - `AC-Price-Book-Id` header is being sent
+   - Persona initialization happens BEFORE dropin headers are set (see `scripts/initializers/index.js`)
+   - The `dropin-search.js` adapter is for **extensibility control**, not required for basic pricing
    - See `buildright-service/mesh/README.md` "Dropin Adapter Pattern" section
 
 ---

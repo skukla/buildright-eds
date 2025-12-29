@@ -238,10 +238,10 @@ Build custom blocks for everything that call `BuildRight_` queries directly:
 
 ```graphql
 # Dropin queries (unprefixed) - Standard ACO
-productSearch
-products
-attributeMetadata
-refineProduct
+productSearch          # Intercepted by dropin-search.js adapter
+products               # Intercepted by dropin-pdp.js adapter
+attributeMetadata      # Intercepted by dropin-metadata.js adapter (filters SortBy options)
+refineProduct          # Intercepted by dropin-pdp.js adapter
 navigation
 cart
 customer

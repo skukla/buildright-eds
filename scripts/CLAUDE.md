@@ -104,27 +104,38 @@ Central initialization for all dropins with ACO header configuration:
 import { initializers } from '@dropins/tools/initializer.js';
 import { setEndpoint, setFetchGraphQlHeaders } from '@dropins/tools/fetch-graphql.js';
 import { getConfig } from '../site-config.js';
+import { getPersonaHeaders, initializePersona } from '../services/mesh-client.js';
 
 export async function initializeDropins() {
   const config = await getConfig();
 
-  // Configure API Mesh endpoint
+  // Configure API Mesh endpoint for Auth, Cart, Checkout dropins
   setEndpoint(config.meshEndpoint);
 
-  // Set ACO headers for pricing (AC-* format required by mesh)
-  // Note: mesh-client.js uses X-* internally, we translate to AC-* here
+  // CRITICAL: Initialize persona BEFORE setting dropin headers
+  // This ensures persona service resolves catalog view UUIDs
+  await initializePersona('0'); // '0' = default/guest persona
+
+  // Get persona headers (now contains resolved UUIDs)
+  const personaHeaders = getPersonaHeaders();
+
+  // Set ACO headers for pricing (Auth, Cart, Checkout dropins)
+  // AC-View-Id MUST be a UUID, not human-readable like "default"
   setFetchGraphQlHeaders({
-    'AC-View-Id': config.aco.defaultViewId,          // e.g., 'default'
-    'AC-Price-Book-Id': config.aco.defaultPriceBookId // e.g., 'US-Retail'
+    'AC-View-Id': personaHeaders['X-Catalog-View-Id'] || config.aco.defaultViewId,
+    'AC-Price-Book-Id': personaHeaders['X-Price-Book-Id'] || config.aco.defaultPriceBookId
   });
 
   // Register all dropins, mount, signal ready...
 }
 ```
 
+> **CRITICAL:** The above only configures Auth, Cart, Checkout dropins. **Product Discovery dropin has SEPARATE configuration** - see `initializers/search.js` which uses `@dropins/storefront-product-discovery/api.js`.
+
 **Header Architecture:**
-- `mesh-client.js` stores persona headers as `X-Catalog-View-Id`, `X-Price-Book-Id`
+- `mesh-client.js` stores persona headers as `X-Catalog-View-Id`, `X-Price-Book-Id` (UUIDs from persona service)
 - `initializers/index.js` translates to `AC-View-Id`, `AC-Price-Book-Id` when calling mesh
+- **Critical:** `AC-View-Id` must be a UUID, not a human-readable string like "default"
 - Mesh reads lowercase versions (`ac-view-id`, `ac-price-book-id`) due to HTTP normalization
 
 ### initializers/auth.js
