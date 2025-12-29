@@ -1,0 +1,1016 @@
+/**
+ * Product List Block - BuildRight Catalog
+ *
+ * Uses Adobe Product Discovery dropins with full slot customization:
+ * - SearchResults, Facets, SortBy, Pagination containers
+ * - Custom slots for BuildRight design match
+ * - Adobe maintains search logic, state management, URL sync
+ * - BuildRight controls all visual presentation
+ */
+
+// Debug mode - set to true for verbose logging during development
+const DEBUG = true;
+const log = (...args) => DEBUG && console.log('[ProductList]', ...args);
+
+// Page size for product queries
+const PAGE_SIZE = 48;
+
+// Render tracking - used to know when all products have finished rendering
+let expectedProductCount = 0;
+let renderedProductCount = 0;
+
+// Track selected price ranges for FacetBucket checkbox override
+// Key: "from-to" (e.g., "0-10"), Value: boolean
+const selectedPriceRanges = new Map();
+
+// Flag to track when we're clearing filters - prevents visual blip during re-render
+let isClearingFilters = false;
+
+/**
+ * Called when all products have finished rendering (based on slot callback count)
+ * Removes loading states and shows pagination
+ */
+function onRenderComplete() {
+  log('All products rendered, removing loading states');
+  const resultsContainer = document.querySelector('.dropin-search-results-container');
+  const facetsEl = document.querySelector('.dropin-facets-container');
+  const paginationEl = document.querySelector('.dropin-pagination-container');
+
+  if (resultsContainer) resultsContainer.classList.remove('validating', 'updating');
+  if (facetsEl) facetsEl.classList.remove('validating', 'clearing');
+  if (paginationEl) paginationEl.style.display = '';
+
+  // If we were clearing filters, now is the time to finalize
+  // Products have finished loading, so any dropin re-render should be done
+  if (isClearingFilters && facetsEl) {
+    // Small delay to let any final facet re-renders complete
+    setTimeout(() => {
+      // Final checkbox reset
+      const checkboxes = facetsEl.querySelectorAll(
+        'input.dropin-checkbox__checkbox, input.buildright-price-checkbox-input',
+      );
+      checkboxes.forEach((cb) => { cb.checked = false; });
+      log('onRenderComplete: Final checkbox reset:', checkboxes.length);
+
+      // End clearing state - RAF loop will stop automatically
+      isClearingFilters = false;
+      facetsEl.classList.remove('clearing-filters');
+      log('onRenderComplete: Clearing state ended');
+    }, 50);
+  }
+
+  // Emit event for external listeners
+  document.dispatchEvent(new CustomEvent('catalog:facetsValidating', {
+    detail: { validating: false },
+  }));
+}
+
+/**
+ * Price cache - stores prices fetched from mesh endpoint
+ * Since the dropin's productSearch doesn't return prices, we fetch them separately
+ */
+const priceCache = new Map();
+let priceFetchPromise = null;
+
+/**
+ * Fetch prices from mesh endpoint for given SKUs
+ * Uses our BuildRight_productSearchFilter query which includes pricing
+ * @param {string[]} skus - Array of SKUs to fetch prices for
+ * @returns {Promise<Map<string, {value: number, currency: string}>>}
+ */
+async function fetchPricesFromMesh(skus) {
+  if (!skus || skus.length === 0) return new Map();
+
+  try {
+    const { catalogService } = await import('../../scripts/services/catalog-service.js');
+
+    // Use searchWithFacets to get products with prices
+    // The mesh transforms ACO response to include price: { value, currency }
+    const result = await catalogService.searchWithFacets({
+      phrase: '',
+      limit: skus.length + 10, // Get enough products
+      page: 1,
+    });
+
+    const prices = new Map();
+    if (result?.products?.items) {
+      result.products.items.forEach(item => {
+        if (item.sku && item.price) {
+          prices.set(item.sku, {
+            value: item.price.value || 0,
+            currency: item.price.currency || 'USD',
+          });
+        }
+      });
+    }
+
+    log('Fetched prices for', prices.size, 'products from mesh');
+    return prices;
+  } catch (error) {
+    console.error('[ProductListDropin] Failed to fetch prices:', error);
+    return new Map();
+  }
+}
+
+/**
+ * Get price for a SKU - returns cached price or fetches from mesh
+ * @param {string} sku - Product SKU
+ * @returns {{value: number, currency: string} | null}
+ */
+function getCachedPrice(sku) {
+  return priceCache.get(sku) || null;
+}
+
+/**
+ * Update all price elements in the DOM with fetched prices
+ */
+function updatePriceElements() {
+  const priceElements = document.querySelectorAll('.buildright-price-value[data-sku]');
+  priceElements.forEach(el => {
+    const sku = el.dataset.sku;
+    const price = getCachedPrice(sku);
+    if (price && price.value > 0) {
+      el.textContent = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: price.currency || 'USD',
+      }).format(price.value);
+      el.classList.remove('price-loading');
+    }
+  });
+}
+
+/**
+ * Helper function for consistent event emission (matches product-grid.js patterns)
+ * @param {string} eventName - The event name to dispatch
+ * @param {Object} detail - Optional detail object for the event
+ */
+function emitCatalogEvent(eventName, detail = {}) {
+  window.dispatchEvent(new CustomEvent(eventName, { detail }));
+  log('Event emitted:', eventName, Object.keys(detail).length > 0 ? detail : '');
+}
+
+export default async function decorate(block) {
+  log('Initializing Level 2 integration with full slots...');
+  
+  // Get containers (facetsContainer queried after dropin init to ensure DOM is ready)
+  const searchResultsContainer = block.querySelector('.dropin-search-results-container');
+  const sortByContainer = document.querySelector('.dropin-sort-container');
+  const paginationContainer = block.querySelector('.dropin-pagination-container');
+  const productCount = block.querySelector('.product-count');
+  
+  if (!searchResultsContainer) {
+    console.error('[ProductListDropin] Search results container not found');
+    return;
+  }
+  
+  try {
+    // Emit loading event immediately (matches product-grid.js pattern)
+    emitCatalogEvent('catalogLoading');
+
+    // Ensure dropins are initialized first
+    const { shouldUseDropins, initializeDropins } = await import('../../scripts/initializers/index.js');
+    if (!await shouldUseDropins()) {
+      throw new Error('Commerce Dropins are not enabled in config');
+    }
+    
+    // Wait for dropins initialization
+    await initializeDropins();
+    log('Dropins initialized, rendering containers...');
+    
+    // Import dropin render function and containers
+    const { render } = await import('@dropins/storefront-product-discovery/render.js');
+    const SearchResults = (await import('@dropins/storefront-product-discovery/containers/SearchResults.js')).default;
+    const Facets = (await import('@dropins/storefront-product-discovery/containers/Facets.js')).default;
+    const SortBy = (await import('@dropins/storefront-product-discovery/containers/SortBy.js')).default;
+    const Pagination = (await import('@dropins/storefront-product-discovery/containers/Pagination.js')).default;
+    
+    // Render SearchResults with FULL slot customization
+    log('Rendering SearchResults with custom slots...');
+    
+    const slotsConfig = {
+      /**
+       * ProductImage Slot - BuildRight namespaced wrapper
+       */
+      ProductImage: (ctx) => {
+        log('ProductImage slot:', ctx.product?.sku);
+        const { product } = ctx;
+        
+        // Create BuildRight-namespaced wrapper
+        const imageWrapper = document.createElement('div');
+        imageWrapper.className = 'buildright-product-image-wrapper';
+        
+        // BuildRight image with fallback logic
+        let imageUrl = product.images?.[0]?.url;
+        if (!imageUrl || imageUrl.trim() === '') {
+          const baseSku = product.sku?.replace(/-OPTION$/, '') || '';
+          imageUrl = `/images/products/${baseSku}.jpg`;
+        }
+        
+        // Use DIV with background-image for sharper rendering (matches /catalog)
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'buildright-product-image';
+        imageDiv.style.backgroundImage = `url('${imageUrl}')`;
+        imageDiv.setAttribute('role', 'img');
+        imageDiv.setAttribute('aria-label', product.name || 'Product image');
+        
+        // Add error handler for fallback
+        const testImg = new Image();
+        testImg.onerror = () => {
+          imageWrapper.classList.add('buildright-image-error');
+        };
+        testImg.src = imageUrl;
+        
+        imageWrapper.appendChild(imageDiv);
+        ctx.replaceWith(imageWrapper);
+      },
+          
+      /**
+       * ProductName Slot - BuildRight header with SKU
+       */
+      ProductName: (ctx) => {
+        log('ProductName slot:', ctx.product?.sku);
+        const { product } = ctx;
+        
+        // Create BuildRight header container
+        const header = document.createElement('div');
+        header.className = 'buildright-product-header';
+        
+        // SKU
+        const sku = document.createElement('div');
+        sku.className = 'buildright-product-sku';
+        sku.textContent = product.sku || '';
+        
+        // Product name
+        const name = document.createElement('h3');
+        name.className = 'buildright-product-name';
+        name.textContent = product.name || 'Unnamed Product';
+        
+        header.appendChild(sku);
+        header.appendChild(name);
+        
+        ctx.replaceWith(header);
+      },
+          
+      /**
+       * ProductPrice Slot - BuildRight pricing structure
+       * ACO returns prices in productView.price structure
+       */
+      ProductPrice: (ctx) => {
+        log('ProductPrice slot:', ctx.product?.sku);
+        const { product } = ctx;
+
+        // Debug: Log the actual product structure to find pricing
+        if (product) {
+          log('Product price structures:', {
+            sku: product.sku,
+            price: product.price,
+            priceRange: product.priceRange,
+            productView: product.productView,
+            finalPrice: product.price?.final,
+            regularPrice: product.price?.regular,
+            specialPrice: product.specialPrice,
+          });
+        }
+
+        // Create BuildRight pricing container
+        const pricingContainer = document.createElement('div');
+        pricingContainer.className = 'buildright-product-pricing';
+
+        // Try multiple possible price structures:
+        // 1. ACO productView structure
+        // 2. Adobe Commerce dropin structure
+        // 3. Our mesh structure
+        // 4. Price range structure
+        const priceValue = product.price?.final?.amount?.value
+          || product.price?.regular?.amount?.value
+          || product.priceRange?.minimum?.final?.amount?.value
+          || product.priceRange?.minimum?.regular?.amount?.value
+          || product.price?.value
+          || product.specialPrice?.value
+          || 0;
+        const currency = product.price?.final?.amount?.currency
+          || product.price?.regular?.amount?.currency
+          || product.priceRange?.minimum?.final?.amount?.currency
+          || 'USD';
+        
+        // Price value
+        const priceEl = document.createElement('div');
+        priceEl.className = 'buildright-price-value';
+        priceEl.textContent = new Intl.NumberFormat('en-US', { 
+          style: 'currency', 
+          currency: currency 
+        }).format(priceValue);
+        
+        // Price label
+        const labelEl = document.createElement('div');
+        labelEl.className = 'buildright-price-label';
+        labelEl.textContent = 'per unit';
+        
+        pricingContainer.appendChild(priceEl);
+        pricingContainer.appendChild(labelEl);
+        
+        ctx.replaceWith(pricingContainer);
+      },
+          
+      /**
+       * ProductActions Slot - BuildRight button styling with add-to-cart state management
+       */
+      ProductActions: (ctx) => {
+        log('ProductActions slot:', ctx.product?.sku);
+        const { product } = ctx;
+
+        // Create BuildRight actions container
+        const actions = document.createElement('div');
+        actions.className = 'buildright-product-actions';
+
+        const viewButton = document.createElement('button');
+        viewButton.className = 'buildright-btn buildright-btn-primary';
+
+        // Add icon
+        viewButton.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"></path>
+          </svg>
+          Add to Cart
+        `;
+
+        viewButton.setAttribute('data-sku', product.sku);
+
+        viewButton.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const button = e.currentTarget;
+          const originalHTML = button.innerHTML;
+
+          // Define SVG icons
+          const spinnerSVG = `<svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4 31.4" stroke-dashoffset="0"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></circle></svg>`;
+          const checkSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+          const errorSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+
+          // Loading state
+          button.disabled = true;
+          button.classList.add('loading');
+          button.innerHTML = `${spinnerSVG} Adding...`;
+
+          try {
+            // Import commerce helpers
+            const { addProductToCart, showAddToCartNotification } =
+              await import('../../scripts/commerce-helpers.js');
+
+            // Add to cart
+            await addProductToCart(product, 1);
+
+            // Success state
+            button.classList.remove('loading');
+            button.classList.add('success');
+            button.innerHTML = `${checkSVG} Added!`;
+
+            // Show notification
+            showAddToCartNotification(product, 1);
+
+            // Reset after 1500ms
+            setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.classList.remove('success');
+              button.disabled = false;
+            }, 1500);
+
+          } catch (error) {
+            console.error('[ProductListDropin] Add to cart failed:', error);
+
+            // Error state
+            button.classList.remove('loading');
+            button.classList.add('error');
+            button.innerHTML = `${errorSVG} Error`;
+
+            // Reset after 2000ms
+            setTimeout(() => {
+              button.innerHTML = originalHTML;
+              button.classList.remove('error');
+              button.disabled = false;
+            }, 2000);
+          }
+        });
+
+        actions.appendChild(viewButton);
+        ctx.replaceWith(actions);
+
+        // Track render completion - ProductActions is the last slot called per product
+        renderedProductCount++;
+        if (renderedProductCount >= expectedProductCount && expectedProductCount > 0) {
+          onRenderComplete();
+        }
+      },
+          
+      /**
+       * NoResults Slot - BuildRight empty state
+       */
+      NoResults: (ctx) => {
+        const { variables } = ctx;
+
+        const emptyState = document.createElement('div');
+        emptyState.className = 'buildright-empty-state';
+
+        // Security: Use innerHTML only for static content (no user input)
+        emptyState.innerHTML = `
+          <svg class="buildright-empty-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          <h2 class="buildright-empty-title">No Products Found</h2>
+          <p class="buildright-empty-message"></p>
+          <p class="buildright-empty-hint">Try adjusting your filters or search terms.</p>
+        `;
+
+        // Security: Use textContent for user input to prevent XSS
+        const messageEl = emptyState.querySelector('.buildright-empty-message');
+        const phrase = variables?.phrase || '';
+        messageEl.textContent = phrase
+          ? `We couldn't find any products matching your search "${phrase}".`
+          : 'We couldn\'t find any products matching your criteria.';
+
+        ctx.replaceWith(emptyState);
+      },
+          
+          /**
+           * Header Slot - Hide (we have our own)
+           */
+          Header: () => null,
+          
+      /**
+       * Footer Slot - Hide (pagination is separate)
+       */
+      Footer: () => null
+    };
+    
+    log('Slots config defined with keys:', Object.keys(slotsConfig));
+
+    await render.render(SearchResults, {
+      imageWidth: 400,
+      imageHeight: 400,
+      skeletonCount: 0, // Disable Adobe skeletons - we use our own custom ones
+      onSearchResult: (products) => {
+        log('Search results callback:', products.length, 'items on page');
+        // Note: Loading states are now managed via search/loading event subscription
+        // Product count is updated via search/result event subscription below
+      },
+      slots: slotsConfig
+    })(searchResultsContainer);
+    
+    log('SearchResults rendered');
+
+    // Query facetsContainer after SearchResults renders (DOM must be ready)
+    const facetsContainer = document.querySelector('.dropin-facets-container');
+
+    // Render Facets (if container exists) - Let Adobe handle native facets for proper filter communication
+    if (facetsContainer) {
+      log('Rendering Facets with FacetBucket slot for price checkboxes...');
+
+      // Render Facets with FacetBucket slot for price checkbox override
+      // Preserves Adobe's internal state management and SearchResults communication
+      // FacetBucket slot intercepts price facets to render as checkboxes (fixes Clear All desync)
+      await render.render(Facets, {
+        slots: {
+          // Custom SelectedFacets - show only Clear All button, no chips
+          // Chips clutter UI and have state desync issues with custom price checkboxes
+          SelectedFacets: (ctx) => {
+            const { data } = ctx;
+            log('SelectedFacets slot called:', { data, ctx: Object.keys(ctx) });
+            const hasSelectedFacets = data && data.length > 0;
+
+            // Only show Clear All when filters are active
+            if (!hasSelectedFacets) {
+              const empty = document.createElement('div');
+              empty.className = 'buildright-selected-facets-empty';
+              ctx.replaceWith(empty);
+              return;
+            }
+
+            // Create Clear All button only (no chips)
+            const container = document.createElement('div');
+            container.className = 'buildright-selected-facets';
+
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'buildright-clear-all-btn';
+            clearBtn.textContent = 'Clear All';
+            clearBtn.addEventListener('click', async () => {
+              log('Clear All clicked (custom button)');
+              selectedPriceRanges.clear();
+              isClearingFilters = true;
+
+              // Use search function stored on window
+              const searchFn = window.__productDiscoverySearch;
+              const baseParams = window.__productDiscoveryBaseParams || {};
+
+              if (searchFn) {
+                try {
+                  await searchFn({
+                    ...baseParams,
+                    filter: baseParams.filter,
+                    currentPage: 1,
+                  });
+                } catch (err) {
+                  console.error('[ProductList] Clear All search failed:', err);
+                }
+              }
+            });
+
+            container.appendChild(clearBtn);
+            ctx.replaceWith(container);
+          },
+          FacetBucket: (ctx) => {
+            // Extract bucket data from context (dropin provides {data: bucket})
+            // RangeBucket: __typename, title, from, to, count, selected
+            const { data } = ctx;
+            log('FacetBucket slot:', data);
+
+            // Only intercept RangeBucket (price facets) - render as checkboxes
+            // ScalarBucket (brand/color) already renders as checkboxes natively
+            if (data?.__typename === 'RangeBucket') {
+              const rangeKey = `${data.from}-${data.to}`;
+
+              // Sync our tracked state with dropin's state (handles Clear All)
+              if (data.selected) {
+                selectedPriceRanges.set(rangeKey, true);
+              } else {
+                selectedPriceRanges.delete(rangeKey);
+              }
+
+              // Create checkbox wrapper (no hidden radio needed - we call search API directly)
+              const wrapper = document.createElement('div');
+              wrapper.className = 'dropin-checkbox buildright-price-checkbox';
+
+              // Visible checkbox
+              const checkbox = document.createElement('input');
+              checkbox.type = 'checkbox';
+              checkbox.id = `price-${data.from}-${data.to}`;
+              // If clearing filters, force unchecked regardless of dropin's data.selected
+              // This prevents the visual "blip" where dropin re-renders with stale selected state
+              checkbox.checked = isClearingFilters ? false : data.selected;
+              checkbox.className = 'buildright-price-checkbox-input';
+              checkbox.setAttribute('data-testid', `${data.title}-checkbox`);
+              checkbox.setAttribute('data-from', data.from);
+              checkbox.setAttribute('data-to', data.to);
+
+              // Label
+              const label = document.createElement('label');
+              label.className = 'buildright-price-label';
+              label.htmlFor = checkbox.id;
+              label.textContent = `$${data.from} - $${data.to} (${data.count})`;
+
+              // Checkbox click → call search API directly with price filter
+              checkbox.addEventListener('change', async () => {
+                const from = parseFloat(checkbox.dataset.from);
+                const to = parseFloat(checkbox.dataset.to);
+                const key = `${from}-${to}`;
+
+                // Update our tracked state
+                if (checkbox.checked) {
+                  // For price (RangeBucket), only one can be selected at a time
+                  // (dropin clears others when one is selected)
+                  selectedPriceRanges.clear();
+                  selectedPriceRanges.set(key, true);
+                } else {
+                  selectedPriceRanges.delete(key);
+                }
+
+                log('Price checkbox changed:', key, checkbox.checked);
+
+                // Build combined filter array from:
+                // 1. Checked native dropin checkboxes (ScalarBucket filters)
+                // 2. Our selected price ranges (RangeBucket filters)
+                const combinedFilters = [];
+
+                // Collect filters from checked native dropin checkboxes
+                // Native checkbox IDs: br_construction_phase-Interiorfinish, br_brand-DuraStep, etc.
+                const nativeCheckboxes = facetsContainer.querySelectorAll(
+                  'input.dropin-checkbox__checkbox:checked',
+                );
+                nativeCheckboxes.forEach((cb) => {
+                  const cbId = cb.id;
+                  // Split on first hyphen to get attribute and value
+                  const hyphenIndex = cbId.indexOf('-');
+                  if (hyphenIndex > 0) {
+                    const attribute = cbId.slice(0, hyphenIndex);
+                    // Get value from label (has proper spacing) or testid
+                    const testId = cb.getAttribute('data-testid') || '';
+                    const value = testId.replace('-checkbox', '');
+                    if (attribute && value) {
+                      combinedFilters.push({ attribute, eq: value });
+                    }
+                  }
+                });
+
+                // Add price range filters
+                selectedPriceRanges.forEach((_, rangeKey) => {
+                  const [rangeFrom, rangeTo] = rangeKey.split('-').map(Number);
+                  combinedFilters.push({
+                    attribute: 'price',
+                    range: { from: rangeFrom, to: rangeTo },
+                  });
+                });
+
+                log('Combined filters:', combinedFilters);
+
+                // Get base params and search function from global
+                const baseParams = window.__productDiscoveryBaseParams || {};
+                const search = window.__productDiscoverySearch;
+
+                if (search) {
+                  const searchParams = {
+                    ...baseParams,
+                    filter: combinedFilters.length > 0 ? combinedFilters : undefined,
+                    currentPage: 1, // Reset to first page when filtering
+                  };
+
+                  log('Triggering search with combined filters:', searchParams);
+
+                  try {
+                    await search(searchParams);
+                    log('Price filter search completed');
+                  } catch (err) {
+                    console.error('[ProductList] Price filter search failed:', err);
+                  }
+                } else {
+                  console.error('[ProductList] Search function not available');
+                }
+              });
+
+              wrapper.appendChild(checkbox);
+              wrapper.appendChild(label);
+              ctx.replaceWith(wrapper);
+            } else if (data?.__typename === 'ScalarBucket') {
+              // ScalarBucket (brand, category, etc.) - only intercept during clearing
+              // to prevent visual "blip", otherwise let dropin render natively
+              if (isClearingFilters && data.selected) {
+                // During clearing with stale selected state - render unchecked checkbox
+                const wrapper = document.createElement('div');
+                wrapper.className = 'dropin-checkbox';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `${data.attribute}-${data.title.replace(/\s+/g, '')}`;
+                checkbox.checked = false; // Force unchecked
+                checkbox.className = 'dropin-checkbox__checkbox';
+                checkbox.setAttribute('data-testid', `${data.title}-checkbox`);
+
+                const label = document.createElement('span');
+                label.className = 'dropin-checkbox__label';
+                label.textContent = `${data.title} (${data.count})`;
+
+                wrapper.appendChild(checkbox);
+                wrapper.appendChild(label);
+                ctx.replaceWith(wrapper);
+              }
+              // Otherwise let dropin render natively - it handles click events correctly
+            }
+          },
+        },
+      })(facetsContainer);
+
+      // Inject header inside sidebar (Adobe's render replaces container contents)
+      // Must be done after render to match /catalog reference design
+      const existingHeader = facetsContainer.querySelector('.buildright-facets-header');
+      if (!existingHeader) {
+        const header = document.createElement('div');
+        header.className = 'buildright-facets-header';
+
+        const title = document.createElement('h3');
+        title.textContent = 'Refine Results';
+
+        const clearBtn = document.createElement('button');
+        clearBtn.className = 'buildright-clear-all-btn';
+        clearBtn.id = 'buildright-clear-all';
+        clearBtn.textContent = 'Clear All';
+        clearBtn.style.display = 'none'; // Hidden until filters are active
+        clearBtn.addEventListener('click', async () => {
+          log('Clear All clicked (header button)');
+          selectedPriceRanges.clear();
+
+          // Set clearing flag BEFORE search - FacetBucket slot will check this
+          // to prevent visual "blip" when dropin re-renders with stale selected state
+          isClearingFilters = true;
+          facetsContainer.classList.add('clearing-filters');
+
+          // Immediately uncheck all checkboxes (visual feedback first, before search)
+          const checkboxes = facetsContainer.querySelectorAll(
+            'input.dropin-checkbox__checkbox, input.buildright-price-checkbox-input',
+          );
+          checkboxes.forEach((cb) => { cb.checked = false; });
+          log('Checkboxes unchecked immediately:', checkboxes.length);
+
+          // Use requestAnimationFrame loop to uncheck any checked checkboxes during clearing
+          // More efficient than setInterval - syncs with browser repaint cycle
+          function uncheckLoop() {
+            if (!isClearingFilters) return; // Stop when clearing is done
+            const checkedBoxes = facetsContainer.querySelectorAll(
+              'input[type="checkbox"]:checked',
+            );
+            if (checkedBoxes.length > 0) {
+              checkedBoxes.forEach((cb) => { cb.checked = false; });
+              log('RAF unchecked:', checkedBoxes.length);
+            }
+            requestAnimationFrame(uncheckLoop);
+          }
+          requestAnimationFrame(uncheckLoop);
+
+          // Use search function stored on window (set after dropin initializes)
+          const searchFn = window.__productDiscoverySearch;
+          const baseParams = window.__productDiscoveryBaseParams || {};
+
+          if (searchFn) {
+            try {
+              // Clear user-selected facet filters but preserve base params (phrase, category)
+              await searchFn({
+                ...baseParams,
+                filter: baseParams.filter, // Keep base category filter, remove user facet filters
+                currentPage: 1,
+              });
+              log('Clear All search completed');
+            } catch (err) {
+              console.error('[ProductList] Clear All search failed:', err);
+            }
+          } else {
+            console.error('[ProductList] Search function not available for Clear All');
+          }
+        });
+
+        header.appendChild(title);
+        header.appendChild(clearBtn);
+        facetsContainer.insertBefore(header, facetsContainer.firstChild);
+        log('Injected Refine Results header with Clear All button');
+      }
+
+      // Filter reset listener - fixes dropin visual desync bug where checkboxes
+      // stay visually checked even after filters are cleared
+      // This handles both "Clear All" and individual filter pill removal (X buttons)
+      facetsContainer.addEventListener('click', (e) => {
+        const clickedBtn = e.target.closest('button');
+        if (!clickedBtn) return;
+
+        const btnText = clickedBtn.textContent?.toLowerCase() || '';
+        const ariaLabel = clickedBtn.getAttribute('aria-label')?.toLowerCase() || '';
+
+        // Check for Clear All button
+        const isClearAll = btnText.includes('clear') || ariaLabel.includes('clear');
+
+        // Check for individual filter removal (X buttons on filter pills)
+        // These have aria-label like "Remove Price filter: 0.0-10.0" or text containing "Remove"
+        const isFilterRemoval = ariaLabel.includes('remove') || btnText.includes('remove');
+
+        if (isClearAll) {
+          log('Clear All clicked');
+          // Checkbox sync is now handled by search/result event handler (no setTimeout needed)
+          // The event fires when dropin completes search, and we sync checkboxes immediately
+        } else if (isFilterRemoval) {
+          // Individual filter removal - determine which filter was removed
+          const filterInfo = ariaLabel || btnText;
+          log('Filter removed:', filterInfo);
+
+          // Check if it's a price filter removal
+          if (filterInfo.includes('price')) {
+            // Extract price range from label (e.g., "remove price filter: 0.0-10.0")
+            const rangeMatch = filterInfo.match(/(\d+(?:\.\d+)?)[^\d]+(\d+(?:\.\d+)?)/);
+            if (rangeMatch) {
+              const rangeKey = `${Math.floor(parseFloat(rangeMatch[1]))}-${Math.floor(parseFloat(rangeMatch[2]))}`;
+              selectedPriceRanges.delete(rangeKey);
+              const checkbox = facetsContainer.querySelector(`#price-${rangeKey}`);
+              if (checkbox) {
+                checkbox.checked = false;
+                log('Price checkbox unchecked:', rangeKey);
+              }
+            }
+          } else {
+            // Non-price filter - find and uncheck the corresponding native checkbox
+            // The filter pill text contains the facet value (e.g., "Interior finish")
+            // We need to find the checkbox with matching label
+            setTimeout(() => {
+              // Small delay to let dropin process the click first
+              const nativeCheckboxes = facetsContainer.querySelectorAll(
+                'input[type="checkbox"]:not(.buildright-price-checkbox-input)',
+              );
+              nativeCheckboxes.forEach((cb) => {
+                // Check if this checkbox's associated label matches the removed filter
+                const label = cb.nextElementSibling?.textContent?.toLowerCase() || '';
+                const checkboxId = cb.getAttribute('data-testid') || '';
+                if (filterInfo.includes(label.split('(')[0].trim())
+                    || filterInfo.includes(checkboxId.toLowerCase())) {
+                  cb.checked = false;
+                  log('Native checkbox unchecked:', label);
+                }
+              });
+            }, 50);
+          }
+        }
+      });
+
+      log('Facets rendered with native Adobe behavior');
+    } // Close if (facetsContainer)
+    
+    // Render SortBy (mesh handles filtering, we add bidirectional Name options)
+    if (sortByContainer) {
+      log('Rendering SortBy...');
+      await render.render(SortBy, {})(sortByContainer);
+
+      // Add bidirectional Name sort options (dropin only generates name_DESC for text fields)
+      const enhanceNameSort = () => {
+        const select = sortByContainer.querySelector('select');
+        if (!select) return;
+
+        // Find the name_DESC option (dropin generates this single option for text fields)
+        const nameDesc = [...select.options].find((opt) => opt.value === 'name_DESC');
+        if (!nameDesc || select.querySelector('[data-name-asc]')) return;
+
+        // Create A to Z option (ASC) and insert before Z to A
+        const aToZ = document.createElement('option');
+        aToZ.value = 'name_ASC';
+        aToZ.textContent = 'Name: A to Z';
+        aToZ.dataset.nameAsc = 'true';
+        nameDesc.insertAdjacentElement('beforebegin', aToZ);
+
+        // Rename original DESC to Z to A
+        nameDesc.textContent = 'Name: Z to A';
+        log('Injected bidirectional Name sort options');
+      };
+
+      enhanceNameSort();
+      new MutationObserver(enhanceNameSort).observe(sortByContainer, { childList: true, subtree: true });
+      log('SortBy rendered');
+    }
+    
+    // Render Pagination container for page navigation
+    if (paginationContainer) {
+      log('Rendering Pagination...');
+      await render.render(Pagination, {
+        // Pagination configuration
+      })(paginationContainer);
+      log('Pagination rendered');
+    }
+
+    // Subscribe to dropin events for loading states and product count
+    const { events } = await import('@dropins/tools/event-bus.js');
+
+    // Subscribe to search/loading events - the dropin's native loading state
+    // Only handles loading:true - loading:false is handled via render tracking
+    events.on('search/loading', (isLoading) => {
+      log('search/loading event:', isLoading);
+
+      if (isLoading) {
+        // Search starting - show loading states and reset render counter
+        renderedProductCount = 0;
+
+        const resultsContainer = document.querySelector('.dropin-search-results-container');
+        const facetsEl = document.querySelector('.dropin-facets-container');
+        const paginationEl = document.querySelector('.dropin-pagination-container');
+
+        if (resultsContainer) resultsContainer.classList.add('validating');
+        if (facetsEl) facetsEl.classList.add('validating');
+        if (paginationEl) paginationEl.style.display = 'none';
+        emitCatalogEvent('facetsValidating', { validating: true });
+      }
+      // Note: loading:false is ignored - we wait for all products to render instead
+      // See ProductActions slot and search/result event for render tracking
+    }, { eager: true });
+
+    // Subscribe to search/result events for product count display and render tracking
+    // Event structure: { request: {...}, result: { totalCount, pageInfo: { totalItems }, items: [...] } }
+    events.on('search/result', (searchEvent) => {
+      // Get total count for display
+      const totalCount = searchEvent?.result?.totalCount
+        ?? searchEvent?.result?.pageInfo?.totalItems
+        ?? 0;
+
+      // Get page item count for render tracking
+      const pageItems = searchEvent?.result?.items?.length ?? 0;
+      expectedProductCount = pageItems;
+      log('Search result event - total:', totalCount, 'page items:', pageItems);
+
+      if (productCount && totalCount > 0) {
+        productCount.textContent = `${totalCount} Product${totalCount !== 1 ? 's' : ''}`;
+      }
+
+      // Sync native checkbox UI to match dropin filter state
+      // Fixes dropin bug: native checkboxes don't visually uncheck on Clear All
+      // Our custom price checkboxes sync via FacetBucket slot, but native ones need manual sync
+      const requestFilters = searchEvent?.request?.filter || [];
+      const hasFilters = requestFilters.length > 0;
+
+      // Show/hide Clear All button based on filter state
+      const clearAllBtn = document.getElementById('buildright-clear-all');
+      if (clearAllBtn) {
+        clearAllBtn.style.display = hasFilters ? 'inline-flex' : 'none';
+      }
+
+      // Reset checkboxes after dropin re-renders when filters are cleared
+      // This is needed because the dropin may re-apply its internal state on re-render
+      // We also uncheck immediately in click handler for visual feedback,
+      // but this ensures dropin re-render doesn't re-check them
+      // Clearing state is now handled in onRenderComplete() which fires after all products load
+      // The MutationObserver catches any checkbox checks during the clearing period
+
+      // Handle edge case: no products to render
+      if (pageItems === 0) {
+        onRenderComplete();
+      }
+    }, { eager: true });
+
+    // Import search API for initial search and filter management
+    log('Importing search API...');
+    const { search } = await import('@dropins/storefront-product-discovery/api.js');
+
+    // Get initial search params from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const phrase = urlParams.get('q') || urlParams.get('search') || '';
+    const category = urlParams.get('category');
+
+    const initialFilter = [];
+    if (category) {
+      initialFilter.push({
+        attribute: 'categoryUrlKey',
+        in: [category]
+      });
+    }
+
+    const searchParams = {
+      phrase,
+      filter: initialFilter.length > 0 ? initialFilter : undefined,
+      pageSize: PAGE_SIZE,
+      currentPage: 1
+    };
+
+    // Store base search params and search function for Clear All button
+    // Base params (e.g., phrase, category) should be preserved when clearing user-selected facet filters
+    window.__productDiscoveryBaseParams = searchParams;
+    window.__productDiscoverySearch = search;
+
+    log('Triggering initial search with params:', searchParams);
+
+    try {
+      const result = await search(searchParams);
+      log('Search completed, total:', result?.totalCount ?? result?.pageInfo?.totalItems ?? 'unknown');
+    } catch (searchError) {
+      console.error('[ProductListDropin] Search failed:', searchError);
+      throw searchError;
+    }
+    
+    // Dispatch loaded event
+    emitCatalogEvent('catalogLoaded');
+
+    log('Initialization complete');
+    
+  } catch (error) {
+    console.error('[ProductListDropin] Error initializing:', error);
+    console.error('[ProductListDropin] Error stack:', error.stack);
+
+    // Show error state
+    // Security: Only show technical details in DEBUG mode to prevent information disclosure
+    if (searchResultsContainer) {
+      const errorContainer = document.createElement('div');
+      errorContainer.className = 'state-container error-state';
+
+      // Static HTML structure (no user-controlled content in innerHTML)
+      errorContainer.innerHTML = `
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        <h2>Unable to Load Products</h2>
+        <p>We're having trouble loading the catalog. Please try again later.</p>
+        <button class="btn btn-primary" onclick="window.location.reload()">Reload Page</button>
+      `;
+
+      // Security: Only show technical details in DEBUG mode (development)
+      // Prevents information disclosure of internal paths and stack traces in production
+      if (DEBUG) {
+        const detailsEl = document.createElement('details');
+        detailsEl.style.cssText = 'margin-top: 1rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;';
+
+        const summaryEl = document.createElement('summary');
+        summaryEl.style.cssText = 'cursor: pointer; font-weight: 600;';
+        summaryEl.textContent = 'Technical Details (DEBUG mode)';
+
+        const preEl = document.createElement('pre');
+        preEl.style.cssText = 'margin-top: 0.5rem; padding: 1rem; background: #f5f5f5; border-radius: 4px; overflow-x: auto; font-size: 0.75rem;';
+        // Use textContent to safely display error info without XSS risk
+        preEl.textContent = error.stack || error.message || 'No details available';
+
+        detailsEl.appendChild(summaryEl);
+        detailsEl.appendChild(preEl);
+
+        // Insert before the reload button
+        const button = errorContainer.querySelector('button');
+        errorContainer.insertBefore(detailsEl, button);
+      }
+
+      searchResultsContainer.textContent = '';
+      searchResultsContainer.appendChild(errorContainer);
+    }
+
+    // Emit error event (NOT catalogLoaded - matches product-grid.js pattern)
+    // Note: Only emit generic error indicator, not detailed message
+    emitCatalogEvent('catalogError', { error: 'Product loading failed' });
+  }
+}
+

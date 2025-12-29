@@ -1,0 +1,22 @@
+/**
+ * Product List Block - BuildRight Catalog
+ * Uses Adobe Product Discovery dropins with custom styling
+ *
+ * Strategy: Minimal !important for Adobe container overrides only
+ * - Accept Adobe's container structure (grid layout, card wrapper)
+ * - Override grid to match BuildRight design (240px fixed columns)
+ * - Style our custom slot content with .buildright-* classes
+ *
+ * Import order matters for cascade specificity:
+ * 1. loading-states.css - Load first to prevent spinner flash
+ * 2. grid.css - Container structure
+ * 3. product-card.css - Card content
+ * 4. facets.css - Sidebar filters
+ * 5. pagination.css - Navigation (last for override capability)
+ */
+
+@import url('./css/loading-states.css');
+@import url('./css/grid.css');
+@import url('./css/product-card.css');
+@import url('./css/facets.css');
+@import url('./css/pagination.css');

@@ -1,0 +1,549 @@
+/* ========================================
+   BUILDRIGHT FACETS - SIDEBAR STYLING
+   Using BEM specificity chains instead of !important
+   ======================================== */
+
+/**
+ * Strategy: Override Adobe facets using specificity chains
+ * - Use .product-list prefix for all selectors
+ * - No !important needed with proper specificity
+ */
+
+/* Wrapper - owns the sidebar */
+.product-list .buildright-facets-wrapper {
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-medium);
+  overflow: visible;
+}
+
+body.white-variant .product-list .buildright-facets-wrapper {
+  background-color: var(--color-surface);
+}
+
+/* Container - Adobe's container (styles match .filters-sidebar on /catalog) */
+/* Note: Facets render inside .buildright-facets-wrapper, not .product-list block */
+.buildright-facets-wrapper .dropin-facets-container {
+  padding: 16px;
+  min-height: 300px;
+  background: white;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 8px;
+}
+
+.buildright-facets-wrapper .dropin-facets-container.dropin-design {
+  border-radius: 8px;
+}
+
+body.white-variant .buildright-facets-wrapper .dropin-facets-container {
+  background: transparent;
+}
+
+/* ----------------------------------------
+   HEADER (inside sidebar to match /catalog reference)
+   ---------------------------------------- */
+
+.buildright-facets-wrapper .buildright-facets-header,
+.dropin-facets-container .buildright-facets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 16px 0;
+  padding: 0 0 12px 0;
+  border-bottom: 2px solid rgb(203, 213, 225);
+}
+
+.buildright-facets-wrapper .buildright-facets-header h3,
+.dropin-facets-container .buildright-facets-header h3 {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Clear All button - text link style (matches original filters-sidebar reference) */
+.buildright-clear-all-btn {
+  background: none;
+  border: none;
+  color: var(--color-brand-500);
+  font: var(--type-body-2-default-font);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.buildright-clear-all-btn:hover {
+  color: var(--color-brand-600);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet-list__facet-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ----------------------------------------
+   SLOT-BASED FACET SECTIONS (BuildRight Custom)
+   Uses .buildright-filter-* classes from slot implementation
+   ---------------------------------------- */
+
+/* Filter Section - collapsible wrapper */
+/* Deep selector to match Adobe's slot nesting structure */
+.buildright-filter-section,
+[data-slot="Facet"] .buildright-filter-section,
+.product-discovery-facet-list__facet-options .buildright-filter-section {
+  border-bottom: 1px solid rgb(203, 213, 225);
+  padding: 12px 0;
+}
+
+/* Last section should not have border - target parent slot container */
+[data-slot="Facet"]:last-child .buildright-filter-section,
+.product-discovery-facet-list__facet-options > [data-slot="Facet"]:last-child .buildright-filter-section {
+  border-bottom: none;
+}
+
+/* Toggle Button - section header */
+/* More specific selector to override Adobe's .product-discovery-facet-list__facet-options button { padding: 0 } */
+.buildright-facets-wrapper .buildright-filter-toggle,
+.product-discovery-facet-list__facet-options .buildright-filter-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 8px 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.buildright-filter-toggle:hover {
+  color: var(--color-brand-500);
+}
+
+.buildright-filter-toggle-label {
+  flex: 1;
+}
+
+.buildright-filter-toggle-icon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  transition: transform var(--transition-fast);
+}
+
+.buildright-filter-toggle[aria-expanded="true"] .buildright-filter-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.buildright-filter-toggle[aria-expanded="false"] .buildright-filter-toggle-icon {
+  transform: rotate(0deg);
+}
+
+/* Content Container - holds filter options */
+.buildright-filter-content {
+  display: none;
+  padding-top: 8px;
+}
+
+.buildright-filter-content.active {
+  display: block;
+}
+
+/* Filter Option - checkbox/radio with label */
+.buildright-filter-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  padding: 8px 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.buildright-filter-option input[type="checkbox"],
+.buildright-filter-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--color-brand-500);
+  flex-shrink: 0;
+}
+
+.buildright-filter-option-label {
+  flex: 1;
+  color: var(--color-text);
+  user-select: none;
+}
+
+.buildright-filter-option:hover .buildright-filter-option-label {
+  color: var(--color-brand-500);
+}
+
+/* Selected state */
+.buildright-filter-option--selected .buildright-filter-option-label {
+  font-weight: 600;
+  color: var(--color-brand-500);
+}
+
+/* Count display */
+.buildright-filter-count {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+/* ----------------------------------------
+   FACET SECTIONS (Adobe Override - Fallback)
+   ---------------------------------------- */
+
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet {
+  padding: var(--spacing-3) 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.buildright-facets-wrapper .dropin-facets-container:not(.clearing) .product-discovery-facet::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #CBD5E1;
+  pointer-events: none;
+}
+
+.buildright-facets-wrapper .dropin-facets-container:not(.clearing) .product-discovery-facet:last-child::after {
+  display: none;
+}
+
+/* Section header */
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 8px 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__header:hover {
+  color: var(--color-brand-500);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__header .buildright-toggle-icon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  margin-left: auto;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__header[aria-expanded="true"] .buildright-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__header[aria-expanded="false"] .buildright-toggle-icon {
+  transform: rotate(0deg);
+}
+
+/* Hide when collapsed - using .product-discovery-facet.collapsed for specificity */
+.buildright-facets-wrapper .product-discovery-facet:has(.product-discovery-facet__header[aria-expanded="false"]) .product-discovery-facet__bucket,
+.buildright-facets-wrapper .product-discovery-facet:has(.product-discovery-facet__header[aria-expanded="false"]) .dropin-button--tertiary,
+.buildright-facets-wrapper .product-discovery-facet:has(.product-discovery-facet__header[aria-expanded="false"]) button[class*="show"],
+.buildright-facets-wrapper .product-discovery-facet.collapsed .product-discovery-facet__bucket,
+.buildright-facets-wrapper .product-discovery-facet.collapsed .dropin-button--tertiary {
+  display: none;
+}
+
+/* Bucket */
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__bucket {
+  display: block;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* ----------------------------------------
+   CHECKBOX
+   ---------------------------------------- */
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox__checkbox,
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox input[type="checkbox"] {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  accent-color: var(--color-brand-500);
+  flex-shrink: 0;
+  opacity: 1;
+  visibility: visible;
+  position: static;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox__checkbox-icon {
+  display: none;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox__label {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox:hover .dropin-checkbox__label {
+  color: var(--color-brand-500);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox input[type="checkbox"]:checked ~ .dropin-checkbox__label {
+  font-weight: 600;
+  color: var(--color-brand-500);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-checkbox:has(input:disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ----------------------------------------
+   PRICE RANGE CHECKBOX (FacetBucket Override)
+   ---------------------------------------- */
+
+.buildright-facets-wrapper .buildright-price-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.buildright-facets-wrapper .buildright-price-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--color-brand-500);
+  flex-shrink: 0;
+}
+
+.buildright-facets-wrapper .buildright-price-checkbox .buildright-price-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.buildright-facets-wrapper .buildright-price-checkbox:hover .buildright-price-label {
+  color: var(--color-brand-500);
+}
+
+.buildright-facets-wrapper .buildright-price-checkbox input:checked ~ .buildright-price-label {
+  font-weight: 600;
+  color: var(--color-brand-500);
+}
+
+/* ----------------------------------------
+   RADIO BUTTON
+   ---------------------------------------- */
+
+.buildright-facets-wrapper .dropin-facets-container .product-discovery-facet:has(input[type="radio"]) .product-discovery-facet__bucket {
+  display: block;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text);
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button__input {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button *::before,
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button *::after {
+  display: none;
+  content: none;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button::before {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border: 2px solid #9ca3af;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:hover::before {
+  border-color: var(--color-brand-500);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:has(input[type="radio"]:checked)::before {
+  border-color: var(--color-brand-500);
+  background-image: radial-gradient(circle, var(--color-brand-500) 0%, var(--color-brand-500) 40%, white 40%, white 100%);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button__label {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button__label *,
+.buildright-facets-wrapper .dropin-facets-container .dropin-price,
+.buildright-facets-wrapper .dropin-facets-container .dropin-price-range {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:hover,
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:hover .dropin-radio-button__label,
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:hover .dropin-price {
+  color: var(--color-brand-500);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:has(input[type="radio"]:checked),
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button input[type="radio"]:checked ~ .dropin-radio-button__label,
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:has(input[type="radio"]:checked) .dropin-price {
+  font-weight: 600;
+  color: var(--color-brand-500);
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-radio-button:has(input:disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ----------------------------------------
+   SHOW MORE/LESS
+   ---------------------------------------- */
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-button--tertiary,
+.buildright-facets-wrapper .dropin-facets-container button[class*="show-more"],
+.buildright-facets-wrapper .dropin-facets-container button[class*="show-less"],
+.buildright-facets-wrapper .dropin-facets-container button[class*="view-more"],
+.buildright-facets-wrapper .dropin-facets-container button[class*="view-less"] {
+  width: 100%;
+  margin: 0;
+  padding: 8px 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-brand-500);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  display: block;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-button--tertiary:hover,
+.buildright-facets-wrapper .dropin-facets-container button[class*="show-more"]:hover,
+.buildright-facets-wrapper .dropin-facets-container button[class*="show-less"]:hover {
+  color: var(--color-brand-600);
+  text-decoration: underline;
+}
+
+.buildright-facets-wrapper .dropin-facets-container .dropin-button--tertiary:active,
+.buildright-facets-wrapper .dropin-facets-container button[class*="show-more"]:active {
+  color: var(--color-brand-700);
+}
+
+.buildright-facets-wrapper .dropin-facets-container button[class*="show-more"] svg,
+.buildright-facets-wrapper .dropin-facets-container button[class*="show-less"] svg,
+.buildright-facets-wrapper .dropin-facets-container .dropin-button--tertiary svg {
+  display: none;
+}
+
+/* ----------------------------------------
+   RESPONSIVE
+   ---------------------------------------- */
+
+@media (max-width: 768px) {
+  .buildright-facets-wrapper .dropin-facets-container {
+    position: static;
+    max-height: none;
+    margin-bottom: var(--spacing-medium);
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__header::after {
+    display: none;
+  }
+}

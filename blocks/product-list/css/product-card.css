@@ -1,0 +1,331 @@
+/* ========================================
+   BUILDRIGHT CUSTOM SLOT CONTENT
+   Full design control within our namespace
+   ======================================== */
+
+/**
+ * Strategy: Style our custom slot content with .buildright-* classes
+ * - No !important needed for our own content
+ * - Match /catalog design pixel-perfect
+ * - Use specificity chains: .product-list .dropin-product-item-card .buildright-*
+ *
+ * Note: Card base structure (margin, padding, border-radius) is in grid.css
+ */
+
+/* ----------------------------------------
+   Product Image (ProductImage slot)
+   ---------------------------------------- */
+
+.product-list .dropin-product-item-card .buildright-product-image-wrapper {
+  width: 100%;
+  height: 200px;
+  background: var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-list .dropin-product-item-card .buildright-product-image {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.product-list .dropin-product-item-card:hover .buildright-product-image {
+  transform: scale(1.05);
+}
+
+.product-list .dropin-product-item-card .buildright-product-image-wrapper.buildright-image-error::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background: repeating-linear-gradient(45deg, var(--color-text-disabled, #9ca3af) 0px, var(--color-text-disabled, #9ca3af) 2px, transparent 2px, transparent 12px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ----------------------------------------
+   Product Header (ProductName slot)
+   ---------------------------------------- */
+
+.product-list .dropin-product-item-card .buildright-product-header {
+  padding: var(--spacing-3, 0.75rem);
+  padding-bottom: 0.25rem;
+}
+
+.product-list .dropin-product-item-card .buildright-product-sku {
+  font-family: var(--type-font-family-base);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.product-list .dropin-product-item-card .buildright-product-name {
+  font-family: var(--type-font-family-base);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text, #1a1a1a);
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6rem;
+  transition: color 0.2s ease;
+}
+
+/* ----------------------------------------
+   Product Pricing (ProductPrice slot)
+   ---------------------------------------- */
+
+.product-list .dropin-product-item-card .buildright-product-pricing {
+  padding: 0px 12px;
+  margin-top: 12px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 0.375rem;
+  column-gap: 0.25rem;
+}
+
+.product-list .dropin-product-item-card .buildright-price-value {
+  font-family: var(--type-font-family-base);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: rgb(10, 69, 128);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.product-list .dropin-product-item-card .buildright-price-label {
+  font-family: var(--type-font-family-base);
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary, #6b7280);
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+}
+
+/* ----------------------------------------
+   Product Actions (ProductActions slot)
+   ---------------------------------------- */
+
+.product-list .dropin-product-item-card .buildright-product-actions {
+  padding: 0px 12px 16px 12px;
+  margin-top: 0px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.product-list .dropin-product-item-card .buildright-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.625rem 1rem;
+  font-family: var(--type-font-family-base);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  width: 140px;
+  min-width: 140px;
+  text-align: center;
+}
+
+.product-list .dropin-product-item-card .buildright-btn svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.product-list .dropin-product-item-card .buildright-btn-primary {
+  background: rgb(15, 91, 167);
+  color: white;
+  border-color: transparent;
+}
+
+.product-list .dropin-product-item-card .buildright-btn-primary:hover {
+  background-color: #0a4580;
+  color: white;
+  box-shadow: var(--shape-shadow-2, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
+}
+
+.product-list .dropin-product-item-card .buildright-btn-primary:active {
+  background-color: #0a4580;
+  color: white;
+}
+
+/* ----------------------------------------
+   Add-to-Cart Button States
+   ---------------------------------------- */
+
+.product-list .dropin-product-item-card .buildright-btn.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.product-list .dropin-product-item-card .buildright-btn.success {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
+.product-list .dropin-product-item-card .buildright-btn.error {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+.product-list .dropin-product-item-card .buildright-btn:disabled {
+  pointer-events: none;
+}
+
+/* NOTE: @keyframes spin is defined in loading-states.css to avoid duplication */
+
+.product-list .dropin-product-item-card .buildright-btn .spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ----------------------------------------
+   Empty State (NoResults slot)
+   ---------------------------------------- */
+
+.buildright-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.buildright-empty-icon {
+  opacity: 0.5;
+  color: var(--color-text-secondary, #6b7280);
+  margin-bottom: 0.5rem;
+}
+
+.buildright-empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text, #1a1a1a);
+  margin: 0;
+}
+
+.buildright-empty-message {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+  max-width: 500px;
+}
+
+.buildright-empty-hint {
+  font-size: 0.875rem;
+  color: var(--color-text-disabled, #9ca3af);
+  margin: 0;
+}
+
+/* ----------------------------------------
+   Responsive Adjustments
+   ---------------------------------------- */
+
+@media (max-width: 768px) {
+  .product-list .dropin-product-item-card .buildright-product-header {
+    padding: 0.75rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-product-sku {
+    font-size: 0.6875rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-product-name {
+    font-size: 0.875rem;
+    min-height: 2.275rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-product-pricing {
+    padding: 0px 12px;
+    margin-top: 12px;
+    margin-bottom: 20px;
+  }
+
+  .product-list .dropin-product-item-card .buildright-price-value {
+    font-size: 1.5rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-price-label {
+    font-size: 0.75rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-product-actions {
+    padding: 0px 12px 16px 12px;
+    margin-top: 0px;
+  }
+
+  .product-list .dropin-product-item-card .buildright-btn {
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-list .dropin-product-item-card .buildright-product-header {
+    padding: 0.625rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-product-name {
+    font-size: 0.8125rem;
+    min-height: 2.1rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-product-pricing {
+    padding: 0px 12px;
+    margin-top: 12px;
+    margin-bottom: 20px;
+  }
+
+  .product-list .dropin-product-item-card .buildright-price-value {
+    font-size: 1.25rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-product-actions {
+    padding: 0px 12px 16px 12px;
+    margin-top: 0px;
+  }
+
+  .product-list .dropin-product-item-card .buildright-btn {
+    font-size: 0.75rem;
+    padding: 0.4375rem 0.625rem;
+    gap: 0.375rem;
+  }
+
+  .product-list .dropin-product-item-card .buildright-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+}

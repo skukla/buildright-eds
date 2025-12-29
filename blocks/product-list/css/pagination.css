@@ -1,0 +1,168 @@
+/* ========================================
+   PAGINATION STYLES
+   BuildRight branded pagination component
+   ======================================== */
+
+/**
+ * Strategy: Style the Adobe Product Discovery Pagination container
+ * to match BuildRight brand design. Uses design tokens from base.css.
+ *
+ * Pagination Structure (from dropin):
+ * .dropin-pagination-container
+ *   └── .dropin-pagination
+ *        ├── button.dropin-pagination-arrow--backward (prev)
+ *        ├── ul.dropin-pagination_list
+ *        │    └── li.dropin-pagination_list-item > button (each page)
+ *        └── button.dropin-pagination-arrow--forward (next)
+ */
+
+/* ----------------------------------------
+   PAGINATION CONTAINER
+   ---------------------------------------- */
+
+.product-list .dropin-pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-large, 24px) 0;
+  margin-top: var(--spacing-medium, 16px);
+  border-top: 1px solid var(--color-border, #cbd5e1);
+}
+
+.product-list .dropin-pagination-container .dropin-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium, 16px);
+}
+
+/* Page number list */
+.product-list .dropin-pagination-container .dropin-pagination_list {
+  display: flex !important;
+  align-items: center !important;
+  gap: var(--spacing-small, 8px) !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Fix li width - dropin sets 16px which causes overlap */
+.product-list .dropin-pagination-container .dropin-pagination_list-item {
+  width: auto !important;
+  flex-shrink: 0 !important;
+}
+
+/* ----------------------------------------
+   PAGINATION BUTTONS (All)
+   ---------------------------------------- */
+
+.product-list .dropin-pagination-container button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: var(--spacing-xsmall, 4px) var(--spacing-small, 8px);
+  font: var(--type-body-2-strong-font, 600 0.875rem/1.5 Arial, Helvetica, sans-serif);
+  color: var(--color-secondary-500, #475569);
+  background-color: var(--color-background, #fff);
+  border: 1px solid var(--color-border, #cbd5e1);
+  border-radius: var(--shape-border-radius-2, 6px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.product-list .dropin-pagination-container button:hover:not(:disabled) {
+  color: var(--color-brand-500, #0f5ba7);
+  border-color: var(--color-brand-500, #0f5ba7);
+  background-color: var(--color-surface-nested, #f8fafc);
+}
+
+.product-list .dropin-pagination-container button:focus-visible {
+  outline: 2px solid var(--color-brand-500, #0f5ba7);
+  outline-offset: 2px;
+}
+
+.product-list .dropin-pagination-container button:disabled {
+  color: var(--color-text-disabled, #94a3b8);
+  border-color: var(--color-border, #cbd5e1);
+  background-color: var(--color-surface, #f1f5f9);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ----------------------------------------
+   ACTIVE PAGE BUTTON
+   ---------------------------------------- */
+
+.product-list .dropin-pagination-container .dropin-pagination_list-item--active button,
+.product-list .dropin-pagination-container li.dropin-pagination_list-item--active button {
+  color: #fff !important;
+  background-color: #0f5ba7 !important;
+  border-color: #0f5ba7 !important;
+  font-weight: 700 !important;
+}
+
+.product-list .dropin-pagination-container .dropin-pagination_list-item--active button:hover,
+.product-list .dropin-pagination-container li.dropin-pagination_list-item--active button:hover {
+  background-color: #0a4580 !important;
+  border-color: #0a4580 !important;
+}
+
+/* ----------------------------------------
+   PREV/NEXT ARROW BUTTONS
+   ---------------------------------------- */
+
+.product-list .dropin-pagination-container .dropin-pagination-arrow {
+  padding: var(--spacing-small, 8px);
+}
+
+.product-list .dropin-pagination-container .dropin-pagination-arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Rotate arrows to point left/right instead of down */
+.product-list .dropin-pagination-container .dropin-pagination-arrow--backward svg {
+  transform: rotate(90deg);
+}
+
+.product-list .dropin-pagination-container .dropin-pagination-arrow--forward svg {
+  transform: rotate(-90deg);
+}
+
+/* ----------------------------------------
+   PAGE NUMBER LIST ITEMS
+   ---------------------------------------- */
+
+.product-list .dropin-pagination-container .dropin-pagination_list-item {
+  list-style: none;
+}
+
+/* ----------------------------------------
+   HIDE PAGINATION DURING STATE TRANSITIONS
+   See loading-states.css for visibility rules
+   ---------------------------------------- */
+
+/* ----------------------------------------
+   RESPONSIVE ADJUSTMENTS
+   ---------------------------------------- */
+
+@media (max-width: 640px) {
+  .product-list .dropin-pagination-container {
+    padding: var(--spacing-medium, 16px) 0;
+  }
+
+  .product-list .dropin-pagination-container .dropin-pagination {
+    gap: var(--spacing-small, 8px);
+  }
+
+  .product-list .dropin-pagination-container .dropin-pagination_list {
+    gap: var(--spacing-xsmall, 4px);
+  }
+
+  .product-list .dropin-pagination-container button {
+    min-width: 36px;
+    min-height: 36px;
+    padding: var(--spacing-xsmall, 4px);
+    font-size: 0.8125rem;
+  }
+}

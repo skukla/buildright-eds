@@ -1,0 +1,229 @@
+/* ========================================
+   ADOBE CONTAINER GRID OVERRIDE
+   Fixed 4 columns per row, 240px each
+   ======================================== */
+
+/**
+ * Strategy: Override Adobe's product grid using BEM specificity chains
+ * - Use .product-list parent for specificity instead of !important
+ * - Fixed 240px columns (exact match to /catalog)
+ * - 24px gaps between cards
+ * - Responsive breakpoints for smaller screens
+ */
+
+/* ----------------------------------------
+   MAIN CONTAINER STRUCTURE
+   ---------------------------------------- */
+
+.product-list {
+  padding: var(--spacing-large) 0;
+}
+
+.product-list > div > div {
+  max-width: var(--container-max-width); /* 1440px */
+  margin: 0 auto;
+  padding: 0 var(--section-padding-horizontal); /* 24px - creates 1032px grid width */
+}
+
+/* Ensure dropin-search-results-container doesn't interfere */
+.product-list .dropin-search-results-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ----------------------------------------
+   GRID HEADER & PRODUCT COUNT
+   Override global signup-wizard styles
+   ---------------------------------------- */
+
+.product-list .grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-medium, 16px);
+}
+
+.product-list .grid-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Mobile Filter Toggle - hidden on desktop */
+.product-list #mobile-filter-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .product-list #mobile-filter-toggle {
+    display: block;
+  }
+}
+
+/* Product count - override signup-wizard.css global styles */
+.product-list .product-count {
+  color: var(--color-text-secondary, #64748b);
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 400;
+  min-height: 24px; /* CLS prevention */
+  display: block;
+  text-align: right;
+}
+
+/* ----------------------------------------
+   PRODUCT GRID - EXACT COLUMN WIDTHS
+   Match original /catalog layout
+   Using specificity chain instead of !important
+   ---------------------------------------- */
+
+.product-list .product-discovery-product-list__grid {
+  display: grid;
+  grid-template-columns: 240px 240px 240px 240px; /* EXACT match to original */
+  gap: 24px; /* EXACT 24px - not using variable since Adobe overrides it */
+  column-gap: 24px;
+  row-gap: 24px;
+  align-items: start;
+  width: 100%;
+  max-width: none; /* Override any Adobe width constraints */
+  margin: 0;
+  padding: 0;
+}
+
+/* ----------------------------------------
+   PRODUCT CARD BASE STRUCTURE
+   ---------------------------------------- */
+
+/* Card structure and visual styling */
+.product-list .dropin-product-item-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: auto;
+  min-height: auto;
+}
+
+.product-list .dropin-product-item-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-primary, #0066cc);
+  transform: translateY(-2px);
+}
+
+/* Remove padding from Adobe's content wrapper - we handle padding in our own elements */
+.product-list .dropin-product-item-card__content {
+  padding: 0;
+  height: auto; /* Let content determine height */
+  min-height: auto;
+  max-height: none;
+  gap: 0; /* Remove Adobe's 4px row-gap */
+  row-gap: 0;
+}
+
+/* Remove margin from Adobe's action wrapper */
+.product-list .dropin-product-item-card__action {
+  margin: 0;
+}
+
+/* Remove padding from Adobe's image container */
+.product-list .dropin-product-item-card__image-container {
+  padding: 0;
+}
+
+/* ----------------------------------------
+   RESPONSIVE GRID ADJUSTMENTS
+   ---------------------------------------- */
+
+@media (max-width: 1200px) {
+  .product-list .product-discovery-product-list__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list .product-discovery-product-list__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-list .product-discovery-product-list__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----------------------------------------
+   SORT DROPDOWN - MATCH REFERENCE DESIGN
+   Override Adobe's dropin-picker styles
+   ---------------------------------------- */
+
+/* Container layout - horizontal with label */
+.dropin-sort-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+/* "Sort by:" label - positioned before select */
+.dropin-sort-container::before {
+  content: "Sort by:";
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* Wrapper - reset Adobe's positioning and remove background to fix rounded corner overlap */
+.dropin-sort-container .dropin-picker {
+  position: relative;
+  display: inline-block;
+  background: transparent !important;
+}
+
+/* Hide Adobe's floating label - we use ::before instead */
+.dropin-sort-container .dropin-picker__floatingLabel {
+  display: none;
+}
+
+/* Select element - match reference exactly */
+/* Note: !important needed for padding/border-radius due to Adobe's high-specificity floating label styles */
+.dropin-sort-container .dropin-picker__select {
+  height: 52px;
+  min-width: 180px;
+  padding: 0 2.5rem 0 1rem !important; /* Override Adobe floating label padding */
+  border: 1px solid var(--color-border);
+  border-radius: 8px !important; /* Override Adobe's 24px pill shape */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: all 0.15s ease;
+}
+
+/* Focus state */
+.dropin-sort-container .dropin-picker__select:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+}
+
+/* Hide Adobe's dropdown arrow SVG - we use background-image */
+.dropin-sort-container .dropin-picker > svg {
+  display: none;
+}
