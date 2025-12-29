@@ -7,3 +7,12 @@
 logs/
 *.log
 *.backup-*
+
+# RPTC workflow artifacts
+.rptc/
+
+# Node modules
+node_modules/
+
+# Temporary prompt files
+docs/prompt.md
