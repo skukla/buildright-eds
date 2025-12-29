@@ -83,9 +83,10 @@ export function getPersonaHeaders() {
  * @param {Object} headers - { catalogViewId, priceBookId }
  */
 export function setPersonaHeaders(headers) {
+  // Use AC-* headers (what the mesh resolver expects)
   const meshHeaders = {
-    'X-Catalog-View-Id': headers.catalogViewId,
-    'X-Price-Book-Id': headers.priceBookId
+    'AC-View-Id': headers.catalogViewId,
+    'AC-Price-Book-Id': headers.priceBookId
   };
   sessionStorage.setItem('buildright_persona_headers', JSON.stringify(meshHeaders));
   console.log('[MeshClient] Persona headers set:', meshHeaders);

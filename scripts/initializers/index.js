@@ -52,53 +52,85 @@ export async function initializeDropins() {
       const { setEndpoint, setFetchGraphQlHeaders } = await import('@dropins/tools/fetch-graphql.js');
       
       // Configure GraphQL endpoint
-      // ARCHITECTURE: All dropins now go through the mesh
-      // - Mesh exposes ACO for Product Discovery (productSearch)
-      // - Mesh exposes Commerce for Auth and Cart (createEmptyCart, generateCustomerToken)
+      // ARCHITECTURE: Product Discovery dropin uses ACO endpoint directly
+      // Auth/Cart dropins use mesh endpoint (routes to Commerce)
+      // Per Adobe docs: ACO requires AC-* headers (AC-Environment-Id, AC-View-Id, AC-Price-Book-Id)
       const meshEndpoint = config.meshEndpoint;
-      const commerceEndpoint = config.commerceEndpoint;
-      
-      if (!meshEndpoint && !commerceEndpoint) {
+      const acoEndpoint = config.aco?.endpoint;
+      const acoConfig = config.aco || {};
+
+      if (!meshEndpoint && !acoEndpoint) {
         console.warn('[Dropins] No endpoints configured');
         return;
       }
-      
-      // Use mesh endpoint (preferred) or fallback to Commerce
-      const endpoint = meshEndpoint || commerceEndpoint;
+
+      // Use mesh endpoint for all dropins
+      // Mesh routes ACO queries (productSearch) and Commerce queries (cart, auth)
+      // ACO headers are still required for Product Discovery to work
+      const endpoint = meshEndpoint || acoEndpoint;
       setEndpoint(endpoint);
       console.log('[Dropins] Using endpoint:', endpoint);
-      
-      // Set initial headers (store code + persona headers if available)
+
+      // Set ACO headers per Adobe Commerce Optimizer documentation
+      // See: https://experienceleague.adobe.com/developer/commerce/storefront/setup/configuration/commerce-configuration/
       const headers = {};
-      
+
+      // ACO requires these specific headers (AC-* format, not x-* format)
+      if (acoConfig.environmentId) {
+        headers['AC-Environment-Id'] = acoConfig.environmentId;
+      }
+      if (acoConfig.sourceLocale) {
+        headers['AC-Source-Locale'] = acoConfig.sourceLocale;
+      }
+
+      // Initialize persona BEFORE getting headers
+      // This ensures the persona service resolves the correct catalog view UUID
+      const { getPersonaHeaders, initializePersona } = await import('../services/mesh-client.js');
+
+      try {
+        // Initialize default/guest persona first (customer group 0)
+        // This fetches persona data from mesh and stores headers in sessionStorage
+        await initializePersona('0');
+        console.log('[Dropins] Default persona initialized from mesh');
+      } catch (error) {
+        console.warn('[Dropins] Failed to initialize persona from mesh:', error.message);
+        // Continue with fallback headers from config
+      }
+
+      // Now getPersonaHeaders() will have the correct UUID values from persona service
+      const personaHeaders = getPersonaHeaders();
+
+      // AC-View-Id: Use persona catalog view (UUID) or fallback to config
+      const viewId = personaHeaders['AC-View-Id'] || acoConfig.defaultViewId;
+      if (viewId) {
+        headers['AC-View-Id'] = viewId;
+      }
+
+      // AC-Price-Book-Id: Use persona price book or fallback to config
+      const priceBookId = personaHeaders['AC-Price-Book-Id'] || acoConfig.defaultPriceBookId;
+      if (priceBookId) {
+        headers['AC-Price-Book-Id'] = priceBookId;
+      }
+
+      // Also include store code for Commerce compatibility
       if (config.commerceStoreCode) {
         headers['Store'] = config.commerceStoreCode;
       }
-      
-      // Get persona headers from mesh client (if already initialized)
-      const { getPersonaHeaders } = await import('../services/mesh-client.js');
-      const personaHeaders = getPersonaHeaders();
-      if (personaHeaders['X-Catalog-View-Id']) {
-        headers['x-catalog-view-id'] = personaHeaders['X-Catalog-View-Id'];
-      }
-      if (personaHeaders['X-Price-Book-Id']) {
-        headers['x-price-book-id'] = personaHeaders['X-Price-Book-Id'];
-      }
-      
+
       setFetchGraphQlHeaders(headers);
-      console.log('[Dropins] Set headers:', Object.keys(headers));
-      
+      console.log('[Dropins] Set ACO headers:', Object.keys(headers));
+
       // Listen for persona header updates and update dropin headers
       window.addEventListener('personaHeadersUpdated', (event) => {
         const updatedHeaders = { ...headers };
         if (event.detail.catalogViewId) {
-          updatedHeaders['x-catalog-view-id'] = event.detail.catalogViewId;
+          updatedHeaders['AC-View-Id'] = event.detail.catalogViewId;
         }
         if (event.detail.priceBookId) {
-          updatedHeaders['x-price-book-id'] = event.detail.priceBookId;
+          updatedHeaders['AC-Price-Book-Id'] = event.detail.priceBookId;
         }
         setFetchGraphQlHeaders(updatedHeaders);
-        console.log('[Dropins] Updated persona headers:', Object.keys(updatedHeaders));
+        console.log('[Dropins] Updated ACO headers:', Object.keys(updatedHeaders));
       });
       
       // Initialize individual dropins

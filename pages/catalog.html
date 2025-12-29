@@ -77,40 +77,24 @@
                 </button>
               </div>
               
-              <div class="catalog-sort">
-                <label for="catalog-sort-select" class="sort-label">Sort by:</label>
-                <select id="catalog-sort-select" class="catalog-sort-select">
-                  <option value="relevance">Best Match</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                  <option value="name-asc">Name: A to Z</option>
-                  <option value="name-desc">Name: Z to A</option>
-                </select>
+              <div class="dropin-sort-container">
+                <!-- SortBy dropin will render here -->
               </div>
             </div>
           </div>
           
-          <!-- Filters Sidebar -->
+          <!-- Filters Sidebar (BuildRight Wrapper) -->
           <aside id="filters-aside" style="visibility: hidden;">
-            <div class="filters-sidebar" data-block-name="filters-sidebar" data-block-status="loading">
-              <div>
-                <div>
-                  <div class="filters-header">
-                    <h3>Refine Results</h3>
-                    <button class="clear-filters" id="clear-filters" style="display: none;">Clear All</button>
-                  </div>
-                  
-                  <div class="dynamic-facets-container">
-                    <!-- Dynamic facets loaded here from ACO -->
-                  </div>
-                </div>
+            <div class="buildright-facets-wrapper">
+              <div class="dropin-facets-container">
+                <!-- Facets dropin renders here -->
               </div>
             </div>
           </aside>
 
-          <!-- Product Grid (BuildRight Design) -->
+          <!-- Product Grid (Dropin with Custom Slots) -->
           <div style="visibility: hidden;" id="product-grid-wrapper">
-            <div class="product-grid" data-block-name="product-grid" data-block-status="loading">
+            <div class="product-list" data-block-name="product-list" data-block-status="loading">
               <div>
                 <div>
                   <div class="grid-header">
@@ -120,8 +104,12 @@
                     <div class="product-count">Loading products...</div>
                   </div>
                   
-                  <div class="products-container">
-                    <!-- Products loaded dynamically -->
+                  <div class="dropin-search-results-container">
+                    <!-- SearchResults dropin with custom slots will render here -->
+                  </div>
+                  
+                  <div class="dropin-pagination-container">
+                    <!-- Pagination dropin will render here -->
                   </div>
                 </div>
               </div>
@@ -135,211 +123,14 @@
   <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
 
-  <script type="module">
-    import { parseCatalogPath } from '../scripts/url-router.js';
-    
-    // Category display names (matches filter labels)
-    const categoryNames = {
-      'structural_materials': 'Structural Materials',
-      'windows_doors': 'Windows & Doors',
-      'fasteners_hardware': 'Fasteners & Hardware',
-      'roofing': 'Roofing',
-      'framing_drywall': 'Framing & Drywall',
-      'paint': 'Paint',
-      'flooring': 'Flooring',
-      'plumbing': 'Plumbing',
-      'electrical': 'Electrical'
-    };
-    
-    // Update page title, breadcrumb, and search placeholder based on active category
-    const updateCatalogTitle = (selectedCategories = null) => {
-      const catalogTitle = document.getElementById('catalog-title');
-      const breadcrumbCategory = document.getElementById('breadcrumb-category');
-      const searchInput = document.getElementById('catalog-search-input');
-      
-      let displayName = 'All Products';
-      let searchPlaceholder = 'Search products...';
-      
-      // If categories are provided (from filter event), use those
-      if (selectedCategories && selectedCategories.length > 0) {
-        if (selectedCategories.length === 1) {
-          // Single category selected
-          displayName = categoryNames[selectedCategories[0]] || selectedCategories[0];
-          searchPlaceholder = `Search ${displayName.toLowerCase()}...`;
-        } else {
-          // Multiple categories selected - show count
-          displayName = `${selectedCategories.length} Categories`;
-          searchPlaceholder = 'Search selected categories...';
-        }
-      } else {
-        // Parse clean URL path (e.g., /catalog/structural-materials)
-        const catalogPath = parseCatalogPath(window.location.pathname);
-        
-        if (catalogPath.type === 'category' && catalogPath.value) {
-          displayName = categoryNames[catalogPath.value] || catalogPath.value;
-          searchPlaceholder = `Search ${displayName.toLowerCase()}...`;
-        } else {
-          // Fallback: Check URL params
-          const urlParams = new URLSearchParams(window.location.search);
-          const category = urlParams.get('category');
-          if (category && categoryNames[category]) {
-            displayName = categoryNames[category];
-            searchPlaceholder = `Search ${displayName.toLowerCase()}...`;
-          }
-        }
-      }
-      
-      if (catalogTitle) {
-        catalogTitle.textContent = displayName;
-      }
-      
-      if (breadcrumbCategory) {
-        breadcrumbCategory.textContent = displayName;
-      }
-      
-      if (searchInput) {
-        searchInput.placeholder = searchPlaceholder;
-      }
-    };
-    
-    // Update on page load
-    updateCatalogTitle();
-    
-    // Update when filters change (from sidebar)
-    window.addEventListener('filtersChanged', (event) => {
-      // Check if this is a reset event
-      if (event.detail?.reset) {
-        updateCatalogTitle([]); // Show "All Products"
-        return;
-      }
-      
-      const filters = event.detail?.filters || {};
-      const selectedCategories = filters.category || [];
-      updateCatalogTitle(selectedCategories);
-    });
-    
-    // Update when URL changes (browser back/forward)
-    window.addEventListener('popstate', () => updateCatalogTitle());
-    
-    // Search functionality - filters the product grid as you type
-    const searchInput = document.getElementById('catalog-search-input');
-    const searchClear = document.getElementById('search-clear');
-    let searchTimeout;
-    
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        const value = e.target.value.trim();
-        
-        // Show/hide clear button
-        if (searchClear) {
-          searchClear.style.display = value ? 'flex' : 'none';
-        }
-        
-        // Debounce search (wait 300ms after user stops typing)
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-          // Dispatch search event to filter system
-          window.dispatchEvent(new CustomEvent('catalogSearch', {
-            detail: { searchTerm: value }
-          }));
-        }, 300);
-      });
-      
-      // Clear search
-      if (searchClear) {
-        searchClear.addEventListener('click', () => {
-          searchInput.value = '';
-          searchClear.style.display = 'none';
-          window.dispatchEvent(new CustomEvent('catalogSearch', {
-            detail: { searchTerm: '' }
-          }));
-          searchInput.focus();
-        });
-      }
-    }
-    
-    // Sort functionality
-    const sortSelect = document.getElementById('catalog-sort-select');
-    
-    if (sortSelect) {
-      sortSelect.addEventListener('change', (e) => {
-        // Dispatch sort event to filter system
-        window.dispatchEvent(new CustomEvent('catalogSort', {
-          detail: { sortBy: e.target.value }
-        }));
-      });
-    }
-    
-    // Mobile filter toggle
-    const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
-    const filtersAside = document.getElementById('filters-aside');
-    
-    if (mobileFilterToggle && filtersAside) {
-      const checkMobile = () => {
-        if (window.innerWidth <= 768) {
-          mobileFilterToggle.style.display = 'block';
-          filtersAside.style.display = 'none';
-        } else {
-          mobileFilterToggle.style.display = 'none';
-          filtersAside.style.display = 'block';
-        }
-      };
-      
-      checkMobile();
-      window.addEventListener('resize', checkMobile);
-      
-      mobileFilterToggle.addEventListener('click', () => {
-        filtersAside.style.display = filtersAside.style.display === 'none' ? 'block' : 'none';
-      });
-    }
-  </script>
-  
   <script>
-    // Handle catalog loading overlay and breadcrumbs
+    // Handle catalog loading overlay
     (async function() {
-      // Check categories and hide breadcrumbs if empty
-      try {
-        const { getCategories } = await import('../scripts/services/catalog-service.js');
-        const result = await getCategories();
-        const categories = result.categories || [];
-        
-        // Hide breadcrumbs if no categories
-        if (categories.length === 0) {
-          const breadcrumbs = document.querySelector('.breadcrumbs');
-          if (breadcrumbs) {
-            breadcrumbs.style.display = 'none';
-          }
-        }
-      } catch (error) {
-        console.warn('[Catalog] Could not check categories for breadcrumbs:', error);
-      }
-      
       const overlay = document.getElementById('catalog-loading');
       const controlsWrapper = document.querySelector('.catalog-controls-wrapper');
       const filtersAside = document.getElementById('filters-aside');
       const productGridWrapper = document.getElementById('product-grid-wrapper');
-      const productCount = document.querySelector('.product-count');
-      
-      // Listen for catalog loading event (show spinner, hide content)
-      window.addEventListener('catalogLoading', () => {
-        if (overlay) {
-          overlay.classList.remove('hidden');
-        }
-      // Hide controls, filters, products, and count during reload
-      if (controlsWrapper) {
-        controlsWrapper.style.visibility = 'hidden';
-      }
-      if (filtersAside) {
-        filtersAside.style.visibility = 'hidden';
-      }
-      if (productGridWrapper) {
-        productGridWrapper.style.visibility = 'hidden';
-      }
-      if (productCount) {
-        productCount.style.visibility = 'hidden';
-      }
-    });
-      
+
       // Listen for catalog loaded event (hide spinner, show content)
       window.addEventListener('catalogLoaded', () => {
         if (overlay) {
@@ -354,30 +145,9 @@
         if (productGridWrapper) {
           productGridWrapper.style.visibility = 'visible';
         }
-        // Product count visibility is managed by product-grid.js
-      });
-      
-      // Listen for catalog error event (hide spinner, show error without sidebar)
-      window.addEventListener('catalogError', () => {
-        if (overlay) {
-          overlay.classList.add('hidden');
-        }
-        // Hide controls and filters on error
-        if (controlsWrapper) {
-          controlsWrapper.style.visibility = 'hidden';
-        }
-        if (filtersAside) {
-          filtersAside.style.visibility = 'hidden';
-        }
-        // Show product grid wrapper so error message is visible
-        if (productGridWrapper) {
-          productGridWrapper.style.visibility = 'visible';
-        }
-        if (productCount) {
-          productCount.style.visibility = 'hidden';
-        }
       });
     })();
   </script>
 </body>
 </html>
+
