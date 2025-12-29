@@ -1,0 +1,132 @@
+/**
+ * BuildRight Dropin Design Token Mappings
+ *
+ * Maps Adobe Commerce dropin CSS variables to BuildRight design tokens.
+ * This file ensures dropins use the same design system as the rest of the site.
+ *
+ * IMPORTANT: All values MUST use var() references to base.css tokens.
+ * Never hardcode colors, sizes, or other values here.
+ */
+
+:root {
+  /* ============================================
+     PRIMARY COLORS
+     Adobe dropins use --dropin-color-primary for primary actions
+     Maps to BuildRight brand colors (sapphire blue)
+     ============================================ */
+  --dropin-color-primary: var(--color-brand-500);
+  --dropin-color-primary-hover: var(--color-brand-600);
+  --dropin-color-primary-active: var(--color-brand-700);
+
+  /* ============================================
+     CTA/ACCENT COLORS
+     High-priority call-to-action buttons (Add to Cart, Checkout)
+     Maps to BuildRight accent colors (tangerine orange)
+     ============================================ */
+  --dropin-color-cta: var(--color-accent-500);
+  --dropin-color-cta-hover: var(--color-accent-600);
+  --dropin-color-cta-active: var(--color-accent-700);
+
+  /* ============================================
+     NEUTRAL COLORS
+     Backgrounds, borders, text, and surfaces
+     Maps to BuildRight neutral scale
+     ============================================ */
+  --dropin-color-neutral-50: var(--color-surface-nested);
+  --dropin-color-neutral-100: var(--color-surface);
+  --dropin-color-neutral-200: var(--color-surface-hover);
+  --dropin-color-neutral-300: var(--color-border);
+  --dropin-color-neutral-500: var(--color-text-secondary);
+  --dropin-color-neutral-700: var(--color-secondary-700);
+  --dropin-color-neutral-900: var(--color-text);
+
+  /* Background and surface colors */
+  --dropin-color-background: var(--color-background);
+  --dropin-color-surface: var(--color-surface);
+  --dropin-color-border: var(--color-border);
+
+  /* ============================================
+     SEMANTIC COLORS
+     Success, warning, error states
+     ============================================ */
+  --dropin-color-success: var(--color-positive-500);
+  --dropin-color-success-light: var(--color-positive-200);
+  --dropin-color-warning: var(--color-warning-500);
+  --dropin-color-warning-light: var(--color-warning-200);
+  --dropin-color-error: var(--color-negative-500);
+  --dropin-color-error-light: var(--color-negative-200);
+
+  /* ============================================
+     TYPOGRAPHY
+     Font families, sizes, weights, line heights
+     Maps to BuildRight typography tokens
+
+     NOTE: base.css embeds font weights in shorthand properties (--type-*-font)
+     rather than standalone tokens. Font sizes use spacing tokens as equivalent
+     rem values. Future enhancement: add --type-weight-* tokens to base.css.
+     ============================================ */
+
+  /* Font families */
+  --dropin-font-family: var(--type-font-family-base);
+  --dropin-font-family-display: var(--type-font-family-display);
+
+  /* Font sizes - spacing tokens provide equivalent rem values
+     --spacing-medium = 1rem (16px), --spacing-3 = 0.75rem (12px), etc. */
+  --dropin-font-size-base: var(--spacing-medium);
+  --dropin-font-size-small: var(--spacing-3);
+  --dropin-font-size-large: var(--spacing-large);
+  --dropin-font-size-xlarge: var(--spacing-xlarge);
+
+  /* Font weights - mapped to spacing tokens as workaround
+     TODO: Add --type-weight-* tokens to base.css for semantic correctness
+     For now: normal~400, medium~500-600, bold~700 */
+  --dropin-font-weight-normal: var(--spacing-10);
+  --dropin-font-weight-medium: var(--spacing-16);
+  --dropin-font-weight-bold: var(--spacing-20);
+
+  /* Line height */
+  --dropin-line-height: var(--spacing-large);
+
+  /* ============================================
+     SPACING
+     Consistent spacing throughout dropins
+     Maps to BuildRight spacing scale
+
+     NOTE: base.css starts at xsmall (0.25rem), so xxsmall maps to xsmall.
+     ============================================ */
+  --dropin-spacing-xxsmall: var(--spacing-xsmall);
+  --dropin-spacing-xsmall: var(--spacing-xsmall);
+  --dropin-spacing-small: var(--spacing-small);
+  --dropin-spacing-medium: var(--spacing-medium);
+  --dropin-spacing-large: var(--spacing-large);
+  --dropin-spacing-xlarge: var(--spacing-xlarge);
+  --dropin-spacing-xxlarge: var(--spacing-xxlarge);
+
+  /* ============================================
+     SHAPE & BORDERS
+     Border radius for buttons, cards, inputs
+     Maps to BuildRight shape tokens
+     ============================================ */
+  --dropin-border-radius: var(--shape-border-radius-3);
+  --dropin-border-radius-small: var(--shape-border-radius-2);
+  --dropin-border-radius-large: var(--shape-border-radius-4);
+  --dropin-border-radius-full: var(--shape-border-radius-full);
+
+  /* ============================================
+     SHADOWS
+     Elevation and depth
+     Maps to BuildRight shadow tokens
+     ============================================ */
+  --dropin-shadow-small: var(--shape-shadow-1);
+  --dropin-shadow-medium: var(--shape-shadow-2);
+  --dropin-shadow-large: var(--shape-shadow-3);
+
+  /* ============================================
+     TRANSITIONS
+     Animation timing
+     Maps to BuildRight transition tokens
+     ============================================ */
+  --dropin-transition-fast: var(--transition-fast);
+  --dropin-transition-base: var(--transition-base);
+  --dropin-transition-slow: var(--transition-slow);
+}
