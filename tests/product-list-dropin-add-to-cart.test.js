@@ -129,20 +129,19 @@ describe('Product List Dropin Add-to-Cart State Management', () => {
       );
     });
 
-    it('should show spinner SVG in loading state', () => {
-      // Then: innerHTML shows spinner SVG
+    it('should show CSS spinner in loading state', () => {
+      // Then: innerHTML shows CSS spinner class
 
       assert.ok(clickHandlerCode,
         'Click handler should exist in ProductActions slot');
 
-      // Check for spinner/loading SVG pattern
+      // Check for CSS spinner class pattern
       const hasSpinner =
-        codeContains(clickHandlerCode, 'animateTransform') || // SVG animation
-        codeContains(clickHandlerCode, /spin/i) ||           // spin class/keyword
-        codeContains(clickHandlerCode, 'rotate');             // rotation animation
+        codeContains(clickHandlerCode, 'loading-spinner') || // CSS spinner class
+        codeContains(clickHandlerCode, /spin/i);             // spin class/keyword
 
       assert.ok(hasSpinner,
-        'Click handler should show spinner SVG with animation (animateTransform or rotate)'
+        'Click handler should show CSS spinner with loading-spinner class'
       );
     });
 
