@@ -1,7 +1,7 @@
 # BuildRight Dropin Architecture
 
 **Status**: Canonical Reference
-**Last Updated**: December 29, 2025 (Added SortBy mesh customization section)
+**Last Updated**: December 29, 2025 (Added SearchBarInput/SearchBarResults containers)
 
 ---
 
@@ -75,6 +75,8 @@ If facets or pricing are missing, verify `scripts/initializers/search.js` config
 | `Facets` | Filter sidebar | `.dropin-facets-container` | Active |
 | `SortBy` | Sort dropdown | `.dropin-sort-container` | Active (mesh-controlled) |
 | `Pagination` | Page navigation | `.dropin-pagination-container` | Active (BuildRight branded) |
+| `SearchBarInput` | Search input field with form submission | `#header-search-input` | Active |
+| `SearchBarResults` | Autocomplete dropdown results | `#search-suggestions` | Active |
 
 ### Slots (within SearchResults)
 
@@ -92,6 +94,19 @@ If facets or pricing are missing, verify `scripts/initializers/search.js` config
 |------|---------|--------------------------|
 | `SelectedFacets` | Active filter chips + Clear All | Custom Clear All button only (no chips) |
 | `FacetBucket` | Individual filter option | RangeBucket → checkbox, ScalarBucket → native (with blip fix) |
+
+### Slots (within SearchBarInput)
+
+| Slot | Purpose | BuildRight Customization |
+|------|---------|--------------------------|
+| `Input` | Search input field | BuildRight styling, mobile toggle |
+
+### Slots (within SearchBarResults)
+
+| Slot | Purpose | BuildRight Customization |
+|------|---------|--------------------------|
+| `ProductItem` | Individual product result row | BuildRight typography, image, SKU display |
+| `NoResults` | Empty results state | Custom messaging |
 
 #### FacetBucket Types
 
@@ -171,8 +186,8 @@ See `buildright-service/mesh/README.md` for mesh adapter details.
 │  ╠═════════════════════════════════════════════════════════════════════╣    │
 │  ║                                                                     ║    │
 │  ║  ┌─────────────────────────────┐  ┌─────────────────────────────┐   ║    │
-│  ║  │ <input type="search">       │  │ SortBy (CONTAINER)          │   ║    │
-│  ║  │ (HTML - not a dropin)       │  │ .dropin-sort-container      │   ║    │
+│  ║  │ SearchBarInput (CONTAINER)  │  │ SortBy (CONTAINER)          │   ║    │
+│  ║  │ #header-search-input        │  │ .dropin-sort-container      │   ║    │
 │  ║  └─────────────────────────────┘  └─────────────────────────────┘   ║    │
 │  ║                                                                     ║    │
 │  ║  ┌────────────────────────┬──────────────────────────────────────┐  ║    │
@@ -495,6 +510,7 @@ blocks/product-list/
 
 | File | Purpose |
 |------|---------|
+| `blocks/header/header.js` | Header block with SearchBarInput/SearchBarResults containers |
 | `blocks/product-list/product-list.js` | Block logic, container rendering, slot config |
 | `blocks/product-list/product-list.css` | CSS imports |
 | `blocks/product-list/css/*.css` | Modular component CSS |
