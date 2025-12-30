@@ -6,6 +6,19 @@ import { decorateBlock } from '../../scripts/scripts.js';
 import { getCategories } from '../../scripts/services/mesh-client.js';
 
 /**
+ * Escape HTML special characters to prevent XSS
+ * Security: Always use when interpolating dynamic data into HTML strings
+ * @param {string} text - Text to escape
+ * @returns {string} - HTML-escaped text
+ */
+function escapeHtml(text) {
+  if (text === null || text === undefined) return '';
+  const div = document.createElement('div');
+  div.textContent = String(text);
+  return div.innerHTML;
+}
+
+/**
  * Navigate to catalog page with search query
  * @param {string} query - Search query string
  */
@@ -385,14 +398,8 @@ export default async function decorate(block) {
     const listEl = block.querySelector('#location-menu-list');
     
     if (listEl) {
-      // Escape HTML helper
-      const escapeHtml = (text) => {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-      };
-
       // Build HTML template for all location items
+      // Security: Uses module-level escapeHtml() to prevent XSS
       const locationsHTML = company.locations.map((location) => {
         const activeClass = location.id === currentLocationId ? 'active' : '';
         const badgeText = location.isPrimary ? 'Primary' : 'Secondary';
@@ -680,25 +687,28 @@ export default async function decorate(block) {
   async function loadDynamicCategories() {
     try {
       console.log('[Header] Waiting for catalog service to initialize...');
-      
+
       // Wait for catalog service to be initialized (which sets persona headers)
       const { catalogService } = await import('../../scripts/services/catalog-service.js');
-      
+
       // Wait up to 10 seconds for catalog service initialization
       const maxWait = 10000;
       const startTime = Date.now();
       while (!catalogService.isInitialized && (Date.now() - startTime) < maxWait) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      
+
       if (!catalogService.isInitialized) {
         throw new Error('Catalog service failed to initialize within 10 seconds');
       }
-      
-      console.log('[Header] Catalog service initialized, loading categories from ACO...');
+
+      // Use singleton promise pattern - getCategories() handles caching and deduplication
+      // If scripts.js already triggered the fetch, this returns the same promise
+      // The global window.__acoCategories is populated by mesh-client.js when the promise resolves
+      console.log('[Header] Loading categories via singleton promise...');
       const result = await getCategories();
       const categories = result.categories || [];
-      
+
       // Filter to get only top-level categories (no parent)
       const topCategories = categories
         .filter(cat => !cat.parentSlug);
@@ -753,6 +763,7 @@ export default async function decorate(block) {
       }
       
       // Build navigation HTML with "All Products" + categories with dropdowns
+      // Security: All dynamic data escaped with escapeHtml() to prevent XSS
       const navHTML = `
         <div class="nav-item">
           <a href="catalog" class="nav-link" data-category="all">All Products</a>
@@ -760,19 +771,19 @@ export default async function decorate(block) {
         ${topCategories.map(cat => {
           // Get subcategories for this category
           const subcategories = categories.filter(sub => sub.parentSlug === cat.slug);
-          
+
           return `
             <div class="nav-item nav-item-with-dropdown">
-              <button class="nav-link" data-category="${cat.slug}" data-category-name="${cat.name}">
-                ${cat.name}
+              <button class="nav-link" data-category="${escapeHtml(cat.slug)}" data-category-name="${escapeHtml(cat.name)}">
+                ${escapeHtml(cat.name)}
                 ${subcategories.length > 0 ? '<span class="dropdown-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>' : ''}
               </button>
               ${subcategories.length > 0 ? `
-                <div class="category-dropdown" data-parent="${cat.slug}">
+                <div class="category-dropdown" data-parent="${escapeHtml(cat.slug)}">
                   <div class="category-dropdown-content">
                     <ul class="subcategory-list">
                       ${subcategories.map(sub => `
-                        <li><a href="#" data-subcategory="${sub.slug}" data-parent-slug="${cat.slug}">${sub.name}</a></li>
+                        <li><a href="#" data-subcategory="${escapeHtml(sub.slug)}" data-parent-slug="${escapeHtml(cat.slug)}">${escapeHtml(sub.name)}</a></li>
                       `).join('')}
                     </ul>
                   </div>

@@ -381,7 +381,12 @@ async function loadEager(doc) {
   
   // 5. Initialize Commerce Dropins (non-blocking)
   // Start initialization but don't wait - blocks will await if needed
-  initializeDropins();
+  // After dropins ready, pre-warm category cache (singleton promise pattern)
+  initializeDropins().then(async () => {
+    // Pre-warm categories - uses singleton promise, so header/product-list will share this fetch
+    const { getCategories } = await import('./services/mesh-client.js');
+    getCategories(); // Don't await - just trigger the fetch
+  });
 }
 
 /**

@@ -382,12 +382,35 @@ export async function searchSuggestions(phrase) {
 }
 
 /**
- * Get categories from ACO
+ * Singleton promise for categories - ensures single fetch, shared across all consumers
+ * @private
+ */
+let categoriesPromise = null;
+
+/**
+ * Get categories from ACO (with singleton promise caching)
+ * First call initiates fetch, subsequent calls return same promise.
+ * This eliminates race conditions between blocks needing category data.
  * @returns {Promise<Object>} Categories result
  */
 export async function getCategories() {
-  const data = await meshQuery(queries.GET_CATEGORIES, {});
-  return data.BuildRight_getCategories;
+  if (!categoriesPromise) {
+    console.log('[MeshClient] Fetching categories (singleton)');
+    categoriesPromise = meshQuery(queries.GET_CATEGORIES, {})
+      .then((data) => {
+        const result = data.BuildRight_getCategories;
+        // Also populate window global for synchronous access after load
+        window.__acoCategories = result.categories || [];
+        console.log('[MeshClient] Categories cached:', window.__acoCategories.length);
+        return result;
+      })
+      .catch((error) => {
+        console.error('[MeshClient] Failed to fetch categories:', error);
+        categoriesPromise = null; // Allow retry on failure
+        return { categories: [] };
+      });
+  }
+  return categoriesPromise;
 }
 
 // Export default for convenience

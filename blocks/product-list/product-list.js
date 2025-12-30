@@ -182,80 +182,6 @@ function onRenderComplete() {
 }
 
 /**
- * Price cache - stores prices fetched from mesh endpoint
- * Since the dropin's productSearch doesn't return prices, we fetch them separately
- */
-const priceCache = new Map();
-let priceFetchPromise = null;
-
-/**
- * Fetch prices from mesh endpoint for given SKUs
- * Uses our BuildRight_productSearchFilter query which includes pricing
- * @param {string[]} skus - Array of SKUs to fetch prices for
- * @returns {Promise<Map<string, {value: number, currency: string}>>}
- */
-async function fetchPricesFromMesh(skus) {
-  if (!skus || skus.length === 0) return new Map();
-
-  try {
-    const { catalogService } = await import('../../scripts/services/catalog-service.js');
-
-    // Use searchWithFacets to get products with prices
-    // The mesh transforms ACO response to include price: { value, currency }
-    const result = await catalogService.searchWithFacets({
-      phrase: '',
-      limit: skus.length + 10, // Get enough products
-      page: 1,
-    });
-
-    const prices = new Map();
-    if (result?.products?.items) {
-      result.products.items.forEach(item => {
-        if (item.sku && item.price) {
-          prices.set(item.sku, {
-            value: item.price.value || 0,
-            currency: item.price.currency || 'USD',
-          });
-        }
-      });
-    }
-
-    log('Fetched prices for', prices.size, 'products from mesh');
-    return prices;
-  } catch (error) {
-    console.error('[ProductListDropin] Failed to fetch prices:', error);
-    return new Map();
-  }
-}
-
-/**
- * Get price for a SKU - returns cached price or fetches from mesh
- * @param {string} sku - Product SKU
- * @returns {{value: number, currency: string} | null}
- */
-function getCachedPrice(sku) {
-  return priceCache.get(sku) || null;
-}
-
-/**
- * Update all price elements in the DOM with fetched prices
- */
-function updatePriceElements() {
-  const priceElements = document.querySelectorAll('.buildright-price-value[data-sku]');
-  priceElements.forEach(el => {
-    const sku = el.dataset.sku;
-    const price = getCachedPrice(sku);
-    if (price && price.value > 0) {
-      el.textContent = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: price.currency || 'USD',
-      }).format(price.value);
-      el.classList.remove('price-loading');
-    }
-  });
-}
-
-/**
  * Helper function for consistent event emission (matches product-grid.js patterns)
  * @param {string} eventName - The event name to dispatch
  * @param {Object} detail - Optional detail object for the event
@@ -263,6 +189,119 @@ function updatePriceElements() {
 function emitCatalogEvent(eventName, detail = {}) {
   window.dispatchEvent(new CustomEvent(eventName, { detail }));
   log('Event emitted:', eventName, Object.keys(detail).length > 0 ? detail : '');
+}
+
+/**
+ * Convert slug to title case (fallback when real category name not available)
+ * @param {string} slug - URL slug (e.g., "roofing" or "structural-materials")
+ * @returns {string} - Title case (e.g., "Roofing" or "Structural Materials")
+ */
+function slugToTitle(slug) {
+  return slug
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+/**
+ * Get category display name from cached API data
+ * Uses singleton promise pattern - categories pre-warmed in scripts.js
+ * @param {string} slug - Category URL slug
+ * @param {Array} categories - Categories array from getCategories()
+ * @returns {string} - Real category name or title-cased slug as fallback
+ */
+function getCategoryDisplayName(slug, categories = []) {
+  // Normalize slug (URL may use underscores, ACO uses hyphens)
+  const normalizedSlug = slug.replace(/_/g, '-');
+
+  // Find category by slug (try both original and normalized)
+  const category = categories.find((c) => c.slug === slug || c.slug === normalizedSlug);
+  if (category) {
+    return category.name;
+  }
+
+  // Fallback: Convert slug to title case
+  return slugToTitle(normalizedSlug);
+}
+
+/**
+ * Update page title, H1, breadcrumb, and JSON-LD based on active category
+ * Uses pre-warmed category data from ACO via singleton promise pattern
+ * @param {string|null} categorySlug - The active category URL key
+ */
+async function updateCategoryUI(categorySlug) {
+  const catalogTitle = document.getElementById('catalog-title');
+  const breadcrumbCategory = document.getElementById('breadcrumb-category');
+
+  // EDS Best Practice: Use singleton promise for category data
+  // Categories are pre-fetched in scripts.js, so this returns cached data
+  const { getCategories } = await import('../../scripts/services/mesh-client.js');
+  const result = await getCategories();
+  const categories = result.categories || [];
+
+  // Default values when no category selected
+  let displayName = 'All Products';
+  let breadcrumbHTML = 'All Products';
+  let breadcrumbItems = [{ name: 'Home', url: '/' }, { name: 'All Products', url: '/pages/catalog.html' }];
+
+  if (categorySlug && categories.length > 0) {
+    displayName = getCategoryDisplayName(categorySlug, categories);
+
+    // Find the category for hierarchy building
+    const normalizedSlug = categorySlug.replace(/_/g, '-');
+    const category = categories.find((c) => c.slug === categorySlug || c.slug === normalizedSlug);
+
+    if (category) {
+      // Build breadcrumb hierarchy
+      const hierarchy = [];
+      let current = category;
+      while (current) {
+        hierarchy.unshift(current);
+        current = current.parentSlug
+          ? categories.find((c) => c.slug === current.parentSlug)
+          : null;
+      }
+
+      // Build breadcrumb display
+      breadcrumbHTML = hierarchy.map((c) => c.name).join(' > ');
+
+      // Build JSON-LD items (functional concat avoids mutation during iteration)
+      breadcrumbItems = [{ name: 'Home', url: '/' }].concat(
+        hierarchy.map((c) => ({
+          name: c.name,
+          url: `/pages/catalog.html?category=${c.slug}`,
+        })),
+      );
+    }
+  }
+
+  // Update DOM
+  if (catalogTitle) catalogTitle.textContent = displayName;
+  if (breadcrumbCategory) breadcrumbCategory.textContent = breadcrumbHTML;
+  document.title = `${displayName} | BuildRight Solutions`;
+
+  // Inject JSON-LD BreadcrumbList
+  let schemaScript = document.getElementById('breadcrumb-schema');
+  if (!schemaScript) {
+    schemaScript = document.createElement('script');
+    schemaScript.type = 'application/ld+json';
+    schemaScript.id = 'breadcrumb-schema';
+    document.head.appendChild(schemaScript);
+  }
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: `${window.location.origin}${item.url}`,
+    })),
+  };
+  schemaScript.textContent = JSON.stringify(schema);
+
+  log('Category UI updated:', displayName);
 }
 
 export default async function decorate(block) {
@@ -292,7 +331,30 @@ export default async function decorate(block) {
     // Wait for dropins initialization
     await initializeDropins();
     log('Dropins initialized, rendering containers...');
-    
+
+    // =====================================================
+    // EDS Best Practice: Set title EARLY using pre-warmed data
+    // Categories are pre-fetched in scripts.js during dropin init
+    // Setting title here (before dropin rendering) minimizes flicker
+    // =====================================================
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+
+    if (category) {
+      const { getCategories } = await import('../../scripts/services/mesh-client.js');
+      const categoryResult = await getCategories();
+      const categories = categoryResult.categories || [];
+      log('Categories loaded early:', categories.length);
+
+      const title = getCategoryDisplayName(category, categories);
+      const catalogTitle = document.getElementById('catalog-title');
+      const breadcrumbCategory = document.getElementById('breadcrumb-category');
+      if (catalogTitle) catalogTitle.textContent = title;
+      if (breadcrumbCategory) breadcrumbCategory.textContent = title;
+      document.title = `${title} | BuildRight Solutions`;
+      log('Title set early from API data:', title);
+    }
+
     // Import dropin render function and containers
     const { render } = await import('@dropins/storefront-product-discovery/render.js');
     const SearchResults = (await import('@dropins/storefront-product-discovery/containers/SearchResults.js')).default;
@@ -1010,6 +1072,11 @@ export default async function decorate(block) {
       expectedProductCount = pageItems;
       log('Search result event - total:', totalCount, 'page items:', pageItems);
 
+      // Update page title, breadcrumb, and JSON-LD based on active category filter
+      const categoryFilter = searchEvent?.request?.filter?.find((f) => f.attribute === 'categoryUrlKey');
+      const categorySlug = categoryFilter?.in?.[0] || null;
+      updateCategoryUI(categorySlug);
+
       if (productCount && totalCount > 0) {
         productCount.textContent = `${totalCount} Product${totalCount !== 1 ? 's' : ''}`;
       }
@@ -1043,10 +1110,8 @@ export default async function decorate(block) {
     log('Importing search API...');
     const { search } = await import('@dropins/storefront-product-discovery/api.js');
 
-    // Get initial search params from URL
-    const urlParams = new URLSearchParams(window.location.search);
+    // Get search phrase from URL (category already parsed above for early title setting)
     const phrase = urlParams.get('q') || urlParams.get('search') || '';
-    const category = urlParams.get('category');
 
     const initialFilter = [];
     if (category) {
