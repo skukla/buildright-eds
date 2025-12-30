@@ -177,6 +177,24 @@ export const GET_CATEGORIES = `
 `;
 
 /**
+ * Get category breadcrumb trail from mesh
+ * Returns hierarchical trail from root to specified category
+ * Source-agnostic: uses ACO (primary) or Commerce Catalog (fallback)
+ */
+export const GET_CATEGORY_BREADCRUMBS = `
+  query GetCategoryBreadcrumbs($slug: String!) {
+    BuildRight_getCategoryBreadcrumbs(slug: $slug) {
+      trail {
+        slug
+        name
+        url
+      }
+      source
+    }
+  }
+`;
+
+/**
  * Search suggestions for autocomplete
  */
 export const SEARCH_SUGGESTIONS = `
@@ -311,6 +329,7 @@ export default {
   SEARCH_SUGGESTIONS,
   GET_PRODUCT,
   GET_CATEGORIES,
+  GET_CATEGORY_BREADCRUMBS,
   GENERATE_BOM
 };
 

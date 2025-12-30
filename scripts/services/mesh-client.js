@@ -15,7 +15,7 @@
  * @module scripts/services/mesh-client
  */
 
-import { getMeshEndpoint } from '../site-config.js';
+import { getMeshEndpoint, getCommerceStoreCode } from '../site-config.js';
 import * as queries from './queries.js';
 
 // Re-export queries for backwards compatibility
@@ -28,6 +28,7 @@ export const QUERY_PRODUCT_SEARCH_WITH_DROPIN = queries.PRODUCT_SEARCH_WITH_DROP
 export const QUERY_SEARCH_SUGGESTIONS = queries.SEARCH_SUGGESTIONS;
 export const QUERY_GET_PRODUCT = queries.GET_PRODUCT;
 export const QUERY_GENERATE_BOM = queries.GENERATE_BOM;
+export const QUERY_GET_CATEGORY_BREADCRUMBS = queries.GET_CATEGORY_BREADCRUMBS;
 
 // Cache for loaded endpoint
 let _meshEndpoint = null;
@@ -111,17 +112,21 @@ export function setPersonaHeaders(headers) {
  */
 export async function meshQuery(query, variables = {}, options = {}) {
   const { includePersonaHeaders = true } = options;
-  
+
+  // Get store code for Commerce queries (from config/env.json)
+  const storeCode = await getCommerceStoreCode();
+
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Store': storeCode
   };
-  
+
   // Add persona headers for product queries
   if (includePersonaHeaders) {
     const personaHeaders = getPersonaHeaders();
     Object.assign(headers, personaHeaders);
   }
-  
+
   // Get endpoint (async - loaded from /config/env.json)
   const endpoint = await getEndpoint();
   
@@ -413,6 +418,57 @@ export async function getCategories() {
   return categoriesPromise;
 }
 
+/**
+ * Get breadcrumb trail for a category
+ * Returns hierarchical trail from root to specified category.
+ * Source-agnostic: uses ACO (primary) or Commerce Catalog (fallback).
+ *
+ * @param {string} slug - Category URL slug (e.g., "lumber", "structural-materials")
+ * @returns {Promise<{trail: Array<{slug: string, name: string, url: string}>, source: string}>}
+ *          Breadcrumb result with trail array (root first) and source indicator
+ */
+export async function getCategoryBreadcrumbs(slug) {
+  try {
+    const data = await meshQuery(queries.GET_CATEGORY_BREADCRUMBS, { slug });
+    return data.BuildRight_getCategoryBreadcrumbs || { trail: [], source: 'unknown' };
+  } catch (error) {
+    console.error('[MeshClient] Failed to fetch breadcrumbs:', error);
+    return { trail: [], source: 'unknown' };
+  }
+}
+
+// ============================================
+// CATEGORY NAME HELPERS
+// Extracted from product-list.js for shared reuse
+// ============================================
+
+/**
+ * Convert slug to title case (fallback when category name not available)
+ * @param {string} slug - URL slug (e.g., "structural-materials")
+ * @returns {string} - Title case (e.g., "Structural Materials")
+ */
+function slugToTitle(slug) {
+  return slug
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+/**
+ * Get category display name from ACO category data
+ * @param {string} slug - Category URL slug
+ * @param {Array} categories - Categories array from getCategories()
+ * @returns {string} - Category name or title-cased slug as fallback
+ */
+export function getCategoryDisplayName(slug, categories = []) {
+  const normalizedSlug = slug.replace(/_/g, '-');
+  const category = categories.find((c) => c.slug === slug || c.slug === normalizedSlug);
+  if (category) {
+    return category.name;
+  }
+  return slugToTitle(normalizedSlug);
+}
+
 // Export default for convenience
 export default {
   meshQuery,
@@ -425,5 +481,7 @@ export default {
   productSearchFilter,
   searchSuggestions,
   getCategories,
+  getCategoryBreadcrumbs,
+  getCategoryDisplayName,
   queries
 };

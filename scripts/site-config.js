@@ -74,6 +74,15 @@ export async function getEnvironment() {
 }
 
 /**
+ * Get the Commerce store code for the Store header
+ * @returns {Promise<string>} Commerce store code (e.g., 'buildright_us')
+ */
+export async function getCommerceStoreCode() {
+  const config = await loadConfig();
+  return config.commerceStoreCode || 'default';
+}
+
+/**
  * Synchronous access to cached config (must call loadConfig first)
  * @returns {Object|null} Cached config or null if not loaded
  */
