@@ -146,6 +146,23 @@ odd/*
   min-height: 600px; /* Reserve space during loading */
 }
 
+/* Empty catalog: single column, hide sidebar */
+.catalog-layout.catalog-empty-state {
+  grid-template-columns: 1fr;
+}
+
+.catalog-layout.catalog-empty-state #filters-aside {
+  display: none;
+}
+
+.catalog-layout.catalog-empty-state .product-count {
+  display: none;
+}
+
+.catalog-layout.catalog-empty-state .dropin-pagination-container {
+  display: none;
+}
+
 /* ===================================
    Cart Layout
    =================================== */
