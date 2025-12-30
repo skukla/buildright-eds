@@ -18,7 +18,7 @@ scripts/
 │   ├── cart.js             # Cart dropin setup (stub)
 │   └── search.js           # Product Discovery setup
 └── services/               # API services
-    ├── mesh-client.js      # ACO GraphQL client (100+ lines)
+    ├── mesh-client.js      # ACO GraphQL client (460+ lines)
     ├── catalog-service.js  # Product query wrapper (648 lines)
     └── mesh-integration.js # Persona header integration
 ```
@@ -189,6 +189,19 @@ export async function meshQuery(query, variables = {}, headers = {}) {
   if (errors) throw new Error(errors[0].message);
   return data;
 }
+```
+
+**Category Utilities** (shared across blocks):
+
+```javascript
+import { getCategories, getCategoryDisplayName } from './services/mesh-client.js';
+
+// Singleton fetch - prevents duplicate API calls
+const { categories } = await getCategories();
+
+// Convert slug to display name using ACO data
+const displayName = getCategoryDisplayName('structural-materials', categories);
+// Returns: "Structural Materials" (from ACO) or title-cased slug as fallback
 ```
 
 ### services/catalog-service.js (Product Queries)
