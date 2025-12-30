@@ -10,7 +10,11 @@
     "get-aco-data": "cd ../buildright-aco && npm run generate:eds-data",
     "sync:images": "bash scripts/sync-product-images.sh",
     "validate-paths": "node scripts/tools/validate-html-paths.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --ui",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug"
   },
   "keywords": [
     "buildright",
@@ -31,6 +35,7 @@
     "@dropins/storefront-pdp": "^1.3.5",
     "@dropins/storefront-product-discovery": "^2.1.0",
     "@dropins/tools": "^1.5.3",
+    "@playwright/test": "^1.57.0",
     "husky": "^9.1.7"
   }
 }
