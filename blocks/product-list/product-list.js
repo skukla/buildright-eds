@@ -1048,8 +1048,9 @@ export default async function decorate(block) {
       const catalogLayout = document.getElementById('catalog-layout');
       const filtersAside = document.getElementById('filters-aside');
       const paginationEl = document.querySelector('.dropin-pagination-container');
+      const catalogControls = document.querySelector('.catalog-controls-wrapper');
 
-      // Handle empty state: hide sidebar, pagination, and product count when no products
+      // Handle empty state: hide sidebar, pagination, search, and product count when no products
       if (totalCount === 0) {
         // Add empty state class for CSS layout adjustment
         if (catalogLayout) catalogLayout.classList.add('catalog-empty-state');
@@ -1059,11 +1060,14 @@ export default async function decorate(block) {
         if (paginationEl) paginationEl.style.display = 'none';
         // Hide product count text
         if (productCount) productCount.style.display = 'none';
-        log('Empty state: hiding sidebar, pagination, product count');
+        // Hide search/sort controls - can't search within empty category
+        if (catalogControls) catalogControls.style.display = 'none';
+        log('Empty state: hiding sidebar, pagination, product count, search controls');
       } else {
         // Products found - show all UI elements
         if (catalogLayout) catalogLayout.classList.remove('catalog-empty-state');
         if (filtersAside) filtersAside.style.display = '';
+        if (catalogControls) catalogControls.style.display = '';
         if (productCount) {
           productCount.style.display = '';
           productCount.textContent = `${totalCount} Product${totalCount !== 1 ? 's' : ''}`;
