@@ -66,6 +66,13 @@ odd/*
   color: var(--color-text-secondary);
 }
 
+/* Hide browser's native clear button - we use our own custom .search-clear */
+.catalog-search-input::-webkit-search-cancel-button,
+.catalog-search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 .search-clear {
   position: absolute;
   right: 0.75rem;
