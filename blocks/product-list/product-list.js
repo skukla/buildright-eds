@@ -8,6 +8,8 @@
  * - BuildRight controls all visual presentation
  */
 
+import { getCategories, getCategoryDisplayName } from '../../scripts/services/mesh-client.js';
+
 // Debug mode - set to true for verbose logging during development
 const DEBUG = true;
 const log = (...args) => DEBUG && console.log('[ProductList]', ...args);
@@ -192,39 +194,6 @@ function emitCatalogEvent(eventName, detail = {}) {
 }
 
 /**
- * Convert slug to title case (fallback when real category name not available)
- * @param {string} slug - URL slug (e.g., "roofing" or "structural-materials")
- * @returns {string} - Title case (e.g., "Roofing" or "Structural Materials")
- */
-function slugToTitle(slug) {
-  return slug
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}
-
-/**
- * Get category display name from cached API data
- * Uses singleton promise pattern - categories pre-warmed in scripts.js
- * @param {string} slug - Category URL slug
- * @param {Array} categories - Categories array from getCategories()
- * @returns {string} - Real category name or title-cased slug as fallback
- */
-function getCategoryDisplayName(slug, categories = []) {
-  // Normalize slug (URL may use underscores, ACO uses hyphens)
-  const normalizedSlug = slug.replace(/_/g, '-');
-
-  // Find category by slug (try both original and normalized)
-  const category = categories.find((c) => c.slug === slug || c.slug === normalizedSlug);
-  if (category) {
-    return category.name;
-  }
-
-  // Fallback: Convert slug to title case
-  return slugToTitle(normalizedSlug);
-}
-
-/**
  * Update page title, H1, breadcrumb, and JSON-LD based on active category
  * Uses pre-warmed category data from ACO via singleton promise pattern
  * @param {string|null} categorySlug - The active category URL key
@@ -235,7 +204,6 @@ async function updateCategoryUI(categorySlug) {
 
   // EDS Best Practice: Use singleton promise for category data
   // Categories are pre-fetched in scripts.js, so this returns cached data
-  const { getCategories } = await import('../../scripts/services/mesh-client.js');
   const result = await getCategories();
   const categories = result.categories || [];
 
@@ -341,7 +309,6 @@ export default async function decorate(block) {
     const category = urlParams.get('category');
 
     if (category) {
-      const { getCategories } = await import('../../scripts/services/mesh-client.js');
       const categoryResult = await getCategories();
       const categories = categoryResult.categories || [];
       log('Categories loaded early:', categories.length);
