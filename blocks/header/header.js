@@ -1,9 +1,283 @@
 // Header block decoration
-import { getCatalogUrl, parseCatalogPath, parseProjectBuilderPath, handleLegacyRedirect } from '../../scripts/url-router.js';
-import { parseHTMLFragment, formatCurrency } from '../../scripts/utils.js';
+import { getCatalogUrl, parseCatalogPath, handleLegacyRedirect } from '../../scripts/url-router.js';
+import { parseHTMLFragment } from '../../scripts/utils.js';
 import { getCompany } from '../../scripts/company-config.js';
 import { decorateBlock } from '../../scripts/scripts.js';
 import { getCategories } from '../../scripts/services/mesh-client.js';
+
+/**
+ * Navigate to catalog page with search query
+ * @param {string} query - Search query string
+ */
+function navigateToCatalog(query) {
+  const trimmedQuery = query?.trim();
+  if (trimmedQuery) {
+    window.location.href = `catalog?search=${encodeURIComponent(trimmedQuery)}`;
+  }
+}
+
+/**
+ * Initialize Header Search with direct GraphQL queries
+ *
+ * IMPORTANT: Header search uses catalogService for suggestions (isolated, no side effects).
+ * This does NOT affect the catalog page product grid.
+ * The in-category search bar on catalog page uses the dropin's search() API to filter the grid.
+ *
+ * @param {HTMLElement} block - The header block element
+ */
+async function initializeHeaderSearch(block) {
+  const searchContainer = block.querySelector('.header-search');
+  const searchForm = block.querySelector('.search-form');
+  const searchSuggestionsContainer = block.querySelector('#search-suggestions');
+  const searchSuggestionsList = block.querySelector('#search-suggestions-list');
+  const searchSuggestionsFooter = block.querySelector('#search-suggestions-footer');
+  const viewAllLink = block.querySelector('#search-suggestions-view-all');
+
+  if (!searchContainer || !searchForm) {
+    console.warn('[Header Search] Search container not found');
+    return;
+  }
+
+  // Track current search query for "View All" link
+  let currentQuery = '';
+
+  // State for lazy loading catalog service
+  let catalogServiceLoaded = false;
+  let catalogService = null;
+
+  /**
+   * Lazy-load catalog service on first search interaction
+   * Uses direct GraphQL queries - does NOT affect catalog page grid
+   */
+  async function ensureCatalogServiceLoaded() {
+    if (catalogServiceLoaded) return true;
+
+    try {
+      const module = await import('../../scripts/services/catalog-service.js');
+      catalogService = module.catalogService;
+
+      // Wait for catalog service to initialize
+      if (!catalogService.isInitialized) {
+        const maxWait = 5000;
+        const startTime = Date.now();
+        while (!catalogService.isInitialized && (Date.now() - startTime) < maxWait) {
+          await new Promise((resolve) => { setTimeout(resolve, 100); });
+        }
+      }
+
+      catalogServiceLoaded = true;
+      console.log('[Header Search] Catalog service loaded (isolated from dropin events)');
+      return true;
+    } catch (error) {
+      console.error('[Header Search] Failed to load catalog service:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Render a single product suggestion item
+   * Handles both catalogService format (imageUrl, price.value) and dropin format (images, price.final)
+   * @param {Object} product - Product data
+   * @returns {HTMLElement} - Suggestion item element
+   */
+  function renderSuggestionItem(product) {
+    const item = document.createElement('a');
+    item.href = `product?sku=${encodeURIComponent(product.sku)}`;
+    item.className = 'buildright-search-suggestion-item';
+
+    // Product image - handle both formats
+    const imageUrl = product.imageUrl // catalogService format
+      || product.images?.[0]?.url // dropin format (array)
+      || product.image?.url // dropin format (object)
+      || '';
+    const imageEl = document.createElement('div');
+    imageEl.className = 'buildright-search-suggestion-image';
+    if (imageUrl) {
+      imageEl.style.backgroundImage = `url('${imageUrl}')`;
+    }
+
+    // Product info container
+    const infoEl = document.createElement('div');
+    infoEl.className = 'buildright-search-suggestion-info';
+
+    // Product name
+    const nameEl = document.createElement('div');
+    nameEl.className = 'buildright-search-suggestion-name';
+    nameEl.textContent = product.name || 'Unnamed Product';
+
+    // SKU
+    const skuEl = document.createElement('div');
+    skuEl.className = 'buildright-search-suggestion-sku';
+    skuEl.textContent = product.sku || '';
+
+    infoEl.appendChild(nameEl);
+    infoEl.appendChild(skuEl);
+
+    // Price - handle both formats
+    const priceValue = product.price?.value // catalogService format
+      || product.price?.final?.amount?.value // dropin format
+      || product.price?.regular?.amount?.value
+      || product.priceRange?.minimum?.final?.amount?.value
+      || 0;
+    if (priceValue > 0) {
+      const currency = product.price?.currency // catalogService format
+        || product.price?.final?.amount?.currency // dropin format
+        || product.price?.regular?.amount?.currency
+        || 'USD';
+      const priceEl = document.createElement('div');
+      priceEl.className = 'buildright-search-suggestion-price';
+      priceEl.textContent = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency,
+      }).format(priceValue);
+      infoEl.appendChild(priceEl);
+    }
+
+    item.appendChild(imageEl);
+    item.appendChild(infoEl);
+    return item;
+  }
+
+  /**
+   * Perform live search and display suggestions
+   * Uses direct catalogService query - does NOT affect catalog page grid
+   * @param {string} phrase - Search query
+   */
+  async function performSearch(phrase) {
+    if (!phrase || phrase.length < 3) {
+      hideSuggestions();
+      return;
+    }
+
+    currentQuery = phrase;
+
+    // Show loading state
+    searchSuggestionsContainer.removeAttribute('hidden');
+    searchSuggestionsList.innerHTML = '<div class="search-suggestions-loading"><div class="loading-spinner loading-spinner-sm"></div><span>Searching...</span></div>';
+
+    try {
+      // Ensure catalog service is loaded
+      if (!await ensureCatalogServiceLoaded()) {
+        hideSuggestions();
+        return;
+      }
+
+      // Use direct GraphQL query - isolated from dropin event bus
+      const result = await catalogService.searchProducts(phrase, {
+        pageSize: 4,
+        currentPage: 1,
+      });
+
+      // Check if this is still the current query (user might have typed more)
+      if (phrase !== currentQuery) {
+        console.log('[Header Search] Ignoring stale result for:', phrase);
+        return;
+      }
+
+      // Clear loading state
+      searchSuggestionsList.innerHTML = '';
+
+      // Get products from result
+      const products = result?.items || [];
+      const totalCount = result?.totalCount ?? result?.total_count ?? products.length;
+
+      console.log('[Header Search] Search results for:', phrase, `(${products.length} of ${totalCount} items)`);
+
+      if (products.length === 0) {
+        searchSuggestionsList.innerHTML = '<div class="search-suggestions-empty">No products found</div>';
+        if (searchSuggestionsFooter) {
+          searchSuggestionsFooter.setAttribute('hidden', '');
+        }
+        return;
+      }
+
+      // Render product suggestions
+      products.forEach((product) => {
+        searchSuggestionsList.appendChild(renderSuggestionItem(product));
+      });
+
+      // Update "View All" link
+      if (viewAllLink) {
+        viewAllLink.href = `catalog?search=${encodeURIComponent(phrase)}`;
+        viewAllLink.textContent = `View all ${totalCount} results`;
+        searchSuggestionsFooter.removeAttribute('hidden');
+      }
+
+    } catch (error) {
+      console.error('[Header Search] Search failed:', error);
+      searchSuggestionsList.innerHTML = '<div class="search-suggestions-error">Search unavailable</div>';
+    }
+  }
+
+  /**
+   * Hide suggestions dropdown
+   */
+  function hideSuggestions() {
+    searchSuggestionsContainer.setAttribute('hidden', '');
+    searchSuggestionsList.innerHTML = '';
+    if (searchSuggestionsFooter) {
+      searchSuggestionsFooter.setAttribute('hidden', '');
+    }
+  }
+
+  // Get the native search input
+  const searchInput = searchForm.querySelector('input.search-input');
+  if (searchInput) {
+    // Debounce timer
+    let debounceTimer = null;
+
+    // Add input event listener for live search
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim();
+
+      // Clear previous timer
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+
+      // Debounce search (300ms)
+      debounceTimer = setTimeout(() => {
+        performSearch(query);
+      }, 300);
+    });
+
+    // Hide suggestions on blur (with delay for click handling)
+    searchInput.addEventListener('blur', () => {
+      setTimeout(hideSuggestions, 200);
+    });
+
+    // Show suggestions on focus if there's a query
+    searchInput.addEventListener('focus', () => {
+      const query = searchInput.value.trim();
+      if (query.length >= 3) {
+        performSearch(query);
+      }
+    });
+  }
+
+  // Handle form submission
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const input = searchForm.querySelector('input[type="search"], input[type="text"]');
+    navigateToCatalog(input?.value);
+  };
+
+  searchForm.addEventListener('submit', handleSearchSubmit);
+
+  const searchButton = searchForm.querySelector('.search-button');
+  if (searchButton) {
+    searchButton.addEventListener('click', handleSearchSubmit);
+  }
+
+  // Click outside to close suggestions
+  document.addEventListener('click', (e) => {
+    if (!searchContainer.contains(e.target)) {
+      hideSuggestions();
+    }
+  });
+
+  console.log('[Header Search] Initialized with live search support');
+}
 
 export default async function decorate(block) {
   // Check for legacy URLs and redirect if needed
@@ -273,168 +547,57 @@ export default async function decorate(block) {
     });
   }
 
-  // Search functionality with live suggestions
-  const searchInput = block.querySelector('#header-search-input');
-  const searchButton = block.querySelector('.search-button');
-  const searchSuggestions = block.querySelector('#search-suggestions');
-  const suggestionsList = block.querySelector('#search-suggestions-list');
-  const suggestionsLoading = block.querySelector('#search-suggestions-loading');
-  const suggestionsFooter = block.querySelector('#search-suggestions-footer');
-  const viewAllLink = block.querySelector('#search-suggestions-view-all');
-  
-  if (searchInput && searchButton) {
-    let highlightedIndex = -1;
-    let currentSuggestions = [];
-    
-    const performSearch = (query) => {
-      const searchQuery = query || searchInput.value.trim();
-      if (searchQuery) {
-        hideSuggestions();
-        window.location.href = `catalog?search=${encodeURIComponent(searchQuery)}`;
+  // Mobile search toggle - expand/collapse search on compact screens
+  const searchIconToggle = block.querySelector('#search-icon-toggle');
+  const headerSearch = block.querySelector('.header-search');
+  if (searchIconToggle && headerSearch) {
+    // Initialize aria-expanded
+    searchIconToggle.setAttribute('aria-expanded', 'false');
+
+    // Helper: Collapse the expanded search
+    const collapseSearch = (returnFocus = false) => {
+      headerSearch.classList.remove('search-expanded');
+      searchIconToggle.setAttribute('aria-expanded', 'false');
+      if (returnFocus) {
+        searchIconToggle.focus();
       }
     };
-    
-    const showSuggestions = () => {
-      if (searchSuggestions) {
-        searchSuggestions.hidden = false;
-      }
-    };
-    
-    const hideSuggestions = () => {
-      if (searchSuggestions) {
-        searchSuggestions.hidden = true;
-      }
-      highlightedIndex = -1;
-    };
-    
-    const renderSuggestions = (suggestions) => {
-      currentSuggestions = suggestions;
-      highlightedIndex = -1;
-      
-      if (!suggestionsList) return;
-      
-      if (suggestions.length === 0) {
-        const query = searchInput.value.trim();
-        if (query.length >= 2) {
-          suggestionsList.innerHTML = `
-            <div class="search-suggestions-empty">
-              No products found for "${query}"
-            </div>
-          `;
-          if (suggestionsFooter) suggestionsFooter.hidden = true;
-        } else {
-          suggestionsList.innerHTML = '';
+
+    // Toggle search expanded state on click
+    searchIconToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = headerSearch.classList.toggle('search-expanded');
+      searchIconToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+
+      // Focus the search input when expanded
+      if (isExpanded) {
+        const searchInput = headerSearch.querySelector('input[type="search"]');
+        if (searchInput) {
+          // Use setTimeout to ensure DOM is updated before focusing
+          setTimeout(() => searchInput.focus(), 10);
         }
-        return;
-      }
-      
-      suggestionsList.innerHTML = suggestions.map((item, index) => `
-        <a href="${item.url}" class="search-suggestion-item" data-index="${index}">
-          ${item.image 
-            ? `<img src="${item.image}" alt="${item.name}" class="search-suggestion-image" loading="lazy">`
-            : `<div class="search-suggestion-image-placeholder"></div>`
-          }
-          <div class="search-suggestion-info">
-            <div class="search-suggestion-name">${item.name}</div>
-            <div class="search-suggestion-sku">${item.sku}</div>
-          </div>
-          ${item.price ? `<div class="search-suggestion-price">${formatCurrency(item.price)}</div>` : ''}
-        </a>
-      `).join('');
-      
-      // Show "View all results" link
-      if (suggestionsFooter && viewAllLink) {
-        const query = searchInput.value.trim();
-        viewAllLink.href = `catalog?search=${encodeURIComponent(query)}`;
-        suggestionsFooter.hidden = false;
-      }
-    };
-    
-    const updateHighlight = () => {
-      const items = suggestionsList?.querySelectorAll('.search-suggestion-item') || [];
-      items.forEach((item, index) => {
-        item.classList.toggle('highlighted', index === highlightedIndex);
-      });
-    };
-    
-    // Live search integration
-    let searchTimeout;
-    searchInput.addEventListener('input', async (e) => {
-      const query = e.target.value.trim();
-      
-      clearTimeout(searchTimeout);
-      
-      if (query.length < 2) {
-        hideSuggestions();
-        return;
-      }
-      
-      showSuggestions();
-      if (suggestionsLoading) suggestionsLoading.hidden = false;
-      if (suggestionsList) suggestionsList.innerHTML = '';
-      
-      // Debounce search
-      searchTimeout = setTimeout(async () => {
-        try {
-          // Dynamic import to avoid loading until needed
-          const { liveSearchService } = await import('../../scripts/services/live-search.js');
-          await liveSearchService.search(query);
-          const { suggestions } = liveSearchService.getState();
-          
-          if (suggestionsLoading) suggestionsLoading.hidden = true;
-          renderSuggestions(suggestions);
-        } catch (error) {
-          console.error('[Header] Live search error:', error);
-          if (suggestionsLoading) suggestionsLoading.hidden = true;
-          renderSuggestions([]);
-        }
-      }, 300);
-    });
-    
-    // Keyboard navigation
-    searchInput.addEventListener('keydown', (e) => {
-      const items = suggestionsList?.querySelectorAll('.search-suggestion-item') || [];
-      
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
-        updateHighlight();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        highlightedIndex = Math.max(highlightedIndex - 1, -1);
-        updateHighlight();
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (highlightedIndex >= 0 && items[highlightedIndex]) {
-          items[highlightedIndex].click();
-        } else {
-          performSearch();
-        }
-      } else if (e.key === 'Escape') {
-        hideSuggestions();
-        searchInput.blur();
-      }
-    });
-    
-    // Close on click outside
-    document.addEventListener('click', (e) => {
-      if (!searchInput.contains(e.target) && !searchSuggestions?.contains(e.target)) {
-        hideSuggestions();
-      }
-    });
-    
-    // Focus shows suggestions if there's a query
-    searchInput.addEventListener('focus', () => {
-      if (searchInput.value.trim().length >= 2 && currentSuggestions.length > 0) {
-        showSuggestions();
       }
     });
 
-    searchButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      performSearch();
+    // Close expanded search when clicking outside
+    document.addEventListener('click', (e) => {
+      if (headerSearch.classList.contains('search-expanded') && !headerSearch.contains(e.target)) {
+        collapseSearch();
+      }
+    });
+
+    // Close expanded search on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && headerSearch.classList.contains('search-expanded')) {
+        collapseSearch(true); // Return focus to toggle button
+      }
     });
   }
+
+  // Search functionality using Adobe Product Discovery Dropin
+  // Replaces custom debouncing, suggestion rendering, and keyboard navigation
+  // The dropin handles: debouncing (300ms), live suggestions, keyboard nav, API calls
+  await initializeHeaderSearch(block);
 
   // Navigation links
   const navLinks = block.querySelectorAll('.nav-link');
