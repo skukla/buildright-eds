@@ -26,6 +26,117 @@ const selectedPriceRanges = new Map();
 // Flag to track when we're clearing filters - prevents visual blip during re-render
 let isClearingFilters = false;
 
+// ============================================
+// EDS PERFORMANCE OPTIMIZATIONS
+// ============================================
+//
+// EDS uses setTimeout(3000) in delayed.js for analytics/tracking.
+// We use requestIdleCallback for cache warming because timing matters:
+// - Analytics: "run eventually, never interfere" → fixed 3s delay is fine
+// - Prefetch: "run ASAP when idle" → sooner prefetch = faster UX
+//
+// This aligns with EDS philosophy (performance-first) while using
+// the right tool for the job.
+// ============================================
+
+/**
+ * Request deduplication - prevents duplicate in-flight GraphQL requests
+ * Key: stringified search params, Value: Promise of search result
+ */
+const inflightRequests = new Map();
+
+/**
+ * Cache warming state - tracks which query patterns have been prefetched
+ * Prevents redundant prefetch requests during the session
+ */
+const prefetchedQueries = new Set();
+
+/**
+ * Cross-browser requestIdleCallback with fallback
+ * EDS pattern: Use idle time for non-critical background work
+ * @param {Function} callback - Function to execute during idle time
+ * @param {Object} options - Options with timeout
+ */
+function scheduleIdleTask(callback, options = { timeout: 5000 }) {
+  if (typeof requestIdleCallback === 'function') {
+    return requestIdleCallback(callback, options);
+  }
+  // Fallback for Safari and older browsers
+  return setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 50 }), 1);
+}
+
+/**
+ * Generate cache key for search params
+ * Used for both deduplication and prefetch tracking
+ */
+function getSearchCacheKey(params) {
+  return JSON.stringify({
+    phrase: params.phrase || '',
+    filter: params.filter || [],
+    pageSize: params.pageSize,
+    currentPage: params.currentPage,
+  });
+}
+
+/**
+ * Deduplicated search wrapper
+ * EDS pattern: Prevent duplicate network requests for identical queries
+ * @param {Function} searchFn - The dropin search function
+ * @param {Object} params - Search parameters
+ * @returns {Promise} - Search result
+ */
+async function deduplicatedSearch(searchFn, params) {
+  const cacheKey = getSearchCacheKey(params);
+
+  // Check for in-flight request with same params
+  if (inflightRequests.has(cacheKey)) {
+    log('Deduplicating request:', cacheKey.substring(0, 50));
+    return inflightRequests.get(cacheKey);
+  }
+
+  // Create and track the request
+  const requestPromise = searchFn(params).finally(() => {
+    // Clean up after request completes
+    inflightRequests.delete(cacheKey);
+  });
+
+  inflightRequests.set(cacheKey, requestPromise);
+  return requestPromise;
+}
+
+/**
+ * Prefetch search results during idle time
+ * EDS pattern: Warm server-side caches before user needs the data
+ * @param {Function} searchFn - The dropin search function
+ * @param {Object} params - Search parameters to prefetch
+ * @param {string} label - Description for logging
+ */
+function prefetchSearch(searchFn, params, label = 'query') {
+  const cacheKey = getSearchCacheKey(params);
+
+  // Skip if already prefetched this session
+  if (prefetchedQueries.has(cacheKey)) {
+    log('Prefetch skipped (already cached):', label);
+    return;
+  }
+
+  scheduleIdleTask(async (deadline) => {
+    // Only prefetch if we have idle time or hit timeout
+    if (deadline.timeRemaining() > 0 || deadline.didTimeout) {
+      log('Prefetching during idle:', label);
+
+      try {
+        await deduplicatedSearch(searchFn, params);
+        prefetchedQueries.add(cacheKey);
+        log('Prefetch complete:', label);
+      } catch (err) {
+        // Prefetch failures are non-critical - log but don't throw
+        console.warn('[ProductList] Prefetch failed:', label, err.message);
+      }
+    }
+  }, { timeout: 10000 }); // 10s timeout ensures prefetch happens even on busy pages
+}
+
 /**
  * Called when all products have finished rendering (based on slot callback count)
  * Removes loading states and shows pagination
@@ -36,7 +147,12 @@ function onRenderComplete() {
   const facetsEl = document.querySelector('.dropin-facets-container');
   const paginationEl = document.querySelector('.dropin-pagination-container');
 
-  if (resultsContainer) resultsContainer.classList.remove('validating', 'updating');
+  if (resultsContainer) {
+    resultsContainer.classList.remove('validating', 'updating');
+    // Remove loading spinner
+    const spinner = resultsContainer.querySelector('.loading-spinner');
+    if (spinner) spinner.remove();
+  }
   if (facetsEl) facetsEl.classList.remove('validating', 'clearing');
   if (paginationEl) paginationEl.style.display = '';
 
@@ -343,15 +459,15 @@ export default async function decorate(block) {
           const button = e.currentTarget;
           const originalHTML = button.innerHTML;
 
-          // Define SVG icons
-          const spinnerSVG = `<svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4 31.4" stroke-dashoffset="0"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></circle></svg>`;
+          // Define icons (spinner uses CSS class, success/error use SVG)
+          const spinnerHTML = `<span class="loading-spinner loading-spinner-xs"></span>`;
           const checkSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
           const errorSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
 
           // Loading state
           button.disabled = true;
           button.classList.add('loading');
-          button.innerHTML = `${spinnerSVG} Adding...`;
+          button.innerHTML = `${spinnerHTML} Adding...`;
 
           try {
             // Import commerce helpers
@@ -864,7 +980,15 @@ export default async function decorate(block) {
         const facetsEl = document.querySelector('.dropin-facets-container');
         const paginationEl = document.querySelector('.dropin-pagination-container');
 
-        if (resultsContainer) resultsContainer.classList.add('validating');
+        if (resultsContainer) {
+          resultsContainer.classList.add('validating');
+          // Inject loading spinner for product grid (sm size matches header search)
+          if (!resultsContainer.querySelector('.loading-spinner')) {
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner loading-spinner-sm';
+            resultsContainer.appendChild(spinner);
+          }
+        }
         if (facetsEl) facetsEl.classList.add('validating');
         if (paginationEl) paginationEl.style.display = 'none';
         emitCatalogEvent('facetsValidating', { validating: true });
@@ -947,13 +1071,140 @@ export default async function decorate(block) {
     log('Triggering initial search with params:', searchParams);
 
     try {
-      const result = await search(searchParams);
+      // Use deduplicated search to prevent duplicate requests
+      const result = await deduplicatedSearch(search, searchParams);
       log('Search completed, total:', result?.totalCount ?? result?.pageInfo?.totalItems ?? 'unknown');
+
+      // Mark initial query as prefetched (it's now in ACO cache)
+      prefetchedQueries.add(getSearchCacheKey(searchParams));
+
+      // EDS Optimization: If user landed with a search term, prefetch the "cleared" state
+      // This warms the ACO cache so clearing the search is instant
+      if (phrase) {
+        const clearedParams = {
+          phrase: '',
+          filter: initialFilter.length > 0 ? initialFilter : undefined,
+          pageSize: PAGE_SIZE,
+          currentPage: 1,
+        };
+        prefetchSearch(search, clearedParams, 'cleared catalog state');
+      }
+
+      // EDS Optimization: Prefetch page 2 for faster pagination
+      // Only if there are likely more pages (total > PAGE_SIZE)
+      const totalCount = result?.totalCount ?? result?.pageInfo?.totalItems ?? 0;
+      if (totalCount > PAGE_SIZE) {
+        const page2Params = {
+          phrase,
+          filter: initialFilter.length > 0 ? initialFilter : undefined,
+          pageSize: PAGE_SIZE,
+          currentPage: 2,
+        };
+        prefetchSearch(search, page2Params, 'page 2');
+      }
     } catch (searchError) {
       console.error('[ProductListDropin] Search failed:', searchError);
       throw searchError;
     }
-    
+
+    // =====================================================
+    // IN-CATEGORY SEARCH BAR
+    // This search bar filters the product grid in place
+    // (unlike header search which just shows suggestions)
+    // =====================================================
+    const catalogSearchInput = document.getElementById('catalog-search-input');
+    const searchClearBtn = document.getElementById('search-clear');
+
+    if (catalogSearchInput) {
+      let searchDebounceTimer = null;
+      const SEARCH_DEBOUNCE_MS = 300;
+
+      // Sync input with URL search param on load
+      if (phrase) {
+        catalogSearchInput.value = phrase;
+        if (searchClearBtn) searchClearBtn.style.display = '';
+      }
+
+      // Handle input changes
+      catalogSearchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+
+        // Show/hide clear button
+        if (searchClearBtn) {
+          searchClearBtn.style.display = query ? '' : 'none';
+        }
+
+        // Clear previous timer
+        if (searchDebounceTimer) {
+          clearTimeout(searchDebounceTimer);
+        }
+
+        // Debounce search
+        searchDebounceTimer = setTimeout(async () => {
+          log('Catalog search:', query || '(empty)');
+
+          // Update URL for shareability (without page reload)
+          const url = new URL(window.location);
+          if (query) {
+            url.searchParams.set('search', query);
+          } else {
+            url.searchParams.delete('search');
+          }
+          window.history.replaceState({}, '', url);
+
+          // Build search params
+          const searchParams = {
+            phrase: query,
+            filter: initialFilter.length > 0 ? initialFilter : undefined,
+            pageSize: PAGE_SIZE,
+            currentPage: 1,
+          };
+
+          // Trigger dropin search with deduplication
+          try {
+            await deduplicatedSearch(search, searchParams);
+
+            // EDS Optimization: After searching, prefetch the "cleared" state
+            // so user can quickly return to full catalog
+            if (query) {
+              const clearedParams = {
+                phrase: '',
+                filter: initialFilter.length > 0 ? initialFilter : undefined,
+                pageSize: PAGE_SIZE,
+                currentPage: 1,
+              };
+              prefetchSearch(search, clearedParams, 'cleared state after search');
+            }
+          } catch (err) {
+            console.error('[ProductList] Catalog search failed:', err);
+          }
+        }, SEARCH_DEBOUNCE_MS);
+      });
+
+      // Handle Enter key
+      catalogSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          // Clear debounce and trigger immediately
+          if (searchDebounceTimer) {
+            clearTimeout(searchDebounceTimer);
+          }
+          catalogSearchInput.dispatchEvent(new Event('input'));
+        }
+      });
+
+      // Handle clear button
+      if (searchClearBtn) {
+        searchClearBtn.addEventListener('click', () => {
+          catalogSearchInput.value = '';
+          catalogSearchInput.dispatchEvent(new Event('input'));
+          catalogSearchInput.focus();
+        });
+      }
+
+      log('In-category search bar wired up');
+    }
+
     // Dispatch loaded event
     emitCatalogEvent('catalogLoaded');
 
