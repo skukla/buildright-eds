@@ -25,6 +25,7 @@ let renderedProductCount = 0;
 // Key: "from-to" (e.g., "0-10"), Value: boolean
 const selectedPriceRanges = new Map();
 
+
 // Flag to track when we're clearing filters - prevents visual blip during re-render
 let isClearingFilters = false;
 
@@ -191,6 +192,72 @@ function onRenderComplete() {
 function emitCatalogEvent(eventName, detail = {}) {
   window.dispatchEvent(new CustomEvent(eventName, { detail }));
   log('Event emitted:', eventName, Object.keys(detail).length > 0 ? detail : '');
+}
+
+/**
+ * Collect all active facet filters and trigger search
+ * Shared by RangeBucket and ScalarBucket checkbox change handlers to avoid duplication
+ * @param {Element} facetsContainer - The facets container element
+ * @param {string} source - Source identifier for logging (e.g., 'price', 'scalar')
+ */
+async function collectFiltersAndSearch(facetsContainer, source = 'facet') {
+  const combinedFilters = [];
+
+  // Collect filters from checked ScalarBucket checkboxes
+  // Mesh adds `attribute` to each bucket, stored as data-attribute on checkbox
+  const scalarCheckboxes = facetsContainer.querySelectorAll(
+    'input.dropin-checkbox__checkbox[data-attribute]:checked',
+  );
+  scalarCheckboxes.forEach((cb) => {
+    const attribute = cb.getAttribute('data-attribute');
+    const value = cb.getAttribute('data-value');
+    if (attribute && value) {
+      combinedFilters.push({ attribute, eq: value });
+    }
+  });
+
+  // Add price range filters from tracked state
+  selectedPriceRanges.forEach((_, rangeKey) => {
+    const [rangeFrom, rangeTo] = rangeKey.split('-').map(Number);
+    combinedFilters.push({
+      attribute: 'price',
+      range: { from: rangeFrom, to: rangeTo },
+    });
+  });
+
+  log('Combined filters:', combinedFilters);
+
+  // Get base params and search function from global
+  const baseParams = window.__productDiscoveryBaseParams || {};
+  const search = window.__productDiscoverySearch;
+
+  // Preserve categoryPath from baseParams (navigation context)
+  // User-selected facets should add to category filter, not replace it
+  const categoryFilter = (baseParams.filter || []).filter(
+    (f) => f.attribute === 'categoryPath',
+  );
+
+  if (search) {
+    // Merge category filter with user-selected facet filters
+    const mergedFilters = [...categoryFilter, ...combinedFilters];
+
+    const searchParams = {
+      ...baseParams,
+      filter: mergedFilters.length > 0 ? mergedFilters : undefined,
+      currentPage: 1,
+    };
+
+    log(`Triggering ${source} filter search:`, searchParams);
+
+    try {
+      await search(searchParams);
+      log(`${source} filter search completed`);
+    } catch (err) {
+      console.error(`[ProductList] ${source} filter search failed:`, err);
+    }
+  } else {
+    console.error('[ProductList] Search function not available');
+  }
 }
 
 /**
@@ -614,8 +681,26 @@ export default async function decorate(block) {
       // Render Facets with FacetBucket slot for price checkbox override
       // Preserves Adobe's internal state management and SearchResults communication
       // FacetBucket slot intercepts price facets to render as checkboxes (fixes Clear All desync)
+      //
+      // ARCHITECTURE NOTE: The dropin doesn't pass `id` to FacetBucket slots (only title, __typename,
+      // count, selected). The mesh encodes {attribute}:{value} in `id` field, but dropin strips it.
+      // Solution: Use Facet slot to build title→attribute map, then DOM traversal in FacetBucket.
+      const facetTitleToAttribute = new Map(); // Maps facet display title → ACO attribute
+
       await render.render(Facets, {
         slots: {
+          // Facet slot - builds title→attribute map for FacetBucket to use
+          // NOTE: All Facet slots run BEFORE any FacetBucket slots (not interleaved)
+          Facet: (ctx) => {
+            const { data } = ctx;
+            log('Facet slot:', { title: data?.title, attribute: data?.attribute });
+            // Store mapping for FacetBucket to look up via DOM traversal
+            if (data?.title && data?.attribute) {
+              facetTitleToAttribute.set(data.title, data.attribute);
+            }
+            // Return null to let default rendering proceed
+            return null;
+          },
           // Custom SelectedFacets - show only Clear All button, no chips
           // Chips clutter UI and have state desync issues with custom price checkboxes
           SelectedFacets: (ctx) => {
@@ -703,16 +788,14 @@ export default async function decorate(block) {
               label.htmlFor = checkbox.id;
               label.textContent = `$${data.from} - $${data.to} (${data.count})`;
 
-              // Checkbox click → call search API directly with price filter
+              // Checkbox click -> call search API directly with price filter
               checkbox.addEventListener('change', async () => {
                 const from = parseFloat(checkbox.dataset.from);
                 const to = parseFloat(checkbox.dataset.to);
                 const key = `${from}-${to}`;
 
-                // Update our tracked state
+                // Update our tracked state (price is single-select, so clear others first)
                 if (checkbox.checked) {
-                  // For price (RangeBucket), only one can be selected at a time
-                  // (dropin clears others when one is selected)
                   selectedPriceRanges.clear();
                   selectedPriceRanges.set(key, true);
                 } else {
@@ -720,94 +803,15 @@ export default async function decorate(block) {
                 }
 
                 log('Price checkbox changed:', key, checkbox.checked);
-
-                // Build combined filter array from:
-                // 1. Checked native dropin checkboxes (ScalarBucket filters)
-                // 2. Our selected price ranges (RangeBucket filters)
-                const combinedFilters = [];
-
-                // Collect filters from checked native dropin checkboxes
-                // Native checkbox IDs: br_construction_phase-Interiorfinish, br_brand-DuraStep, etc.
-                const nativeCheckboxes = facetsContainer.querySelectorAll(
-                  'input.dropin-checkbox__checkbox:checked',
-                );
-                nativeCheckboxes.forEach((cb) => {
-                  const cbId = cb.id;
-                  // Split on first hyphen to get attribute and value
-                  const hyphenIndex = cbId.indexOf('-');
-                  if (hyphenIndex > 0) {
-                    const attribute = cbId.slice(0, hyphenIndex);
-                    // Get value from label (has proper spacing) or testid
-                    const testId = cb.getAttribute('data-testid') || '';
-                    const value = testId.replace('-checkbox', '');
-                    if (attribute && value) {
-                      combinedFilters.push({ attribute, eq: value });
-                    }
-                  }
-                });
-
-                // Add price range filters
-                selectedPriceRanges.forEach((_, rangeKey) => {
-                  const [rangeFrom, rangeTo] = rangeKey.split('-').map(Number);
-                  combinedFilters.push({
-                    attribute: 'price',
-                    range: { from: rangeFrom, to: rangeTo },
-                  });
-                });
-
-                log('Combined filters:', combinedFilters);
-
-                // Get base params and search function from global
-                const baseParams = window.__productDiscoveryBaseParams || {};
-                const search = window.__productDiscoverySearch;
-
-                if (search) {
-                  const searchParams = {
-                    ...baseParams,
-                    filter: combinedFilters.length > 0 ? combinedFilters : undefined,
-                    currentPage: 1, // Reset to first page when filtering
-                  };
-
-                  log('Triggering search with combined filters:', searchParams);
-
-                  try {
-                    await search(searchParams);
-                    log('Price filter search completed');
-                  } catch (err) {
-                    console.error('[ProductList] Price filter search failed:', err);
-                  }
-                } else {
-                  console.error('[ProductList] Search function not available');
-                }
+                await collectFiltersAndSearch(facetsContainer, 'price');
               });
 
               wrapper.appendChild(checkbox);
               wrapper.appendChild(label);
               ctx.replaceWith(wrapper);
-            } else if (data?.__typename === 'ScalarBucket') {
-              // ScalarBucket (brand, category, etc.) - only intercept during clearing
-              // to prevent visual "blip", otherwise let dropin render natively
-              if (isClearingFilters && data.selected) {
-                // During clearing with stale selected state - render unchecked checkbox
-                const wrapper = document.createElement('div');
-                wrapper.className = 'dropin-checkbox';
-
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `${data.attribute}-${data.title.replace(/\s+/g, '')}`;
-                checkbox.checked = false; // Force unchecked
-                checkbox.className = 'dropin-checkbox__checkbox';
-                checkbox.setAttribute('data-testid', `${data.title}-checkbox`);
-
-                const label = document.createElement('span');
-                label.className = 'dropin-checkbox__label';
-                label.textContent = `${data.title} (${data.count})`;
-
-                wrapper.appendChild(checkbox);
-                wrapper.appendChild(label);
-                ctx.replaceWith(wrapper);
-              }
-              // Otherwise let dropin render natively - it handles click events correctly
+            // ScalarBucket (brand, color, etc.) - Let dropin handle natively
+            // With categoryPath filter, dropin automatically preserves category context
+            // when facets are clicked (built-in category context preservation)
             }
           },
         },
@@ -1039,7 +1043,7 @@ export default async function decorate(block) {
       log('Search result event - total:', totalCount, 'page items:', pageItems);
 
       // Update page title, breadcrumb, and JSON-LD based on active category filter
-      const categoryFilter = searchEvent?.request?.filter?.find((f) => f.attribute === 'categoryUrlKey');
+      const categoryFilter = searchEvent?.request?.filter?.find((f) => f.attribute === 'categoryPath');
       const categorySlug = categoryFilter?.in?.[0] || null;
       updateCategoryUI(categorySlug);
 
@@ -1081,7 +1085,7 @@ export default async function decorate(block) {
       // Only count non-category filters as "active refinements"
       // Category is navigation context (user clicked a nav link), not a user-selected facet
       // "Clear All" should only appear when users have applied refinement filters
-      const hasActiveFilters = requestFilters.some((f) => f.attribute !== 'categoryUrlKey');
+      const hasActiveFilters = requestFilters.some((f) => f.attribute !== 'categoryPath');
 
       // Show/hide Clear All button based on refinement filter state
       const clearAllBtn = document.getElementById('buildright-clear-all');
@@ -1111,8 +1115,10 @@ export default async function decorate(block) {
 
     const initialFilter = [];
     if (category) {
+      // Use categoryPath - the dropin recognizes this and automatically preserves it
+      // when facets are clicked (built-in category context preservation)
       initialFilter.push({
-        attribute: 'categoryUrlKey',
+        attribute: 'categoryPath',
         in: [category]
       });
     }

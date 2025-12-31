@@ -1,7 +1,7 @@
 # BuildRight Dropin Architecture
 
 **Status**: Canonical Reference
-**Last Updated**: December 29, 2025 (Added SearchBarInput/SearchBarResults containers)
+**Last Updated**: December 31, 2025 (categoryPath fix for facet category scoping)
 
 ---
 
@@ -93,7 +93,7 @@ If facets or pricing are missing, verify `scripts/initializers/search.js` config
 | Slot | Purpose | BuildRight Customization |
 |------|---------|--------------------------|
 | `SelectedFacets` | Active filter chips + Clear All | Custom Clear All button only (no chips) |
-| `FacetBucket` | Individual filter option | RangeBucket → checkbox, ScalarBucket → native (with blip fix) |
+| `FacetBucket` | Individual filter option | RangeBucket → custom checkbox, ScalarBucket → native dropin |
 
 ### Slots (within SearchBarInput)
 
@@ -115,7 +115,7 @@ The `FacetBucket` slot receives different data types:
 | Type | Usage | BuildRight Handling |
 |------|-------|---------------------|
 | `RangeBucket` | Price ranges ($0-$10, $10-$50, etc.) | Custom checkbox with direct search API call |
-| `ScalarBucket` | Categories, brands, colors | Native dropin rendering (intercepted only during Clear All) |
+| `ScalarBucket` | Brands, colors, quality tier | Native dropin (categoryPath preserves category context) |
 
 ### SortBy Customization
 
@@ -457,11 +457,56 @@ requestAnimationFrame(uncheckLoop);
 
 **Workaround**: The `FacetBucket` slot intercepts `RangeBucket` type and renders custom checkboxes that call `search()` directly with the price filter.
 
-### ScalarBucket Interception
+### Category Context Preservation (CRITICAL)
 
-**Issue**: Intercepting all `ScalarBucket` facets breaks filtering because our custom click handlers don't correctly communicate with the dropin's internal state.
+**The Problem**: When a user is viewing a category (e.g., "Structural Materials") and clicks a facet (e.g., "Brand: Cascade Timber"), the results should stay within that category. However, using the wrong filter attribute causes the category filter to be lost.
 
-**Workaround**: Only intercept `ScalarBucket` during clearing (`isClearingFilters && data.selected`) to prevent the visual blip. Let the dropin handle normal interaction natively.
+**The Solution**: Use `categoryPath`, NOT `categoryUrlKey`.
+
+> **Critical Distinction**: The Adobe Product Discovery dropin specifically looks for `categoryPath` in the filter array. When it finds `categoryPath`, it **automatically preserves** this filter when users click on facets. The dropin does NOT recognize `categoryUrlKey` - it will be ignored during facet clicks.
+
+**Why This Works**:
+
+From Adobe's Facets container documentation:
+> "If a `categoryPath` is provided in the search, facet selections will automatically include the categoryPath to ensure filters are relative to the current category."
+
+**Implementation**:
+
+```javascript
+// CORRECT - Dropin preserves this when facets are clicked
+const initialFilter = [{
+  attribute: 'categoryPath',
+  in: [categorySlug]
+}];
+
+// WRONG - Dropin ignores this, category lost on facet click
+const initialFilter = [{
+  attribute: 'categoryUrlKey',
+  in: [categorySlug]
+}];
+```
+
+**Mesh Transformation**: The mesh adapter (`dropin-search.js`) transforms `categoryPath` to ACO-native attributes:
+- `categoryPath: "structural-materials"` → `category: "structural-materials"` (top-level)
+- `categoryPath: "structural-materials/lumber"` → `subcategory: "lumber"` (nested path)
+
+See `buildright-service/mesh/README.md` for mesh transformation details.
+
+**Custom Filter Handlers**: When building custom facet handlers (e.g., for RangeBucket/price), you must **merge** user-selected filters with categoryPath, not replace:
+
+```javascript
+// CORRECT - Merge category with user filters
+const categoryFilter = (baseParams.filter || []).filter(
+  (f) => f.attribute === 'categoryPath',
+);
+const mergedFilters = [...categoryFilter, ...userSelectedFilters];
+search({ filter: mergedFilters });
+
+// WRONG - Overwrites category, losing context
+search({ filter: userSelectedFilters });
+```
+
+ScalarBucket facets (brand, color) use native dropin behavior which handles this automatically. Custom handlers (like price checkboxes) must merge explicitly.
 
 ---
 
