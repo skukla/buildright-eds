@@ -71,9 +71,25 @@ export async function initializeDropins() {
       setEndpoint(endpoint);
       console.log('[Dropins] Using endpoint:', endpoint);
 
+      // Initialize persona BEFORE getting headers
+      // This ensures the persona service resolves the correct catalog view UUID
+      // Persona service always returns valid persona (guest for group '0')
+      const { getPersonaHeaders, initializePersona } = await import('../services/mesh-client.js');
+
+      // Initialize default/guest persona first (customer group 0)
+      // This fetches persona data from mesh and stores headers in sessionStorage
+      await initializePersona('0');
+      console.log('[Dropins] Default persona initialized from mesh');
+
+      // Now getPersonaHeaders() will have the correct UUID values from persona service
+      // No fallbacks needed - persona service always returns valid guest persona
+      const personaHeaders = getPersonaHeaders();
+
       // Set ACO headers per Adobe Commerce Optimizer documentation
       // See: https://experienceleague.adobe.com/developer/commerce/storefront/setup/configuration/commerce-configuration/
-      const headers = {};
+      const headers = {
+        ...personaHeaders
+      };
 
       // ACO requires these specific headers (AC-* format, not x-* format)
       if (acoConfig.environmentId) {
@@ -81,35 +97,6 @@ export async function initializeDropins() {
       }
       if (acoConfig.sourceLocale) {
         headers['AC-Source-Locale'] = acoConfig.sourceLocale;
-      }
-
-      // Initialize persona BEFORE getting headers
-      // This ensures the persona service resolves the correct catalog view UUID
-      const { getPersonaHeaders, initializePersona } = await import('../services/mesh-client.js');
-
-      try {
-        // Initialize default/guest persona first (customer group 0)
-        // This fetches persona data from mesh and stores headers in sessionStorage
-        await initializePersona('0');
-        console.log('[Dropins] Default persona initialized from mesh');
-      } catch (error) {
-        console.warn('[Dropins] Failed to initialize persona from mesh:', error.message);
-        // Continue with fallback headers from config
-      }
-
-      // Now getPersonaHeaders() will have the correct UUID values from persona service
-      const personaHeaders = getPersonaHeaders();
-
-      // AC-View-Id: Use persona catalog view (UUID) or fallback to config
-      const viewId = personaHeaders['AC-View-Id'] || acoConfig.defaultViewId;
-      if (viewId) {
-        headers['AC-View-Id'] = viewId;
-      }
-
-      // AC-Price-Book-Id: Use persona price book or fallback to config
-      const priceBookId = personaHeaders['AC-Price-Book-Id'] || acoConfig.defaultPriceBookId;
-      if (priceBookId) {
-        headers['AC-Price-Book-Id'] = priceBookId;
       }
 
       // Also include store code for Commerce compatibility

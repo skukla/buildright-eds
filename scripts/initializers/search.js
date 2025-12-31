@@ -39,7 +39,13 @@ export async function initializeSearchDropin(initializers) {
     }
 
     // Build headers for ACO queries
-    const headers = {};
+    // Persona headers come from persona service (initialized in index.js)
+    // No fallbacks needed - persona service always returns valid guest persona for group '0'
+    const personaHeaders = getPersonaHeaders();
+
+    const headers = {
+      ...personaHeaders
+    };
 
     // ACO environment headers
     if (acoConfig.environmentId) {
@@ -47,21 +53,6 @@ export async function initializeSearchDropin(initializers) {
     }
     if (acoConfig.sourceLocale) {
       headers['AC-Source-Locale'] = acoConfig.sourceLocale;
-    }
-
-    // Get persona headers (AC-View-Id, AC-Price-Book-Id)
-    const personaHeaders = getPersonaHeaders();
-
-    // AC-View-Id: Use persona catalog view (UUID) or fallback to config
-    const viewId = personaHeaders['AC-View-Id'] || acoConfig.defaultViewId;
-    if (viewId) {
-      headers['AC-View-Id'] = viewId;
-    }
-
-    // AC-Price-Book-Id: Use persona price book or fallback to config
-    const priceBookId = personaHeaders['AC-Price-Book-Id'] || acoConfig.defaultPriceBookId;
-    if (priceBookId) {
-      headers['AC-Price-Book-Id'] = priceBookId;
     }
 
     // Set Product Discovery dropin's headers

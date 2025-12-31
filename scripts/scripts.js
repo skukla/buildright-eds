@@ -365,28 +365,23 @@ async function initializeDropins() {
 async function loadEager(doc) {
   // 1. Setup base path
   setupBasePath();
-  
+
   // 2. Setup body classes
   setupBodyClasses();
-  
+
   // 3. Set language
   document.documentElement.lang = 'en';
-  
-  // 4. Decorate main
+
+  // 4. Initialize Commerce Dropins FIRST (blocks need persona headers)
+  // This is cached in sessionStorage, so only first visit has network cost
+  await initializeDropins();
+
+  // 5. Decorate main (blocks can now safely call mesh functions)
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
   }
-  
-  // 5. Initialize Commerce Dropins (non-blocking)
-  // Start initialization but don't wait - blocks will await if needed
-  // After dropins ready, pre-warm category cache (singleton promise pattern)
-  initializeDropins().then(async () => {
-    // Pre-warm categories - uses singleton promise, so header/product-list will share this fetch
-    const { getCategories } = await import('./services/mesh-client.js');
-    getCategories(); // Don't await - just trigger the fetch
-  });
 }
 
 /**

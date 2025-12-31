@@ -91,7 +91,7 @@ export function setPersonaHeaders(headers) {
   };
   sessionStorage.setItem('buildright_persona_headers', JSON.stringify(meshHeaders));
   console.log('[MeshClient] Persona headers set:', meshHeaders);
-  
+
   // Notify dropins to update their headers
   window.dispatchEvent(new CustomEvent('personaHeadersUpdated', {
     detail: {
@@ -396,6 +396,11 @@ let categoriesPromise = null;
  * Get categories from ACO (with singleton promise caching)
  * First call initiates fetch, subsequent calls return same promise.
  * This eliminates race conditions between blocks needing category data.
+ *
+ * NOTE: Categories require persona headers (AC-View-Id) because ACO can show
+ * different categories to different personas. Ensure dropins are initialized
+ * before calling this function (scripts.js awaits initializeDropins first).
+ *
  * @returns {Promise<Object>} Categories result
  */
 export async function getCategories() {
@@ -422,6 +427,9 @@ export async function getCategories() {
  * Get breadcrumb trail for a category
  * Returns hierarchical trail from root to specified category.
  * Source-agnostic: uses ACO (primary) or Commerce Catalog (fallback).
+ *
+ * NOTE: Breadcrumbs require persona headers (AC-View-Id). Ensure dropins
+ * are initialized before calling (scripts.js awaits initializeDropins first).
  *
  * @param {string} slug - Category URL slug (e.g., "lumber", "structural-materials")
  * @returns {Promise<{trail: Array<{slug: string, name: string, url: string}>, source: string}>}
@@ -473,6 +481,7 @@ export function getCategoryDisplayName(slug, categories = []) {
 export default {
   meshQuery,
   setPersonaHeaders,
+  getPersonaHeaders,
   initializePersona,
   initializePersonaByEmail,
   searchProducts,
