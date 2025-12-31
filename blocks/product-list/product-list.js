@@ -553,6 +553,7 @@ export default async function decorate(block) {
        */
       NoResults: (ctx) => {
         const { variables } = ctx;
+        const phrase = variables?.phrase?.trim() || '';
 
         const emptyState = document.createElement('div');
         emptyState.className = 'buildright-empty-state';
@@ -565,15 +566,13 @@ export default async function decorate(block) {
           </svg>
           <h2 class="buildright-empty-title">No Products Found</h2>
           <p class="buildright-empty-message"></p>
-          <p class="buildright-empty-hint">Try adjusting your filters or search terms.</p>
         `;
 
         // Security: Use textContent for user input to prevent XSS
         const messageEl = emptyState.querySelector('.buildright-empty-message');
-        const phrase = variables?.phrase || '';
         messageEl.textContent = phrase
-          ? `We couldn't find any products matching your search "${phrase}".`
-          : 'We couldn\'t find any products matching your criteria.';
+          ? `We couldn't find any products matching "${phrase}".`
+          : 'No products are available in this category.';
 
         ctx.replaceWith(emptyState);
       },
@@ -1078,12 +1077,16 @@ export default async function decorate(block) {
       // Fixes dropin bug: native checkboxes don't visually uncheck on Clear All
       // Our custom price checkboxes sync via FacetBucket slot, but native ones need manual sync
       const requestFilters = searchEvent?.request?.filter || [];
-      const hasFilters = requestFilters.length > 0;
 
-      // Show/hide Clear All button based on filter state
+      // Only count non-category filters as "active refinements"
+      // Category is navigation context (user clicked a nav link), not a user-selected facet
+      // "Clear All" should only appear when users have applied refinement filters
+      const hasActiveFilters = requestFilters.some((f) => f.attribute !== 'categoryUrlKey');
+
+      // Show/hide Clear All button based on refinement filter state
       const clearAllBtn = document.getElementById('buildright-clear-all');
       if (clearAllBtn) {
-        clearAllBtn.style.display = hasFilters ? 'inline-flex' : 'none';
+        clearAllBtn.style.display = hasActiveFilters ? 'inline-flex' : 'none';
       }
 
       // Reset checkboxes after dropin re-renders when filters are cleared
