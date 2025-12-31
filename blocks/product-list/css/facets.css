@@ -256,6 +256,7 @@ body.white-variant .buildright-facets-wrapper .dropin-facets-container {
   flex-shrink: 0;
   color: var(--color-text-secondary);
   margin-left: auto;
+  transition: transform var(--transition-fast);
 }
 
 .buildright-facets-wrapper .dropin-facets-container .product-discovery-facet__header[aria-expanded="true"] .buildright-toggle-icon {

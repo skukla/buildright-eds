@@ -890,6 +890,73 @@ export default async function decorate(block) {
         log('Injected Refine Results header with Clear All button');
       }
 
+      // =====================================================
+      // FACET GROUP TOGGLES
+      // Inject chevron icons into facet headers for collapse/expand
+      // CSS :has() selector handles visibility (facets.css:270-276)
+      // =====================================================
+
+      /**
+       * Inject toggle icons into facet headers and bind click handlers
+       * Pattern adapted from filters-sidebar.js:120-134
+       */
+      function injectFacetToggles() {
+        const headers = facetsContainer.querySelectorAll('.product-discovery-facet__header');
+        let injectedCount = 0;
+
+        headers.forEach((header) => {
+          // Skip if already has toggle icon
+          if (header.querySelector('.buildright-toggle-icon')) return;
+
+          // Set initial expanded state
+          if (!header.hasAttribute('aria-expanded')) {
+            header.setAttribute('aria-expanded', 'true');
+          }
+
+          // Create chevron SVG
+          const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          icon.setAttribute('class', 'buildright-toggle-icon');
+          icon.setAttribute('width', '16');
+          icon.setAttribute('height', '16');
+          icon.setAttribute('viewBox', '0 0 24 24');
+          icon.setAttribute('fill', 'none');
+          icon.setAttribute('stroke', 'currentColor');
+          icon.setAttribute('stroke-width', '2');
+          icon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+
+          header.appendChild(icon);
+          injectedCount++;
+
+          // Bind click handler (only if not already bound)
+          if (!header.dataset.toggleBound) {
+            header.addEventListener('click', (e) => {
+              // Don't toggle if clicking on a checkbox or other interactive element
+              if (e.target.closest('input, button, a')) return;
+
+              const isExpanded = header.getAttribute('aria-expanded') === 'true';
+              header.setAttribute('aria-expanded', !isExpanded);
+              log('Facet toggle:', header.textContent?.trim().split('\n')[0], '→', !isExpanded ? 'expanded' : 'collapsed');
+            });
+            header.dataset.toggleBound = 'true';
+          }
+        });
+
+        if (injectedCount > 0) {
+          log('Injected facet toggle icons:', injectedCount);
+        }
+      }
+
+      // Initial injection after Facets render
+      injectFacetToggles();
+
+      // Re-inject on DOM changes (facets re-render on filter changes)
+      const facetToggleObserver = new MutationObserver(() => {
+        // Debounce rapid mutations
+        clearTimeout(facetToggleObserver._debounce);
+        facetToggleObserver._debounce = setTimeout(injectFacetToggles, 50);
+      });
+      facetToggleObserver.observe(facetsContainer, { childList: true, subtree: true });
+
       // Filter reset listener - fixes dropin visual desync bug where checkboxes
       // stay visually checked even after filters are cleared
       // This handles both "Clear All" and individual filter pill removal (X buttons)
