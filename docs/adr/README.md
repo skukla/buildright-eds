@@ -12,16 +12,24 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 |-----|-------|--------|------|
 | [ADR-001](./ADR-001-use-dropins-for-commerce.md) | Use Adobe Commerce Dropins for Core Commerce Functions | Accepted | 2025-11-15 |
 | [ADR-002](./ADR-002-use-eds-blocks-for-content.md) | Use EDS Blocks for Content-Driven Components | Accepted | 2025-11-15 |
-| [ADR-003](./ADR-003-mock-aco-service.md) | Mock ACO Service with CCDM Simulation | Accepted | 2025-11-15 |
-| [ADR-004](./ADR-004-custom-attributes-for-personas.md) | Use Custom Attributes for Persona Assignment | Accepted | 2025-11-15 |
-| [ADR-005](./ADR-005-dual-mode-authentication.md) | Dual-Mode Authentication (Demo + Production) | Accepted | 2025-11-15 |
-| [ADR-007](./ADR-007-custom-sdk-dropins-for-aco.md) | Custom SDK Dropins for ACO-Sourced Components | Accepted | 2025-12 |
+| [ADR-004](./ADR-004-persona-assignment-strategy.md) | Persona Assignment Strategy (via Persona Service) | Accepted | 2025-11-15 |
+| [ADR-007](./ADR-007-aco-catalog-integration-strategy.md) | ACO Catalog Integration Strategy | Accepted | 2025-12 |
 | [ADR-008](./ADR-008-dropin-css-refactoring-strategy.md) | Dropin CSS Refactoring Strategy | Implemented | 2025-12-24 |
 | [ADR-009](./ADR-009-mesh-adapter-resolver-pattern.md) | Mesh Adapter Resolver Pattern | Accepted | 2025-12-31 |
 | [ADR-010](./ADR-010-dropin-slot-customization-pattern.md) | Dropin Slot Customization Pattern | Accepted | 2025-12-31 |
 | [ADR-011](./ADR-011-documentation-category-structure.md) | Documentation Category Structure | Accepted | 2026-01-01 |
 | [ADR-012](./ADR-012-commerce-dropins-direct-connection.md) | Commerce Dropins Direct Connection Pattern | Accepted | 2025-12-12 |
 | [ADR-013](./ADR-013-unified-product-taxonomy.md) | Unified Product Taxonomy | Accepted | 2025-11-15 |
+| [ADR-014](./ADR-014-eds-blocks-vs-dropins.md) | EDS Blocks vs Dropins Decision Framework | Accepted | 2026-01-02 |
+
+## Archived ADRs
+
+These ADRs documented approaches that were used during development but have been superseded:
+
+| ADR | Title | Status | Archived |
+|-----|-------|--------|----------|
+| [ADR-003](../archive/ADR-003-mock-aco-service.md) | Mock ACO Service | Superseded by real API Mesh → ACO | 2026-01 |
+| [ADR-005](../archive/ADR-005-dual-mode-authentication.md) | Dual-Mode Authentication | Superseded by Commerce Dropins | 2026-01 |
 
 ## ADR Status Definitions
 
