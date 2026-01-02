@@ -2,15 +2,15 @@
 
 ## Block Inventory (29 Blocks)
 
-### Commerce Dropins (Phase 5.5 - Planned)
+### Commerce Dropins (Phase 5.5 - In Progress)
 
 | Block | Purpose | Status |
 |-------|---------|--------|
-| `auth-dropin` | Commerce authentication UI | Stub |
-| `cart-dropin` | Shopping cart container | Stub |
-| `checkout-dropin` | Checkout flow | Stub |
-| `commerce-mini-cart` | Mini-cart in header | Stub |
-| `order-confirmation-dropin` | Order confirmation | Stub |
+| `auth-dropin` | Commerce authentication UI (SignIn, SignUp, ResetPassword, UserMenu) | **Working** |
+| `cart-dropin` | Shopping cart container | Scaffold |
+| `checkout-dropin` | Checkout flow | Scaffold |
+| `commerce-mini-cart` | Mini-cart in header | **Working** |
+| `order-confirmation-dropin` | Order confirmation | Scaffold |
 
 **Integration Pattern:**
 ```javascript
