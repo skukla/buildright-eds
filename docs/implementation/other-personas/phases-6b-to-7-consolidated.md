@@ -6,12 +6,12 @@
 **👥 Audience**: Developers implementing personas
 
 **🔗 Related Docs**:
-- **Quick Start**: [planning/quick-start/implement-persona.md](./planning/quick-start/implement-persona.md)
+- **Quick Start**: [planning/quick-start/implement-persona.md](../../planning/quick-start/implement-persona.md)
 - **What Exists**: [planning/quick-start/what-exists.md](./planning/quick-start/what-exists.md)
 - **Persona Profiles**: [personas-overview.md](../../explanations/personas/personas-overview.md)
 - **Completion Summaries**: [phase-0-5-foundation/](./phase-0-5-foundation/)
 - **Architectural Decisions**: [adr/ADR-004](../../adr/ADR-004-custom-attributes-for-personas.md)
-- **Kevin Implementation**: [store-manager/multi-location-architecture.md](../store-manager/multi-location-architecture.md)
+- **Kevin Implementation**: [kevin-rodriguez/multi-location-architecture.md](../kevin-rodriguez/multi-location-architecture.md)
 
 **📍 Reading Path**:
 1. Read persona profile in personas/ (15 min)
@@ -669,13 +669,13 @@ Updates at each step showing the progressive filtering.
 **Duration**: 1-1.5 weeks  
 **Dependencies**: Phase 4, Phase 5  
 **Persona**: Kevin Rodriguez - Store Manager  
-**Architecture**: Multi-location (see [multi-location-architecture.md](../store-manager/multi-location-architecture.md))
+**Architecture**: Multi-location (see [multi-location-architecture.md](../kevin-rodriguez/multi-location-architecture.md))
 
 ### Overview
 
 Kevin manages 3 locations of Precision Lumber & Supply (Austin, San Antonio, Houston) and needs a velocity-based restock dashboard to manage inventory across his stores. He uses the header location selector to switch between stores, and the dashboard displays location-specific inventory data.
 
-**Key Architecture** (see [multi-location-architecture.md](../store-manager/multi-location-architecture.md)):
+**Key Architecture** (see [multi-location-architecture.md](../kevin-rodriguez/multi-location-architecture.md)):
 - **Kevin's Stores** (Frontend): 3 Texas retail locations he manages
 - **BuildRight Warehouses** (Backend/MSI): 6 distribution centers that fulfill orders to Kevin's stores
 - **Location Selector**: Header dropdown to switch between Austin/San Antonio/Houston
@@ -1299,7 +1299,7 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 
 **Note**: Phases 6B-6E can be partially parallelized (2-3 at a time)
 
-**Phase 6E Update**: Duration extended from 1 week to 1-1.5 weeks due to multi-location architecture (see [multi-location-architecture.md](../store-manager/multi-location-architecture.md)). Foundation already implemented in Phase 1-5 (location selector, company config, customer context).
+**Phase 6E Update**: Duration extended from 1 week to 1-1.5 weeks due to multi-location architecture (see [multi-location-architecture.md](../kevin-rodriguez/multi-location-architecture.md)). Foundation already implemented in Phase 1-5 (location selector, company config, customer context).
 
 **Phase 6E Data Architecture**: Demo mode only (static files). See [data-source-comparison.md](../../reference/backend/data-source-comparison.md) for full hybrid Commerce PaaS + ACO architecture. Production API integration is a future enhancement.
 

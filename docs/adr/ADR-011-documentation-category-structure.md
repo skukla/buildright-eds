@@ -60,7 +60,7 @@ docs/
 │   └── decisions/     # Research-backed decisions
 ├── implementation/    # Detailed implementation specs
 │   ├── sarah-end-to-end/
-│   ├── store-manager/
+│   ├── kevin-rodriguez/
 │   └── other-personas/
 └── archive/           # Historical reference
 ```

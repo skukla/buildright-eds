@@ -49,7 +49,7 @@ docs/
 │
 ├── implementation/        # Detailed implementation specs
 │   ├── sarah-end-to-end/  # Sarah persona implementation
-│   ├── store-manager/     # Kevin persona implementation
+│   ├── kevin-rodriguez/   # Kevin persona implementation
 │   └── other-personas/    # Future persona planning
 │
 └── archive/               # Historical reference

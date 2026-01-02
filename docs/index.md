@@ -27,7 +27,7 @@ docs/
 │   └── deployment/        # Deployment guides
 ├── implementation/        # Detailed specs (reference)
 │   ├── sarah-end-to-end/
-│   ├── store-manager/
+│   ├── kevin-rodriguez/
 │   └── other-personas/
 └── archive/               # Historical reference
 ```
