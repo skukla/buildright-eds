@@ -119,10 +119,10 @@ transforms: [
 - Commerce operations from filterSchema
 - `COMMERCE_GRAPHQL_ENDPOINT` and `COMMERCE_STORE_CODE` from `.env`
 
-### 3. Deleted Files
+### 3. Retained Reference Files
 
-- `scripts/commerce-fetch-adapter.js` - No longer needed
-- Environment variables for Commerce in mesh
+- `scripts/commerce-fetch-adapter.js` - **Retained** as reference implementation for future dropin adapter standardization. Currently unused, but documents the client-side adapter pattern that may be applied when re-auditing dropin implementations to follow a consistent adapter resolver pattern.
+- Environment variables for Commerce removed from mesh
 
 ## Consequences
 
@@ -201,10 +201,11 @@ This clear separation makes the system easier to understand, debug, and maintain
 1. ✅ Updated `scripts/initializers/index.js` to use `commerceEndpoint`
 2. ✅ Removed Commerce source from `mesh/mesh.config.js`
 3. ✅ Removed Commerce operations from filterSchema
-4. ✅ Deleted `scripts/commerce-fetch-adapter.js`
+4. ✅ Retained `scripts/commerce-fetch-adapter.js` as reference (see "Retained Reference Files" above)
 5. ✅ Removed `COMMERCE_GRAPHQL_ENDPOINT` and `COMMERCE_STORE_CODE` from mesh `.env`
 6. ✅ Deployed updated mesh
 7. 🔄 **Next:** Product synchronization from ACO to Commerce
+8. 🔄 **Future:** Re-audit dropin implementations for adapter pattern consistency
 
 
 
