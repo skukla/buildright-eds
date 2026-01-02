@@ -55,11 +55,13 @@ We need to decide how to build these custom components within the Adobe Edge Del
 - **Package Comparison** - Side-by-side package comparison
 
 #### Persona-Specific Components
-- **Template Dashboard** (Sarah) - Grid of home templates
+- **Template Dashboard** (Sarah) - Grid of home templates *(currently page-level script, block extraction planned)*
 - **Project Wizard** (Marcus) - Multi-phase project builder
 - **Package Builder** (Lisa) - Luxury package selector
 - **Deck Wizard** (David) - Interactive deck configuration
 - **Restock Dashboard** (Kevin) - Quick reorder interface
+
+> **Note**: Some persona-specific components are implemented as page-level scripts (`scripts/dashboards/`, `scripts/builders/`) rather than extracted EDS blocks. Block extraction is planned for reusability.
 
 #### Page Components
 - **Filters Sidebar** - Category and attribute filters

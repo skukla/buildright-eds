@@ -92,9 +92,9 @@ Create `styles/dropin-tokens.css` with BuildRight → Adobe token mapping:
 Split monolithic CSS into component files:
 
 ```
-blocks/product-list-dropin/
-├── product-list-dropin.js
-├── product-list-dropin.css      # Container/layout only (~100 lines)
+blocks/product-list/
+├── product-list.js
+├── product-list.css             # Container/layout + imports (~100 lines)
 ├── css/
 │   ├── grid.css                 # Grid layout overrides
 │   ├── product-card.css         # Card component styles
