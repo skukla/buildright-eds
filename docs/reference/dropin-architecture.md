@@ -580,6 +580,8 @@ The following have been superseded by the dropin approach:
 
 ## Related Documentation
 
+- [dropin-integration-reference.md](./dropin-integration-reference.md) - Configuration, slots, and implementation patterns
 - `buildright-service/mesh/README.md` - Mesh architecture and adapter pattern
 - `blocks/CLAUDE.md` - Block inventory
 - `docs/adr/ADR-008-*.md` - CSS refactoring decisions
+- [ADR-014](../adr/ADR-014-eds-blocks-vs-dropins.md) - EDS Blocks vs Dropins decision framework
