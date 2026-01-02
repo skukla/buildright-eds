@@ -3,7 +3,7 @@
 **📊 Document Type**: Quick Reference Guide  
 **📖 Reading Time**: 5 minutes  
 **👥 Audience**: Developers implementing persona-specific catalog views  
-**🔗 Parent**: [../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md](../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md)
+**🔗 Parent**: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
 
 ---
 
@@ -61,10 +61,10 @@ Interior Finish Phase
 - Orders by construction phase
 - Sees materials grouped by selection category
 
-**Full Details**: 
-- Mental Model: [PRODUCT-TAXONOMY-ANALYSIS.md](../phase-6/0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md#sarah-martinez---production-home-builder)
-- ACO Config: [ACO-CATALOG-ARCHITECTURE.md](../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md#view-1-production-builder-view-sarah)
-- Implementation: [03-SARAH-IMPLEMENTATION.md](../phase-6/0-foundation/03-SARAH-IMPLEMENTATION.md)
+**Full Details**:
+- Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
+- Implementation: [sarah-persona-overview.md](../implementation/sarah-end-to-end/features/sarah-persona-overview.md)
 
 ---
 
@@ -112,9 +112,9 @@ Hardware & Tools
 - Traditional category organization
 
 **Full Details**:
-- Mental Model: [PRODUCT-TAXONOMY-ANALYSIS.md](../phase-6/0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md#marcus-johnson---general-contractor)
-- ACO Config: [ACO-CATALOG-ARCHITECTURE.md](../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md#view-2-general-contractor-view-marcus)
-- Implementation: [04-OTHER-PERSONAS.md](../phase-6/0-foundation/04-OTHER-PERSONAS.md#marcus-johnson-general-contractor---phase-6b)
+- Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
+- Implementation: [personas-overview.md](../personas/personas-overview.md)
 
 ---
 
@@ -165,9 +165,9 @@ General Finishes
 - Generates quotes for client sharing
 
 **Full Details**:
-- Mental Model: [PRODUCT-TAXONOMY-ANALYSIS.md](../phase-6/0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md#lisa-chen---remodeling-contractor)
-- ACO Config: [ACO-CATALOG-ARCHITECTURE.md](../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md#view-3-remodeling-contractor-view-lisa)
-- Implementation: [04-OTHER-PERSONAS.md](../phase-6/0-foundation/04-OTHER-PERSONAS.md#lisa-chen-remodeling-contractor---phase-6c)
+- Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
+- Implementation: [personas-overview.md](../personas/personas-overview.md)
 
 ---
 
@@ -217,9 +217,9 @@ General Home Improvement
 - Simplified product options
 
 **Full Details**:
-- Mental Model: [PRODUCT-TAXONOMY-ANALYSIS.md](../phase-6/0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md#david-thompson---diy-homeowner)
-- ACO Config: [ACO-CATALOG-ARCHITECTURE.md](../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md#view-4-diy-homeowner-view-david)
-- Implementation: [04-OTHER-PERSONAS.md](../phase-6/0-foundation/04-OTHER-PERSONAS.md#david-thompson-diy-homeowner---phase-6d)
+- Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
+- Implementation: [personas-overview.md](../personas/personas-overview.md)
 
 ---
 
@@ -260,8 +260,8 @@ Low Velocity Products
 - Organized by velocity and days supply
 
 **Full Details**:
-- Mental Model: [PRODUCT-TAXONOMY-ANALYSIS.md](../phase-6/0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md#kevin-rodriguez---store-manager)
-- ACO Config: [ACO-CATALOG-ARCHITECTURE.md](../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md#view-5-store-manager-view-kevin)
+- Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
 - Implementation: Kevin does NOT use Project entity (separate workflow)
 
 ---
@@ -366,16 +366,12 @@ export const PERSONA_CATALOG_CONFIG = {
 ## Quick Links
 
 **Strategic Documents**:
-- [Product Taxonomy Analysis](../phase-6/0-foundation/PRODUCT-TAXONOMY-ANALYSIS.md) - Why unified taxonomy?
-- [ACO Catalog Architecture](../phase-6/0-foundation/ACO-CATALOG-ARCHITECTURE.md) - Technical implementation
+- [Product Category Structure](../implementation/sarah-end-to-end/features/product-category-structure.md) - Why unified taxonomy?
+- [ACO Catalog Data Flow](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md) - Technical implementation
 
 **Persona Implementation Guides**:
-- [Sarah Implementation](../phase-6/0-foundation/03-SARAH-IMPLEMENTATION.md)
-- [Other Personas Implementation](../phase-6/0-foundation/04-OTHER-PERSONAS.md)
-
-**Foundation Documentation**:
-- [Phase 6-Foundation README](../phase-6/0-foundation/README.md)
-- [Phase 6 Parent README](../phase-6/README.md)
+- [Sarah Implementation](../implementation/sarah-end-to-end/features/sarah-persona-overview.md)
+- [Persona Profiles](../personas/personas-overview.md)
 
 ---
 

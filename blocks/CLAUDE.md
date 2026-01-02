@@ -1,6 +1,6 @@
 # BuildRight EDS Blocks - AI Assistant Context
 
-## Block Inventory (30 Blocks)
+## Block Inventory (29 Blocks)
 
 ### Commerce Dropins (Phase 5.5 - Planned)
 
@@ -37,7 +37,7 @@ export default async function decorate(block) {
 
 | Block | Purpose | Lines | Notes |
 |-------|---------|-------|-------|
-| `product-list` | **Canonical PLP** - Adobe Product Discovery dropin | 543 | Refactored per ADR-008 |
+| `product-list` | **Canonical PLP** - Adobe Product Discovery dropin | 1401 | Refactored per ADR-008 |
 | `product-detail` | PDP layout wrapper | - | CSS only |
 | `product-gallery` | Product images carousel | - | Working |
 | `product-tile` | Reusable product card | - | Working |
@@ -50,7 +50,7 @@ export default async function decorate(block) {
 **product-list CSS Architecture (ADR-008):**
 - Main file imports 5 component CSS files: `grid.css`, `product-card.css`, `facets.css`, `pagination.css`, `loading-states.css`
 - Design tokens in `styles/dropin-tokens.css` (49 tokens)
-- Only 8 `!important` declarations (reduced from 299)
+- Only 26 `!important` declarations (reduced from 299)
 - Events emitted: `catalogLoading`, `catalogLoaded`, `catalogError`, `facetsValidating`
 
 ---

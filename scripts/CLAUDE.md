@@ -13,7 +13,7 @@ scripts/
 ├── company-config.js       # Company/warehouse config
 ├── warehouse-config.js     # Multi-location setup
 ├── initializers/           # Dropin initialization
-│   ├── index.js            # Main initialization hub (159 lines)
+│   ├── index.js            # Main initialization hub (177 lines)
 │   ├── auth.js             # Auth dropin setup
 │   ├── cart.js             # Cart dropin setup (stub)
 │   └── search.js           # Product Discovery setup

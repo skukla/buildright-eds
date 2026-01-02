@@ -259,9 +259,9 @@ npm run deploy:actions
 - [Deployment Guide](../../../buildright-service/DEPLOYMENT-GUIDE.md)
 
 ### buildright-eds Documentation
-- [Phase 6A Plan](./PHASE-6A-PERSONA-SARAH.md)
-- [Dashboard Redesign](./PHASE-6A-DASHBOARD-REDESIGN-PLAN.md)
-- [Project Status](./phase-6/0-foundation/PROJECT-STATUS-OVERVIEW.md)
+- [Sarah Persona Overview](./implementation/sarah-end-to-end/features/sarah-persona-overview.md)
+- [Sarah Dashboard Redesign](./implementation/sarah-end-to-end/features/sarah-dashboard-redesign.md)
+- [Sarah Implementation Plan](./implementation/sarah-end-to-end/features/sarah-implementation-plan.md)
 
 ---
 

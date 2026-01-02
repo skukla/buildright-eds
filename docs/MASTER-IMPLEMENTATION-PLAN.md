@@ -319,11 +319,11 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 
 | Document | Purpose |
 |----------|---------|
-| [PHASE-6A-INTEGRATION-PLAN.md](./implementation/sarah-end-to-end/features/PHASE-6A-INTEGRATION-PLAN.md) | Detailed integration plan |
-| [CATALOG-SERVICE-ARCHITECTURE.md](./implementation/sarah-end-to-end/features/CATALOG-SERVICE-ARCHITECTURE.md) | ACO catalog integration |
-| [WIREFRAMES-FINAL.md](./implementation/sarah-end-to-end/features/WIREFRAMES-FINAL.md) | UI wireframes |
-| [reference/backend/DATA-SOURCE-MATRIX.md](./reference/backend/DATA-SOURCE-MATRIX.md) | Commerce vs ACO data |
-| [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md) | Sarah's profile |
+| [sarah-integration-plan.md](./implementation/sarah-end-to-end/features/sarah-integration-plan.md) | Detailed integration plan |
+| [catalog-service-design.md](./implementation/sarah-end-to-end/features/catalog-service-design.md) | ACO catalog integration |
+| [sarah-wireframes.md](./implementation/sarah-end-to-end/features/sarah-wireframes.md) | UI wireframes |
+| [data-source-matrix.md](./reference/backend/data-source-matrix.md) | Commerce vs ACO data |
+| [personas-overview.md](./personas/personas-overview.md) | Sarah's profile |
 
 **Completed:**
 - [x] Dashboard Simplification

@@ -31,7 +31,7 @@ Per ADR-001 and ADR-007, this project uses a **hybrid dropin strategy**:
 | Phase | Status | Description |
 |-------|--------|-------------|
 | 0-5 | Complete | Research, ACO data, design system, core architecture |
-| 5.5 | **Planned** | Commerce Dropins (Auth, Cart, Checkout, Orders) |
+| 5.5 | **In Progress** | Commerce Dropins (Auth, Cart, Checkout, Orders) |
 | 6A | **In Progress** | Sarah persona end-to-end flow |
 | 7 | Planned | Custom SDK dropins for ACO |
 | 8 | Planned | Polish & performance |
@@ -42,13 +42,13 @@ Per ADR-001 and ADR-007, this project uses a **hybrid dropin strategy**:
 
 ```
 buildright-eds/
-├── blocks/           # 30 EDS blocks (see blocks/CLAUDE.md)
-├── pages/            # 18 HTML pages
+├── blocks/           # 29 EDS blocks (see blocks/CLAUDE.md)
+├── pages/            # 16 HTML pages
 ├── scripts/          # Services, initializers (see scripts/CLAUDE.md)
 ├── styles/           # CSS design system
 ├── config/           # env.json configuration
-├── docs/             # 51+ documentation files
-│   ├── adr/          # 7 Architecture Decision Records
+├── docs/             # 271+ documentation files
+│   ├── adr/          # 11 Architecture Decision Records
 │   ├── implementation/
 │   └── personas/
 ├── data/             # Mock product data (from archived buildright-aco)
@@ -90,11 +90,11 @@ buildright-eds/
 
 5 B2B personas with different catalog views and pricing:
 
-1. **Sarah Martinez** (Phase 6A - Current) - Designer/Decorator
-2. **Marcus Johnson** (Phase 6B) - Commercial contractor
-3. **Lisa Wong** (Phase 6C) - Residential designer
-4. **David Chen** (Phase 6D) - Deck builder specialist
-5. **Kevin O'Brien** (Phase 6E) - Restock/inventory manager
+1. **Sarah Martinez** (Phase 6A - Current) - Production Builder
+2. **Marcus Johnson** (Phase 6B) - General Contractor
+3. **Lisa Chen** (Phase 6C) - Remodeling Contractor
+4. **David Thompson** (Phase 6D) - Pro Homeowner (DIY)
+5. **Kevin Rodriguez** (Phase 6E) - Store Manager
 
 Each persona maps to:
 - `catalog_view_id` - Which products they see
