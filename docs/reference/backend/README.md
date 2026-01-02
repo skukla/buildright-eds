@@ -1,59 +1,72 @@
-# Phase 8: Backend Setup
+# Backend Reference Documentation
 
-**Status**: 📋 Planned (After Phases 6-7)  
-**Purpose**: Adobe Commerce PaaS + ACO backend configuration
+**Status**: Active Reference
+**Purpose**: Backend architecture, data flows, and service specifications
 
 ---
 
 ## Overview
 
-This folder contains all documentation needed for Phase 8: setting up the Adobe Commerce backend and Adobe Commerce Optimizer (ACO) integration.
+This folder contains technical reference documentation for backend services, data flows, and integration patterns. These documents describe reusable patterns applicable across the project.
 
 ---
 
-## When to Use These Docs
+## Architecture & Data Flow
 
-Reference these documents when:
-- Setting up Adobe Commerce instance
-- Configuring ACO
-- Integrating Commerce Dropins
-- Setting up product data flows
-- Configuring authentication
-- Understanding Commerce vs ACO data sources
-
----
-
-## Key Documents
-
-### Main Setup Guide
-- **PHASE-8-BACKEND-SETUP-UPDATED.md** - Complete backend setup guide
-- **PHASE-8-REQUIRED-SCRIPTS.md** - Required scripts for setup
-
-### Adobe Commerce Optimizer (ACO)
-- **MOCK-ACO-API-SPEC.md** - ACO API specification
-- **ACO-PRICING-RESEARCH.md** - ACO pricing capabilities
-- **ACO-COMMERCE-CATALOG-RELATIONSHIP.md** - How catalog sync works
-- **ACO-COMMERCE-CATALOG-RELATIONSHIP-CORRECTION.md** - Sync clarifications
-- **FEED-TABLE-EXPLAINED.md** - Data feed structure
-
-### Commerce Integration
-- **dropin-architecture.md** - Dropins overview and architecture
-- **DROPIN-INTEGRATION-GUIDE.md** - How to integrate dropins
-- **BLOCK-VS-DROPIN-MATRIX.md** - When to use blocks vs dropins
-- **AUTH-STRATEGY.md** - Authentication approach
-- **DATA-SOURCE-MATRIX.md** - Commerce PaaS + ACO hybrid data sources
-
-### Product Data
-- **PRODUCT-FLOW-ADOBE-COMMERCE-TO-ACO.md** - Product sync flow
-- **PRODUCT-RECORD-CREATION-FLOW.md** - Product creation workflow
-- **PRODUCT-RECORD-VISUALIZATION.md** - Product data visualization
-
-### EDS Integration
-- **EDS-MIGRATION-GUIDE.md** - EDS best practices
-- **EDS-BLOCK-PATTERNS.md** - Block pattern library
-- **EDS-PATTERN-DEVIATIONS.md** - Our deviations from standard EDS
+| Document | Purpose |
+|----------|---------|
+| [aco-catalog-data-flow.md](./aco-catalog-data-flow.md) | ACO + EDS implementation patterns |
+| [aco-commerce-relationship.md](./aco-commerce-relationship.md) | Commerce ↔ ACO catalog sync architecture |
+| [backend-services-analysis.md](./backend-services-analysis.md) | Backend service architecture analysis |
+| [catalog-service-design.md](./catalog-service-design.md) | Catalog service design patterns |
+| [product-data-flow.md](./product-data-flow.md) | Product data journey from Commerce to EDS |
+| [product-record-diagram.md](./product-record-diagram.md) | Product record structure visualization |
+| [product-record-flow.md](./product-record-flow.md) | Product record creation workflow |
 
 ---
 
-**Back to**: [Main Docs](../) | [Phase Plans Index](../../planning/phase-plans-index.md)
+## BOM (Bill of Materials)
 
+| Document | Purpose |
+|----------|---------|
+| [bom-calculation-formulas.md](./bom-calculation-formulas.md) | BOM calculation logic and formulas |
+| [bom-integration-architecture.md](./bom-integration-architecture.md) | BOM backend integration strategy |
+| [bom-service-implementation.md](./bom-service-implementation.md) | BOM service implementation details |
+
+---
+
+## ACO Reference
+
+| Document | Purpose |
+|----------|---------|
+| [aco-feed-table-reference.md](./aco-feed-table-reference.md) | ACO feed table structure and fields |
+
+---
+
+## Additional Reference
+
+| Document | Purpose |
+|----------|---------|
+| [data-source-comparison.md](./data-source-comparison.md) | Commerce vs ACO data source comparison |
+| [eds-block-structure.md](./eds-block-structure.md) | EDS block patterns and conventions |
+
+---
+
+## Archived
+
+The following files have been archived to `docs/archive/completed/`:
+- `block-vs-dropin-decision.md` → Superseded by [ADR-014](../../adr/ADR-014-eds-blocks-vs-dropins.md)
+- `aco-pricing-headers.md` → ACO pricing header documentation (reference only)
+- `ADR-015-dynamic-pricing-rules.md` → Archived (documented ACO architecture, not a project decision)
+
+---
+
+## Related Documentation
+
+- **ADRs**: [docs/adr/](../../adr/) - Architecture Decision Records
+- **Explanations**: [docs/explanations/](../../explanations/) - Visual guides and overviews
+- **Standards**: [docs/reference/standards/](../standards/) - Code standards and patterns
+
+---
+
+**Last Updated**: 2026-01-02

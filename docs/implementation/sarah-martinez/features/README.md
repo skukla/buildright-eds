@@ -9,7 +9,6 @@
 
 ```
 features/
-├── architecture/    # System design, service architecture, data flow
 ├── product-data/    # Product specifications, catalog structure, images
 ├── design/          # UI/UX wireframes, component specs, visual design
 └── plans/           # Implementation plans, user flows, persona details
@@ -31,16 +30,15 @@ For the business requirements extracted from that planning, see:
 
 ## Architecture
 
-System design, service patterns, and data flow documentation.
-
-| Document | Purpose |
-|----------|---------|
-| [aco-catalog-data-flow.md](./architecture/aco-catalog-data-flow.md) | ACO + EDS implementation patterns |
-| [backend-services-analysis.md](./architecture/backend-services-analysis.md) | Backend service architecture analysis |
-| [bom-calculation-formulas.md](./architecture/bom-calculation-formulas.md) | BOM calculation logic and formulas |
-| [bom-integration-architecture.md](./architecture/bom-integration-architecture.md) | BOM backend integration strategy |
-| [bom-service-implementation.md](./architecture/bom-service-implementation.md) | BOM service implementation details |
-| [catalog-service-design.md](./architecture/catalog-service-design.md) | Catalog service design patterns |
+> **Relocated**: Architecture files moved to `docs/reference/backend/` per ADR-011 (reference = reusable technical specifications).
+>
+> See: [`docs/reference/backend/`](../../../reference/backend/) for:
+> - `aco-catalog-data-flow.md` - ACO + EDS implementation patterns
+> - `backend-services-analysis.md` - Backend service architecture analysis
+> - `bom-calculation-formulas.md` - BOM calculation logic and formulas
+> - `bom-integration-architecture.md` - BOM backend integration strategy
+> - `bom-service-implementation.md` - BOM service implementation details
+> - `catalog-service-design.md` - Catalog service design patterns
 
 **Related ADR**: [ADR-013: Unified Product Taxonomy](../../../adr/ADR-013-unified-product-taxonomy.md)
 
