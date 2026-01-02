@@ -1,133 +1,164 @@
 # Documentation Archive
 
-This directory contains documentation that is no longer relevant to the current **Persona-Based BuildRight Implementation Plan** but is preserved for historical reference.
-
-## Archive Organization
-
-### `old-project-builder/`
-**Archived on:** November 15, 2025  
-**Reason:** These documents describe the old "Kit Mode" architecture and Project Builder implementation that is being replaced by the new persona-based approach.
-
-**Contents:**
-- Original Project Builder Enhancement plan
-- Kit Mode architecture documentation
-- Various project builder refactoring plans, audits, and tile implementations
-
-**Note:** The new implementation uses generic wizards and builders that adapt based on user context, replacing the monolithic Project Builder.
+Historical documentation preserved for reference. These documents are no longer actively maintained but provide valuable context for architectural decisions and past implementations.
 
 ---
 
-### `product-images/`
-**Archived on:** November 15, 2025  
-**Reason:** Product image mapping documentation. While images are still needed, these specific maps and guides are not directly relevant to the persona implementation architecture.
+## Archive Structure
 
-**Contents:**
-- Complete product image maps
-- Photo-realistic image guides
-- Product image sources and needs documentation
-
-**Note:** Image guidelines remain in the main docs folder (`image-guidelines.md`).
-
----
-
-### `theme-exploration-old/`
-**Archived on:** November 15, 2025  
-**Reason:** Color palette exploration and previews from earlier design iterations. The design system is now consolidated in `CSS-ARCHITECTURE.md` and `styles/base.css`.
-
-**Contents:**
-- Color palette previews (4 options)
-- Palette comparison HTML files
-
-**Note:** The finalized design system is documented in `CSS-ARCHITECTURE.md`.
-
----
-
-### `bug-fixes/`
-**Archived on:** November 15, 2025  
-**Reason:** Specific bug fix documentation and scripts for issues that have been resolved (duplicate headers, DOM manipulation reduction).
-
-**Contents:**
-- Duplicate header fix documentation and script
-- DOM manipulation reduction strategy
-
-**Note:** These fixes are now incorporated into the codebase.
+```
+archive/
+├── dropin-migration/       # Commerce dropin integration work (22 files)
+├── phase-progress/         # Phase progress summaries (3 files)
+├── aco-catalog/            # ACO and catalog implementation (3 files)
+├── analysis/               # UX audits, research, roadmaps (3 files)
+├── meta-docs/              # Documentation organization (15 files)
+├── completed/              # Completed phase summaries (28 files)
+├── sarah-completed/        # Sarah persona work (21 files)
+├── reference-old/          # Superseded reference docs (15 files)
+├── outdated-plans/         # Obsolete planning docs (8 files)
+├── phase-6-foundation-obsolete/  # Old Phase 6 plans (8 files)
+├── product-images/         # Product image mapping (5 files)
+├── session-logs/           # Agent handoff logs (3 files)
+├── bug-fixes/              # Resolved bug documentation (2 files)
+├── old-project-builder/    # Legacy project builder (12 files)
+├── old-audits/             # Historical audits (2 files)
+├── old-routing/            # Legacy routing docs (3 files)
+└── theme-exploration-old/  # Design explorations (varies)
+```
 
 ---
 
-### `old-routing/`
-**Archived on:** November 15, 2025  
-**Reason:** URL routing and AEM EDS routing documentation that may be outdated with the new persona-based routing approach using user context and query parameters.
+## Category Descriptions
 
-**Contents:**
-- AEM EDS routing documentation
-- URL migration guides
-- URL routing implementation plans
+### `dropin-migration/` (22 files)
+**Purpose**: All Commerce dropin integration research, migration plans, and comparisons
 
-**Note:** The new routing approach is documented in `PERSONA-IMPLEMENTATION-PLAN.md` (Phase 3 & 5).
+**Contents**:
+- Product List Page (PLP) dropin migration (7 files)
+- MiniCart/Cart dropin work (3 files)
+- Auth dropin research
+- Dropin CSS strategy and slot analysis
+- Catalog vs dropin comparisons
+
+**Key Documents**:
+- `plp-dropin-migration-plan.md` - PLP migration strategy
+- `dropin-css-strategy-analysis.md` - CSS override approach
+- `minicart-user-menu-analysis.md` - Cart dropin options
 
 ---
 
-### `old-audits/`
-**Archived on:** November 15, 2025  
-**Reason:** Historical code audits and implementation reviews from earlier iterations.
+### `phase-progress/` (3 files)
+**Purpose**: Progress summaries for major implementation phases
 
-**Contents:**
-- Code audit findings
-- Implementation review
+**Contents**:
+- `phase-5.5-cart-progress.md` - Cart dropin integration
+- `phase-5.5-progress-summary.md` - Commerce dropins overall
+- `phase-8-backend-setup.md` - Backend configuration
 
-**Note:** The current UX audit and vision is in `UX-AUDIT-AND-VISION.md`.
+---
+
+### `aco-catalog/` (3 files)
+**Purpose**: Adobe Commerce Optimizer (ACO) and catalog implementation
+
+**Contents**:
+- `aco-category-routes-fix-dec-19-2025.md` - Category routing fix
+- `aco-category-routes-implementation-complete.md` - Completion summary
+- `implementation-impact-analysis.md` - ACO sync impact
+
+---
+
+### `analysis/` (3 files)
+**Purpose**: Research, audits, and strategic planning documents
+
+**Contents**:
+- `ux-audit-and-vision.md` - Comprehensive UX analysis
+- `adobe-best-practices-comparison.md` - CSS/JS audit validation
+- `implementation-roadmap.md` - Original implementation roadmap
+
+---
+
+### `meta-docs/` (15 files)
+**Purpose**: Documentation about documentation - organization, audits, rotation plans
+
+**Contents**:
+- Documentation rotation plans (v1, v2)
+- Documentation audits and updates
+- Navigation maps and efficiency assessments
+- Categorization manifests
+
+---
+
+### `completed/` (28 files)
+**Purpose**: Completed phase summaries (Phases 0-5)
+
+**Key Documents**:
+- `phase-0-research-and-decisions.md` - Initial research
+- `phase-1-aco-data-foundation.md` - ACO data setup
+- `phase-2-final-summary.md` - Design system
+- `phase-3-completion-summary.md` - Core architecture
+- `phase-4-completion-summary.md` - Shared components
+- `phase-5-task-*-completion-summary.md` - Page refactoring
+
+---
+
+### `sarah-completed/` (21 files)
+**Purpose**: Sarah Martinez persona implementation work
+
+**Contents**:
+- Wireframes and design sprints
+- Product catalog audits
+- Font weight and visual hierarchy analysis
+- BOM (Bill of Materials) service
+
+---
+
+### `reference-old/` (15 files)
+**Purpose**: Superseded reference documentation
+
+**Key Documents**:
+- `auth-strategy.md` - Original auth approach
+- `mock-aco-api-spec.md` - Mock API specification
+- `dropin-architecture.md` - Early dropin patterns
+- `perplexity-dropin-customization-research.md` - Research findings
+
+---
+
+### Other Subdirectories
+
+| Directory | Files | Description |
+|-----------|-------|-------------|
+| `outdated-plans/` | 8 | Obsolete implementation plans |
+| `phase-6-foundation-obsolete/` | 8 | Old Phase 6 foundation docs |
+| `product-images/` | 5 | Product image mapping |
+| `session-logs/` | 3 | Agent handoff context |
+| `bug-fixes/` | 2 | Resolved bug documentation |
+| `old-project-builder/` | 12 | Legacy project builder |
+| `old-audits/` | 2 | Historical code audits |
+| `old-routing/` | 3 | Legacy URL routing |
+
+---
+
+## Finding Information
+
+| Looking For | Check |
+|-------------|-------|
+| Dropin implementation decisions | `dropin-migration/` |
+| Phase completion details | `completed/` |
+| Sarah persona work | `sarah-completed/` |
+| API specifications | `reference-old/` |
+| Documentation history | `meta-docs/` |
 
 ---
 
 ## Current Active Documentation
 
-**Start Here**: [PERSONA-PLAN-CORE-DOCS.md](../PERSONA-PLAN-CORE-DOCS.md) - Curated index of the most critical persona plan documents
+**For current project documentation, see:**
 
-The documentation is now organized by implementation phase:
-
-### Root Level (Active Planning)
-- **[PERSONA-PLAN-CORE-DOCS.md](../PERSONA-PLAN-CORE-DOCS.md)** ⭐ **START HERE**
-- **[PHASE-PLANS-INDEX.md](../PHASE-PLANS-INDEX.md)** - Complete roadmap
-- **[BUILDRIGHT-PERSONAS-AND-FLOWS.md](../BUILDRIGHT-PERSONAS-AND-FLOWS.md)** - All 5 personas
-- **[PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md)** - Current work (Phases 6B-7)
-- **[CSS-ARCHITECTURE.md](../CSS-ARCHITECTURE.md)**, **[CODING-PRINCIPLES.md](../CODING-PRINCIPLES.md)** - Architecture
-- **[docs/adr/](../adr/)** - Architectural Decision Records
-
-### Phase Folders
-- **[phase-0-5-foundation/](../phase-0-5-foundation/)** - ✅ Completed foundation phases (reference)
-- **[phase-8-backend/](../phase-8-backend/)** - 📋 Backend setup (ACO, Commerce, Dropins, EDS)
-- **[phase-9-deployment/](../phase-9-deployment/)** - 📋 Production deployment & migration
-- **[phase-10-authoring/](../phase-10-authoring/)** - 📋 Content authoring transition
+- [Master Implementation Plan](../planning/master-implementation-plan.md)
+- [Dropin Architecture](../reference/dropin-architecture.md)
+- [ADRs](../adr/) - Architectural decisions
 
 ---
 
-## Restoring Archived Documents
-
-If you need to reference or restore any archived documents:
-
-1. They remain in the repository for historical reference
-2. You can copy them back to the main `docs/` folder if needed
-3. Consider whether the information is still relevant to the current architecture before restoring
-
----
-
-## Recently Archived (November 24, 2025)
-
-### Superseded Documents
-- **PHASE-8-BACKEND-SETUP.md** - Replaced by PHASE-8-BACKEND-SETUP-UPDATED.md (now in phase-8-backend/)
-- **IMPLEMENTATION-ROADMAP.md** - Replaced by phase-specific plans
-
-### Historical Planning Documents
-- **DOCS-ROTATION-PLAN.md** - Planning doc for documentation reorganization
-- **DOCS-ROTATION-PLAN-V2.md** - Planning doc for documentation reorganization
-- **DOCUMENTATION-ORGANIZATION-SUMMARY.md** - Summary of previous organization
-
-### Historical Research & Assessments
-- **UX-AUDIT-AND-VISION.md** - Pre-dates current persona plan
-- **IMPLEMENTATION-IMPACT-ANALYSIS.md** - Historical assessment
-- **ADOBE_BEST_PRACTICES_COMPARISON.md** - Research document
-
----
-
-**Last Updated:** November 24, 2025
-
+**Last Updated**: 2026-01-02
