@@ -1,6 +1,6 @@
 # AEM Edge Delivery Services (EDS) - Block Patterns
 
-**Research Date**: November 15, 2024  
+**Research Date**: November 15, 2025  
 **Sources**: AEM Live Developer Documentation (via Context7)
 
 This document outlines the core patterns and best practices for building EDS blocks.
@@ -647,6 +647,6 @@ Use **Dropin patterns** (mocked now, real later) for:
 
 ---
 
-**Last Updated**: November 15, 2024  
+**Last Updated**: November 15, 2025  
 **Status**: EDS block patterns documented from Context7 research
 

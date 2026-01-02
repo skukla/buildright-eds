@@ -1,6 +1,6 @@
 # Block vs. Dropin Decision Matrix
 
-**Research Date**: November 15, 2024  
+**Research Date**: November 15, 2025  
 **Purpose**: Framework for deciding when to use EDS blocks vs. Adobe Commerce Dropins
 
 This document provides a clear decision framework for BuildRight's architecture, ensuring we use the right tool for each component.
@@ -691,6 +691,6 @@ After completing this decision matrix:
 
 ---
 
-**Last Updated**: November 15, 2024  
+**Last Updated**: November 15, 2025  
 **Status**: Decision framework complete, ready for component architecture decisions
 

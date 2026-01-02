@@ -2,7 +2,7 @@
 
 **Status**: Accepted
 
-**Date**: 2024-11-15
+**Date**: 2025-11-15
 
 **Decision Makers**: BuildRight Implementation Team
 
@@ -291,5 +291,5 @@ See [Block vs Dropin Matrix](../reference/backend/block-vs-dropin-decision.md) f
 
 ---
 
-**Last Updated**: November 15, 2024
+**Last Updated**: November 15, 2025
 

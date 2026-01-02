@@ -45,13 +45,13 @@ Templates are now represented as orders with:
 - `status: 'Template'` - Visual badge showing it's a template
 - `projectName` - The floor plan name (e.g., "The Phoenix")
 - `templateDetails` - Additional metadata (sqft, beds, baths)
-- `orderID` - Format: `TPL-2024-001`
+- `orderID` - Format: `TPL-2025-001`
 
 **Sample Template Data**:
 ```javascript
 {
-  orderID: 'TPL-2024-001',
-  timestamp: '2024-12-03T00:00:00.000Z',
+  orderID: 'TPL-2025-001',
+  timestamp: '2025-12-03T00:00:00.000Z',
   projectName: 'The Phoenix',
   itemCount: 847,
   total: 234567.89,

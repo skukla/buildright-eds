@@ -144,7 +144,7 @@ ACO uses **pricing rules** to calculate volume discounts dynamically, rather tha
   "amount": 8.50,
   "currency": "USD",
   "uom": "EA",
-  "effectiveDate": "2024-01-01",
+  "effectiveDate": "2025-01-01",
   "explicit": true
 }
 ```

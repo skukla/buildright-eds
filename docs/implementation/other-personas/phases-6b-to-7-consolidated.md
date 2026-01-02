@@ -10,7 +10,8 @@
 - **What Exists**: [quick-reference/what-exists.md](./quick-reference/what-exists.md)
 - **Persona Profiles**: [personas-overview.md](../../personas/personas-overview.md)
 - **Completion Summaries**: [phase-0-5-foundation/](./phase-0-5-foundation/)
-- **Architectural Decisions**: [adr/ADR-004](./adr/ADR-004-custom-attributes-for-personas.md), [adr/ADR-006](./adr/ADR-006-multi-location-store-manager.md)
+- **Architectural Decisions**: [adr/ADR-004](../../adr/ADR-004-custom-attributes-for-personas.md)
+- **Kevin Implementation**: [store-manager/multi-location-architecture.md](../store-manager/multi-location-architecture.md)
 
 **📍 Reading Path**:
 1. Read persona profile in personas/ (15 min)
@@ -668,13 +669,13 @@ Updates at each step showing the progressive filtering.
 **Duration**: 1-1.5 weeks  
 **Dependencies**: Phase 4, Phase 5  
 **Persona**: Kevin Rodriguez - Store Manager  
-**Architecture**: Multi-location (see ADR-006)
+**Architecture**: Multi-location (see [multi-location-architecture.md](../store-manager/multi-location-architecture.md))
 
 ### Overview
 
 Kevin manages 3 locations of Precision Lumber & Supply (Austin, San Antonio, Houston) and needs a velocity-based restock dashboard to manage inventory across his stores. He uses the header location selector to switch between stores, and the dashboard displays location-specific inventory data.
 
-**Key Architecture** (see [ADR-006](../adr/ADR-006-multi-location-store-manager.md)):
+**Key Architecture** (see [multi-location-architecture.md](../store-manager/multi-location-architecture.md)):
 - **Kevin's Stores** (Frontend): 3 Texas retail locations he manages
 - **BuildRight Warehouses** (Backend/MSI): 6 distribution centers that fulfill orders to Kevin's stores
 - **Location Selector**: Header dropdown to switch between Austin/San Antonio/Houston
@@ -793,7 +794,7 @@ Kevin selects "San Antonio" →
           "restockPriority": "high",
           "recommendedOrder": 20,
           "unitCost": 8.99,
-          "lastRestocked": "2024-11-20"
+          "lastRestocked": "2025-11-20"
         }
         // ... more items for Austin
       ]
@@ -1298,7 +1299,7 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 
 **Note**: Phases 6B-6E can be partially parallelized (2-3 at a time)
 
-**Phase 6E Update**: Duration extended from 1 week to 1-1.5 weeks due to multi-location architecture (see [ADR-006](../adr/ADR-006-multi-location-store-manager.md)). Foundation already implemented in Phase 1-5 (location selector, company config, customer context).
+**Phase 6E Update**: Duration extended from 1 week to 1-1.5 weeks due to multi-location architecture (see [multi-location-architecture.md](../store-manager/multi-location-architecture.md)). Foundation already implemented in Phase 1-5 (location selector, company config, customer context).
 
 **Phase 6E Data Architecture**: Demo mode only (static files). See [data-source-comparison.md](../../reference/backend/data-source-comparison.md) for full hybrid Commerce PaaS + ACO architecture. Production API integration is a future enhancement.
 
@@ -1307,5 +1308,5 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 ---
 
 **Document Version**: 1.0  
-**Last Updated**: November 15, 2024
+**Last Updated**: November 15, 2025
 

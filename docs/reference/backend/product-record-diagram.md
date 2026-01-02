@@ -20,7 +20,7 @@ Adobe Commerce uses an Entity-Attribute-Value (EAV) model, where product data is
 +------------+------------------+-------------+---------------------+---------------------+
 | entity_id  | sku              | type_id     | created_at          | updated_at          |
 +------------+------------------+-------------+---------------------+---------------------+
-| 12345      | LBR-D0414F1E     | simple      | 2024-11-16 10:00:00 | 2024-11-16 10:00:00 |
+| 12345      | LBR-D0414F1E     | simple      | 2025-11-16 10:00:00 | 2025-11-16 10:00:00 |
 +------------+------------------+-------------+---------------------+---------------------+
 ```
 
@@ -259,8 +259,8 @@ Adobe Commerce uses an Entity-Attribute-Value (EAV) model, where product data is
     }
   ],
   
-  "created_at": "2024-11-16 10:00:00",
-  "updated_at": "2024-11-16 10:00:00"
+  "created_at": "2025-11-16 10:00:00",
+  "updated_at": "2025-11-16 10:00:00"
 }
 ```
 
@@ -364,7 +364,7 @@ Before being sent to ACO, the product is transformed into a feed format:
     "sourceId": "12345",
     "storeViewCode": "default",
     "websiteCode": "base",
-    "exportedAt": "2024-11-16T10:05:00Z"
+    "exportedAt": "2025-11-16T10:05:00Z"
   }
 }
 ```
@@ -393,7 +393,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
   
   // Sync Metadata
   "syncStatus": {
-    "lastSyncedAt": ISODate("2024-11-16T10:05:00Z"),
+    "lastSyncedAt": ISODate("2025-11-16T10:05:00Z"),
     "syncVersion": 1,
     "isDeleted": false
   },
@@ -516,21 +516,21 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "viewId": "US-Production-Builder",
         "viewName": "US Production Builder View",
         "isVisible": true,
-        "addedAt": ISODate("2024-11-16T11:00:00Z"),
+        "addedAt": ISODate("2025-11-16T11:00:00Z"),
         "reason": "Matches construction_phase filter"
       },
       {
         "viewId": "US-General-Contractor",
         "viewName": "US General Contractor View",
         "isVisible": true,
-        "addedAt": ISODate("2024-11-16T11:00:00Z"),
+        "addedAt": ISODate("2025-11-16T11:00:00Z"),
         "reason": "Matches quality_tier filter"
       },
       {
         "viewId": "US-DIY-Homeowner",
         "viewName": "US DIY Homeowner View",
         "isVisible": false,
-        "addedAt": ISODate("2024-11-16T11:00:00Z"),
+        "addedAt": ISODate("2025-11-16T11:00:00Z"),
         "reason": "Filtered out - professional grade only"
       }
     ],
@@ -543,7 +543,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "triggerHeader": "AC-Policy-Phase",
         "triggerValue": "foundation_framing",
         "matchedAttribute": "construction_phase",
-        "evaluatedAt": ISODate("2024-11-16T11:00:00Z")
+        "evaluatedAt": ISODate("2025-11-16T11:00:00Z")
       },
       "professional_quality_policy": {
         "eligible": true,
@@ -551,7 +551,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "triggerHeader": "AC-Policy-Quality",
         "triggerValue": "professional",
         "matchedAttribute": "quality_tier",
-        "evaluatedAt": ISODate("2024-11-16T11:00:00Z")
+        "evaluatedAt": ISODate("2025-11-16T11:00:00Z")
       },
       "deck_compatible_policy": {
         "eligible": false,
@@ -559,7 +559,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "triggerHeader": "AC-Policy-Deck",
         "triggerValue": "true",
         "matchedAttribute": "deck_compatible",
-        "evaluatedAt": ISODate("2024-11-16T11:00:00Z")
+        "evaluatedAt": ISODate("2025-11-16T11:00:00Z")
       }
     },
     
@@ -571,7 +571,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "price": 10.00,
         "currency": "USD",
         "isBase": true,
-        "effectiveDate": ISODate("2024-11-16T00:00:00Z"),
+        "effectiveDate": ISODate("2025-11-16T00:00:00Z"),
         
         // Volume Tier Pricing
         "volumeTiers": [
@@ -604,7 +604,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "currency": "USD",
         "discount": 0.15,
         "isBase": false,
-        "effectiveDate": ISODate("2024-11-16T00:00:00Z"),
+        "effectiveDate": ISODate("2025-11-16T00:00:00Z"),
         
         // Volume Tier Pricing (stacks with customer tier discount)
         "volumeTiers": [
@@ -640,7 +640,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "currency": "USD",
         "discount": 0.10,
         "isBase": false,
-        "effectiveDate": ISODate("2024-11-16T00:00:00Z"),
+        "effectiveDate": ISODate("2025-11-16T00:00:00Z"),
         
         "volumeTiers": [
           {
@@ -675,7 +675,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "currency": "USD",
         "discount": 0.25,
         "isBase": false,
-        "effectiveDate": ISODate("2024-11-16T00:00:00Z"),
+        "effectiveDate": ISODate("2025-11-16T00:00:00Z"),
         
         "volumeTiers": [
           {
@@ -710,7 +710,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
         "currency": "USD",
         "discount": 0.05,
         "isBase": false,
-        "effectiveDate": ISODate("2024-11-16T00:00:00Z"),
+        "effectiveDate": ISODate("2025-11-16T00:00:00Z"),
         
         "volumeTiers": [
           {
@@ -782,7 +782,7 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
     "catalogViewCount": 2,
     "policyEligibilityCount": 2,
     "priceBookCount": 5,
-    "lastQueried": ISODate("2024-11-16T14:30:00Z"),
+    "lastQueried": ISODate("2025-11-16T14:30:00Z"),
     "queryCount": 1523,
     "conversionRate": 0.12
   },
@@ -792,8 +792,8 @@ ACO uses a document-based database (likely MongoDB or similar), where each produ
   // ========================================
   
   "metadata": {
-    "createdAt": ISODate("2024-11-16T10:05:00Z"),
-    "updatedAt": ISODate("2024-11-16T11:00:00Z"),
+    "createdAt": ISODate("2025-11-16T10:05:00Z"),
+    "updatedAt": ISODate("2025-11-16T11:00:00Z"),
     "version": 1,
     "locale": "en_US",
     "environment": "production"
@@ -1050,7 +1050,7 @@ AC-Policy-Phase: foundation_framing
 ---
 
 **Document Version**: 1.0  
-**Last Updated**: November 16, 2024  
+**Last Updated**: November 16, 2025  
 **Related Documents**:
 - `PRODUCT-RECORD-CREATION-FLOW.md`
 - `PRODUCT-FLOW-ADOBE-COMMERCE-TO-ACO.md`

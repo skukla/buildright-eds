@@ -2,7 +2,7 @@
 
 **Status**: Partially Implemented (Pragmatically Revised)
 
-**Date**: December 2024
+**Date**: December 2025
 
 **Decision Makers**: BuildRight Implementation Team
 
@@ -58,7 +58,7 @@ The [Drop-in SDK](https://experienceleague.adobe.com/developer/commerce/storefro
 
 ---
 
-## Implementation Status (December 2024 Update)
+## Implementation Status (December 2025 Update)
 
 **This section documents divergence between the original decision and actual implementation.**
 
@@ -283,5 +283,5 @@ events.emit('product/add-to-cart', { sku: 'ABC-123', quantity: 1 });
 
 ---
 
-**Last Updated**: December 2024 (Implementation Status section added)
+**Last Updated**: December 2025 (Implementation Status section added)
 

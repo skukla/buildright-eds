@@ -579,8 +579,8 @@ Use Adobe Commerce PaaS as the catalog source for BuildRight, leveraging automat
 ---
 
 **Document Version**: 1.0 (Correction)  
-**Last Updated**: November 16, 2024  
+**Last Updated**: November 16, 2025  
 **Corrects**: `ACO-COMMERCE-CATALOG-RELATIONSHIP.md`  
-**Research Date**: November 16, 2024  
+**Research Date**: November 16, 2025  
 **Sources**: Context7, Adobe Experience League (SaaS Data Export docs)
 

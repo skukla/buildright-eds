@@ -2,7 +2,7 @@
 
 **Status**: Accepted
 
-**Date**: December 2024
+**Date**: December 2025
 
 **Decision Makers**: BuildRight Implementation Team
 
@@ -255,4 +255,4 @@ function transformToNativeSchema(items) {
 
 ---
 
-**Last Updated**: December 2024
+**Last Updated**: December 2025

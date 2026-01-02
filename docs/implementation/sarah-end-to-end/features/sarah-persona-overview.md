@@ -193,7 +193,7 @@
       },
       "statistics": {
         "timesBuilt": 23,
-        "lastOrdered": "2024-10-15",
+        "lastOrdered": "2025-10-15",
         "averageCost": 111000,
         "averageDays": 120
       }
@@ -246,7 +246,7 @@
       },
       "statistics": {
         "timesBuilt": 41,
-        "lastOrdered": "2024-11-02",
+        "lastOrdered": "2025-11-02",
         "averageCost": 81000,
         "averageDays": 105
       }
@@ -1122,5 +1122,5 @@ Upon completion of Phase 6A:
 **Phase Owner**: TBD  
 **Started**: TBD  
 **Completed**: TBD  
-**Last Updated**: November 15, 2024
+**Last Updated**: November 15, 2025
 

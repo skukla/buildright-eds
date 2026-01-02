@@ -149,7 +149,7 @@ The `feed_data` column contains a **complete, flattened representation** of the 
     "sourceId": "12345",
     "storeViewCode": "default",
     "websiteCode": "base",
-    "exportedAt": "2024-11-16T10:05:00Z"
+    "exportedAt": "2025-11-16T10:05:00Z"
   }
 }
 ```
@@ -582,7 +582,7 @@ bin/magento saas:resync --feed=products --cleanup
 ---
 
 **Document Version**: 1.0  
-**Last Updated**: November 16, 2024  
+**Last Updated**: November 16, 2025  
 **Related Documents**:
 - `PRODUCT-RECORD-CREATION-FLOW.md`
 - `PRODUCT-RECORD-VISUALIZATION.md`

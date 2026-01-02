@@ -2,9 +2,9 @@
 
 **Status**: Superseded
 
-**Date**: 2024-11-15
+**Date**: 2025-11-15
 
-**Superseded By**: Commerce Dropins integration (December 2024)
+**Superseded By**: Commerce Dropins integration (December 2025)
 
 **Decision Makers**: BuildRight Implementation Team
 
@@ -460,5 +460,5 @@ To switch from demo to production:
 
 ---
 
-**Last Updated**: November 15, 2024
+**Last Updated**: November 15, 2025
 

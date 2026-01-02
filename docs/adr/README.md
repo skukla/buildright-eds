@@ -10,17 +10,17 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 
 | ADR | Title | Status | Date |
 |-----|-------|--------|------|
-| [ADR-001](./ADR-001-use-dropins-for-commerce.md) | Use Adobe Commerce Dropins for Core Commerce Functions | Accepted | 2024-11-15 |
-| [ADR-002](./ADR-002-use-eds-blocks-for-content.md) | Use EDS Blocks for Content-Driven Components | Accepted | 2024-11-15 |
-| [ADR-003](./ADR-003-mock-aco-service.md) | Mock ACO Service with CCDM Simulation | Accepted | 2024-11-15 |
-| [ADR-004](./ADR-004-custom-attributes-for-personas.md) | Use Custom Attributes for Persona Assignment | Accepted | 2024-11-15 |
-| [ADR-005](./ADR-005-dual-mode-authentication.md) | Dual-Mode Authentication (Demo + Production) | Accepted | 2024-11-15 |
-| [ADR-006](./ADR-006-multi-location-store-manager.md) | Multi-Location Store Manager Architecture | Accepted | 2024-11-24 |
-| [ADR-007](./ADR-007-custom-sdk-dropins-for-aco.md) | Custom SDK Dropins for ACO-Sourced Components | Accepted | 2024-12 |
-| [ADR-008](./ADR-008-dropin-css-refactoring-strategy.md) | Dropin CSS Refactoring Strategy | Implemented | 2024-12-24 |
-| [ADR-009](./ADR-009-mesh-adapter-resolver-pattern.md) | Mesh Adapter Resolver Pattern | Accepted | 2024-12-31 |
-| [ADR-010](./ADR-010-dropin-slot-customization-pattern.md) | Dropin Slot Customization Pattern | Accepted | 2024-12-31 |
+| [ADR-001](./ADR-001-use-dropins-for-commerce.md) | Use Adobe Commerce Dropins for Core Commerce Functions | Accepted | 2025-11-15 |
+| [ADR-002](./ADR-002-use-eds-blocks-for-content.md) | Use EDS Blocks for Content-Driven Components | Accepted | 2025-11-15 |
+| [ADR-003](./ADR-003-mock-aco-service.md) | Mock ACO Service with CCDM Simulation | Accepted | 2025-11-15 |
+| [ADR-004](./ADR-004-custom-attributes-for-personas.md) | Use Custom Attributes for Persona Assignment | Accepted | 2025-11-15 |
+| [ADR-005](./ADR-005-dual-mode-authentication.md) | Dual-Mode Authentication (Demo + Production) | Accepted | 2025-11-15 |
+| [ADR-007](./ADR-007-custom-sdk-dropins-for-aco.md) | Custom SDK Dropins for ACO-Sourced Components | Accepted | 2025-12 |
+| [ADR-008](./ADR-008-dropin-css-refactoring-strategy.md) | Dropin CSS Refactoring Strategy | Implemented | 2025-12-24 |
+| [ADR-009](./ADR-009-mesh-adapter-resolver-pattern.md) | Mesh Adapter Resolver Pattern | Accepted | 2025-12-31 |
+| [ADR-010](./ADR-010-dropin-slot-customization-pattern.md) | Dropin Slot Customization Pattern | Accepted | 2025-12-31 |
 | [ADR-011](./ADR-011-documentation-category-structure.md) | Documentation Category Structure | Accepted | 2026-01-01 |
+| [ADR-012](./ADR-012-commerce-dropins-direct-connection.md) | Commerce Dropins Direct Connection Pattern | Accepted | 2025-12-12 |
 
 ## ADR Status Definitions
 
@@ -72,5 +72,5 @@ What are the positive and negative outcomes?
 
 ---
 
-**Last Updated**: December 31, 2024
+**Last Updated**: December 31, 2025
 

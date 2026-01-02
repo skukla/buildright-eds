@@ -2,7 +2,7 @@
 
 **Status**: Accepted
 
-**Date**: 2024-11-15
+**Date**: 2025-11-15
 
 **Decision Makers**: BuildRight Implementation Team
 
@@ -381,5 +381,5 @@ To ensure mock accurately represents ACO:
 
 ---
 
-**Last Updated**: November 15, 2024
+**Last Updated**: November 15, 2025
 

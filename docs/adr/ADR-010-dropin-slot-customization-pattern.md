@@ -2,7 +2,7 @@
 
 **Status**: Accepted
 
-**Date**: December 2024
+**Date**: December 2025
 
 **Decision Makers**: BuildRight Implementation Team
 
@@ -298,4 +298,4 @@ When implementing a new dropin (Auth, Cart, Checkout, Order):
 
 ---
 
-**Last Updated**: December 2024
+**Last Updated**: December 2025

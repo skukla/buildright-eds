@@ -1,7 +1,7 @@
-# ADR-008: Commerce Dropins Direct Connection Pattern
+# ADR-012: Commerce Dropins Direct Connection Pattern
 
 ## Status
-**ACCEPTED** - December 12, 2024
+**ACCEPTED** - December 12, 2025
 
 ## Context
 

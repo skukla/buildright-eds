@@ -3,7 +3,7 @@
 **📊 Document Type**: Technical Reference  
 **📖 Purpose**: Define formulas for calculating material quantities in house construction BOMs  
 **👥 Audience**: Developers implementing BOM calculator service  
-**📅 Created**: 2024-11-26
+**📅 Created**: 2025-11-26
 
 ---
 
@@ -786,7 +786,7 @@ Interior Finish:
 
 ---
 
-**Last Updated**: 2024-11-26  
+**Last Updated**: 2025-11-26  
 **Version**: 1.0  
 **Status**: ✅ Complete - Ready for Implementation
 

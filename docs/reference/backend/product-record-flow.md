@@ -25,8 +25,8 @@ catalog_product_entity
 ├─ entity_id: 12345
 ├─ sku: "LBR-D0414F1E"
 ├─ type_id: "simple"
-├─ created_at: "2024-11-16 10:00:00"
-└─ updated_at: "2024-11-16 10:00:00"
+├─ created_at: "2025-11-16 10:00:00"
+└─ updated_at: "2025-11-16 10:00:00"
 
 -- EAV attributes (varchar)
 catalog_product_entity_varchar
@@ -86,7 +86,7 @@ catalog_product_entity_varchar
   "sku": "LBR-D0414F1E",
   "sourceSystem": "adobe_commerce",
   "sourceId": "12345",
-  "syncedAt": "2024-11-16T10:05:00Z",
+  "syncedAt": "2025-11-16T10:05:00Z",
   
   "basicInfo": {
     "name": "2x4x8 Douglas Fir Framing Lumber",
@@ -732,8 +732,8 @@ db.products.insertOne({
     priceBooks: {}
   },
   
-  createdAt: ISODate("2024-11-16T10:05:00Z"),
-  syncedAt: ISODate("2024-11-16T10:05:00Z")
+  createdAt: ISODate("2025-11-16T10:05:00Z"),
+  syncedAt: ISODate("2025-11-16T10:05:00Z")
 });
 ```
 
@@ -1273,7 +1273,7 @@ const enhancedProducts = acoProducts.map(product => ({
 ---
 
 **Document Version**: 1.0  
-**Last Updated**: November 16, 2024  
+**Last Updated**: November 16, 2025  
 **Related Documents**:
 - `PRODUCT-FLOW-ADOBE-COMMERCE-TO-ACO.md`
 - `ACO-COMMERCE-CATALOG-RELATIONSHIP-CORRECTION.md`

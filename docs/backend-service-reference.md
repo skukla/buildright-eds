@@ -156,7 +156,7 @@ async function generateBOM(templateId, packageId, template, packageData) {
       "packageId": "structural",
       "items": [...],
       "totals": {...},
-      "generated": "2024-11-28T..."
+      "generated": "2025-11-28T..."
     }
   }
 }
@@ -416,7 +416,7 @@ const BACKEND_URLS = {
 
 ---
 
-**Last Updated:** November 28, 2024  
+**Last Updated:** November 28, 2025  
 **Status:** Phase 1 Complete - Backend Infrastructure Ready  
 **Next Step:** Phase 2 - Integrate backend actions into frontend
 

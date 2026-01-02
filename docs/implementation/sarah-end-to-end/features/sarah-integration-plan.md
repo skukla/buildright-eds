@@ -1,7 +1,7 @@
 # Phase 6A: Sarah Martinez - Complete Integration Plan
 
 **Created**: December 7, 2025  
-**Updated**: December 2024  
+**Updated**: December 2025  
 **Status**: Active  
 **Goal**: Fully integrated, demo-ready Sarah persona with real ACO/Commerce catalog data
 
@@ -14,7 +14,7 @@
 
 This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) product data. 
 
-**Key Update (December 2024):** Cart, checkout, and orders will now use Commerce Dropins instead of mocked localStorage. See [codebase-audit-dropins.md](../dropins/codebase-audit-dropins.md) for details.
+**Key Update (December 2025):** Cart, checkout, and orders will now use Commerce Dropins instead of mocked localStorage. See [codebase-audit-dropins.md](../dropins/codebase-audit-dropins.md) for details.
 
 ---
 
@@ -254,7 +254,7 @@ All sub-phases completed:
 **Estimated Time**: 3-4 days  
 **Priority**: 🟡 MEDIUM (now part of Phase 5.5)
 
-> **Update (December 2024):** Cart and Orders will use Commerce Dropins instead of mocked localStorage.  
+> **Update (December 2025):** Cart and Orders will use Commerce Dropins instead of mocked localStorage.  
 > See [codebase-audit-dropins.md](../dropins/codebase-audit-dropins.md) for implementation details.
 
 ### 6.1 Cart — Use Cart Dropin
@@ -282,7 +282,7 @@ All sub-phases completed:
 **Estimated Time**: Included in Phase 5.5  
 **Priority**: 🔴 HIGH (integrated with Dropins)
 
-> **Update (December 2024):** Commerce backend integration is now handled via Commerce Dropins.  
+> **Update (December 2025):** Commerce backend integration is now handled via Commerce Dropins.  
 > Auth, Cart, Checkout, and Orders all connect to Commerce backend automatically.  
 > See [master-implementation-plan.md](../../master-implementation-plan.md) Phase 5.5.
 
@@ -433,5 +433,5 @@ FUTURE: Commerce Backend (when added)
 | Dec 9, 2025 | Phase 3 updates: Live Search, Faceted Search completed |
 | Dec 9, 2025 | Added bundle pricing mesh workaround (ACO returns null priceRange for bundles) |
 | Dec 9, 2025 | Added Phase 7: Commerce Backend Integration - documents bundle pricing migration path |
-| Dec 2024 | **Major update**: Cart/Orders now use Commerce Dropins. Added references to master-implementation-plan.md |
+| Dec 2025 | **Major update**: Cart/Orders now use Commerce Dropins. Added references to master-implementation-plan.md |
 

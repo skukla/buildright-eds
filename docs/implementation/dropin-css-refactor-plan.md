@@ -2,8 +2,8 @@
 
 **ADR Reference**: `docs/adr/ADR-008-dropin-css-refactoring-strategy.md`
 **Research Reference**: `.rptc/research/adobe-commerce-eds-dropins-implementation/research.md`
-**Created**: December 2024
-**Status**: Complete (Implemented December 2024)
+**Created**: December 2025
+**Status**: Complete (Implemented December 2025)
 
 ---
 
@@ -528,7 +528,7 @@ If not configurable, document in comments why CSS hiding is necessary.
 
 ## Validation Checklist (All Complete)
 
-Implementation verified December 2024:
+Implementation verified December 2025:
 
 - [x] `!important` count < 50 (achieved: 25)
 - [x] `var()` usage > 145 (achieved: 97+ total)
