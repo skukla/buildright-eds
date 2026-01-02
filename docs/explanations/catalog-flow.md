@@ -63,31 +63,6 @@ Shows how a user browsing products triggers a complete flow from browser to data
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## What Each Step Involves
-
-| Step | Component | File/Location |
-|------|-----------|---------------|
-| 1 | Page | `pages/catalog.html` |
-| 2 | Block | `blocks/product-list/product-list.js` |
-| 3 | Dropin | `@dropins/storefront-product-discovery` |
-| 4 | Mesh | `buildright-service/mesh/mesh.json` |
-| 5 | ACO | Adobe Commerce Optimizer (cloud) |
-| 6 | Resolver | `mesh/resolvers-src/dropin-search.js` |
-| 7 | Slots | Custom slot renderers in block |
-| 8 | Browser | Final rendered DOM |
-
-## Time Breakdown
-
-```
-Total: ~500ms (typical)
-
-Browser → Mesh:     50ms
-Mesh routing:       20ms
-ACO query:         300ms
-Response transform: 30ms
-Dropin render:     100ms
-```
-
 ## Facet (Filter) Flow
 
 When user clicks a filter checkbox:
@@ -110,4 +85,4 @@ When user clicks a filter checkbox:
 
 ---
 
-**See Also:** [architecture-overview.md](./architecture-overview.md) | [dropin-pattern.md](./dropin-pattern.md)
+**See Also:** [dropin-pattern.md](./dropin-pattern.md) | [product-data-flow.md](../reference/backend/product-data-flow.md) | [ADR-007](../adr/ADR-007-custom-sdk-dropins-for-aco.md)

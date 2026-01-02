@@ -66,15 +66,6 @@ SearchResults.render(container, {
 /* This avoids conflicts with Adobe's dropin CSS */
 ```
 
-## Which Dropins We Use
-
-| Dropin | What It Does | Customization Level |
-|--------|--------------|---------------------|
-| Auth | Login/logout | Low (use as-is) |
-| Cart | Shopping cart | Medium (slots) |
-| Checkout | Payment flow | Low (use as-is) |
-| Product Discovery | Product grid | High (many slots) |
-
 ---
 
-**See Also:** [ADR-010](../adr/ADR-010-dropin-slot-customization-pattern.md) | [catalog-flow.md](./catalog-flow.md)
+**See Also:** [dropin-integration-reference.md](../reference/dropin-integration-reference.md) (pattern levels detail) | [ADR-014](../adr/ADR-014-eds-blocks-vs-dropins.md) | [catalog-flow.md](./catalog-flow.md)

@@ -3,7 +3,7 @@
 **📊 Document Type**: Quick Reference Guide  
 **📖 Reading Time**: 5 minutes  
 **👥 Audience**: Developers implementing persona-specific catalog views  
-**🔗 Parent**: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
+**🔗 Parent**: [aco-catalog-data-flow.md](../../reference/backend/aco-catalog-data-flow.md)
 
 ---
 
@@ -63,7 +63,7 @@ Interior Finish Phase
 
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
+- ACO Config: [aco-catalog-data-flow.md](../../reference/backend/aco-catalog-data-flow.md)
 - Implementation: [sarah-persona-overview.md](../implementation/sarah-martinez/features/plans/sarah-persona-overview.md)
 
 ---
@@ -113,7 +113,7 @@ Hardware & Tools
 
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
+- ACO Config: [aco-catalog-data-flow.md](../../reference/backend/aco-catalog-data-flow.md)
 - Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
@@ -166,7 +166,7 @@ General Finishes
 
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
+- ACO Config: [aco-catalog-data-flow.md](../../reference/backend/aco-catalog-data-flow.md)
 - Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
@@ -218,7 +218,7 @@ General Home Improvement
 
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
+- ACO Config: [aco-catalog-data-flow.md](../../reference/backend/aco-catalog-data-flow.md)
 - Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
@@ -261,7 +261,7 @@ Low Velocity Products
 
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
+- ACO Config: [aco-catalog-data-flow.md](../../reference/backend/aco-catalog-data-flow.md)
 - Implementation: Kevin does NOT use Project entity (separate workflow)
 
 ---
@@ -367,7 +367,7 @@ export const PERSONA_CATALOG_CONFIG = {
 
 **Strategic Documents**:
 - [Product Category Structure](../implementation/sarah-martinez/features/product-data/product-category-structure.md) - Why unified taxonomy?
-- [ACO Catalog Data Flow](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md) - Technical implementation
+- [ACO Catalog Data Flow](../../reference/backend/aco-catalog-data-flow.md) - Technical implementation
 
 **Persona Implementation Guides**:
 - [Sarah Implementation](../implementation/sarah-martinez/features/plans/sarah-persona-overview.md)

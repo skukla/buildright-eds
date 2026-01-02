@@ -8,7 +8,7 @@
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| [best-practice-implementation-summary.md](./best-practice-implementation-summary.md) | Summary of dual-endpoint architecture decision | Complete |
+| [best-practice-implementation-summary.md](../../../archive/completed/best-practice-implementation-summary.md) | Summary of dual-endpoint architecture decision | Archived |
 | [commerce-dropins-integration.md](./commerce-dropins-integration.md) | How to integrate Commerce Dropins | Reference |
 | [commerce-mesh-integration.md](./commerce-mesh-integration.md) | API Mesh configuration for dropins | Reference |
 | [cart-api-only-implementation.md](./cart-api-only-implementation.md) | Cart dropin API-only mode | Complete |

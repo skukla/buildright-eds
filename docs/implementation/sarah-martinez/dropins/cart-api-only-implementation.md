@@ -210,7 +210,7 @@ events.on('cart/updated', () => {
 
 ## Related Documents
 
-- [dropin-integration-pattern.md](../../../reference/standards/dropin-integration-pattern.md) - Standard pattern for Dropin integration
+- [dropin-integration-reference.md](../../../reference/dropin-integration-reference.md) - Dropin integration patterns and configuration
 - [auth-dropin-implementation.md](../../../archive/reference-old/auth-dropin-implementation.md) - Auth Dropin implementation
 - [perplexity-dropin-customization-research.md](../../../archive/reference-old/perplexity-dropin-customization-research.md) - Original research
 

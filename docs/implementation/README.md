@@ -38,7 +38,7 @@ implementation/
 - **Overview**: [sarah-martinez/features/README.md](./sarah-martinez/features/README.md)
 - **Implementation Plan**: [sarah-implementation-plan.md](./sarah-martinez/features/plans/sarah-implementation-plan.md)
 - **Wireframes**: [sarah-wireframes.md](./sarah-martinez/features/design/sarah-wireframes.md)
-- **BOM Service**: [bom-service-implementation.md](./sarah-martinez/features/architecture/bom-service-implementation.md)
+- **BOM Service**: [bom-service-implementation.md](../reference/backend/bom-service-implementation.md)
 
 ### Kevin Rodriguez (Store Manager) - Phase 6E
 - **Multi-Location Architecture**: [multi-location-architecture.md](./kevin-rodriguez/multi-location-architecture.md)
