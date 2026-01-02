@@ -113,7 +113,7 @@ Individual persona implementations, each with unique dashboards and builder flow
 
 #### Phase 6A: Sarah (Production Builder)
 **Duration**: 1-2 weeks  
-**Plan Document**: `PHASE-6A-PERSONA-SARAH.md`
+**Plan Document**: `sarah-persona-overview.md`
 
 Template-based ordering with floor plans and repeat BOMs.
 

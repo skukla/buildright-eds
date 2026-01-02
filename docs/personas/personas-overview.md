@@ -5,10 +5,9 @@
 **👥 Audience**: Everyone (product, UX, developers)
 
 **🔗 Related Docs**:
-- **Implementation Plans**: [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md)
-- **Quick Start**: [quick-reference/implement-persona.md](../quick-reference/implement-persona.md)
-- **Meta Strategy**: [PERSONA-META-PLAN.md](./PERSONA-META-PLAN.md)
-- **UX Patterns**: [PERSONA-UX-MAP.md](./PERSONA-UX-MAP.md)
+- **Meta Strategy**: [personas-strategy.md](./personas-strategy.md)
+- **UX Patterns**: [personas-ux-patterns.md](./personas-ux-patterns.md)
+- **Implementation Plan**: [personas-implementation-plan.md](./personas-implementation-plan.md)
 
 **📍 Use This Doc When**:
 - Understanding who our users are
