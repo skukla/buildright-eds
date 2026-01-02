@@ -211,7 +211,7 @@ BuildRight uses **two types of dropins**:
 | [commerce-dropins-integration.md](./implementation/sarah-end-to-end/dropins/commerce-dropins-integration.md) | Technical implementation guide |
 | [ADR-001](./adr/ADR-001-use-dropins-for-commerce.md) | Architecture decision |
 | [dropin-architecture.md](../reference/dropin-architecture.md) | Dropin patterns |
-| [auth-strategy.md](./archive/reference-old/AUTH-STRATEGY.md) | Authentication approach |
+| [auth-strategy.md](./archive/reference-old/auth-strategy.md) | Authentication approach |
 
 ### Dropins to Integrate
 
@@ -535,7 +535,7 @@ OTHER PERSONAS (Weeks 9-16)
 ```
 docs/
 ├── master-implementation-plan.md    ← You are here
-├── AGENT-HANDOFF.md                 # Context for developers
+├── agent-handoff.md                 # Context for developers
 ├── PHASE-PLANS-INDEX.md             # Quick index
 │
 ├── implementation/                  # Active work
@@ -564,7 +564,7 @@ docs/
 
 | Topic | Document |
 |-------|----------|
-| **Getting Started** | [AGENT-HANDOFF.md](./archive/session-logs/AGENT-HANDOFF.md) |
+| **Getting Started** | [agent-handoff.md](./archive/session-logs/agent-handoff.md) |
 | **Dropins Integration** | [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) |
 | **Dropin CSS Refactoring** | [dropin-css-refactor-plan.md](./implementation/dropin-css-refactor-plan.md) |
 | **Sarah Implementation** | [implementation/sarah-end-to-end/features/](./implementation/sarah-end-to-end/features/) |

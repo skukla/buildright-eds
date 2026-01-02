@@ -64,11 +64,11 @@ What are the positive and negative outcomes?
 
 ## Related Documentation
 
-- [Phase 0: Research & Architecture Decisions](../archive/completed/PHASE-0-RESEARCH-AND-DECISIONS.md)
+- [Phase 0: Research & Architecture Decisions](../archive/completed/phase-0-research-and-decisions.md)
 - [Dropin Architecture](../reference/dropin-architecture.md)
 - [Block vs Dropin Matrix](../reference/backend/block-vs-dropin-decision.md)
-- [Mock ACO API Spec](../archive/reference-old/MOCK-ACO-API-SPEC.md)
-- [Authentication Strategy](../archive/reference-old/AUTH-STRATEGY.md)
+- [Mock ACO API Spec](../archive/reference-old/mock-aco-api-spec.md)
+- [Authentication Strategy](../archive/reference-old/auth-strategy.md)
 
 ---
 

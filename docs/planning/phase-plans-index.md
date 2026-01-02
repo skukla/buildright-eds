@@ -120,7 +120,7 @@ After Sarah is complete, apply patterns to remaining personas.
 |----------|---------|
 | [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) | Dropins implementation docs |
 | [reference/backend/](./reference/backend/) | Backend reference docs |
-| [AGENT-HANDOFF.md](../archive/session-logs/AGENT-HANDOFF.md) | Context for new developers |
+| [agent-handoff.md](../archive/session-logs/agent-handoff.md) | Context for new developers |
 
 ---
 

@@ -199,7 +199,7 @@ No additional integration code needed - Adobe handles this.
 
 - [Adobe Facets Container Docs](https://experienceleague.adobe.com/developer/commerce/storefront/dropins/product-discovery/containers/facets/)
 - [Dropin Slots Inventory](../reference/dropin-slots-inventory.md)
-- [Product List Dropin Canonical](../archive/PRODUCT-LIST-DROPIN-CANONICAL.md)
+- [Product List Dropin Canonical](../archive/product-list-dropin-canonical.md)
 
 ---
 

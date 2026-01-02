@@ -679,7 +679,7 @@ Unified taxonomy + smart filtering showcases this. Separate catalogs hide it.
 
 **Note**: This taxonomy was applied to the Phase 0.5 product expansion (108 → 265 products). 
 
-See **[PRODUCT-CATEGORY-TAXONOMY-MAPPING.md](../../../archive/sarah-completed/PRODUCT-CATEGORY-TAXONOMY-MAPPING.md)** for details on how the 6 new product categories (Concrete & Foundation, Electrical Systems, Plumbing Pipes & Fittings, HVAC Systems, Drywall & Supplies, Kitchen Appliances) map to this taxonomy.
+See **[product-category-taxonomy-mapping.md](../../../archive/sarah-completed/product-category-taxonomy-mapping.md)** for details on how the 6 new product categories (Concrete & Foundation, Electrical Systems, Plumbing Pipes & Fittings, HVAC Systems, Drywall & Supplies, Kitchen Appliances) map to this taxonomy.
 
 **Key Validation**: All new categories successfully use the existing attribute schema with no modifications needed. ✅
 

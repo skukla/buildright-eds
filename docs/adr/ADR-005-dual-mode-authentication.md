@@ -454,9 +454,9 @@ To switch from demo to production:
 
 ## References
 
-- [Authentication Strategy Documentation](../archive/reference-old/AUTH-STRATEGY.md)
-- [Dropin Integration Guide](../archive/reference-old/DROPIN-INTEGRATION-GUIDE.md)
-- [Phase 5: Authentication Pages](../archive/completed/PHASE-5-EXISTING-PAGE-REFACTOR.md#task-2-authentication-pages)
+- [Authentication Strategy Documentation](../archive/reference-old/auth-strategy.md)
+- [Dropin Integration Guide](../archive/reference-old/dropin-integration-guide.md)
+- [Phase 5: Authentication Pages](../archive/completed/phase-5-existing-page-refactor.md#task-2-authentication-pages)
 
 ---
 

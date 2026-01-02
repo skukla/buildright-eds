@@ -35,7 +35,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **Use for**: Good/Better/Best displays (Lisa)  
 **Features**: Side-by-side comparison, feature lists
 
-**See**: [PHASE-4-COMPLETION-SUMMARY.md](../archive/completed/PHASE-4-COMPLETION-SUMMARY.md)
+**See**: [phase-4-completion-summary.md](../../archive/completed/phase-4-completion-summary.md)
 
 ---
 
@@ -58,7 +58,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **Features**: Persona detection, login/logout, session management  
 **API**: `loginWithPersona(id)`, `logout()`, `getCurrentUser()`
 
-**See**: [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../archive/completed/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
+**See**: [phase-5-task-2-completion-summary.md](../archive/completed/phase-5-task-2-completion-summary.md)
 
 ---
 
@@ -88,7 +88,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **API**: `loadFragment(container, path)`, `loadFragments(fragments[])`  
 **Location**: `scripts/fragment-loader.js`
 
-**See**: [FRAGMENT-IMPLEMENTATION-SUMMARY.md](../archive/completed/FRAGMENT-IMPLEMENTATION-SUMMARY.md)
+**See**: [fragment-implementation-summary.md](../archive/completed/fragment-implementation-summary.md)
 
 ---
 
@@ -107,7 +107,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **Location**: `scripts/data-mock.js`  
 **Features**: Customer context, pricing logic, product lookups
 
-**See**: [PHASE-3-COMPLETION-SUMMARY.md](../archive/completed/PHASE-3-COMPLETION-SUMMARY.md)
+**See**: [phase-3-completion-summary.md](../archive/completed/phase-3-completion-summary.md)
 
 ---
 
@@ -142,8 +142,8 @@ This is your inventory of reusable components, existing systems, and demo data.
 ❌ **DON'T**: Add listeners without cleanup strategy
 
 **See**:
-- [PHASE_1_COMPLETE.md](../archive/completed/PHASE_1_COMPLETE.md)
-- [PHASE-2-FINAL-SUMMARY.md](../archive/completed/PHASE-2-FINAL-SUMMARY.md)
+- [phase-1-complete.md](../archive/completed/phase-1-complete.md)
+- [phase-2-final-summary.md](../archive/completed/phase-2-final-summary.md)
 
 ---
 
@@ -160,7 +160,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 6. `cleanupEventListeners()` - Remove all listeners
 7. `cleanElementListeners(element)` - Remove element listeners
 
-**See**: [PHASE_4_COMPLETE.md](../archive/completed/PHASE_4_COMPLETE.md)
+**See**: [phase-4-complete.md](../archive/completed/phase-4-complete.md)
 
 ---
 
@@ -227,10 +227,10 @@ Strategies for unit, integration, E2E, and persona-specific testing
 
 ## Need More Detail?
 
-**Component APIs**: [PHASE-4-COMPLETION-SUMMARY.md](../archive/completed/PHASE-4-COMPLETION-SUMMARY.md)
-**Auth & demo accounts**: [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../archive/completed/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
-**Fragments**: [FRAGMENT-IMPLEMENTATION-SUMMARY.md](../archive/completed/FRAGMENT-IMPLEMENTATION-SUMMARY.md)
-**Core architecture**: [PHASE-3-COMPLETION-SUMMARY.md](../archive/completed/PHASE-3-COMPLETION-SUMMARY.md)
+**Component APIs**: [phase-4-completion-summary.md](../archive/completed/phase-4-completion-summary.md)
+**Auth & demo accounts**: [phase-5-task-2-completion-summary.md](../archive/completed/phase-5-task-2-completion-summary.md)
+**Fragments**: [fragment-implementation-summary.md](../archive/completed/fragment-implementation-summary.md)
+**Core architecture**: [phase-3-completion-summary.md](../archive/completed/phase-3-completion-summary.md)
 
 ---
 

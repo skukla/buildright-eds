@@ -366,7 +366,7 @@ If custom attribute is not set, we can infer from customer group:
 
 ## References
 
-- [Authentication Strategy Documentation](../archive/reference-old/AUTH-STRATEGY.md)
+- [Authentication Strategy Documentation](../archive/reference-old/auth-strategy.md)
 - [Adobe Commerce REST API - Customers](https://developer.adobe.com/commerce/webapi/rest/use-rest/customer-setup/)
 - [Adobe Commerce Custom Attributes](https://experienceleague.adobe.com/docs/commerce-admin/customers/customer-accounts/attributes/attribute-properties.html)
 
