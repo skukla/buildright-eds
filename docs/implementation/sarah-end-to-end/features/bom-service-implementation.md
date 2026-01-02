@@ -19,7 +19,7 @@ The BOM (Bill of Materials) Calculator Service is a fully functional, production
    - Supports quality tier filtering (builder_grade, professional, premium, luxury)
 
 2. **BOM Calculator** (`scripts/services/bom-calculator.js`)
-   - Applies estimating formulas from MATERIAL-ESTIMATING-RULES.md
+   - Applies estimating formulas from bom-calculation-formulas.md
    - Calculates material quantities based on template characteristics
    - Organizes materials by construction phase
    - Generates complete BOMs with real SKUs and pricing

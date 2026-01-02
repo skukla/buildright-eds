@@ -2,7 +2,7 @@
 
 **Status**: ✅ Implemented  
 **Created**: December 8, 2025  
-**Related**: [Phase 6A Integration Plan](./PHASE-6A-INTEGRATION-PLAN.md) | [Backend Service Reference](../../BACKEND-SERVICE-REFERENCE.md)
+**Related**: [Sarah Integration Plan](./sarah-integration-plan.md) | [Backend Service Reference](../../../BACKEND-SERVICE-REFERENCE.md)
 
 ---
 
@@ -451,7 +451,7 @@ If needed, additional strategies can be added:
 
 - [Backend Service Reference](../../BACKEND-SERVICE-REFERENCE.md) - BuildRight Service overview
 - [ADR-003: Mock ACO Service](../../adr/ADR-003-mock-aco-service.md) - Why we have mock data
-- [Phase 6A Integration Plan](./PHASE-6A-INTEGRATION-PLAN.md) - Integration roadmap
+- [Sarah Integration Plan](./sarah-integration-plan.md) - Integration roadmap
 - [Frontend Integration Guide](../../../../buildright-service/docs/frontend/FRONTEND-INTEGRATION-GUIDE.md) - Mesh API documentation
 
 ---

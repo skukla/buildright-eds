@@ -2,7 +2,7 @@
 
 **Status**: ✅ Implemented (Data-Driven)  
 **Created**: December 8, 2025  
-**Related**: [Catalog Service Architecture](./CATALOG-SERVICE-ARCHITECTURE.md) | [Phase 6A Integration Plan](./PHASE-6A-INTEGRATION-PLAN.md)
+**Related**: [Catalog Service Design](./catalog-service-design.md) | [Sarah Integration Plan](./sarah-integration-plan.md)
 
 ---
 

@@ -955,7 +955,7 @@ async function loadDashboardView(viewName) {
 
 ## Related Documentation
 
-- [Phase 6A Original Plan](./PHASE-6A-PERSONA-SARAH.md) - Initial implementation (completed)
+- [Sarah Persona Overview](./sarah-persona-overview.md) - Initial implementation (completed)
 - [Persona Configuration](../scripts/persona-config.js) - Sarah's persona settings
 - [Project Builder Wizard](./archive/old-project-builder/) - David's deck builder (reference)
 - [Dashboard Router](../scripts/dashboard.js) - Routing logic for views

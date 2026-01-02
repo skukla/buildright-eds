@@ -598,8 +598,8 @@ By following this systematic process, we can expand BuildRight to serve all 5 pe
 ---
 
 **Next Step**: Implement Marcus's catalog using this process (92% reuse validated)  
-**Related Docs**: 
-- [ACO Catalog Architecture](ACO-CATALOG-ARCHITECTURE.md)
-- [Product Taxonomy Analysis](PRODUCT-TAXONOMY-ANALYSIS.md)
-- [BOM Calculator Summary](BOM-CALCULATOR-SUMMARY.md)
+**Related Docs**:
+- [ACO Catalog Data Flow](./aco-catalog-data-flow.md)
+- [Product Category Structure](./product-category-structure.md)
+- [BOM Service Implementation](./bom-service-implementation.md)
 

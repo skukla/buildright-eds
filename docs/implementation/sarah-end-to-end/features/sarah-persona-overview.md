@@ -1113,9 +1113,9 @@ Upon completion of Phase 6A:
 
 ## Related Documents
 
-- `PERSONA-META-PLAN.md` - Overall orchestration
-- `BUILDRIGHT-PERSONAS-AND-FLOWS.md` - Sarah's user journey
-- `PHASE-4-SHARED-COMPONENTS.md` - Shared blocks used
+- [personas-strategy.md](../../../personas/personas-strategy.md) - Overall orchestration
+- [personas-overview.md](../../../personas/personas-overview.md) - Sarah's user journey
+- [sarah-implementation-plan.md](./sarah-implementation-plan.md) - Current implementation plan
 
 ---
 

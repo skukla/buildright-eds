@@ -644,8 +644,7 @@ This separation of concerns enables:
 
 **Status**: Architecture defined, Pattern 2 (client-side) implemented  
 **Next Step**: Migrate to Pattern 1 (server-side) via App Builder  
-**Related Docs**: 
-- [BOM Calculator Summary](BOM-CALCULATOR-SUMMARY.md)
-- [ACO Catalog Architecture](ACO-CATALOG-ARCHITECTURE.md)
-- [ACO Cleanup Lessons Learned](/Users/kukla/Documents/Repositories/app-builder/adobe-demo-system/buildright-aco/ACO-CLEANUP-LESSONS-LEARNED.md)
+**Related Docs**:
+- [BOM Service Implementation](./bom-service-implementation.md)
+- [ACO Catalog Data Flow](./aco-catalog-data-flow.md)
 
