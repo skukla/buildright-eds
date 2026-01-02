@@ -1,8 +1,11 @@
-# Phase 6-Foundation: ProjectManager API Reference
+# Phase 6-Foundation: ProjectManager API Reference 🔵 [Planning]
 
-**📊 Document Type**: API Reference  
-**📖 Reading Time**: 15-20 minutes  
+**📊 Document Type**: API Reference
+**📖 Reading Time**: 15-20 minutes
 **👥 Audience**: All developers
+**🎯 Status**: 🔵 [Planning] - API spec complete, code not yet implemented
+
+> **Note**: This document describes the planned API. The `scripts/project-manager.js` file has not yet been created. All method signatures and behaviors are finalized and ready for implementation.
 
 This is **Part 3 of 6** in the Phase 6-Foundation planning series.
 
