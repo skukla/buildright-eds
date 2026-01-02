@@ -18,10 +18,13 @@ This directory contains concise, visual explanations of BuildRight's architectur
 | [architecture-overview.md](./architecture-overview.md) | System architecture | Browser → Mesh → ACO/Commerce |
 | [backend-services.md](./backend-services.md) | Shared backend services | Resolver architecture diagram |
 | [buildright-requirements.md](./buildright-requirements.md) | Business scope & terminology | Scope diagram, persona terms |
-| [persona-system.md](./persona-system.md) | 5 B2B personas | Pricing tiers table |
+| [catalog-flow.md](./catalog-flow.md) | Catalog E2E flow | 8-step user journey |
+| [components-visual-guide.md](./components-visual-guide.md) | Block categories & composition | Page layout diagram |
+| [data-ownership.md](./data-ownership.md) | ACO vs Commerce data | Ownership matrix table |
+| [design-system-architecture.md](./design-system-architecture.md) | Token cascade | 3-layer flow diagram |
 | [dropin-pattern.md](./dropin-pattern.md) | Slot customization | Container → Slot → Component |
 | [mesh-adapter.md](./mesh-adapter.md) | All 7 mesh resolvers | Per-resolver data flow diagrams |
-| [catalog-flow.md](./catalog-flow.md) | Catalog E2E flow | 8-step user journey |
+| [persona-system.md](./persona-system.md) | 5 B2B personas | Pricing tiers table |
 
 ---
 
