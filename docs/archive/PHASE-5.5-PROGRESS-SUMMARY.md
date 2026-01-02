@@ -1,7 +1,7 @@
 # Phase 5.5: Commerce Dropins Integration - Progress Summary
 
-**Date**: December 12, 2024  
-**Session Focus**: Mini Cart Dropin Implementation & Codebase Cleanup
+**Date**: December 31, 2024
+**Status**: In Progress (~70% Complete)
 
 ---
 
@@ -125,18 +125,73 @@ Documented **4 core patterns**:
 
 ---
 
+## ✅ Completed Since December 12, 2024
+
+### Product Discovery Dropin (CLP/PLP) - PRODUCTION
+
+The Product Discovery dropin (`@dropins/storefront-product-discovery`) is now fully integrated and in production.
+
+**Containers Implemented:**
+- SearchResults - Product grid with custom slots
+- Facets - Filter sidebar with SelectedFacets and FacetBucket slots
+- SortBy - Sort dropdown (mesh-controlled options)
+- Pagination - BuildRight branded pagination
+- SearchBarInput - Header search input
+- SearchBarResults - Autocomplete dropdown
+
+**Key Achievements:**
+- Modular CSS architecture (6 component files in `blocks/product-list/css/`)
+- Only 26 `!important` declarations (reduced from 299 in previous approach)
+- 49 design tokens in `styles/dropin-tokens.css`
+- categoryPath fix ensures facet clicks preserve category context
+- Custom FacetBucket handling for price range checkboxes
+- Loading states coordinated across all containers
+
+**Canonical Reference:** `docs/DROPIN-ARCHITECTURE.md`
+
+---
+
 ## 📊 Current State
 
-### Phase 5.5 Progress: ~45%
+### Phase 5.5 Progress: ~70%
 
 | Component | Status | Pattern | Notes |
 |-----------|--------|---------|-------|
+| Product Discovery (CLP/PLP) | ✅ **Production** | Container + Slots | Canonical pattern established |
 | Auth Dropin | ✅ Complete | API-Only | Custom login form + `getCustomerToken()` |
 | Mini Cart Dropin | ✅ Complete | API-Only | Custom HTML + `getCartData()` |
 | Cart Page | ✅ Complete | Container | Full Cart dropin container |
 | Checkout Page | ⏳ Needs Testing | Container | Dropin container rendered inline |
 | Order Confirmation | ⏳ Needs Testing | Container | Dropin container rendered inline |
 | Order History | ⏳ Needs Testing | Container | Dropin container rendered inline |
+
+---
+
+## 🎯 Canonical Dropin Patterns Established
+
+Based on CLP/PLP implementation, the following patterns are now canonical:
+
+### 1. Container + Slots Pattern (Primary)
+Used when dropin provides adequate customization points.
+- Example: Product Discovery dropin
+- Customize via slot callbacks (`ctx.replaceWith()`)
+- Override CSS with `.buildright-*` classes
+
+### 2. API-Only Pattern (Secondary)
+Used when dropin UI lacks sufficient customization.
+- Example: Auth, Mini Cart
+- Build custom HTML, wire to dropin APIs
+- Full control over UI while leveraging data layer
+
+### 3. CSS Architecture
+- Modular component files in `blocks/[block]/css/`
+- Minimize `!important` usage
+- Use design tokens from `styles/dropin-tokens.css`
+- Namespace custom classes with `.buildright-*`
+
+**Reference:** `docs/DROPIN-ARCHITECTURE.md`
+
+---
 
 ### Immediate Next Steps
 
@@ -310,17 +365,22 @@ Documented **4 core patterns**:
 3. **EDS Patterns**: Blocks are the primary reusability mechanism in EDS
 4. **API-Only is Valid**: When dropins lack customization slots, API-only integration is the correct approach
 5. **Bridge Layers**: `commerce-helpers.js` provides clean abstraction for dual-mode support
+6. **Mesh Adapter Pattern**: Query interception at mesh layer enables extensibility without modifying dropin source
+7. **categoryPath Critical**: Must use `categoryPath` (not `categoryUrlKey`) for facet clicks to preserve category context
+8. **Modular CSS**: Component-based CSS files reduce complexity and improve maintainability
+9. **Documentation First**: `DROPIN-ARCHITECTURE.md` as canonical reference prevents pattern drift
 
 ---
 
 ## 🎉 Summary
 
-**Phase 5.5 is progressing well!** We now have:
+**Phase 5.5 is at ~70% completion!** We now have:
+- ✅ **Product Discovery dropin in production** (CLP/PLP)
 - ✅ Auth Dropin fully integrated (login page)
 - ✅ Mini Cart Dropin fully integrated (all pages)
-- ✅ Conflicting logic cleaned up
-- ✅ Cart badge sync working
-- ✅ Comprehensive documentation
+- ✅ Cart Page working (Container pattern)
+- ✅ Canonical dropin patterns established and documented
+- ✅ Modular CSS architecture with minimal `!important` usage
 
-**Next**: Focus on testing the end-to-end cart flow and integrating "Add to Cart" functionality across all product display components.
+**Next**: Test checkout/order flows end-to-end and integrate "Add to Cart" functionality across all product display components.
 
