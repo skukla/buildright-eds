@@ -8,7 +8,7 @@
 
 | Persona | Directory | Phase | Status |
 |---------|-----------|-------|--------|
-| **Sarah Martinez** | [sarah-end-to-end/](./sarah-end-to-end/) | 6A | In Progress |
+| **Sarah Martinez** | [sarah-martinez/](./sarah-martinez/) | 6A | In Progress |
 | **Marcus Johnson** | [other-personas/](./other-personas/) | 6B | Planned |
 | **Lisa Chen** | [other-personas/](./other-personas/) | 6C | Planned |
 | **David Thompson** | [other-personas/](./other-personas/) | 6D | Planned |
@@ -21,7 +21,7 @@
 ```
 implementation/
 ├── README.md                 # This file
-├── sarah-end-to-end/         # Sarah Martinez (Production Builder)
+├── sarah-martinez/         # Sarah Martinez (Production Builder)
 │   ├── features/             # 33 feature documents
 │   └── dropins/              # Commerce dropin integration
 ├── kevin-rodriguez/          # Kevin Rodriguez (Store Manager)
@@ -38,10 +38,10 @@ implementation/
 ## Quick Links by Persona
 
 ### Sarah Martinez (Production Builder) - Phase 6A
-- **Overview**: [sarah-end-to-end/features/README.md](./sarah-end-to-end/features/README.md)
-- **Implementation Plan**: [sarah-implementation-plan.md](./sarah-end-to-end/features/sarah-implementation-plan.md)
-- **Wireframes**: [sarah-wireframes.md](./sarah-end-to-end/features/sarah-wireframes.md)
-- **BOM Service**: [bom-service-implementation.md](./sarah-end-to-end/features/bom-service-implementation.md)
+- **Overview**: [sarah-martinez/features/README.md](./sarah-martinez/features/README.md)
+- **Implementation Plan**: [sarah-implementation-plan.md](./sarah-martinez/features/sarah-implementation-plan.md)
+- **Wireframes**: [sarah-wireframes.md](./sarah-martinez/features/sarah-wireframes.md)
+- **BOM Service**: [bom-service-implementation.md](./sarah-martinez/features/bom-service-implementation.md)
 
 ### Kevin Rodriguez (Store Manager) - Phase 6E
 - **Multi-Location Architecture**: [multi-location-architecture.md](./kevin-rodriguez/multi-location-architecture.md)

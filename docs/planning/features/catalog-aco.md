@@ -58,7 +58,7 @@ mesh/resolvers-src/dropin-search.js - Query adapter
 
 ## Detailed Specs
 
-Source: `docs/implementation/sarah-end-to-end/features/`
+Source: `docs/implementation/sarah-martinez/features/`
 - `aco-catalog-data-flow.md`
 - `catalog-service-design.md`
 - `bom-integration-architecture.md`

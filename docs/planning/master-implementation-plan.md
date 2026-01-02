@@ -207,8 +207,8 @@ BuildRight uses **two types of dropins**:
 
 | Document | Purpose |
 |----------|---------|
-| [codebase-audit-dropins.md](./implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md) | Detailed file-by-file migration plan |
-| [commerce-dropins-integration.md](./implementation/sarah-end-to-end/dropins/commerce-dropins-integration.md) | Technical implementation guide |
+| [codebase-audit-dropins.md](./implementation/sarah-martinez/dropins/codebase-audit-dropins.md) | Detailed file-by-file migration plan |
+| [commerce-dropins-integration.md](./implementation/sarah-martinez/dropins/commerce-dropins-integration.md) | Technical implementation guide |
 | [ADR-001](./adr/ADR-001-use-dropins-for-commerce.md) | Architecture decision |
 | [dropin-architecture.md](../reference/dropin-architecture.md) | Dropin patterns |
 | [auth-strategy.md](./archive/reference-old/auth-strategy.md) | Authentication approach |
@@ -319,9 +319,9 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 
 | Document | Purpose |
 |----------|---------|
-| [sarah-integration-plan.md](./implementation/sarah-end-to-end/features/sarah-integration-plan.md) | Detailed integration plan |
-| [catalog-service-design.md](./implementation/sarah-end-to-end/features/catalog-service-design.md) | ACO catalog integration |
-| [sarah-wireframes.md](./implementation/sarah-end-to-end/features/sarah-wireframes.md) | UI wireframes |
+| [sarah-integration-plan.md](./implementation/sarah-martinez/features/sarah-integration-plan.md) | Detailed integration plan |
+| [catalog-service-design.md](./implementation/sarah-martinez/features/catalog-service-design.md) | ACO catalog integration |
+| [sarah-wireframes.md](./implementation/sarah-martinez/features/sarah-wireframes.md) | UI wireframes |
 | [data-source-matrix.md](./reference/backend/data-source-matrix.md) | Commerce vs ACO data |
 | [personas-overview.md](./explanations/personas/personas-overview.md) | Sarah's profile |
 
@@ -375,7 +375,7 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 | Document | Purpose |
 |----------|---------|
 | [ADR-007](./adr/ADR-007-custom-sdk-dropins-for-aco.md) | Architecture decision and rationale |
-| [codebase-audit-dropins.md](./implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md) | SDK dropin details (Phase 2 section) |
+| [codebase-audit-dropins.md](./implementation/sarah-martinez/dropins/codebase-audit-dropins.md) | SDK dropin details (Phase 2 section) |
 | [eds-block-patterns.md](./reference/backend/eds-block-patterns.md) | Current block patterns |
 | [planning/component-extraction/](./planning/component-extraction/) | Component extraction guides |
 
@@ -540,7 +540,7 @@ docs/
 │
 ├── implementation/                  # Active work
 │   ├── completed/                   # Phases 0-5 (done)
-│   ├── sarah-end-to-end/            # Current focus
+│   ├── sarah-martinez/            # Current focus
 │   │   ├── dropins/                 # Phase 5.5 docs
 │   │   ├── features/                # Phase 6A docs
 │   │   └── sdk-dropins/             # Phase 7 docs
@@ -565,9 +565,9 @@ docs/
 | Topic | Document |
 |-------|----------|
 | **Getting Started** | [agent-handoff.md](./archive/session-logs/agent-handoff.md) |
-| **Dropins Integration** | [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) |
+| **Dropins Integration** | [implementation/sarah-martinez/dropins/](./implementation/sarah-martinez/dropins/) |
 | **Dropin CSS Refactoring** | [dropin-css-refactor-plan.md](./implementation/dropin-css-refactor-plan.md) |
-| **Sarah Implementation** | [implementation/sarah-end-to-end/features/](./implementation/sarah-end-to-end/features/) |
+| **Sarah Implementation** | [implementation/sarah-martinez/features/](./implementation/sarah-martinez/features/) |
 | **Backend Reference** | [reference/backend/](./reference/backend/) |
 | **Personas** | [personas-overview.md](./explanations/personas/personas-overview.md) |
 | **Architecture Decisions** | [adr/](./adr/) |

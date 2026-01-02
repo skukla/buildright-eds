@@ -67,7 +67,7 @@ scripts/initializers/cart.js
 ## Reference
 
 - `docs/PHASE-5.5-PROGRESS-SUMMARY.md`
-- `docs/implementation/sarah-end-to-end/dropins/`
+- `docs/implementation/sarah-martinez/dropins/`
 - `docs/adr/ADR-001-use-dropins-for-commerce.md`
 
 ---

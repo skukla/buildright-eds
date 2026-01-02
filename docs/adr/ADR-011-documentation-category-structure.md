@@ -59,7 +59,7 @@ docs/
 │   ├── deployment/    # Deployment configurations
 │   └── decisions/     # Research-backed decisions
 ├── implementation/    # Detailed implementation specs
-│   ├── sarah-end-to-end/
+│   ├── sarah-martinez/
 │   ├── kevin-rodriguez/
 │   └── other-personas/
 └── archive/           # Historical reference

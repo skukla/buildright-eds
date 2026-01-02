@@ -279,7 +279,7 @@ events.emit('product/add-to-cart', { sku: 'ABC-123', quantity: 1 });
 ## References
 
 - [Adobe Commerce Storefront SDK Documentation](https://experienceleague.adobe.com/developer/commerce/storefront/sdk/)
-- [codebase-audit-dropins.md](../implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md) — Detailed migration plan
+- [codebase-audit-dropins.md](../implementation/sarah-martinez/dropins/codebase-audit-dropins.md) — Detailed migration plan
 
 ---
 

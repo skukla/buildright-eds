@@ -94,7 +94,7 @@ while BuildRight custom queries (catalog, persona, BOM) use API Mesh.
 
 **See**: 
 - [ADR-008: Commerce Dropins Direct Connection](../reference/decisions/ADR-008-COMMERCE-DROPINS-DIRECT-CONNECTION.md)
-- [commerce-mesh-integration.md](../implementation/sarah-end-to-end/dropins/commerce-mesh-integration.md) (previous approach)
+- [commerce-mesh-integration.md](../implementation/sarah-martinez/dropins/commerce-mesh-integration.md) (previous approach)
 
 ---
 

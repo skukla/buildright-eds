@@ -26,7 +26,7 @@ docs/
 │   ├── authoring/         # Content authoring guides
 │   └── deployment/        # Deployment guides
 ├── implementation/        # Detailed specs (reference)
-│   ├── sarah-end-to-end/
+│   ├── sarah-martinez/
 │   ├── kevin-rodriguez/
 │   └── other-personas/
 └── archive/               # Historical reference

@@ -85,7 +85,7 @@ Complete Sarah's entire experience before other personas.
 ### Phase 6A: Sarah's Features 🔄 In Progress
 
 **Goal:** Template dashboard, configurator, BOM review  
-**Details:** [implementation/sarah-end-to-end/features/](./implementation/sarah-end-to-end/features/)
+**Details:** [implementation/sarah-martinez/features/](./implementation/sarah-martinez/features/)
 
 ### Phase 7: Custom SDK Dropins 🔲 Planned
 
@@ -118,7 +118,7 @@ After Sarah is complete, apply patterns to remaining personas.
 
 | Document | Purpose |
 |----------|---------|
-| [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) | Dropins implementation docs |
+| [implementation/sarah-martinez/dropins/](./implementation/sarah-martinez/dropins/) | Dropins implementation docs |
 | [reference/backend/](./reference/backend/) | Backend reference docs |
 | [agent-handoff.md](../archive/session-logs/agent-handoff.md) | Context for new developers |
 
@@ -175,7 +175,7 @@ For ACO components, use the Drop-in SDK to ensure:
 
 1. **Read the master plan:** [master-implementation-plan.md](./master-implementation-plan.md)
 2. **Understand personas:** [personas-overview.md](../explanations/personas/personas-overview.md)
-3. **For Dropins details:** [codebase-audit-dropins.md](../implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md)
+3. **For Dropins details:** [codebase-audit-dropins.md](../implementation/sarah-martinez/dropins/codebase-audit-dropins.md)
 
 ---
 

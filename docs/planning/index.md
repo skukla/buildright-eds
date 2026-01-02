@@ -46,8 +46,8 @@ For deep-dive specifications, see source directories:
 
 | Area | Location | Status |
 |------|----------|--------|
-| Sarah E2E Features | `docs/implementation/sarah-end-to-end/features/` | See note below |
-| Dropin Integration | `docs/implementation/sarah-end-to-end/dropins/` | Active |
+| Sarah E2E Features | `docs/implementation/sarah-martinez/features/` | See note below |
+| Dropin Integration | `docs/implementation/sarah-martinez/dropins/` | Active |
 | Other Personas | `docs/implementation/other-personas/` | Planned |
 | Completed Phases | `docs/archive/completed/` | Historical |
 

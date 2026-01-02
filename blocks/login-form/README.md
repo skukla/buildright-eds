@@ -200,7 +200,7 @@ The block logs all actions with `[Login Form]` prefix:
 
 - **EDS Block Structure**: `docs/reference/backend/eds-block-structure.md`
 - **ADR-002**: `docs/adr/ADR-002-use-eds-blocks-for-content.md`
-- **Phase 5.5 Plan**: `docs/implementation/sarah-end-to-end/phase-5.5-reusable-state-ux.md`
+- **Phase 5.5 Plan**: `docs/implementation/sarah-martinez/phase-5.5-reusable-state-ux.md`
 - **Auth Service**: `scripts/auth.js`
 - **Persona System**: `docs/explanations/persona-system.md`
 

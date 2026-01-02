@@ -95,7 +95,7 @@ const bom = await meshQuery(bomQuery, {
 ## Reference
 
 - Backend services: [shared-backend-services.md](./shared-backend-services.md)
-- Implementation specs: `docs/implementation/sarah-end-to-end/features/`
+- Implementation specs: `docs/implementation/sarah-martinez/features/`
 
 ---
 

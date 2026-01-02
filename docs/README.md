@@ -48,7 +48,7 @@ docs/
 │   └── decisions/         # Research-backed decisions
 │
 ├── implementation/        # Detailed implementation specs
-│   ├── sarah-end-to-end/  # Sarah persona implementation
+│   ├── sarah-martinez/    # Sarah persona implementation
 │   ├── kevin-rodriguez/   # Kevin persona implementation
 │   └── other-personas/    # Future persona planning
 │

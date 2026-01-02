@@ -56,7 +56,7 @@ docs/implementation/PRODUCT-IMAGES-STANDARDIZED-FLOW.md
 
 ## Detailed Specs
 
-Source: `docs/implementation/sarah-end-to-end/features/`
+Source: `docs/implementation/sarah-martinez/features/`
 - `PRODUCT-CATALOG-AUDIT.md`
 - `PRODUCT-CATEGORY-TAXONOMY-MAPPING.md`
 - `PRODUCT-DATA-ENHANCEMENT-PLAN.md`
