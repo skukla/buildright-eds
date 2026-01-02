@@ -1,6 +1,6 @@
 # ADR-007: Custom SDK Dropins for ACO-Sourced Components
 
-**Status**: Accepted
+**Status**: Partially Implemented (Pragmatically Revised)
 
 **Date**: December 2024
 
@@ -55,6 +55,49 @@ The [Drop-in SDK](https://experienceleague.adobe.com/developer/commerce/storefro
 | **Event Bus** | Standard `events.emit()` / `events.on()` — interoperates with Commerce dropins |
 | **Slots** | Extension points without forking |
 | **CLI** | `npx elsie generate container --pathname <name>` for scaffolding |
+
+---
+
+## Implementation Status (December 2024 Update)
+
+**This section documents divergence between the original decision and actual implementation.**
+
+### What Changed
+
+The original decision proposed creating custom SDK dropins for ACO-sourced components. During implementation, a more pragmatic approach emerged:
+
+| Component | Original Proposal | Actual Implementation | Rationale |
+|-----------|-------------------|----------------------|-----------|
+| Product Discovery | Custom SDK dropin (`@buildright/product-discovery`) | Native Adobe Product Discovery dropin | Works with ACO when mesh adapters provide correct headers (`AC-View-Id`, `AC-Price-Book-Id`) |
+| Product Detail | Custom SDK dropin (`@buildright/product-detail`) | Planned: Native PDP dropin + slots | Same header-based approach expected to work |
+| Project Builder | Custom SDK dropin (`@buildright/project-builder`) | EDS block (`blocks/project-builder/`) | BuildRight-specific; no cross-site reuse needed |
+| Pricing Display | Custom SDK dropin (`@buildright/pricing-display`) | EDS block (`blocks/pricing-display/`) | Simple component; SDK overhead unnecessary |
+| Tier Badge | Custom SDK dropin (`@buildright/tier-badge`) | EDS block (`blocks/tier-badge/`) | Simple component; SDK overhead unnecessary |
+
+### Why This Divergence is Valid
+
+1. **Native Dropins Work with ACO**: The mesh adapter pattern (see `buildright-service/mesh/README.md`) allows native Commerce dropins to query ACO by injecting proper headers. This eliminated the need for custom product discovery.
+
+2. **EDS Blocks are Simpler**: For BuildRight-specific components (project builder, pricing, tier badge), EDS blocks per ADR-002 are more appropriate. These components are content-driven and don't benefit from SDK features like design tokens or event bus interoperability.
+
+3. **SDK Dropins Still Valuable For**: Any future components that need to be published as reusable NPM packages or require deep integration with Commerce dropin ecosystem.
+
+### Decision Matrix Update
+
+| Use Case | Recommended Approach |
+|----------|---------------------|
+| Commerce functions (auth, cart, checkout) | Native Commerce Dropins |
+| ACO product listing/search | Native Product Discovery Dropin + mesh adapters |
+| BuildRight-specific wizards/dashboards | EDS Blocks (per ADR-002) |
+| Reusable cross-site components | Custom SDK Dropins (original ADR-007) |
+
+### Status of Original Proposed Dropins
+
+- [x] `@buildright/product-discovery` - **Not needed** - native dropin works
+- [ ] `@buildright/product-detail` - **Deferred** - evaluating native PDP first
+- [x] `@buildright/project-builder` - **Implemented as EDS block**
+- [x] `@buildright/pricing-display` - **Implemented as EDS block**
+- [x] `@buildright/tier-badge` - **Implemented as EDS block**
 
 ---
 
@@ -228,6 +271,7 @@ events.emit('product/add-to-cart', { sku: 'ABC-123', quantity: 1 });
 ## Related Decisions
 
 - [ADR-001: Use Dropins for Commerce Functions](./ADR-001-use-dropins-for-commerce.md) — Commerce Dropins for auth/cart/checkout
+- [ADR-002: Use EDS Blocks for Content-Driven Components](./ADR-002-use-eds-blocks-for-content.md) — Why EDS blocks are used for project-builder, pricing-display, tier-badge
 - [MASTER-IMPLEMENTATION-PLAN.md](../MASTER-IMPLEMENTATION-PLAN.md) — Overall implementation plan
 
 ---
@@ -239,5 +283,5 @@ events.emit('product/add-to-cart', { sku: 'ABC-123', quantity: 1 });
 
 ---
 
-**Last Updated**: December 2024
+**Last Updated**: December 2024 (Implementation Status section added)
 
