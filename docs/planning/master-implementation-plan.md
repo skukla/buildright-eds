@@ -319,9 +319,9 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 
 | Document | Purpose |
 |----------|---------|
-| [sarah-integration-plan.md](./implementation/sarah-martinez/features/sarah-integration-plan.md) | Detailed integration plan |
-| [catalog-service-design.md](./implementation/sarah-martinez/features/catalog-service-design.md) | ACO catalog integration |
-| [sarah-wireframes.md](./implementation/sarah-martinez/features/sarah-wireframes.md) | UI wireframes |
+| [sarah-integration-plan.md](./implementation/sarah-martinez/features/plans/sarah-integration-plan.md) | Detailed integration plan |
+| [catalog-service-design.md](./implementation/sarah-martinez/features/architecture/catalog-service-design.md) | ACO catalog integration |
+| [sarah-wireframes.md](./implementation/sarah-martinez/features/design/sarah-wireframes.md) | UI wireframes |
 | [data-source-matrix.md](./reference/backend/data-source-matrix.md) | Commerce vs ACO data |
 | [personas-overview.md](./explanations/personas/personas-overview.md) | Sarah's profile |
 

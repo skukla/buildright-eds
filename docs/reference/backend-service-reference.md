@@ -259,9 +259,9 @@ npm run deploy:actions
 - [Deployment Guide](../../../buildright-service/DEPLOYMENT-GUIDE.md)
 
 ### buildright-eds Documentation
-- [Sarah Persona Overview](./implementation/sarah-martinez/features/sarah-persona-overview.md)
-- [Sarah Dashboard Redesign](./implementation/sarah-martinez/features/sarah-dashboard-redesign.md)
-- [Sarah Implementation Plan](./implementation/sarah-martinez/features/sarah-implementation-plan.md)
+- [Sarah Persona Overview](./implementation/sarah-martinez/features/plans/sarah-persona-overview.md)
+- [Sarah Dashboard Redesign](./implementation/sarah-martinez/features/plans/sarah-dashboard-redesign.md)
+- [Sarah Implementation Plan](./implementation/sarah-martinez/features/plans/sarah-implementation-plan.md)
 
 ---
 

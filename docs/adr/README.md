@@ -21,6 +21,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [ADR-010](./ADR-010-dropin-slot-customization-pattern.md) | Dropin Slot Customization Pattern | Accepted | 2025-12-31 |
 | [ADR-011](./ADR-011-documentation-category-structure.md) | Documentation Category Structure | Accepted | 2026-01-01 |
 | [ADR-012](./ADR-012-commerce-dropins-direct-connection.md) | Commerce Dropins Direct Connection Pattern | Accepted | 2025-12-12 |
+| [ADR-013](./ADR-013-unified-product-taxonomy.md) | Unified Product Taxonomy | Accepted | 2025-11-15 |
 
 ## ADR Status Definitions
 
@@ -72,5 +73,5 @@ What are the positive and negative outcomes?
 
 ---
 
-**Last Updated**: December 31, 2025
+**Last Updated**: January 2, 2026
 

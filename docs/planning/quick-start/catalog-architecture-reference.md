@@ -3,7 +3,7 @@
 **📊 Document Type**: Quick Reference Guide  
 **📖 Reading Time**: 5 minutes  
 **👥 Audience**: Developers implementing persona-specific catalog views  
-**🔗 Parent**: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/aco-catalog-data-flow.md)
+**🔗 Parent**: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
 
 ---
 
@@ -62,9 +62,9 @@ Interior Finish Phase
 - Sees materials grouped by selection category
 
 **Full Details**:
-- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/aco-catalog-data-flow.md)
-- Implementation: [sarah-persona-overview.md](../implementation/sarah-martinez/features/sarah-persona-overview.md)
+- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
+- Implementation: [sarah-persona-overview.md](../implementation/sarah-martinez/features/plans/sarah-persona-overview.md)
 
 ---
 
@@ -112,8 +112,8 @@ Hardware & Tools
 - Traditional category organization
 
 **Full Details**:
-- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/aco-catalog-data-flow.md)
+- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
 - Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
@@ -165,8 +165,8 @@ General Finishes
 - Generates quotes for client sharing
 
 **Full Details**:
-- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/aco-catalog-data-flow.md)
+- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
 - Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
@@ -217,8 +217,8 @@ General Home Improvement
 - Simplified product options
 
 **Full Details**:
-- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/aco-catalog-data-flow.md)
+- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
 - Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
@@ -260,8 +260,8 @@ Low Velocity Products
 - Organized by velocity and days supply
 
 **Full Details**:
-- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-category-structure.md)
-- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/aco-catalog-data-flow.md)
+- Mental Model: [product-category-structure.md](../implementation/sarah-martinez/features/product-data/product-category-structure.md)
+- ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md)
 - Implementation: Kevin does NOT use Project entity (separate workflow)
 
 ---
@@ -366,11 +366,11 @@ export const PERSONA_CATALOG_CONFIG = {
 ## Quick Links
 
 **Strategic Documents**:
-- [Product Category Structure](../implementation/sarah-martinez/features/product-category-structure.md) - Why unified taxonomy?
-- [ACO Catalog Data Flow](../implementation/sarah-martinez/features/aco-catalog-data-flow.md) - Technical implementation
+- [Product Category Structure](../implementation/sarah-martinez/features/product-data/product-category-structure.md) - Why unified taxonomy?
+- [ACO Catalog Data Flow](../implementation/sarah-martinez/features/architecture/aco-catalog-data-flow.md) - Technical implementation
 
 **Persona Implementation Guides**:
-- [Sarah Implementation](../implementation/sarah-martinez/features/sarah-persona-overview.md)
+- [Sarah Implementation](../implementation/sarah-martinez/features/plans/sarah-persona-overview.md)
 - [Persona Profiles](../explanations/personas/personas-overview.md)
 
 ---
