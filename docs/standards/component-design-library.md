@@ -1297,7 +1297,7 @@ BuildRight uses **orange as an accent color** to create visual emphasis and hier
 - **Disabled:** Grayed out, no hover
 - **Loading:** Spinner icon, disabled
 
-See [BUTTON-SYSTEM.md](BUTTON-SYSTEM.md) for complete button documentation, decision trees, and usage examples.
+See [button-system.md](./button-system.md) for complete button documentation, decision trees, and usage examples.
 
 ### Card States
 - **Default:** Border, hover lift

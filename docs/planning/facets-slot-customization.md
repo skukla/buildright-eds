@@ -198,8 +198,8 @@ No additional integration code needed - Adobe handles this.
 ## Documentation References
 
 - [Adobe Facets Container Docs](https://experienceleague.adobe.com/developer/commerce/storefront/dropins/product-discovery/containers/facets/)
-- [Custom Slots Inventory](./reference/CUSTOM-SLOTS-INVENTORY.md)
-- [Product List Dropin Canonical](./PRODUCT-LIST-DROPIN-CANONICAL.md)
+- [Dropin Slots Inventory](../reference/dropin-slots-inventory.md)
+- [Product List Dropin Canonical](../archive/PRODUCT-LIST-DROPIN-CANONICAL.md)
 
 ---
 

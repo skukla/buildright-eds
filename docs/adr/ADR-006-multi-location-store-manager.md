@@ -714,7 +714,7 @@ Kevin is the **only persona with multi-location management**, showcasing BuildRi
 - `scripts/auth.js` - Customer context management
 
 📋 **Remaining Work** (Phase 6E):
-- See implementation plan: [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md) (Phase 6E section)
+- See implementation plan: [phases-6b-to-7-consolidated.md](../implementation/other-personas/phases-6b-to-7-consolidated.md) (Phase 6E section)
 - Create restock dashboard
 - Implement velocity calculations
 - Add smart suggestions
@@ -726,7 +726,7 @@ Kevin is the **only persona with multi-location management**, showcasing BuildRi
 - [ADR-003: Mock ACO Service](./ADR-003-mock-aco-service.md) - Demo vs Production data strategy
 - [ADR-004: Custom Attributes for Personas](./ADR-004-custom-attributes-for-personas.md) - Persona assignment strategy
 - [ADR-005: Dual-Mode Authentication](./ADR-005-dual-mode-authentication.md) - Authentication with customer context
-- [DATA-SOURCE-MATRIX](../DATA-SOURCE-MATRIX.md) - Comprehensive hybrid data architecture (Commerce PaaS + ACO)
+- [Data Source Comparison](../reference/backend/data-source-comparison.md) - Comprehensive hybrid data architecture (Commerce PaaS + ACO)
 - [MSI Configuration Guide](../../buildright-aco/docs/manual-setup/msi-configuration-guide.md) - Warehouse setup
 
 ---
@@ -734,8 +734,8 @@ Kevin is the **only persona with multi-location management**, showcasing BuildRi
 ## References
 
 **Documentation**:
-- [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../PHASE-5-TASK-2-COMPLETION-SUMMARY.md) - Kevin's multi-location feature added
-- [BUILDRIGHT-PERSONAS-AND-FLOWS.md](../BUILDRIGHT-PERSONAS-AND-FLOWS.md) - Kevin persona profile
+- [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../archive/completed/PHASE-5-TASK-2-COMPLETION-SUMMARY.md) - Kevin's multi-location feature added
+- [Personas Overview](../personas/personas-overview.md) - Kevin persona profile
 - [buildright-aco B2B Structure](../../buildright-aco/docs/architecture/buildright-b2b-structure.md) - Backend company structure
 
 **Implementation**:

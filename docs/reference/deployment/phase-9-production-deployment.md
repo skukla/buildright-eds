@@ -1203,15 +1203,15 @@ User → Edge Delivery Services (accs-citisignal)
 
 ## Related Documents
 
-- **`DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md`** ⭐ **NEW** - Step-by-step migration checklist
-- **`DATA-SOURCE-MATRIX.md`** - Hybrid Commerce PaaS + ACO data architecture
-- `PHASE-8-BACKEND-SETUP.md` - Backend configuration
-- `buildright-aco/docs/SETUP-GUIDE.md` - Data generation
-- `buildright-aco/docs/BUILDRIGHT-CASE-STUDY.md` - Use cases
-- `PHASE-3-CORE-ARCHITECTURE.md` - Frontend architecture
+- **`demo-to-production-migration-guide.md`** ⭐ **NEW** - Step-by-step migration checklist
+- **`../backend/data-source-comparison.md`** - Hybrid Commerce PaaS + ACO data architecture
+- `../backend/phase-8-backend-setup.md` - Backend configuration
+- `buildright-aco/docs/setup-guide.md` - Data generation
+- `buildright-aco/docs/buildright-case-study.md` - Use cases
+- `../../archive/completed/phase-3-core-architecture.md` - Frontend architecture
 - `/Users/kukla/Documents/Repositories/app-builder/adobe-demo-system/commerce-mesh` - Mesh reference
 
-**Note**: This Phase 9 document provides implementation details. For a complete, ordered migration checklist with before/after code examples, see **[DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md](./DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md)**.
+**Note**: This Phase 9 document provides implementation details. For a complete, ordered migration checklist with before/after code examples, see **[demo-to-production-migration-guide.md](./demo-to-production-migration-guide.md)**.
 
 ---
 

@@ -77,4 +77,4 @@ SearchResults.render(container, {
 
 ---
 
-**See Also:** [ADR-010](../adr/ADR-010-dropin-slot-customization-pattern.md) | [CATALOG-FLOW.md](./CATALOG-FLOW.md)
+**See Also:** [ADR-010](../adr/ADR-010-dropin-slot-customization-pattern.md) | [catalog-flow.md](./catalog-flow.md)

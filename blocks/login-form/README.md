@@ -198,11 +198,11 @@ The block logs all actions with `[Login Form]` prefix:
 
 ## Related Documentation
 
-- **EDS Block Patterns**: `docs/reference/backend/EDS-BLOCK-PATTERNS.md`
+- **EDS Block Structure**: `docs/reference/backend/eds-block-structure.md`
 - **ADR-002**: `docs/adr/ADR-002-use-eds-blocks-for-content.md`
-- **Phase 5.5 Plan**: `docs/implementation/active/PHASE-5.5-COMMERCE-DROPINS.md`
+- **Phase 5.5 Plan**: `docs/implementation/sarah-end-to-end/phase-5.5-reusable-state-ux.md`
 - **Auth Service**: `scripts/auth.js`
-- **Persona System**: `docs/reference/backend/PERSONA-RESOLUTION.md`
+- **Persona System**: `docs/explanations/persona-system.md`
 
 ---
 

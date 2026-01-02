@@ -104,11 +104,11 @@ export const PERSONAS = {
 
 ## Need More Detail?
 
-**Auth implementation**: [phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)  
-**Persona config**: [quick-reference/implement-persona.md](./implement-persona.md)
+**Auth implementation**: [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../archive/completed/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
+**Persona config**: [implement-persona.md](./implement-persona.md)
 
 ---
 
-**Back to**: [IMPLEMENTATION-GUIDE.md](../IMPLEMENTATION-GUIDE.md)
+**Back to**: [Quick Reference](./README.md)
 
 

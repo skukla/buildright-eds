@@ -278,9 +278,9 @@ Verify all functionality after changes:
 
 ## Related Documentation
 
-- [Dropin Integration Pattern](../../docs/standards/DROPIN-INTEGRATION-PATTERN.md) - Pattern guide
-- [Mini Cart Refactor](../../docs/MINICART-REFACTOR-DEC-19-2025.md) - Migration details
-- [Slots Reference](../../docs/reference/DROPIN-SLOTS-AND-CONFIG-REFERENCE.md) - All slots used
+- [Dropin Integration Pattern](../../docs/standards/dropin-integration-pattern.md) - Pattern guide
+- [Mini Cart Refactor](../../docs/archive/MINICART-REFACTOR-DEC-19-2025.md) - Migration details
+- [Slots Reference](../../docs/reference/dropin-slots-inventory.md) - All slots used
 
 ## Migration History
 
@@ -289,7 +289,7 @@ Verify all functionality after changes:
 - Reduced code by 35%
 - Improved maintainability
 - Added automatic state management
-- See `docs/MINICART-REFACTOR-DEC-19-2025.md` for complete details
+- See `docs/archive/MINICART-REFACTOR-DEC-19-2025.md` for complete details
 
 ---
 

@@ -120,6 +120,6 @@ BuildRight uses a **shared backend service** (`buildright-service`) that all fro
 
 ## Related Documents
 
-- [Architecture Overview](./ARCHITECTURE-OVERVIEW.md) - Full system context
-- [Mesh Adapter Pattern](./MESH-ADAPTER.md) - Query interception details
+- [Architecture Overview](./architecture-overview.md) - Full system context
+- [Mesh Adapter Pattern](./mesh-adapter.md) - Query interception details
 - [Shared Backend Services](../planning/features/shared-backend-services.md) - Implementation status

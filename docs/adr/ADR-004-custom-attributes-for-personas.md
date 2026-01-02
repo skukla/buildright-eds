@@ -7,9 +7,9 @@
 
 **🔗 Related Docs**:
 - **Implementation**: `scripts/persona-config.js`, `scripts/auth.js`
-- **Auth Summary**: [phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
+- **Auth Summary**: [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../archive/completed/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
 - **Related ADR**: [ADR-005](./ADR-005-dual-mode-authentication.md)
-- **Backend Setup**: [phase-8-backend/AUTH-STRATEGY.md](../phase-8-backend/AUTH-STRATEGY.md)
+- **Backend Setup**: [AUTH-STRATEGY.md](../archive/reference-old/AUTH-STRATEGY.md)
 
 **📍 Use This Doc When**:
 - Understanding how personas are assigned
@@ -383,7 +383,7 @@ If custom attribute is not set, we can infer from customer group:
 
 ## References
 
-- [Authentication Strategy Documentation](../AUTH-STRATEGY.md)
+- [Authentication Strategy Documentation](../archive/reference-old/AUTH-STRATEGY.md)
 - [Adobe Commerce REST API - Customers](https://developer.adobe.com/commerce/webapi/rest/use-rest/customer-setup/)
 - [Adobe Commerce Custom Attributes](https://experienceleague.adobe.com/docs/commerce-admin/customers/customer-accounts/attributes/attribute-properties.html)
 

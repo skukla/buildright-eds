@@ -94,7 +94,7 @@ while BuildRight custom queries (catalog, persona, BOM) use API Mesh.
 
 **See**: 
 - [ADR-008: Commerce Dropins Direct Connection](../reference/decisions/ADR-008-COMMERCE-DROPINS-DIRECT-CONNECTION.md)
-- [COMMERCE-MESH-INTEGRATION.md](../implementation/sarah-end-to-end/dropins/COMMERCE-MESH-INTEGRATION.md) (previous approach)
+- [commerce-mesh-integration.md](../implementation/sarah-end-to-end/dropins/commerce-mesh-integration.md) (previous approach)
 
 ---
 
@@ -113,7 +113,7 @@ while BuildRight custom queries (catalog, persona, BOM) use API Mesh.
 ### Key Principle
 **Products live in Commerce** → Auto-sync to ACO → **Pricing/policies in ACO**
 
-**See**: [phase-8-backend/DATA-SOURCE-MATRIX.md](../phase-8-backend/DATA-SOURCE-MATRIX.md)
+**See**: [data-source-comparison.md](../reference/backend/data-source-comparison.md)
 
 ---
 
@@ -245,7 +245,7 @@ Enforces: BEM naming, semantic tokens, responsive patterns
 6. Renders with persona-specific view
 ```
 
-**See**: [phase-9-deployment/DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md](../phase-9-deployment/DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md)
+**See**: [demo-to-production-migration-guide.md](../reference/deployment/demo-to-production-migration-guide.md)
 
 ---
 
@@ -307,7 +307,7 @@ Enforces: BEM naming, semantic tokens, responsive patterns
 ### Example: David's Deck
 David (DIY) only sees 8-12 deck-specific products, not all 70 products
 
-**See**: [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](../personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)
+**See**: [personas-overview.md](../personas/personas-overview.md)
 
 ---
 
@@ -342,7 +342,7 @@ buildright-eds/
 | 9 | 📋 Planned | Production deployment |
 | 10 | 📋 Planned | Content authoring transition |
 
-**See**: [PHASE-PLANS-INDEX.md](../PHASE-PLANS-INDEX.md)
+**See**: [phase-plans-index.md](../planning/phase-plans-index.md)
 
 ---
 
@@ -354,19 +354,19 @@ Implementing 4 remaining personas with unique dashboards:
 - **David**: Deck builder ⭐ Primary CCDM demo
 - **Kevin**: Multi-location restock dashboard
 
-**See**: [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md)
+**See**: [phases-6b-to-7-consolidated.md](../implementation/other-personas/phases-6b-to-7-consolidated.md)
 
 ---
 
 ## Need More Detail?
 
-**Full architecture**: [phase-0-5-foundation/PHASE-3-CORE-ARCHITECTURE.md](../phase-0-5-foundation/PHASE-3-CORE-ARCHITECTURE.md)  
-**Backend integration**: [phase-8-backend/](../phase-8-backend/)  
-**Architectural decisions**: [adr/](../adr/)  
-**Design system**: [standards/CSS-ARCHITECTURE.md](../standards/CSS-ARCHITECTURE.md)
+**Full architecture**: [phase-3-core-architecture.md](../archive/completed/phase-3-core-architecture.md)
+**Backend integration**: [reference/backend/](../reference/backend/)
+**Architectural decisions**: [adr/](../adr/)
+**Design system**: [css-architecture.md](../standards/css-architecture.md)
 
 ---
 
-**Back to**: [IMPLEMENTATION-GUIDE.md](../IMPLEMENTATION-GUIDE.md)
+**Back to**: [Quick Reference](./README.md)
 
 

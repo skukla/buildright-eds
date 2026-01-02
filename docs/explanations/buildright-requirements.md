@@ -226,4 +226,4 @@ This separation matches how production builders actually work.
 ---
 
 **Source:** Consolidated from Phase 6-Foundation planning (2024-11)
-**See Also:** [Persona System](./PERSONA-SYSTEM.md) | [Backend Services](./BACKEND-SERVICES.md)
+**See Also:** [Persona System](./persona-system.md) | [Backend Services](./backend-services.md)

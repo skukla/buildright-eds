@@ -330,4 +330,4 @@ All resolvers respect persona headers for pricing:
 ---
 
 **Source:** `buildright-service/mesh/resolvers-src/`
-**See Also:** [Backend Services](./BACKEND-SERVICES.md) | [ADR-009](../adr/ADR-009-mesh-adapter-resolver-pattern.md)
+**See Also:** [Backend Services](./backend-services.md) | [ADR-009](../adr/ADR-009-mesh-adapter-resolver-pattern.md)

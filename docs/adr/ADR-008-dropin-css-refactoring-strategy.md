@@ -171,7 +171,7 @@ SearchResults({
 
 ## Implementation Plan
 
-See: `docs/implementation/DROPIN-CSS-REFACTOR-PLAN.md`
+See: `docs/implementation/dropin-css-refactor-plan.md`
 
 ---
 
@@ -208,4 +208,4 @@ See: `docs/implementation/DROPIN-CSS-REFACTOR-PLAN.md`
 
 ### Internal Documentation
 - Research: `.rptc/research/adobe-commerce-eds-dropins-implementation/research.md`
-- Implementation Plan: `docs/implementation/DROPIN-CSS-REFACTOR-PLAN.md`
+- Implementation Plan: `docs/implementation/dropin-css-refactor-plan.md`

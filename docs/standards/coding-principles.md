@@ -5,9 +5,9 @@
 **👥 Audience**: All developers
 
 **🔗 Related Docs**:
-- **CSS Architecture**: [CSS-ARCHITECTURE.md](./CSS-ARCHITECTURE.md)
+- **CSS Architecture**: [css-architecture.md](./css-architecture.md)
 - **Architectural Decisions**: [adr/](../adr/)
-- **Phase 1 Completion**: [phase-0-5-foundation/PHASE_1_COMPLETE.md](../phase-0-5-foundation/PHASE_1_COMPLETE.md) (CSS/JS separation examples)
+- **Phase 1 Completion**: [PHASE_1_COMPLETE.md](../archive/completed/PHASE_1_COMPLETE.md) (CSS/JS separation examples)
 
 **📍 Use This Doc When**:
 - Writing any code

@@ -67,4 +67,4 @@ Each persona has a `price_book_id` that determines their pricing tier.
 
 **Source of Truth:** `scripts/persona-config.js`
 
-**See Also:** [ARCHITECTURE-OVERVIEW.md](./ARCHITECTURE-OVERVIEW.md)
+**See Also:** [architecture-overview.md](./architecture-overview.md)

@@ -110,4 +110,4 @@ When user clicks a filter checkbox:
 
 ---
 
-**See Also:** [ARCHITECTURE-OVERVIEW.md](./ARCHITECTURE-OVERVIEW.md) | [DROPIN-PATTERN.md](./DROPIN-PATTERN.md)
+**See Also:** [architecture-overview.md](./architecture-overview.md) | [dropin-pattern.md](./dropin-pattern.md)

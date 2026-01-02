@@ -11,7 +11,7 @@
 The original planning referenced a frontend `ProjectManager` service that was **never implemented**. The actual architecture uses `buildright-service` backend resolvers.
 
 For business requirements (terminology, multi-phase ordering, etc.), see:
-**[docs/explanations/BUILDRIGHT-REQUIREMENTS.md](../../explanations/BUILDRIGHT-REQUIREMENTS.md)**
+**[docs/explanations/buildright-requirements.md](../../explanations/buildright-requirements.md)**
 
 ---
 
@@ -30,20 +30,20 @@ For business requirements (terminology, multi-phase ordering, etc.), see:
 ## Key Reference Documents
 
 ### Business Requirements
-- [BUILDRIGHT-REQUIREMENTS.md](../../explanations/BUILDRIGHT-REQUIREMENTS.md) - Scope, terminology, personas
+- [buildright-requirements.md](../../explanations/buildright-requirements.md) - Scope, terminology, personas
 
 ### Backend Services (Shared by All Personas)
-- [BACKEND-SERVICES.md](../../explanations/BACKEND-SERVICES.md) - Architecture overview
-- [MESH-ADAPTER.md](../../explanations/MESH-ADAPTER.md) - Per-resolver documentation
+- [backend-services.md](../../explanations/backend-services.md) - Architecture overview
+- [mesh-adapter.md](../../explanations/mesh-adapter.md) - Per-resolver documentation
 
 ### Persona Details
-- [PERSONA-SYSTEM.md](../../explanations/PERSONA-SYSTEM.md) - 5 personas, pricing tiers
+- [persona-system.md](../../explanations/persona-system.md) - 5 personas, pricing tiers
 
 ---
 
 ## Detailed Plans
 
-See [PHASES-6B-TO-7-CONSOLIDATED.md](./PHASES-6B-TO-7-CONSOLIDATED.md) for:
+See [phases-6b-to-7-consolidated.md](./phases-6b-to-7-consolidated.md) for:
 - Phase 6B (Marcus): Multi-phase project wizard
 - Phase 6C (Lisa): Package configurator, quote sharing
 - Phase 6D (David): Deck builder wizard

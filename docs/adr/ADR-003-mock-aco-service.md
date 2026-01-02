@@ -375,9 +375,9 @@ To ensure mock accurately represents ACO:
 
 ## References
 
-- [Mock ACO API Specification](../MOCK-ACO-API-SPEC.md)
+- [Mock ACO API Specification](../archive/reference-old/MOCK-ACO-API-SPEC.md)
 - [Adobe Commerce Optimizer Documentation](https://experienceleague.adobe.com/docs/commerce-admin/systems/catalog-management.html)
-- [CCDM Research Notes](../PHASE-0-RESEARCH-AND-DECISIONS.md#step-4-design-mock-aco-service)
+- [CCDM Research Notes](../archive/completed/PHASE-0-RESEARCH-AND-DECISIONS.md#step-4-design-mock-aco-service)
 
 ---
 

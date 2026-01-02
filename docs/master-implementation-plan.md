@@ -207,11 +207,11 @@ BuildRight uses **two types of dropins**:
 
 | Document | Purpose |
 |----------|---------|
-| [CODEBASE-AUDIT-DROPINS.md](./implementation/sarah-end-to-end/dropins/CODEBASE-AUDIT-DROPINS.md) | Detailed file-by-file migration plan |
-| [COMMERCE-DROPINS-INTEGRATION.md](./implementation/sarah-end-to-end/dropins/COMMERCE-DROPINS-INTEGRATION.md) | Technical implementation guide |
+| [codebase-audit-dropins.md](./implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md) | Detailed file-by-file migration plan |
+| [commerce-dropins-integration.md](./implementation/sarah-end-to-end/dropins/commerce-dropins-integration.md) | Technical implementation guide |
 | [ADR-001](./adr/ADR-001-use-dropins-for-commerce.md) | Architecture decision |
-| [reference/backend/dropin-architecture.md](./reference/backend/dropin-architecture.md) | Dropin patterns |
-| [reference/backend/AUTH-STRATEGY.md](./reference/backend/AUTH-STRATEGY.md) | Authentication approach |
+| [dropin-architecture.md](./dropin-architecture.md) | Dropin patterns |
+| [auth-strategy.md](./archive/reference-old/AUTH-STRATEGY.md) | Authentication approach |
 
 ### Dropins to Integrate
 
@@ -351,9 +351,9 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 
 | Document | Purpose |
 |----------|---------|
-| [PHASES-6B-TO-7-CONSOLIDATED.md](./implementation/other-personas/PHASES-6B-TO-7-CONSOLIDATED.md) | Detailed implementation plan |
-| [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md) | All persona profiles |
-| [personas/PERSONA-UX-MAP.md](./personas/PERSONA-UX-MAP.md) | UX patterns per persona |
+| [phases-6b-to-7-consolidated.md](./implementation/other-personas/phases-6b-to-7-consolidated.md) | Detailed implementation plan |
+| [personas-overview.md](./personas/personas-overview.md) | All persona profiles |
+| [personas-ux-patterns.md](./personas/personas-ux-patterns.md) | UX patterns per persona |
 
 | Phase | Persona | Key Feature | Demo Value |
 |-------|---------|-------------|------------|
@@ -375,8 +375,8 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 | Document | Purpose |
 |----------|---------|
 | [ADR-007](./adr/ADR-007-custom-sdk-dropins-for-aco.md) | Architecture decision and rationale |
-| [CODEBASE-AUDIT-DROPINS.md](./implementation/sarah-end-to-end/dropins/CODEBASE-AUDIT-DROPINS.md) | SDK dropin details (Phase 2 section) |
-| [reference/backend/EDS-BLOCK-PATTERNS.md](./reference/backend/EDS-BLOCK-PATTERNS.md) | Current block patterns |
+| [codebase-audit-dropins.md](./implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md) | SDK dropin details (Phase 2 section) |
+| [eds-block-patterns.md](./reference/backend/eds-block-patterns.md) | Current block patterns |
 | [component-architecture/](./component-architecture/) | Component extraction guides |
 
 ### Why Custom SDK Dropins?
@@ -564,12 +564,12 @@ docs/
 
 | Topic | Document |
 |-------|----------|
-| **Getting Started** | [AGENT-HANDOFF.md](./AGENT-HANDOFF.md) |
+| **Getting Started** | [AGENT-HANDOFF.md](./archive/session-logs/AGENT-HANDOFF.md) |
 | **Dropins Integration** | [implementation/sarah-end-to-end/dropins/](./implementation/sarah-end-to-end/dropins/) |
-| **Dropin CSS Refactoring** | [implementation/DROPIN-CSS-REFACTOR-PLAN.md](./implementation/DROPIN-CSS-REFACTOR-PLAN.md) |
+| **Dropin CSS Refactoring** | [dropin-css-refactor-plan.md](./implementation/dropin-css-refactor-plan.md) |
 | **Sarah Implementation** | [implementation/sarah-end-to-end/features/](./implementation/sarah-end-to-end/features/) |
 | **Backend Reference** | [reference/backend/](./reference/backend/) |
-| **Personas** | [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md) |
+| **Personas** | [personas-overview.md](./personas/personas-overview.md) |
 | **Architecture Decisions** | [adr/](./adr/) |
 | **Completed Work** | [implementation/completed/](./implementation/completed/) |
 | **Research** | [../.rptc/research/](../../.rptc/research/) |

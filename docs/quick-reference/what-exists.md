@@ -35,7 +35,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **Use for**: Good/Better/Best displays (Lisa)  
 **Features**: Side-by-side comparison, feature lists
 
-**See**: [phase-0-5-foundation/PHASE-4-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-4-COMPLETION-SUMMARY.md)
+**See**: [PHASE-4-COMPLETION-SUMMARY.md](../archive/completed/PHASE-4-COMPLETION-SUMMARY.md)
 
 ---
 
@@ -58,7 +58,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **Features**: Persona detection, login/logout, session management  
 **API**: `loginWithPersona(id)`, `logout()`, `getCurrentUser()`
 
-**See**: [phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
+**See**: [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../archive/completed/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
 
 ---
 
@@ -88,7 +88,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **API**: `loadFragment(container, path)`, `loadFragments(fragments[])`  
 **Location**: `scripts/fragment-loader.js`
 
-**See**: [phase-0-5-foundation/FRAGMENT-IMPLEMENTATION-SUMMARY.md](../phase-0-5-foundation/FRAGMENT-IMPLEMENTATION-SUMMARY.md)
+**See**: [FRAGMENT-IMPLEMENTATION-SUMMARY.md](../archive/completed/FRAGMENT-IMPLEMENTATION-SUMMARY.md)
 
 ---
 
@@ -107,7 +107,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 **Location**: `scripts/data-mock.js`  
 **Features**: Customer context, pricing logic, product lookups
 
-**See**: [phase-0-5-foundation/PHASE-3-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-3-COMPLETION-SUMMARY.md)
+**See**: [PHASE-3-COMPLETION-SUMMARY.md](../archive/completed/PHASE-3-COMPLETION-SUMMARY.md)
 
 ---
 
@@ -141,9 +141,9 @@ This is your inventory of reusable components, existing systems, and demo data.
 ✅ **DO**: Use `safeAddEventListener()` for automatic cleanup  
 ❌ **DON'T**: Add listeners without cleanup strategy
 
-**See**: 
-- [phase-0-5-foundation/PHASE_1_COMPLETE.md](../phase-0-5-foundation/PHASE_1_COMPLETE.md)
-- [phase-0-5-foundation/PHASE-2-FINAL-SUMMARY.md](../phase-0-5-foundation/PHASE-2-FINAL-SUMMARY.md)
+**See**:
+- [PHASE_1_COMPLETE.md](../archive/completed/PHASE_1_COMPLETE.md)
+- [PHASE-2-FINAL-SUMMARY.md](../archive/completed/PHASE-2-FINAL-SUMMARY.md)
 
 ---
 
@@ -160,7 +160,7 @@ This is your inventory of reusable components, existing systems, and demo data.
 6. `cleanupEventListeners()` - Remove all listeners
 7. `cleanElementListeners(element)` - Remove element listeners
 
-**See**: [phase-0-5-foundation/PHASE_4_COMPLETE.md](../phase-0-5-foundation/PHASE_4_COMPLETE.md)
+**See**: [PHASE_4_COMPLETE.md](../archive/completed/PHASE_4_COMPLETE.md)
 
 ---
 
@@ -181,7 +181,7 @@ Key variables:
 
 Documented patterns for cards, buttons, forms, modals, etc.
 
-**See**: [standards/CSS-ARCHITECTURE.md](../standards/CSS-ARCHITECTURE.md)
+**See**: [css-architecture.md](../standards/css-architecture.md)
 
 ---
 
@@ -227,13 +227,13 @@ Strategies for unit, integration, E2E, and persona-specific testing
 
 ## Need More Detail?
 
-**Component APIs**: [phase-0-5-foundation/PHASE-4-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-4-COMPLETION-SUMMARY.md)  
-**Auth & demo accounts**: [phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)  
-**Fragments**: [phase-0-5-foundation/FRAGMENT-IMPLEMENTATION-SUMMARY.md](../phase-0-5-foundation/FRAGMENT-IMPLEMENTATION-SUMMARY.md)  
-**Core architecture**: [phase-0-5-foundation/PHASE-3-COMPLETION-SUMMARY.md](../phase-0-5-foundation/PHASE-3-COMPLETION-SUMMARY.md)
+**Component APIs**: [PHASE-4-COMPLETION-SUMMARY.md](../archive/completed/PHASE-4-COMPLETION-SUMMARY.md)
+**Auth & demo accounts**: [PHASE-5-TASK-2-COMPLETION-SUMMARY.md](../archive/completed/PHASE-5-TASK-2-COMPLETION-SUMMARY.md)
+**Fragments**: [FRAGMENT-IMPLEMENTATION-SUMMARY.md](../archive/completed/FRAGMENT-IMPLEMENTATION-SUMMARY.md)
+**Core architecture**: [PHASE-3-COMPLETION-SUMMARY.md](../archive/completed/PHASE-3-COMPLETION-SUMMARY.md)
 
 ---
 
-**Back to**: [IMPLEMENTATION-GUIDE.md](../IMPLEMENTATION-GUIDE.md)
+**Back to**: [Quick Reference](./README.md)
 
 

@@ -272,7 +272,7 @@ window.addEventListener('cart:item-added', (e) => {
 | Loading Overlay | **EDS Block** | Simple UI component |
 | Header/Footer | **EDS Block** | Content-driven, site-specific |
 
-See [Block vs Dropin Matrix](../BLOCK-VS-DROPIN-MATRIX.md) for full decision framework.
+See [Block vs Dropin Matrix](../reference/backend/block-vs-dropin-decision.md) for full decision framework.
 
 ---
 
@@ -285,8 +285,8 @@ See [Block vs Dropin Matrix](../BLOCK-VS-DROPIN-MATRIX.md) for full decision fra
 
 ## References
 
-- [EDS Block Patterns Documentation](../EDS-BLOCK-PATTERNS.md)
-- [Block vs Dropin Decision Matrix](../BLOCK-VS-DROPIN-MATRIX.md)
+- [EDS Block Structure](../reference/backend/eds-block-structure.md)
+- [Block vs Dropin Decision Matrix](../reference/backend/block-vs-dropin-decision.md)
 - [AEM Edge Delivery Services Documentation](https://www.aem.live/)
 
 ---

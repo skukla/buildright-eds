@@ -17,7 +17,7 @@
 
 ### 1. **Read Persona Profile** (5 min)
 
-📖 **Where**: [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](../personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)
+📖 **Where**: [personas/personas-overview.md](../personas/personas-overview.md)
 
 **Find your persona**:
 - Sarah Martinez - Production Builder
@@ -32,7 +32,7 @@
 
 ### 2. **Read Implementation Plan** (20 min)
 
-📖 **Where**: [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md)
+📖 **Where**: [phases-6b-to-7-consolidated.md](../implementation/other-personas/phases-6b-to-7-consolidated.md)
 
 **Find your phase**:
 - Phase 6B = Marcus
@@ -107,7 +107,7 @@ Create data specific to your persona's needs.
 #### E. Create Styles
 **File**: `styles/dashboards/your-dashboard.css`
 
-Follow patterns in [standards/CSS-ARCHITECTURE.md](../standards/CSS-ARCHITECTURE.md)
+Follow patterns in [standards/css-architecture.md](../standards/css-architecture.md)
 
 ---
 
@@ -162,13 +162,13 @@ After implementation:
 
 ## Need More Detail?
 
-**Full implementation plan**: [PHASES-6B-TO-7-CONSOLIDATED.md](../PHASES-6B-TO-7-CONSOLIDATED.md)  
-**Persona profiles**: [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](../personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)  
-**What exists**: [what-exists.md](./what-exists.md)  
-**Coding standards**: [standards/CODING-PRINCIPLES.md](../standards/CODING-PRINCIPLES.md)
+**Full implementation plan**: [phases-6b-to-7-consolidated.md](../implementation/other-personas/phases-6b-to-7-consolidated.md)
+**Persona profiles**: [personas-overview.md](../personas/personas-overview.md)
+**What exists**: [what-exists.md](./what-exists.md)
+**Coding standards**: [coding-principles.md](../standards/coding-principles.md)
 
 ---
 
-**Back to**: [IMPLEMENTATION-GUIDE.md](../IMPLEMENTATION-GUIDE.md)
+**Back to**: [Quick Reference](./README.md)
 
 

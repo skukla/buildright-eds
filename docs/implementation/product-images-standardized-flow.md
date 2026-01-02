@@ -2,7 +2,7 @@
 
 **Date**: December 17, 2025  
 **Status**: ✅ Implemented  
-**Related**: [PRODUCT-IMAGES-CONVENTION.md](./PRODUCT-IMAGES-CONVENTION.md)
+**Related**: [product-images-convention.md](./product-images-convention.md)
 
 ---
 

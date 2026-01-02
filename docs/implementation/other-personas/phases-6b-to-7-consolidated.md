@@ -8,7 +8,7 @@
 **🔗 Related Docs**:
 - **Quick Start**: [quick-reference/implement-persona.md](./quick-reference/implement-persona.md)
 - **What Exists**: [quick-reference/what-exists.md](./quick-reference/what-exists.md)
-- **Persona Profiles**: [personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)
+- **Persona Profiles**: [personas-overview.md](../../personas/personas-overview.md)
 - **Completion Summaries**: [phase-0-5-foundation/](./phase-0-5-foundation/)
 - **Architectural Decisions**: [adr/ADR-004](./adr/ADR-004-custom-attributes-for-personas.md), [adr/ADR-006](./adr/ADR-006-multi-location-store-manager.md)
 
@@ -1072,12 +1072,12 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 
 **Step 1: Pattern Review** (2-3 hours)
 - Review all Phase 6 implementations (6A-6E)
-- Reference the component audit: [`component-architecture/COMPONENT-EXTRACTION-OPPORTUNITIES.md`](../../component-architecture/COMPONENT-EXTRACTION-OPPORTUNITIES.md)
+- Reference the component audit: [`component-architecture/extraction-opportunities.md`](../../component-architecture/extraction-opportunities.md)
 - Identify which of the 47+ identified patterns actually repeated across multiple personas
 - Document what was built multiple times vs. what was unique
 
 **Step 2: Component Classification** (1-2 hours)
-- Use the classification framework from [`component-architecture/EDS-BLOCKS-VS-COMPONENT-EXTRACTION.md`](../../component-architecture/EDS-BLOCKS-VS-COMPONENT-EXTRACTION.md)
+- Use the classification framework from [`component-architecture/blocks-vs-extraction.md`](../../component-architecture/blocks-vs-extraction.md)
 - Categorize proven patterns:
   - **Utilities**: Reusable CSS classes (buttons, badges, loading states)
   - **Shared Functions**: JavaScript utilities (quantity controls, modals, formatters)
@@ -1120,10 +1120,10 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 - Ensure no regressions
 
 **Step 7: Update Documentation** (1 hour)
-- Update [`component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md`](../../component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md) with what was extracted
-- Update [`component-architecture/COMPONENT-EXTRACTION-ROADMAP.md`](../../component-architecture/COMPONENT-EXTRACTION-ROADMAP.md) for future extractions
-- Document in [`docs/standards/CSS-ARCHITECTURE.md`](../../docs/standards/CSS-ARCHITECTURE.md)
-- Add notes to [`docs/standards/COMPONENT-DESIGN-LIBRARY.md`](../../docs/standards/COMPONENT-DESIGN-LIBRARY.md)
+- Update [`component-architecture/extraction-quick-reference.md`](../../component-architecture/extraction-quick-reference.md) with what was extracted
+- Update [`component-architecture/extraction-roadmap.md`](../../component-architecture/extraction-roadmap.md) for future extractions
+- Document in [`docs/standards/css-architecture.md`](../../standards/css-architecture.md)
+- Add notes to [`docs/standards/component-design-library.md`](../../standards/component-design-library.md)
 
 **Success Criteria**:
 - [ ] Reviewed all Phase 6 implementations
@@ -1147,10 +1147,10 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 
 **Reference Documents**:
 - 📚 [Component Architecture README](../../component-architecture/README.md) - Master index
-- 📊 [Component Extraction Opportunities](../../component-architecture/COMPONENT-EXTRACTION-OPPORTUNITIES.md) - Full audit
-- 🎯 [EDS Blocks vs Component Extraction](../../component-architecture/EDS-BLOCKS-VS-COMPONENT-EXTRACTION.md) - Classification guide
-- 📋 [Component Extraction Quick Reference](../../component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md) - Lookup table
-- 🗺️ [Component Extraction Roadmap](../../component-architecture/COMPONENT-EXTRACTION-ROADMAP.md) - Planning doc
+- 📊 [Component Extraction Opportunities](../../component-architecture/extraction-opportunities.md) - Full audit
+- 🎯 [EDS Blocks vs Component Extraction](../../component-architecture/blocks-vs-extraction.md) - Classification guide
+- 📋 [Component Extraction Quick Reference](../../component-architecture/extraction-quick-reference.md) - Lookup table
+- 🗺️ [Component Extraction Roadmap](../../component-architecture/extraction-roadmap.md) - Planning doc
 
 ### Task 6: Demo Walkthrough Guide
 
@@ -1300,7 +1300,7 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 
 **Phase 6E Update**: Duration extended from 1 week to 1-1.5 weeks due to multi-location architecture (see [ADR-006](../adr/ADR-006-multi-location-store-manager.md)). Foundation already implemented in Phase 1-5 (location selector, company config, customer context).
 
-**Phase 6E Data Architecture**: Demo mode only (static files). See [DATA-SOURCE-MATRIX](../DATA-SOURCE-MATRIX.md) for full hybrid Commerce PaaS + ACO architecture. Production API integration is a future enhancement.
+**Phase 6E Data Architecture**: Demo mode only (static files). See [data-source-comparison.md](../../reference/backend/data-source-comparison.md) for full hybrid Commerce PaaS + ACO architecture. Production API integration is a future enhancement.
 
 **Total Time**: 8-10.5 weeks for Phases 6B through 7
 

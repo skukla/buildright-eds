@@ -32,5 +32,5 @@ Reference these documents when:
 
 ---
 
-**Back to**: [Main Docs](../) | [Phase Plans Index](../PHASE-PLANS-INDEX.md)
+**Back to**: [Main Docs](../) | [Phase Plans Index](../../planning/phase-plans-index.md)
 

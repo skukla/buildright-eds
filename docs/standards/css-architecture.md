@@ -5,8 +5,8 @@
 **👥 Audience**: Developers writing CSS
 
 **🔗 Related Docs**:
-- **Coding Principles**: [CODING-PRINCIPLES.md](./CODING-PRINCIPLES.md)
-- **Component Library**: [COMPONENT-DESIGN-LIBRARY.md](./COMPONENT-DESIGN-LIBRARY.md)
+- **Coding Principles**: [coding-principles.md](./coding-principles.md)
+- **Component Library**: [component-design-library.md](./component-design-library.md)
 - **Implementation Files**: `styles/base.css`, `styles/components.css`
 
 **📍 Use This Doc When**:

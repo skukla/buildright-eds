@@ -261,7 +261,7 @@ function getProductImageUrl(sku, acoImageUrl) {
 
 ## Documentation
 
-- **Architecture**: [PRODUCT-IMAGES-CONVENTION.md](./PRODUCT-IMAGES-CONVENTION.md)
+- **Architecture**: [product-images-convention.md](./product-images-convention.md)
 - **Image source**: Commerce Datapack (`buildright-data/generated/commerce/data/accs/`)
 - **Extraction script**: `buildright-eds/scripts/extract-commerce-images.js`
 - **Sync script**: `buildright-eds/scripts/sync-product-images.sh`

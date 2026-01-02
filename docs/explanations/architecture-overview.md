@@ -58,4 +58,4 @@ This split means:
 
 ---
 
-**See Also:** [DROPIN-PATTERN.md](./DROPIN-PATTERN.md) | [MESH-ADAPTER.md](./MESH-ADAPTER.md)
+**See Also:** [dropin-pattern.md](./dropin-pattern.md) | [mesh-adapter.md](./mesh-adapter.md)

@@ -47,5 +47,5 @@ See **DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md** for complete details.
 
 ---
 
-**Back to**: [Main Docs](../) | [Phase Plans Index](../PHASE-PLANS-INDEX.md)
+**Back to**: [Main Docs](../) | [Phase Plans Index](../../planning/phase-plans-index.md)
 

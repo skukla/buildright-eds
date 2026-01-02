@@ -1277,8 +1277,8 @@ If migration issues occur:
 - **API Mesh Docs**: https://developer.adobe.com/graphql-mesh-gateway/
 - **Commerce Dropins**: https://experienceleague.adobe.com/docs/commerce-web-components/
 - **EDS Documentation**: https://www.aem.live/developer/
-- **Phase 9 Guide**: [PHASE-9-PRODUCTION-DEPLOYMENT.md](./PHASE-9-PRODUCTION-DEPLOYMENT.md)
-- **Data Source Matrix**: [DATA-SOURCE-MATRIX.md](./DATA-SOURCE-MATRIX.md)
+- **Phase 9 Guide**: [phase-9-production-deployment.md](./phase-9-production-deployment.md)
+- **Data Source Matrix**: [data-source-comparison.md](../backend/data-source-comparison.md)
 
 ---
 

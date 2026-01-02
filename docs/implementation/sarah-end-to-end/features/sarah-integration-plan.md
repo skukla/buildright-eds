@@ -14,7 +14,7 @@
 
 This plan prioritizes connecting the frontend to real Adobe Commerce (ACO) product data. 
 
-**Key Update (December 2024):** Cart, checkout, and orders will now use Commerce Dropins instead of mocked localStorage. See [CODEBASE-AUDIT-DROPINS.md](../../CODEBASE-AUDIT-DROPINS.md) for details.
+**Key Update (December 2024):** Cart, checkout, and orders will now use Commerce Dropins instead of mocked localStorage. See [codebase-audit-dropins.md](../dropins/codebase-audit-dropins.md) for details.
 
 ---
 
@@ -71,7 +71,7 @@ All sub-phases completed:
 **Priority**: 🔴 HIGH  
 **Status**: ✅ Implemented December 8, 2025
 
-**📖 Architecture Documentation**: [CATALOG-SERVICE-ARCHITECTURE.md](./CATALOG-SERVICE-ARCHITECTURE.md)
+**📖 Architecture Documentation**: [catalog-service-design.md](./catalog-service-design.md)
 
 ### 2.1 ACO Service Layer ✅
 
@@ -255,7 +255,7 @@ All sub-phases completed:
 **Priority**: 🟡 MEDIUM (now part of Phase 5.5)
 
 > **Update (December 2024):** Cart and Orders will use Commerce Dropins instead of mocked localStorage.  
-> See [CODEBASE-AUDIT-DROPINS.md](../../CODEBASE-AUDIT-DROPINS.md) for implementation details.
+> See [codebase-audit-dropins.md](../dropins/codebase-audit-dropins.md) for implementation details.
 
 ### 6.1 Cart — Use Cart Dropin
 
@@ -419,7 +419,7 @@ FUTURE: Commerce Backend (when added)
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**📖 Full architecture details**: [CATALOG-SERVICE-ARCHITECTURE.md](./CATALOG-SERVICE-ARCHITECTURE.md)
+**📖 Full architecture details**: [catalog-service-design.md](./catalog-service-design.md)
 
 ---
 

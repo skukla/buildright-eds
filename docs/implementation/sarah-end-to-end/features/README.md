@@ -13,7 +13,7 @@ The original Phase 6-Foundation planning (00-07 series) described a frontend `Pr
 - **Frontend**: `scripts/dashboards/template-dashboard.js` - Simple UI calling backend
 
 For the business requirements extracted from that planning, see:
-**[docs/explanations/BUILDRIGHT-REQUIREMENTS.md](../../../explanations/BUILDRIGHT-REQUIREMENTS.md)**
+**[docs/explanations/buildright-requirements.md](../../../explanations/buildright-requirements.md)**
 
 ---
 
@@ -63,7 +63,7 @@ Frontend `ProjectManager` docs that were never built → `docs/archive/phase-6-f
 ### Sarah Completed Work
 Completed summaries, audits, and superseded wireframes → `docs/archive/sarah-completed/`
 
-Business requirements extracted to: **[docs/explanations/BUILDRIGHT-REQUIREMENTS.md](../../../explanations/BUILDRIGHT-REQUIREMENTS.md)**
+Business requirements extracted to: **[docs/explanations/buildright-requirements.md](../../../explanations/buildright-requirements.md)**
 
 ---
 
@@ -94,9 +94,9 @@ buildright-eds/scripts/
 
 ## See Also
 
-- [Business Requirements](../../../explanations/BUILDRIGHT-REQUIREMENTS.md) - Scope, terminology
-- [Backend Services](../../../explanations/BACKEND-SERVICES.md) - How resolvers work
-- [Mesh Adapters](../../../explanations/MESH-ADAPTER.md) - Per-resolver documentation
+- [Business Requirements](../../../explanations/buildright-requirements.md) - Scope, terminology
+- [Backend Services](../../../explanations/backend-services.md) - How resolvers work
+- [Mesh Adapters](../../../explanations/mesh-adapter.md) - Per-resolver documentation
 
 ---
 
