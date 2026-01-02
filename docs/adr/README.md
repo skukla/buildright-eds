@@ -65,7 +65,7 @@ What are the positive and negative outcomes?
 ## Related Documentation
 
 - [Phase 0: Research & Architecture Decisions](../PHASE-0-RESEARCH-AND-DECISIONS.md)
-- [Dropin Architecture](../DROPIN-ARCHITECTURE.md)
+- [Dropin Architecture](../dropin-architecture.md)
 - [Block vs Dropin Matrix](../BLOCK-VS-DROPIN-MATRIX.md)
 - [Mock ACO API Spec](../MOCK-ACO-API-SPEC.md)
 - [Authentication Strategy](../AUTH-STRATEGY.md)

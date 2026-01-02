@@ -272,7 +272,7 @@ events.emit('product/add-to-cart', { sku: 'ABC-123', quantity: 1 });
 
 - [ADR-001: Use Dropins for Commerce Functions](./ADR-001-use-dropins-for-commerce.md) — Commerce Dropins for auth/cart/checkout
 - [ADR-002: Use EDS Blocks for Content-Driven Components](./ADR-002-use-eds-blocks-for-content.md) — Why EDS blocks are used for project-builder, pricing-display, tier-badge
-- [MASTER-IMPLEMENTATION-PLAN.md](../MASTER-IMPLEMENTATION-PLAN.md) — Overall implementation plan
+- [master-implementation-plan.md](../master-implementation-plan.md) — Overall implementation plan
 
 ---
 

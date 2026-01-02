@@ -8,9 +8,9 @@
 
 | Need | Go Here |
 |------|---------|
-| **Master plan** | [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md) |
-| **Dropin patterns** | [DROPIN-ARCHITECTURE.md](./DROPIN-ARCHITECTURE.md) |
-| **Backend services** | [BACKEND-SERVICE-REFERENCE.md](./BACKEND-SERVICE-REFERENCE.md) |
+| **Master plan** | [master-implementation-plan.md](./master-implementation-plan.md) |
+| **Dropin patterns** | [dropin-architecture.md](./dropin-architecture.md) |
+| **Backend services** | [backend-service-reference.md](./backend-service-reference.md) |
 | **Architecture decisions** | [adr/](./adr/) (13 ADRs) |
 | **Persona profiles** | [personas/](./personas/) |
 
@@ -21,10 +21,10 @@
 ```
 docs/
 ├── README.md                    # This file
-├── MASTER-IMPLEMENTATION-PLAN.md # Authoritative plan
-├── DROPIN-ARCHITECTURE.md       # Canonical dropin reference
-├── BACKEND-SERVICE-REFERENCE.md # Backend service docs
-├── INDEX.md                     # Quick navigation
+├── master-implementation-plan.md # Authoritative plan
+├── dropin-architecture.md       # Canonical dropin reference
+├── backend-service-reference.md # Backend service docs
+├── index.md                     # Quick navigation
 │
 ├── adr/                    # Architecture Decision Records (13)
 ├── explanations/           # Visual "how it works" docs (8)

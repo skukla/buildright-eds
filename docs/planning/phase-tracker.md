@@ -80,5 +80,5 @@ Phase 8:      ░░░░░░░░░░░░░░░░░░░░ Plann
 
 ---
 
-**Source of Truth:** `docs/MASTER-IMPLEMENTATION-PLAN.md`
+**Source of Truth:** `docs/master-implementation-plan.md`
 **Backend Services:** `buildright-service/mesh/README.md`

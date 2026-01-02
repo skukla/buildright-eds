@@ -5,7 +5,7 @@
 **Status**: Active  
 **Goal**: Fully integrated, demo-ready Sarah persona with real ACO/Commerce catalog data
 
-> **Master Plan**: [MASTER-IMPLEMENTATION-PLAN.md](../../MASTER-IMPLEMENTATION-PLAN.md)  
+> **Master Plan**: [master-implementation-plan.md](../../master-implementation-plan.md)  
 > **Dropins Integration**: See Phase 5.5 in master plan
 
 ---
@@ -284,7 +284,7 @@ All sub-phases completed:
 
 > **Update (December 2024):** Commerce backend integration is now handled via Commerce Dropins.  
 > Auth, Cart, Checkout, and Orders all connect to Commerce backend automatically.  
-> See [MASTER-IMPLEMENTATION-PLAN.md](../../MASTER-IMPLEMENTATION-PLAN.md) Phase 5.5.
+> See [master-implementation-plan.md](../../master-implementation-plan.md) Phase 5.5.
 
 ### 7.1 Commerce Dropins Handle Backend
 
@@ -433,5 +433,5 @@ FUTURE: Commerce Backend (when added)
 | Dec 9, 2025 | Phase 3 updates: Live Search, Faceted Search completed |
 | Dec 9, 2025 | Added bundle pricing mesh workaround (ACO returns null priceRange for bundles) |
 | Dec 9, 2025 | Added Phase 7: Commerce Backend Integration - documents bundle pricing migration path |
-| Dec 2024 | **Major update**: Cart/Orders now use Commerce Dropins. Added references to MASTER-IMPLEMENTATION-PLAN.md |
+| Dec 2024 | **Major update**: Cart/Orders now use Commerce Dropins. Added references to master-implementation-plan.md |
 

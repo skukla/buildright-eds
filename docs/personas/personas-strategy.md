@@ -1,6 +1,6 @@
 # BuildRight Persona Implementation - Meta Plan
 
-> **ARCHIVED**: This document has been superseded by [MASTER-IMPLEMENTATION-PLAN.md](../MASTER-IMPLEMENTATION-PLAN.md). Kept for historical reference.
+> **ARCHIVED**: This document has been superseded by [master-implementation-plan.md](../master-implementation-plan.md). Kept for historical reference.
 >
 > Key updates in the master plan:
 > - Phase 5.5: Commerce Dropins integration (new)

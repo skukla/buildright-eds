@@ -228,7 +228,7 @@ To move to production:
 ## References
 
 - [Adobe Commerce Storefront SDK Documentation](https://experienceleague.adobe.com/developer/commerce/storefront/sdk/)
-- [Dropin Architecture Documentation](../DROPIN-ARCHITECTURE.md)
+- [Dropin Architecture Documentation](../dropin-architecture.md)
 - [Block vs Dropin Decision Matrix](../BLOCK-VS-DROPIN-MATRIX.md)
 
 ---

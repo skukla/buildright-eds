@@ -1,6 +1,6 @@
 # BuildRight Phase Plans Index
 
-> **Authoritative Plan:** [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md)  
+> **Authoritative Plan:** [master-implementation-plan.md](./master-implementation-plan.md)
 > This index provides links to detailed phase documents.
 
 ## Overview
@@ -14,7 +14,7 @@ BuildRight uses a phased implementation approach with two major tracks:
 
 ## Master Plan
 
-### 📋 MASTER-IMPLEMENTATION-PLAN.md ⭐ **START HERE**
+### 📋 master-implementation-plan.md ⭐ **START HERE**
 **Single source of truth**
 - Executive summary and current state
 - Architecture overview (Commerce + ACO)
@@ -173,7 +173,7 @@ For ACO components, use the Drop-in SDK to ensure:
 
 ## Getting Started
 
-1. **Read the master plan:** [MASTER-IMPLEMENTATION-PLAN.md](./MASTER-IMPLEMENTATION-PLAN.md)
+1. **Read the master plan:** [master-implementation-plan.md](./master-implementation-plan.md)
 2. **Understand personas:** [BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)
 3. **For Dropins details:** [CODEBASE-AUDIT-DROPINS.md](./CODEBASE-AUDIT-DROPINS.md)
 

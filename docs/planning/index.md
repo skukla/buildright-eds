@@ -10,7 +10,7 @@
 | Doc | Purpose |
 |-----|---------|
 | [phase-tracker.md](./phase-tracker.md) | Current phase status and remaining tasks |
-| [../MASTER-IMPLEMENTATION-PLAN.md](../MASTER-IMPLEMENTATION-PLAN.md) | Authoritative project plan |
+| [../master-implementation-plan.md](../master-implementation-plan.md) | Authoritative project plan |
 
 ---
 
@@ -35,8 +35,8 @@ All personas share backend services from `buildright-service`:
 | Resolver | Purpose | Doc |
 |----------|---------|-----|
 | `bom-from-template.js` | BOM generation | [shared-backend-services.md](./features/shared-backend-services.md) |
-| `dropin-search.js` | Product grid queries | [../explanations/BACKEND-SERVICES.md](../explanations/BACKEND-SERVICES.md) |
-| `persona.js` | Pricing headers | [../explanations/BACKEND-SERVICES.md](../explanations/BACKEND-SERVICES.md) |
+| `dropin-search.js` | Product grid queries | [../explanations/backend-services.md](../explanations/backend-services.md) |
+| `persona.js` | Pricing headers | [../explanations/backend-services.md](../explanations/backend-services.md) |
 
 ---
 
@@ -51,11 +51,11 @@ For deep-dive specifications, see source directories:
 | Other Personas | `docs/implementation/other-personas/` | Planned |
 | Completed Phases | `docs/archive/completed/` | Historical |
 
-> **Note:** Phase 6-Foundation planning docs (00-07 series) describing a frontend ProjectManager have been archived to `docs/archive/phase-6-foundation-obsolete/`. Business requirements were consolidated to [BUILDRIGHT-REQUIREMENTS.md](../explanations/BUILDRIGHT-REQUIREMENTS.md).
+> **Note:** Phase 6-Foundation planning docs (00-07 series) describing a frontend ProjectManager have been archived to `docs/archive/phase-6-foundation-obsolete/`. Business requirements were consolidated to [buildright-requirements.md](../explanations/buildright-requirements.md).
 
 ---
 
 **Navigation:**
 - [← Back to Docs](../README.md)
 - [ADRs](../adr/README.md)
-- [Explanations](../explanations/INDEX.md)
+- [Explanations](../explanations/index.md)

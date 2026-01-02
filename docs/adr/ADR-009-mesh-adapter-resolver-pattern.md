@@ -250,7 +250,7 @@ function transformToNativeSchema(items) {
 ## References
 
 - [buildright-service/mesh/README.md](../../buildright-service/mesh/README.md) - Detailed implementation
-- [DROPIN-ARCHITECTURE.md](../DROPIN-ARCHITECTURE.md) - Query flow diagrams
+- [dropin-architecture.md](../dropin-architecture.md) - Query flow diagrams
 - [Adobe API Mesh Programmatic Resolvers](https://developer.adobe.com/graphql-mesh-gateway/mesh/advanced/extend/resolvers/programmatic-resolvers/)
 
 ---

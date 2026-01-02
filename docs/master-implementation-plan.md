@@ -210,7 +210,7 @@ BuildRight uses **two types of dropins**:
 | [CODEBASE-AUDIT-DROPINS.md](./implementation/sarah-end-to-end/dropins/CODEBASE-AUDIT-DROPINS.md) | Detailed file-by-file migration plan |
 | [COMMERCE-DROPINS-INTEGRATION.md](./implementation/sarah-end-to-end/dropins/COMMERCE-DROPINS-INTEGRATION.md) | Technical implementation guide |
 | [ADR-001](./adr/ADR-001-use-dropins-for-commerce.md) | Architecture decision |
-| [reference/backend/DROPIN-ARCHITECTURE.md](./reference/backend/DROPIN-ARCHITECTURE.md) | Dropin patterns |
+| [reference/backend/dropin-architecture.md](./reference/backend/dropin-architecture.md) | Dropin patterns |
 | [reference/backend/AUTH-STRATEGY.md](./reference/backend/AUTH-STRATEGY.md) | Authentication approach |
 
 ### Dropins to Integrate
@@ -534,7 +534,7 @@ OTHER PERSONAS (Weeks 9-16)
 
 ```
 docs/
-├── MASTER-IMPLEMENTATION-PLAN.md    ← You are here
+├── master-implementation-plan.md    ← You are here
 ├── AGENT-HANDOFF.md                 # Context for developers
 ├── PHASE-PLANS-INDEX.md             # Quick index
 │

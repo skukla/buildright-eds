@@ -7,7 +7,7 @@
 **Decision Makers**: BuildRight Implementation Team
 
 **Related Documentation**:
-- `docs/DROPIN-ARCHITECTURE.md` - Canonical dropin reference
+- `docs/dropin-architecture.md` - Canonical dropin reference
 - `docs/adr/ADR-008-dropin-css-refactoring-strategy.md` - CSS approach
 - `docs/adr/ADR-009-mesh-adapter-resolver-pattern.md` - Mesh adapter pattern
 
@@ -255,7 +255,7 @@ When implementing a new dropin (Auth, Cart, Checkout, Order):
 - [ ] Create `.buildright-*` CSS classes for custom content
 - [ ] Use BEM specificity chains (not `!important`)
 - [ ] Document slot usage in block's CSS files
-- [ ] Add visual ASCII diagram to DROPIN-ARCHITECTURE.md
+- [ ] Add visual ASCII diagram to dropin-architecture.md
 
 ---
 
@@ -288,7 +288,7 @@ When implementing a new dropin (Auth, Cart, Checkout, Order):
 ## References
 
 ### Internal Documentation
-- `docs/DROPIN-ARCHITECTURE.md` - Canonical dropin reference
+- `docs/dropin-architecture.md` - Canonical dropin reference
 - `blocks/product-list/product-list.js` - Reference implementation
 
 ### Adobe Documentation

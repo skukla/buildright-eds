@@ -627,7 +627,7 @@ Use **Dropin patterns** (mocked now, real later) for:
 
 ## Related Documents
 
-- `DROPIN-ARCHITECTURE.md` - Dropin patterns and APIs
+- `dropin-architecture.md` - Dropin patterns and APIs
 - `DROPIN-INTEGRATION-GUIDE.md` - How to integrate dropins
 - `BLOCK-VS-DROPIN-MATRIX.md` - When to use blocks vs dropins
 

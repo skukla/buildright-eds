@@ -65,7 +65,7 @@ buildright-eds/
 | `scripts/initializers/index.js` | Dropin initialization hub |
 | `scripts/services/catalog-service.js` | ACO product queries (648 lines) |
 | `scripts/persona-config.js` | 5 persona definitions |
-| `docs/MASTER-IMPLEMENTATION-PLAN.md` | Authoritative implementation plan |
+| `docs/master-implementation-plan.md` | Authoritative implementation plan |
 
 ---
 
@@ -129,8 +129,8 @@ The mesh has three sources (see `buildright-service/mesh/README.md` for details)
 
 | Document | When to Read |
 |----------|--------------|
-| `docs/DROPIN-ARCHITECTURE.md` | **Canonical** dropin reference (containers, slots, patterns) |
-| `docs/MASTER-IMPLEMENTATION-PLAN.md` | Understanding overall project scope |
+| `docs/dropin-architecture.md` | **Canonical** dropin reference (containers, slots, patterns) |
+| `docs/master-implementation-plan.md` | Understanding overall project scope |
 | `docs/adr/ADR-001-use-dropins-for-commerce.md` | Commerce dropin decisions |
 | `docs/adr/ADR-007.md` | Custom SDK dropin decisions |
 | `buildright-service/mesh/README.md` | Mesh adapter pattern for dropin queries |

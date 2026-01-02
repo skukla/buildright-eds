@@ -37,7 +37,7 @@ Reference these documents when:
 - **FEED-TABLE-EXPLAINED.md** - Data feed structure
 
 ### Commerce Integration
-- **DROPIN-ARCHITECTURE.md** - Dropins overview and architecture
+- **dropin-architecture.md** - Dropins overview and architecture
 - **DROPIN-INTEGRATION-GUIDE.md** - How to integrate dropins
 - **BLOCK-VS-DROPIN-MATRIX.md** - When to use blocks vs dropins
 - **AUTH-STRATEGY.md** - Authentication approach
