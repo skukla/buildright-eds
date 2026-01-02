@@ -82,10 +82,6 @@ buildright-eds/
 - Custom slot rendering for BuildRight design (`.buildright-*` classes)
 - Mesh adapter resolvers intercept queries for extensibility control
 
-**Deprecated (in `pages/_deprecated/` and `blocks/_deprecated/`):**
-- `catalog-custom.html` + `product-grid` block - Direct ACO queries, superseded by dropin approach
-- `filters-sidebar` block - Superseded by Facets dropin
-
 ---
 
 ## Persona System

@@ -568,13 +568,7 @@ blocks/product-list/
 
 ## Deprecated
 
-The following have been superseded by the dropin approach:
-
-| Location | What | Superseded By |
-|----------|------|---------------|
-| `blocks/_deprecated/product-grid/` | Custom PLP with direct ACO queries | `product-list` block |
-| `blocks/_deprecated/filters-sidebar/` | Custom filter sidebar | Facets container |
-| `pages/_deprecated/catalog-custom.html` | Custom catalog page | `catalog.html` |
+The custom catalog implementation (direct ACO queries, custom `product-grid` and `filters-sidebar` blocks) has been fully replaced by the dropin approach and removed from the codebase. See git history if reference is needed.
 
 ---
 

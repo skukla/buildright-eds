@@ -43,10 +43,6 @@ export default async function decorate(block) {
 | `product-tile` | Reusable product card | - | Working |
 | `featured-products` | Featured products section | - | Working |
 
-**Deprecated Blocks (in `_deprecated/`):**
-- `product-grid` - Custom PLP with direct ACO queries (superseded by dropin approach)
-- `filters-sidebar` - Custom filters (now handled by Facets dropin)
-
 **product-list CSS Architecture (ADR-008):**
 - Main file imports 5 component CSS files: `grid.css`, `product-card.css`, `facets.css`, `pagination.css`, `loading-states.css`
 - Design tokens in `styles/dropin-tokens.css` (49 tokens)
