@@ -170,7 +170,7 @@ This component leverages existing BuildRight CSS classes from `styles/components
 ## Related Documents
 
 - `blocks/state-message/README.md` - Full component documentation
-- `docs/standards/DROPIN-INTEGRATION-PATTERN.md` - Dropin integration pattern
+- `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md` - Dropin integration pattern
 - `styles/components.css` - BuildRight design system
 
 ## Future Enhancements

@@ -181,7 +181,7 @@ Key variables:
 
 Documented patterns for cards, buttons, forms, modals, etc.
 
-**See**: [css-architecture.md](../standards/css-architecture.md)
+**See**: [css-architecture.md](../reference/standards/css-architecture.md)
 
 ---
 

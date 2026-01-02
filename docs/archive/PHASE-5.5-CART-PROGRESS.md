@@ -158,7 +158,7 @@ From Perplexity research on December 12, 2024:
 ## Related Documents
 
 - [CART-API-ONLY-IMPLEMENTATION.md](./implementation/sarah-end-to-end/dropins/CART-API-ONLY-IMPLEMENTATION.md) - Detailed implementation
-- [DROPIN-INTEGRATION-PATTERN.md](./standards/DROPIN-INTEGRATION-PATTERN.md) - Standard pattern
+- [DROPIN-INTEGRATION-PATTERN.md](./reference/standards/DROPIN-INTEGRATION-PATTERN.md) - Standard pattern
 - [AUTH-DROPIN-API-ONLY.md](./reference/decisions/AUTH-DROPIN-API-ONLY.md) - Auth Dropin ADR
 - [PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md](./reference/research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md) - Dropin research
 

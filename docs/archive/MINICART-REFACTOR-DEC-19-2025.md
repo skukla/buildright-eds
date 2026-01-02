@@ -408,7 +408,7 @@ Kept `setupHeaderIntegration()` for toggle/close/click-outside
    - Added slots table
    - Updated summary tables
 
-3. ✅ **`docs/standards/DROPIN-INTEGRATION-PATTERN.md`**
+3. ✅ **`docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`**
    - Updated implementation summary table
    - Changed Mini Cart from Level 3 to Level 2
 

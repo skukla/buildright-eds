@@ -2,7 +2,7 @@
 
 **Last Updated:** December 6, 2025  
 **Status:** Research Complete, Implementation Scheduled for Phase 7  
-**Implementation Phase:** [Phase 7: Integration & Polish](../phase-6/B-to-7-consolidated/PHASES-6B-TO-7-CONSOLIDATED.md#task-5-component-extraction--refactoring--new)
+**Implementation Phase:** [Phase 7: Integration & Polish](../../implementation/other-personas/phases-6b-to-7-consolidated.md#task-5-component-extraction--refactoring--new)
 
 ## Document Organization
 
@@ -17,7 +17,7 @@ This index organizes all component extraction and EDS block research documents c
 ## 📚 Core Documentation (Read in Order)
 
 ### 1. **START HERE: EDS Blocks Summary**
-**File:** `docs/EDS-BLOCKS-SUMMARY.md`  
+**File:** `eds-blocks-summary.md`  
 **Purpose:** Quick-start guide to understanding EDS blocks and how they relate to your component work  
 **Reading Time:** 10 minutes  
 **Key Takeaways:**
@@ -31,7 +31,7 @@ This index organizes all component extraction and EDS block research documents c
 ---
 
 ### 2. **Deep Dive: EDS Blocks vs. Component Extraction Analysis**
-**File:** `docs/EDS-BLOCKS-VS-COMPONENT-EXTRACTION.md`  
+**File:** `blocks-vs-extraction.md`  
 **Purpose:** Comprehensive research report on how your component extraction approach aligns with Adobe EDS block philosophy  
 **Reading Time:** 45-60 minutes  
 **Sections:**
@@ -59,7 +59,7 @@ This index organizes all component extraction and EDS block research documents c
 ## 🔍 Original Audit Documents (Your Foundation Work)
 
 ### 3. **Component Extraction Opportunities**
-**File:** `docs/COMPONENT-EXTRACTION-OPPORTUNITIES.md`  
+**File:** `extraction-opportunities.md`  
 **Purpose:** Comprehensive audit of all reusable UI patterns identified in the codebase  
 **Created:** December 6, 2025  
 **Components Identified:** 47 total opportunities across 8 categories
@@ -82,7 +82,7 @@ This index organizes all component extraction and EDS block research documents c
 ---
 
 ### 4. **Component Extraction Quick Reference**
-**File:** `docs/COMPONENT-EXTRACTION-QUICK-REFERENCE.md`  
+**File:** `extraction-quick-reference.md`  
 **Purpose:** At-a-glance guide to all identified components with usage examples  
 **Format:** Quick-lookup tables and code snippets
 
@@ -99,7 +99,7 @@ This index organizes all component extraction and EDS block research documents c
 ---
 
 ### 5. **Component Extraction Roadmap**
-**File:** `docs/COMPONENT-EXTRACTION-ROADMAP.md`  
+**File:** `extraction-roadmap.md`  
 **Purpose:** Visual timeline and priority matrix for component development  
 **Status:** **NEEDS UPDATE** based on EDS block research
 
@@ -118,7 +118,7 @@ This index organizes all component extraction and EDS block research documents c
 ---
 
 ### 6. **Component Extraction Executive Summary**
-**File:** `docs/COMPONENT-EXTRACTION-SUMMARY.md`  
+**File:** `extraction-summary.md`  
 **Purpose:** High-level overview and business case for component extraction  
 **Audience:** Stakeholders, project managers
 

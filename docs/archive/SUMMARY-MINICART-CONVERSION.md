@@ -44,7 +44,7 @@
 
 ---
 
-#### B. Integration Pattern (`docs/standards/DROPIN-INTEGRATION-PATTERN.md`)
+#### B. Integration Pattern (`docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`)
 
 **Changes**:
 - Updated implementation summary table
@@ -200,7 +200,7 @@
 ### Documentation Files (5)
 1. ✅ `blocks/commerce-mini-cart/README.md` - Complete rewrite
 2. ✅ `docs/reference/DROPIN-SLOTS-AND-CONFIG-REFERENCE.md` - Updated Mini Cart section
-3. ✅ `docs/standards/DROPIN-INTEGRATION-PATTERN.md` - Updated summary table
+3. ✅ `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md` - Updated summary table
 4. ✅ `docs/MINICART-REFACTOR-DEC-19-2025.md` - New migration doc
 5. ✅ `docs/SUMMARY-MINICART-CONVERSION.md` - This summary doc
 

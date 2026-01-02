@@ -552,7 +552,7 @@ BuildRight EDS Persona-Driven Experience
 ### Overall Project
 - `docs/PERSONA-PLAN-CORE-DOCS.md` - Navigation hub
 - `docs/PHASE-PLANS-INDEX.md` - All phase plans index
-- `docs/personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md` - All 5 personas
+- `docs/explanations/personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md` - All 5 personas
 
 ---
 

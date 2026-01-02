@@ -6,7 +6,7 @@
 **👥 Audience**: Backend developers, Commerce admins
 
 **🔗 Related Docs**:
-- **Quick Reference**: [quick-reference/architecture-overview.md](../quick-reference/architecture-overview.md)
+- **Quick Reference**: [planning/quick-start/architecture-overview.md](../planning/quick-start/architecture-overview.md)
 - **ACO Guides**: [phase-8-backend/](../phase-8-backend/) (19 files on ACO setup)
 - **Migration Guide**: [phase-9-deployment/DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md](../phase-9-deployment/DEMO-TO-PRODUCTION-MIGRATION-GUIDE.md)
 - **Data Source Matrix**: [DATA-SOURCE-MATRIX.md](./DATA-SOURCE-MATRIX.md)

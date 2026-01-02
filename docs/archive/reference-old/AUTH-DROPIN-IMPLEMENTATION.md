@@ -440,7 +440,7 @@ export default async function decorate(block) {
 ## References
 
 ### Related Documentation
-- **Integration Pattern**: `docs/standards/DROPIN-INTEGRATION-PATTERN.md` - Complete pattern guide
+- **Integration Pattern**: `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md` - Complete pattern guide
 - **Clarification**: `docs/DROPIN-APPROACH-CLARIFICATION.md` - Doc vs reality analysis
 - **Component Breakdown**: `docs/CLP-COMPONENT-BREAKDOWN.md` - Visual component breakdown
 

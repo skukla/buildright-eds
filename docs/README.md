@@ -1,6 +1,6 @@
 # BuildRight Documentation
 
-**Last Updated:** 2026-01-01
+**Last Updated:** 2026-01-02
 
 ---
 
@@ -8,41 +8,51 @@
 
 | Need | Go Here |
 |------|---------|
-| **Master plan** | [master-implementation-plan.md](./master-implementation-plan.md) |
-| **Dropin patterns** | [dropin-architecture.md](./dropin-architecture.md) |
-| **Backend services** | [backend-service-reference.md](./backend-service-reference.md) |
-| **Architecture decisions** | [adr/](./adr/) (13 ADRs) |
-| **Persona profiles** | [personas/](./personas/) |
+| **Master plan** | [planning/master-implementation-plan.md](./planning/master-implementation-plan.md) |
+| **Dropin patterns** | [reference/dropin-architecture.md](./reference/dropin-architecture.md) |
+| **Backend services** | [reference/backend-service-reference.md](./reference/backend-service-reference.md) |
+| **Architecture decisions** | [adr/](./adr/) (11 ADRs) |
+| **Persona profiles** | [explanations/personas/](./explanations/personas/) |
+| **Quick start guides** | [planning/quick-start/](./planning/quick-start/) |
 
 ---
 
-## Documentation Structure
+## Documentation Structure (ADR-011)
 
 ```
 docs/
 ├── README.md                    # This file
-├── master-implementation-plan.md # Authoritative plan
-├── dropin-architecture.md       # Canonical dropin reference
-├── backend-service-reference.md # Backend service docs
 ├── index.md                     # Quick navigation
 │
-├── adr/                    # Architecture Decision Records (13)
-├── explanations/           # Visual "how it works" docs (8)
-├── planning/               # AI/Dev implementation guides (13)
-├── implementation/         # Feature specs (43)
-│   ├── sarah-end-to-end/  # Sarah persona implementation
-│   ├── dropins/           # Dropin integration docs
-│   └── other-personas/    # Future persona planning
-├── reference/              # Technical reference (20)
+├── planning/              # AI/Dev implementation guides
+│   ├── master-implementation-plan.md
+│   ├── phase-tracker.md
+│   ├── features/          # Consolidated feature plans
+│   ├── quick-start/       # Fast 1-page guides (was planning/quick-start/)
+│   ├── testing/           # QA strategies (was testing/)
+│   ├── component-extraction/  # EDS blocks analysis (was planning/component-extraction/)
+│   └── personas/          # Persona rollout planning
+│
+├── adr/                   # Architecture Decision Records (11)
+│
+├── explanations/          # Non-technical visual docs
+│   └── personas/          # Persona visual overviews
+│
+├── reference/             # Technical specifications
+│   ├── dropin-architecture.md
+│   ├── backend-service-reference.md
+│   ├── standards/         # CSS, coding standards (was standards/)
 │   ├── backend/           # ACO, Mesh, Product flows
 │   ├── authoring/         # Content authoring guides
-│   └── deployment/        # Deployment guides
-├── personas/               # Persona definitions (5)
-├── standards/              # Coding standards (10)
-├── testing/                # Testing guides (3)
-├── quick-reference/        # Quick lookup (7)
-├── component-architecture/ # Component patterns (7)
-└── archive/                # Historical docs (156)
+│   ├── deployment/        # Deployment guides
+│   └── decisions/         # Research-backed decisions
+│
+├── implementation/        # Detailed implementation specs
+│   ├── sarah-end-to-end/  # Sarah persona implementation
+│   ├── store-manager/     # Kevin persona implementation
+│   └── other-personas/    # Future persona planning
+│
+└── archive/               # Historical reference
 ```
 
 ---
@@ -51,9 +61,9 @@ docs/
 
 | Phase | Status | Focus |
 |-------|--------|-------|
-| Phase 5.5 | 🔄 In Progress | Commerce Dropins (Auth, Cart, Checkout) |
-| Phase 6A | 🔄 In Progress | Sarah Martinez persona |
-| Phase 7 | 🔲 Planned | Custom SDK Dropins for ACO |
+| Phase 5.5 | In Progress | Commerce Dropins (Auth, Cart, Checkout) |
+| Phase 6A | In Progress | Sarah Martinez persona |
+| Phase 7 | Planned | Custom SDK Dropins for ACO |
 
 ---
 
@@ -69,13 +79,14 @@ docs/
 
 ---
 
-## File Counts
+## Category Purpose (ADR-011)
 
-| Category | Files | Purpose |
-|----------|-------|---------|
-| Active docs | 134 | Current implementation |
-| Archive | 156 | Historical reference |
-| **Total** | **290** | |
+| Category | Audience | Purpose |
+|----------|----------|---------|
+| `planning/` | AI/Dev | Actionable guides, checklists, task tracking |
+| `adr/` | Dev/Architect | Architectural decisions, rationale |
+| `explanations/` | Non-technical | Visual diagrams, system overviews |
+| `reference/` | Dev/Technical | Technical specs, API docs, standards |
 
 ---
 

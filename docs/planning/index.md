@@ -10,7 +10,7 @@
 | Doc | Purpose |
 |-----|---------|
 | [phase-tracker.md](./phase-tracker.md) | Current phase status and remaining tasks |
-| [../master-implementation-plan.md](../master-implementation-plan.md) | Authoritative project plan |
+| [master-implementation-plan.md](./master-implementation-plan.md) | Authoritative project plan |
 
 ---
 

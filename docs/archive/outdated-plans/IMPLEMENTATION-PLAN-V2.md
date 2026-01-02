@@ -298,7 +298,7 @@ Railing:   → 89 products (aluminum selected)
 | `docs/phase-6/A-sarah-dashboard/UPDATED-IMPLEMENTATION-PLAN.md` | Detailed Sarah sub-phases |
 | `docs/phase-6/B-to-7-consolidated/PHASES-6B-TO-7-CONSOLIDATED.md` | Other persona details |
 | `docs/phase-7-commerce/COMMERCE-DATA-REQUIREMENTS.md` | Commerce data specs |
-| `docs/personas/PERSONA-META-PLAN.md` | Original plan (superseded) |
+| `docs/explanations/personas/PERSONA-META-PLAN.md` | Original plan (superseded) |
 
 ### Repositories
 

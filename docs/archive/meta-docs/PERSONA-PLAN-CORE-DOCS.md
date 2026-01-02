@@ -25,8 +25,8 @@ These folders contain documentation referenced across **ALL phases** of the proj
 | Folder | Contents | When to Use |
 |--------|----------|-------------|
 | **[personas/](./personas/)** | All 5 personas, flows, UX patterns, implementation plans | Implementing any persona feature |
-| **[standards/](./standards/)** | CSS architecture, coding principles, components, animations | Writing any code or CSS |
-| **[testing/](./testing/)** | Testing strategies, QA checklists | Testing any feature |
+| **[standards/](./reference/standards/)** | CSS architecture, coding principles, components, animations | Writing any code or CSS |
+| **[testing/](./planning/testing/)** | Testing strategies, QA checklists | Testing any feature |
 | **[adr/](./adr/)** | Architectural Decision Records (ADR-001 through ADR-006) | Making architectural decisions |
 
 **These are NOT archived or phase-specific - they're active reference docs for all work!**
@@ -110,7 +110,7 @@ These folders contain documentation referenced across **ALL phases** of the proj
 
 ### Standards (Cross-Phase Architecture)
 
-**[standards/](./standards/)** folder contains:
+**[standards/](./reference/standards/)** folder contains:
 - **CSS-ARCHITECTURE.md** ⭐⭐⭐ Critical - Design system & styling patterns
 - **CODING-PRINCIPLES.md** ⭐⭐⭐ Critical - Code standards for this project
 - **COMPONENT-DESIGN-LIBRARY.md** - Reusable component catalog
@@ -118,7 +118,7 @@ These folders contain documentation referenced across **ALL phases** of the proj
 - **ANIMATION_STANDARDIZATION.md** - Animation standards
 - **image-guidelines.md** - Image standards
 
-**See [standards/README.md](./standards/README.md) for complete index**
+**See [standards/README.md](./reference/standards/README.md) for complete index**
 
 ### Backend Integration (Phase 8)
 
@@ -236,7 +236,7 @@ These docs are archived but kept for historical context:
 
 ### "I want to understand the architecture"
 1. Read: **[phase-0-5-foundation/PHASE-3-CORE-ARCHITECTURE.md](./phase-0-5-foundation/PHASE-3-CORE-ARCHITECTURE.md)** (core architecture)
-2. Read: **[standards/CSS-ARCHITECTURE.md](./standards/CSS-ARCHITECTURE.md)** (design system)
+2. Read: **[standards/CSS-ARCHITECTURE.md](./reference/standards/CSS-ARCHITECTURE.md)** (design system)
 3. Read: **[phase-8-backend/DROPIN-ARCHITECTURE.md](./phase-8-backend/DROPIN-ARCHITECTURE.md)** (commerce integration)
 4. Read: **[phase-8-backend/DATA-SOURCE-MATRIX.md](./phase-8-backend/DATA-SOURCE-MATRIX.md)** (data sources)
 5. Scan: **[adr/](./adr/)** (all architectural decisions)
@@ -254,10 +254,10 @@ These docs are archived but kept for historical context:
 4. Scan: **[personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md](./personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md)** (use cases)
 
 ### "I want to contribute code"
-1. Read: **[standards/CODING-PRINCIPLES.md](./standards/CODING-PRINCIPLES.md)** (standards)
-2. Read: **[standards/CSS-ARCHITECTURE.md](./standards/CSS-ARCHITECTURE.md)** (CSS patterns)
+1. Read: **[standards/CODING-PRINCIPLES.md](./reference/standards/CODING-PRINCIPLES.md)** (standards)
+2. Read: **[standards/CSS-ARCHITECTURE.md](./reference/standards/CSS-ARCHITECTURE.md)** (CSS patterns)
 3. Read: **[phase-8-backend/EDS-MIGRATION-GUIDE.md](./phase-8-backend/EDS-MIGRATION-GUIDE.md)** (EDS best practices)
-4. Reference: **[standards/COMPONENT-DESIGN-LIBRARY.md](./standards/COMPONENT-DESIGN-LIBRARY.md)** (reusable components)
+4. Reference: **[standards/COMPONENT-DESIGN-LIBRARY.md](./reference/standards/COMPONENT-DESIGN-LIBRARY.md)** (reusable components)
 
 ---
 

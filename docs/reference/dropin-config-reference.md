@@ -663,7 +663,7 @@ Use this to decide which pattern level to use for new dropin integrations:
 
 ## Related Documentation
 
-- **Integration Pattern Guide**: `docs/standards/DROPIN-INTEGRATION-PATTERN.md`
+- **Integration Pattern Guide**: `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`
 - **Auth Decision**: `docs/reference/decisions/AUTH-DROPIN-IMPLEMENTATION.md`
 - **Clarification Doc**: `docs/DROPIN-APPROACH-CLARIFICATION.md`
 - **CLP Breakdown**: `docs/CLP-COMPONENT-BREAKDOWN.md`

@@ -264,7 +264,7 @@ When Adobe releases Dropin updates:
 
 ## Related Documentation
 
-- **Pattern Documentation**: `docs/standards/DROPIN-INTEGRATION-PATTERN.md`
+- **Pattern Documentation**: `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`
 - **Perplexity Research**: `docs/reference/research/I have an existing front end design...md`
 - **Login Form Block**: `blocks/login-form/README.md`
 - **Auth Initializer**: `scripts/initializers/auth.js`

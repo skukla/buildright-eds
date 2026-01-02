@@ -17,7 +17,7 @@
 
 ### 1. **Read Persona Profile** (5 min)
 
-📖 **Where**: [personas/personas-overview.md](../personas/personas-overview.md)
+📖 **Where**: [explanations/personas/personas-overview.md](../explanations/personas/personas-overview.md)
 
 **Find your persona**:
 - Sarah Martinez - Production Builder
@@ -107,7 +107,7 @@ Create data specific to your persona's needs.
 #### E. Create Styles
 **File**: `styles/dashboards/your-dashboard.css`
 
-Follow patterns in [standards/css-architecture.md](../standards/css-architecture.md)
+Follow patterns in [standards/css-architecture.md](../reference/standards/css-architecture.md)
 
 ---
 
@@ -163,9 +163,9 @@ After implementation:
 ## Need More Detail?
 
 **Full implementation plan**: [phases-6b-to-7-consolidated.md](../implementation/other-personas/phases-6b-to-7-consolidated.md)
-**Persona profiles**: [personas-overview.md](../personas/personas-overview.md)
+**Persona profiles**: [personas-overview.md](../explanations/personas/personas-overview.md)
 **What exists**: [what-exists.md](./what-exists.md)
-**Coding standards**: [coding-principles.md](../standards/coding-principles.md)
+**Coding standards**: [coding-principles.md](../reference/standards/coding-principles.md)
 
 ---
 

@@ -759,7 +759,7 @@ await render.render(Facets, {
 
 ### Phase 3: Document Pattern
 
-1. Update `docs/standards/DROPIN-INTEGRATION-PATTERN.md`
+1. Update `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`
 2. Add examples of correct CSS approach
 3. Create guidelines for future dropin implementations
 

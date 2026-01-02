@@ -674,7 +674,7 @@ For reference, here are **all native dropins** provided by Adobe Commerce:
 
 ## Related Documents
 
-- `dropin-architecture.md` - What dropins are and how they work
+- `../dropin-architecture.md` - What dropins are and how they work
 - `DROPIN-INTEGRATION-GUIDE.md` - How to integrate dropins
 - `EDS-BLOCK-PATTERNS.md` - How to build EDS blocks
 - `MOCK-ACO-API-SPEC.md` - Mock service specifications (Step 4)

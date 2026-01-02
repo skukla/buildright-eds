@@ -46,18 +46,18 @@
 | other-personas/ (2) | planning/ | Move |
 | root files (4) | planning/ | Move |
 
-### docs/personas/ - 5 files
+### docs/explanations/personas/ - 5 files
 
 | File | Target | Action |
 |------|--------|--------|
 | PERSONAS-OVERVIEW.md | explanations/ | Visual persona reference |
 | Implementation plans | planning/ | Move |
 
-### docs/component-architecture/ - 7 files
+### docs/planning/component-extraction/ - 7 files
 
 | All files | explanations/ | Move (architecture docs) |
 
-### docs/quick-reference/ - 7 files
+### docs/planning/quick-start/ - 7 files
 
 | All files | explanations/ | Move (how-to guides) |
 
@@ -72,14 +72,14 @@
 | authoring/ (3) | explanations/ | Content authoring |
 | root (5) | explanations/ | General references |
 
-### docs/standards/ - 10 files
+### docs/reference/standards/ - 10 files
 
 | File Type | Target | Action |
 |-----------|--------|--------|
 | Coding standards | explanations/ | How-to for devs |
 | Decision standards | adr/ | If captures decisions |
 
-### docs/testing/ - 3 files
+### docs/planning/testing/ - 3 files
 
 | All files | planning/ | Move (test implementation guides) |
 
@@ -129,7 +129,7 @@ Phase 6-Foundation planning docs described a frontend ProjectManager that was **
 
 | File | Question | Recommendation |
 |------|----------|----------------|
-| docs/standards/*.md | ADR or explanation? | explanations/ (how-to focus) |
+| docs/reference/standards/*.md | ADR or explanation? | explanations/ (how-to focus) |
 | docs/reference/decisions/*.md | ADR candidates? | Review in Step 6 |
 
 ---

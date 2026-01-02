@@ -5,7 +5,7 @@
 **Status**: Active  
 **Goal**: Fully integrated, demo-ready Sarah persona with real ACO/Commerce catalog data
 
-> **Master Plan**: [master-implementation-plan.md](../../master-implementation-plan.md)  
+> **Master Plan**: [master-implementation-plan.md](../../../planning/master-implementation-plan.md)  
 > **Dropins Integration**: See Phase 5.5 in master plan
 
 ---
@@ -284,7 +284,7 @@ All sub-phases completed:
 
 > **Update (December 2025):** Commerce backend integration is now handled via Commerce Dropins.  
 > Auth, Cart, Checkout, and Orders all connect to Commerce backend automatically.  
-> See [master-implementation-plan.md](../../master-implementation-plan.md) Phase 5.5.
+> See [master-implementation-plan.md](../../../planning/master-implementation-plan.md) Phase 5.5.
 
 ### 7.1 Commerce Dropins Handle Backend
 

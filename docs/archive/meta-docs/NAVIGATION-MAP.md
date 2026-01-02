@@ -52,7 +52,7 @@ Persona       What Exists   Coding       Architectural   Testing
 Profiles      Inventory     Standards    Decisions       Guides
     │             │             │              │              │
     ↓             ↓             ↓              ↓              ↓
-personas/   quick-reference/  standards/    adr/         testing/
+personas/   planning/quick-start/  standards/    adr/         testing/
 BUILDRIGHT-  what-exists.md  CSS-         ADR-004      TESTING-
 PERSONAS...                  ARCHITECTURE              GUIDE.md
 ```
@@ -66,7 +66,7 @@ START: IMPLEMENTATION-GUIDE.md
    ↓
 [Understanding What's Built section]
    ↓
-quick-reference/what-exists.md ⭐ INVENTORY
+planning/quick-start/what-exists.md ⭐ INVENTORY
    ↓
 ┌────────────────────────────────────┐
 │  Quick inventory of:               │
@@ -207,7 +207,7 @@ These folders are referenced across ALL phases:
 │     ↓                                                    │
 │     Use when: Making architectural decisions            │
 │                                                          │
-│  quick-reference/   1-page guides for common tasks      │
+│  planning/quick-start/   1-page guides for common tasks      │
 │     ↓                                                    │
 │     Use when: Need fast answers                         │
 └─────────────────────────────────────────────────────────┘
@@ -254,10 +254,10 @@ These folders are referenced across ALL phases:
 | **Implement Lisa persona** | IMPLEMENTATION-GUIDE | PHASES-6B-TO-7-CONSOLIDATED (6C) |
 | **Implement David persona** | IMPLEMENTATION-GUIDE | PHASES-6B-TO-7-CONSOLIDATED (6D) |
 | **Implement Kevin persona** | IMPLEMENTATION-GUIDE | PHASES-6B-TO-7-CONSOLIDATED (6E) |
-| **Add a demo account** | quick-reference/add-demo-account.md | scripts/auth.js |
-| **Find reusable components** | quick-reference/what-exists.md | phase-0-5-foundation/PHASE-4-COMPLETION-SUMMARY |
-| **Understand architecture** | quick-reference/architecture-overview.md | phase-0-5-foundation/PHASE-3-COMPLETION-SUMMARY |
-| **Check demo accounts** | quick-reference/what-exists.md | phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY |
+| **Add a demo account** | planning/quick-start/add-demo-account.md | scripts/auth.js |
+| **Find reusable components** | planning/quick-start/what-exists.md | phase-0-5-foundation/PHASE-4-COMPLETION-SUMMARY |
+| **Understand architecture** | planning/quick-start/architecture-overview.md | phase-0-5-foundation/PHASE-3-COMPLETION-SUMMARY |
+| **Check demo accounts** | planning/quick-start/what-exists.md | phase-0-5-foundation/PHASE-5-TASK-2-COMPLETION-SUMMARY |
 | **See coding standards** | IMPLEMENTATION-GUIDE | standards/CODING-PRINCIPLES |
 | **Understand why we built X** | adr/README.md | Specific ADR |
 | **Set up backend** | IMPLEMENTATION-GUIDE | phase-8-backend/PHASE-8-BACKEND-SETUP-UPDATED |
@@ -270,7 +270,7 @@ These folders are referenced across ALL phases:
 ### Implementation Docs Reference:
 - **PHASES-6B-TO-7-CONSOLIDATED** references:
   - personas/ (for profiles)
-  - quick-reference/what-exists (for reusable components)
+  - planning/quick-start/what-exists (for reusable components)
   - phase-0-5-foundation/ (for completion summaries)
   - adr/ (for architectural decisions)
 
@@ -295,7 +295,7 @@ These folders are referenced across ALL phases:
 It's your single entry point that routes you to the right place.
 
 ### Tip 2: Use Quick References First
-If you need fast context, check quick-reference/ before diving into full docs.
+If you need fast context, check planning/quick-start/ before diving into full docs.
 
 ### Tip 3: Completion Summaries = What Exists
 To understand what's already built, read the completion summaries in phase-0-5-foundation/.

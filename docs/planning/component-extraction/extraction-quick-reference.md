@@ -432,7 +432,7 @@ Track these metrics to measure success:
 ## Questions?
 
 Contact the development team or refer to:
-- `docs/standards/CSS-ARCHITECTURE.md`
-- `docs/standards/BUTTON-SYSTEM.md`
+- `docs/reference/standards/CSS-ARCHITECTURE.md`
+- `docs/reference/standards/BUTTON-SYSTEM.md`
 - `docs/IMPLEMENTATION-GUIDE.md`
 

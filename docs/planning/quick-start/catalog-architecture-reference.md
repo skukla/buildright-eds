@@ -114,7 +114,7 @@ Hardware & Tools
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
 - ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
-- Implementation: [personas-overview.md](../personas/personas-overview.md)
+- Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
 
@@ -167,7 +167,7 @@ General Finishes
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
 - ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
-- Implementation: [personas-overview.md](../personas/personas-overview.md)
+- Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
 
@@ -219,7 +219,7 @@ General Home Improvement
 **Full Details**:
 - Mental Model: [product-category-structure.md](../implementation/sarah-end-to-end/features/product-category-structure.md)
 - ACO Config: [aco-catalog-data-flow.md](../implementation/sarah-end-to-end/features/aco-catalog-data-flow.md)
-- Implementation: [personas-overview.md](../personas/personas-overview.md)
+- Implementation: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
 
@@ -371,7 +371,7 @@ export const PERSONA_CATALOG_CONFIG = {
 
 **Persona Implementation Guides**:
 - [Sarah Implementation](../implementation/sarah-end-to-end/features/sarah-persona-overview.md)
-- [Persona Profiles](../personas/personas-overview.md)
+- [Persona Profiles](../explanations/personas/personas-overview.md)
 
 ---
 

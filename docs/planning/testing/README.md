@@ -54,7 +54,7 @@ Quality assurance checklist for pages:
 
 ---
 
-**Back to**: [Main Docs](../) | [Phase Plans Index](../planning/phase-plans-index.md) | [Core Docs Index](../archive/meta-docs/PERSONA-PLAN-CORE-DOCS.md)
+**Back to**: [Planning Index](../) | [Main Docs](../../) | [Phase Plans Index](../phase-plans-index.md)
 
 
 

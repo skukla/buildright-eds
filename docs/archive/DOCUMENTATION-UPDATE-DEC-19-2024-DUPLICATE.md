@@ -24,7 +24,7 @@ Upon investigation, found that:
 
 ### 1. ✅ Updated: Integration Pattern Standard
 
-**File**: `docs/standards/DROPIN-INTEGRATION-PATTERN.md`
+**File**: `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`
 
 **Changes**:
 - ❌ Removed incorrect "API-only" pattern description
@@ -384,7 +384,7 @@ For understanding dropin patterns in BuildRight, read in this order:
 1. **`docs/DROPIN-APPROACH-CLARIFICATION.md`**  
    Start here to understand the doc/reality mismatch
 
-2. **`docs/standards/DROPIN-INTEGRATION-PATTERN.md`**  
+2. **`docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`**  
    Learn the three pattern levels with examples
 
 3. **`docs/reference/DROPIN-SLOTS-AND-CONFIG-REFERENCE.md`**  
@@ -422,7 +422,7 @@ Routes, callbacks, and flags (configuration options) handle 90% of needs without
 ## Files Modified
 
 ### Updated
-- `docs/standards/DROPIN-INTEGRATION-PATTERN.md`
+- `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`
 
 ### Created
 - `docs/reference/decisions/AUTH-DROPIN-IMPLEMENTATION.md`

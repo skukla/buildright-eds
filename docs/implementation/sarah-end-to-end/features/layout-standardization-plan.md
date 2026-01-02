@@ -512,7 +512,7 @@ Move all account page styles from inline to this file:
 
 ### Phase 7: Documentation (30 min)
 
-**File:** `docs/standards/CSS-ARCHITECTURE.md`
+**File:** `docs/reference/standards/CSS-ARCHITECTURE.md`
 
 **Add section:**
 
@@ -599,7 +599,7 @@ All pages should follow this structure:
 6. 📝 `styles/base.css` - Add sidebar width tokens (optional)
 
 ### Documentation (2)
-7. 📚 `docs/standards/CSS-ARCHITECTURE.md` - Add standards
+7. 📚 `docs/reference/standards/CSS-ARCHITECTURE.md` - Add standards
 8. 📚 `docs/phase-6/A-sarah-dashboard/LAYOUT-CONSISTENCY-AUDIT.md` - Reference doc
 
 ---
@@ -671,5 +671,5 @@ After implementation:
 Contact the dev team or reference:
 - `LAYOUT-CONSISTENCY-AUDIT.md` - Full analysis
 - `VISUAL-CONSISTENCY-EXAMPLES.md` - Before/after examples
-- `docs/standards/CSS-ARCHITECTURE.md` - CSS guidelines
+- `docs/reference/standards/CSS-ARCHITECTURE.md` - CSS guidelines
 

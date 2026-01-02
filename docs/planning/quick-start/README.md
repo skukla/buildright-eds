@@ -31,7 +31,7 @@ These guides provide just enough context to get started quickly, with links to c
 1. Read [implement-persona.md](./implement-persona.md) (2 min)
 2. ⭐ Read [catalog-architecture-reference.md](./catalog-architecture-reference.md) for your persona (5 min)
 3. Check [what-exists.md](./what-exists.md) for reusable components
-4. Go to [phases-6b-to-7-consolidated.md](../implementation/other-personas/phases-6b-to-7-consolidated.md) for details
+4. Go to [phases-6b-to-7-consolidated.md](../../implementation/other-personas/phases-6b-to-7-consolidated.md) for details
 
 **Quick Links by Persona**:
 - Sarah → [Catalog View](./catalog-architecture-reference.md#sarah-martinez---production-home-builder)
@@ -50,10 +50,10 @@ These guides provide just enough context to get started quickly, with links to c
 
 Each quick reference guide links to comprehensive documentation:
 
-- **Implementation plans**: [phases-6b-to-7-consolidated.md](../implementation/other-personas/phases-6b-to-7-consolidated.md)
-- **Completion summaries**: [archive/completed/](../archive/completed/)
-- **Architectural decisions**: [adr/](../adr/)
-- **Standards**: [standards/](../standards/)
+- **Implementation plans**: [phases-6b-to-7-consolidated.md](../../implementation/other-personas/phases-6b-to-7-consolidated.md)
+- **Completion summaries**: [archive/completed/](../../archive/completed/)
+- **Architectural decisions**: [adr/](../../adr/)
+- **Standards**: [reference/standards/](../../reference/standards/)
 
 ---
 
@@ -70,6 +70,6 @@ Each quick reference guide links to comprehensive documentation:
 
 ---
 
-**Back to**: [Main Docs](../)
+**Back to**: [Planning Index](../) | [Main Docs](../../)
 
 

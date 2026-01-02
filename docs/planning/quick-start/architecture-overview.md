@@ -307,7 +307,7 @@ Enforces: BEM naming, semantic tokens, responsive patterns
 ### Example: David's Deck
 David (DIY) only sees 8-12 deck-specific products, not all 70 products
 
-**See**: [personas-overview.md](../personas/personas-overview.md)
+**See**: [personas-overview.md](../explanations/personas/personas-overview.md)
 
 ---
 
@@ -363,7 +363,7 @@ Implementing 4 remaining personas with unique dashboards:
 **Full architecture**: [phase-3-core-architecture.md](../archive/completed/phase-3-core-architecture.md)
 **Backend integration**: [reference/backend/](../reference/backend/)
 **Architectural decisions**: [adr/](../adr/)
-**Design system**: [css-architecture.md](../standards/css-architecture.md)
+**Design system**: [css-architecture.md](../reference/standards/css-architecture.md)
 
 ---
 

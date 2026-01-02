@@ -6,9 +6,9 @@
 **👥 Audience**: Anyone using shared components
 
 **🔗 Related Docs**:
-- **Quick Reference**: [quick-reference/what-exists.md](../quick-reference/what-exists.md) (inventory)
+- **Quick Reference**: [planning/quick-start/what-exists.md](../planning/quick-start/what-exists.md) (inventory)
 - **Implementation Files**: `blocks/loading-overlay/`, `blocks/wizard-vertical-progress/`, etc.
-- **Standards**: [standards/COMPONENT-DESIGN-LIBRARY.md](../standards/COMPONENT-DESIGN-LIBRARY.md)
+- **Standards**: [standards/COMPONENT-DESIGN-LIBRARY.md](../reference/standards/COMPONENT-DESIGN-LIBRARY.md)
 
 **📍 Use This Doc When**:
 - Looking for reusable components

@@ -19,7 +19,7 @@ After reviewing the research against our implementation, we decided to:
 **Rationale**: The primary goal is showcasing Adobe Commerce capabilities. A verification-only portal wouldn't demonstrate the full commerce funnel. Regional builders at 20-30 homes/year realistically use B2B portals directly.
 
 **Changes Implemented**:
-- ✅ Updated `docs/personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md` with new scale
+- ✅ Updated `docs/explanations/personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md` with new scale
 - ✅ Added "Why This Scale?" explanation to persona
 - ✅ Updated demo narrative to reflect smaller quantities
 
@@ -270,7 +270,7 @@ The research **validates** the buildright-service architecture:
 
 #### 1. Update Sarah's Persona Definition
 
-**File**: `docs/personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md`
+**File**: `docs/explanations/personas/BUILDRIGHT-PERSONAS-AND-FLOWS.md`
 
 **Change**:
 ```markdown

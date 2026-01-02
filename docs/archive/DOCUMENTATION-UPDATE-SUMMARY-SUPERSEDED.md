@@ -22,7 +22,7 @@
 |------|---------|
 | `docs/reference/decisions/AUTH-DROPIN-API-ONLY.md` | Full decision record for API-only auth approach |
 | `docs/reference/research/RESEARCH-VALIDATION.md` | Point-by-point validation of implementation vs. research |
-| `docs/standards/DROPIN-INTEGRATION-PATTERN.md` | The BuildRight pattern for all Dropin integrations |
+| `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md` | The BuildRight pattern for all Dropin integrations |
 | `docs/reference/decisions/README.md` | Navigation for decisions folder |
 | `docs/reference/research/README.md` | Navigation for research folder |
 
@@ -48,10 +48,10 @@
 | [reference/decisions/](./reference/decisions/) | **Implementation decisions** (Dropin patterns) |
 
 **Key Standards:**
-- **[standards/DROPIN-INTEGRATION-PATTERN.md](./standards/DROPIN-INTEGRATION-PATTERN.md)** ⭐
+- **[standards/DROPIN-INTEGRATION-PATTERN.md](./reference/standards/DROPIN-INTEGRATION-PATTERN.md)** ⭐
 ```
 
-#### Standards README (`docs/standards/README.md`)
+#### Standards README (`docs/reference/standards/README.md`)
 
 **Added**:
 - New top section: "Commerce Dropins Integration (Phase 5.5+)"
@@ -111,7 +111,7 @@ docs/
 
 ### For Developers Integrating Dropins
 
-1. **Start**: [standards/DROPIN-INTEGRATION-PATTERN.md](./standards/DROPIN-INTEGRATION-PATTERN.md)
+1. **Start**: [standards/DROPIN-INTEGRATION-PATTERN.md](./reference/standards/DROPIN-INTEGRATION-PATTERN.md)
    - The BuildRight pattern
    - Step-by-step implementation
    - Examples and anti-patterns
@@ -200,7 +200,7 @@ All new documents include cross-references to related documentation:
 
 | Need | Document |
 |------|----------|
-| **Dropin integration pattern** | [standards/DROPIN-INTEGRATION-PATTERN.md](./standards/DROPIN-INTEGRATION-PATTERN.md) |
+| **Dropin integration pattern** | [standards/DROPIN-INTEGRATION-PATTERN.md](./reference/standards/DROPIN-INTEGRATION-PATTERN.md) |
 | **Why API-only for auth?** | [reference/decisions/AUTH-DROPIN-API-ONLY.md](./reference/decisions/AUTH-DROPIN-API-ONLY.md) |
 | **Research validation** | [reference/research/RESEARCH-VALIDATION.md](./reference/research/RESEARCH-VALIDATION.md) |
 | **Full research** | [reference/research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md](./reference/research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md) |

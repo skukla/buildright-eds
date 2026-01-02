@@ -173,8 +173,8 @@ For ACO components, use the Drop-in SDK to ensure:
 
 ## Getting Started
 
-1. **Read the master plan:** [master-implementation-plan.md](../master-implementation-plan.md)
-2. **Understand personas:** [personas-overview.md](../personas/personas-overview.md)
+1. **Read the master plan:** [master-implementation-plan.md](./master-implementation-plan.md)
+2. **Understand personas:** [personas-overview.md](../explanations/personas/personas-overview.md)
 3. **For Dropins details:** [codebase-audit-dropins.md](../implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md)
 
 ---

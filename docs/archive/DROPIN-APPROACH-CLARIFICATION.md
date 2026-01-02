@@ -9,7 +9,7 @@
 ## The Confusion
 
 ### What Documentation Says
-`docs/standards/DROPIN-INTEGRATION-PATTERN.md` and `docs/reference/decisions/AUTH-DROPIN-API-ONLY.md` state:
+`docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md` and `docs/reference/decisions/AUTH-DROPIN-API-ONLY.md` state:
 
 > **"We will use the Auth Dropin API directly without using its UI containers."**
 > 
@@ -316,7 +316,7 @@ await render.render(ProductList, {
 
 ### Files That Need Correction
 
-1. **`docs/standards/DROPIN-INTEGRATION-PATTERN.md`**
+1. **`docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`**
    - Current: Says "API-only" is the pattern
    - Fix: Should say "UI Containers with Configuration + Optional Slots"
 
@@ -324,7 +324,7 @@ await render.render(ProductList, {
    - Current: Says auth dropin uses API-only
    - Fix: Should clarify that `auth-dropin` block uses UI containers, only `login-form` block uses API-only (for demo features)
 
-3. **New Document: `docs/standards/DROPIN-UI-CONTAINER-PATTERN.md`**
+3. **New Document: `docs/reference/standards/DROPIN-UI-CONTAINER-PATTERN.md`**
    - Document the ACTUAL pattern used across all dropins
    - Show examples from auth, cart, checkout, PLP
    - Clarify when to use slots vs. just configuration

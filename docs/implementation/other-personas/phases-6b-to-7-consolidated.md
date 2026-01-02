@@ -6,9 +6,9 @@
 **👥 Audience**: Developers implementing personas
 
 **🔗 Related Docs**:
-- **Quick Start**: [quick-reference/implement-persona.md](./quick-reference/implement-persona.md)
-- **What Exists**: [quick-reference/what-exists.md](./quick-reference/what-exists.md)
-- **Persona Profiles**: [personas-overview.md](../../personas/personas-overview.md)
+- **Quick Start**: [planning/quick-start/implement-persona.md](./planning/quick-start/implement-persona.md)
+- **What Exists**: [planning/quick-start/what-exists.md](./planning/quick-start/what-exists.md)
+- **Persona Profiles**: [personas-overview.md](../../explanations/personas/personas-overview.md)
 - **Completion Summaries**: [phase-0-5-foundation/](./phase-0-5-foundation/)
 - **Architectural Decisions**: [adr/ADR-004](../../adr/ADR-004-custom-attributes-for-personas.md)
 - **Kevin Implementation**: [store-manager/multi-location-architecture.md](../store-manager/multi-location-architecture.md)
@@ -16,7 +16,7 @@
 **📍 Reading Path**:
 1. Read persona profile in personas/ (15 min)
 2. Read this doc's phase section for your persona (20 min)
-3. Check quick-reference/what-exists.md for reusable components (5 min)
+3. Check planning/quick-start/what-exists.md for reusable components (5 min)
 4. Start implementing tasks
 5. Reference completion summaries as needed
 
@@ -1057,7 +1057,7 @@ Final integration testing, performance optimization, bug fixes, and demo prepara
 
 **Duration**: 1-2 days  
 **Dependencies**: Phases 6A-6E complete  
-**Reference**: [Component Architecture Documentation](../../component-architecture/README.md)
+**Reference**: [Component Architecture Documentation](../../planning/component-extraction/README.md)
 
 **Overview**:
 
@@ -1073,12 +1073,12 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 
 **Step 1: Pattern Review** (2-3 hours)
 - Review all Phase 6 implementations (6A-6E)
-- Reference the component audit: [`component-architecture/extraction-opportunities.md`](../../component-architecture/extraction-opportunities.md)
+- Reference the component audit: [`planning/component-extraction/extraction-opportunities.md`](../../planning/component-extraction/extraction-opportunities.md)
 - Identify which of the 47+ identified patterns actually repeated across multiple personas
 - Document what was built multiple times vs. what was unique
 
 **Step 2: Component Classification** (1-2 hours)
-- Use the classification framework from [`component-architecture/blocks-vs-extraction.md`](../../component-architecture/blocks-vs-extraction.md)
+- Use the classification framework from [`planning/component-extraction/blocks-vs-extraction.md`](../../planning/component-extraction/blocks-vs-extraction.md)
 - Categorize proven patterns:
   - **Utilities**: Reusable CSS classes (buttons, badges, loading states)
   - **Shared Functions**: JavaScript utilities (quantity controls, modals, formatters)
@@ -1088,7 +1088,7 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 
 **Step 3: Extract High-Value Utilities** (3-4 hours)
 - Extract 3-5 proven CSS utilities to `styles/utilities.css`
-- Document in `docs/standards/CSS-ARCHITECTURE.md`
+- Document in `docs/reference/standards/CSS-ARCHITECTURE.md`
 - Examples might include:
   - Consistent card patterns
   - Loading spinner variants
@@ -1121,10 +1121,10 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 - Ensure no regressions
 
 **Step 7: Update Documentation** (1 hour)
-- Update [`component-architecture/extraction-quick-reference.md`](../../component-architecture/extraction-quick-reference.md) with what was extracted
-- Update [`component-architecture/extraction-roadmap.md`](../../component-architecture/extraction-roadmap.md) for future extractions
-- Document in [`docs/standards/css-architecture.md`](../../standards/css-architecture.md)
-- Add notes to [`docs/standards/component-design-library.md`](../../standards/component-design-library.md)
+- Update [`planning/component-extraction/extraction-quick-reference.md`](../../planning/component-extraction/extraction-quick-reference.md) with what was extracted
+- Update [`planning/component-extraction/extraction-roadmap.md`](../../planning/component-extraction/extraction-roadmap.md) for future extractions
+- Document in [`docs/reference/standards/css-architecture.md`](../../reference/standards/css-architecture.md)
+- Add notes to [`docs/reference/standards/component-design-library.md`](../../reference/standards/component-design-library.md)
 
 **Success Criteria**:
 - [ ] Reviewed all Phase 6 implementations
@@ -1147,11 +1147,11 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 > **Rule of Three**: Only extract patterns that appeared in at least 3 different places. Otherwise, duplication is acceptable.
 
 **Reference Documents**:
-- 📚 [Component Architecture README](../../component-architecture/README.md) - Master index
-- 📊 [Component Extraction Opportunities](../../component-architecture/extraction-opportunities.md) - Full audit
-- 🎯 [EDS Blocks vs Component Extraction](../../component-architecture/blocks-vs-extraction.md) - Classification guide
-- 📋 [Component Extraction Quick Reference](../../component-architecture/extraction-quick-reference.md) - Lookup table
-- 🗺️ [Component Extraction Roadmap](../../component-architecture/extraction-roadmap.md) - Planning doc
+- 📚 [Component Architecture README](../../planning/component-extraction/README.md) - Master index
+- 📊 [Component Extraction Opportunities](../../planning/component-extraction/extraction-opportunities.md) - Full audit
+- 🎯 [EDS Blocks vs Component Extraction](../../planning/component-extraction/blocks-vs-extraction.md) - Classification guide
+- 📋 [Component Extraction Quick Reference](../../planning/component-extraction/extraction-quick-reference.md) - Lookup table
+- 🗺️ [Component Extraction Roadmap](../../planning/component-extraction/extraction-roadmap.md) - Planning doc
 
 ### Task 6: Demo Walkthrough Guide
 
@@ -1267,16 +1267,16 @@ After building all 5 persona experiences (Phases 6A-6E), review the codebase for
 - [ ] `docs/ACCESSIBILITY-AUDIT.md`
 - [ ] `docs/BROWSER-COMPATIBILITY.md`
 - [ ] `docs/KNOWN-ISSUES.md`
-- [ ] **⭐ Updated `docs/component-architecture/` documentation** (NEW)
+- [ ] **⭐ Updated `docs/planning/component-extraction/` documentation** (NEW)
 
 **Component Extraction** (NEW):
 - [ ] Extracted CSS utilities in `styles/utilities.css`
 - [ ] Extracted JavaScript utilities in `scripts/utils.js` (or specialized files)
 - [ ] EDS block content models (if applicable)
-- [ ] Updated `docs/standards/CSS-ARCHITECTURE.md`
-- [ ] Updated `docs/standards/COMPONENT-DESIGN-LIBRARY.md`
-- [ ] Updated `docs/component-architecture/COMPONENT-EXTRACTION-QUICK-REFERENCE.md`
-- [ ] Updated `docs/component-architecture/COMPONENT-EXTRACTION-ROADMAP.md`
+- [ ] Updated `docs/reference/standards/CSS-ARCHITECTURE.md`
+- [ ] Updated `docs/reference/standards/COMPONENT-DESIGN-LIBRARY.md`
+- [ ] Updated `docs/planning/component-extraction/COMPONENT-EXTRACTION-QUICK-REFERENCE.md`
+- [ ] Updated `docs/planning/component-extraction/COMPONENT-EXTRACTION-ROADMAP.md`
 
 **Testing**:
 - [ ] Test results for all personas

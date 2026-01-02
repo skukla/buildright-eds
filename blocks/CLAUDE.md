@@ -142,7 +142,7 @@ export default async function decorate(block) {
 
 ## Dropin Integration Pattern
 
-> **See `docs/dropin-architecture.md`** for the canonical reference on dropins, containers, slots, and the mesh adapter pattern.
+> **See `docs/reference/dropin-architecture.md`** for the canonical reference on dropins, containers, slots, and the mesh adapter pattern.
 
 ### Quick Reference: Slot Customization
 

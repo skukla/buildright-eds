@@ -307,7 +307,7 @@ Clear initialization sequences, explicit state management, and thorough logging 
 
 ## 🔗 Related Documentation
 
-- [Dropin Integration Pattern](../standards/DROPIN-INTEGRATION-PATTERN.md)
+- [Dropin Integration Pattern](../reference/standards/DROPIN-INTEGRATION-PATTERN.md)
 - [Auth Dropin Decision](./reference/decisions/AUTH-DROPIN-API-ONLY.md)
 - [Dropin Cleanup Audit](./reference/DROPIN-CLEANUP-AUDIT.md)
 - [Cart Badge Race Condition Fix](./reference/decisions/CART-BADGE-RACE-CONDITION-FIX.md)

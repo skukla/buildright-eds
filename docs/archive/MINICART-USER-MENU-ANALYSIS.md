@@ -579,7 +579,7 @@ These are fundamentally different UI patterns.
 
 ## Related Documentation
 
-- **Integration Pattern**: `docs/standards/DROPIN-INTEGRATION-PATTERN.md`
+- **Integration Pattern**: `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`
 - **Slots Reference**: `docs/reference/DROPIN-SLOTS-AND-CONFIG-REFERENCE.md`
 - **Clarification**: `docs/DROPIN-APPROACH-CLARIFICATION.md`
 

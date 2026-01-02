@@ -13,7 +13,7 @@
 > **Note:** This ADR has been superseded. BuildRight now uses Adobe Commerce Storefront Dropins as the primary authentication method. The dual-mode approach (demo + production) has been deprecated in favor of a single Commerce-based authentication flow.
 >
 > See:
-> - [master-implementation-plan.md](../master-implementation-plan.md) — Current implementation plan
+> - [master-implementation-plan.md](../planning/master-implementation-plan.md) — Current implementation plan
 > - [ADR-001](./ADR-001-use-dropins-for-commerce.md) — Use Dropins for Commerce
 > - [ADR-007](./ADR-007-custom-sdk-dropins-for-aco.md) — Custom SDK Dropins for ACO
 

@@ -27,7 +27,7 @@ This doc contains complete implementation plans for:
 **Quick start**:
 1. Find your persona's phase section in the consolidated doc
 2. Read the objectives and data requirements
-3. Check [quick-reference/what-exists.md](./quick-reference/what-exists.md) for reusable components
+3. Check [planning/quick-start/what-exists.md](./planning/quick-start/what-exists.md) for reusable components
 4. Follow the implementation tasks
 5. Use completion summaries to see what's already built
 
@@ -94,10 +94,10 @@ Complete roadmap with all phases, dependencies, and status tracking.
 
 | Task | Guide | Time |
 |------|-------|------|
-| Implement a new persona | [quick-reference/implement-persona.md](./quick-reference/implement-persona.md) | 2 min read |
-| Add a demo account | [quick-reference/add-demo-account.md](./quick-reference/add-demo-account.md) | 2 min read |
-| Find existing components | [quick-reference/what-exists.md](./quick-reference/what-exists.md) | 3 min read |
-| Understand the architecture | [quick-reference/architecture-overview.md](./quick-reference/architecture-overview.md) | 5 min read |
+| Implement a new persona | [planning/quick-start/implement-persona.md](./planning/quick-start/implement-persona.md) | 2 min read |
+| Add a demo account | [planning/quick-start/add-demo-account.md](./planning/quick-start/add-demo-account.md) | 2 min read |
+| Find existing components | [planning/quick-start/what-exists.md](./planning/quick-start/what-exists.md) | 3 min read |
+| Understand the architecture | [planning/quick-start/architecture-overview.md](./planning/quick-start/architecture-overview.md) | 5 min read |
 
 ---
 
@@ -116,7 +116,7 @@ Complete roadmap with all phases, dependencies, and status tracking.
 ---
 
 ### Standards & Best Practices
-**Location**: [standards/](./standards/)
+**Location**: [standards/](./reference/standards/)
 
 - CSS architecture and design system
 - Coding principles
@@ -124,18 +124,18 @@ Complete roadmap with all phases, dependencies, and status tracking.
 - Responsive patterns
 - Animation standards
 
-**See**: [standards/README.md](./standards/README.md)
+**See**: [standards/README.md](./reference/standards/README.md)
 
 ---
 
 ### Testing & QA
-**Location**: [testing/](./testing/)
+**Location**: [testing/](./planning/testing/)
 
 - Testing strategies and checklists
 - QA audit procedures
 - Persona-specific testing scenarios
 
-**See**: [testing/README.md](./testing/README.md)
+**See**: [testing/README.md](./planning/testing/README.md)
 
 ---
 
@@ -163,19 +163,19 @@ Need a map? See [NAVIGATION-MAP.md](./NAVIGATION-MAP.md) for a visual diagram of
 
 ### If you're NEW to the project:
 1. Read [README.md](./README.md) (project overview) - 5 min
-2. Read [quick-reference/architecture-overview.md](./quick-reference/architecture-overview.md) - 5 min
+2. Read [planning/quick-start/architecture-overview.md](./planning/quick-start/architecture-overview.md) - 5 min
 3. Read [PHASES-6B-TO-7-CONSOLIDATED.md](./PHASES-6B-TO-7-CONSOLIDATED.md) intro - 10 min
 4. Start implementing!
 
 ### If you're IMPLEMENTING a persona:
 1. Go directly to [PHASES-6B-TO-7-CONSOLIDATED.md](./PHASES-6B-TO-7-CONSOLIDATED.md)
-2. Read [quick-reference/what-exists.md](./quick-reference/what-exists.md) for reusable components
+2. Read [planning/quick-start/what-exists.md](./planning/quick-start/what-exists.md) for reusable components
 3. Check Phase 0-5 completion summaries for details on existing systems
 4. Follow implementation plan tasks
 
 ### If you're DEBUGGING or UNDERSTANDING existing code:
 1. Check [phase-0-5-foundation/](./phase-0-5-foundation/) completion summaries
-2. Look at [quick-reference/what-exists.md](./quick-reference/what-exists.md) for component inventory
+2. Look at [planning/quick-start/what-exists.md](./planning/quick-start/what-exists.md) for component inventory
 3. Read relevant ADRs in [adr/](./adr/) for architectural decisions
 
 ---

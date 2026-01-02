@@ -6,7 +6,7 @@
 **👥 Audience**: Anyone using fragments
 
 **🔗 Related Docs**:
-- **Quick Reference**: [quick-reference/what-exists.md](../quick-reference/what-exists.md) (lists all 15 fragments)
+- **Quick Reference**: [planning/quick-start/what-exists.md](../planning/quick-start/what-exists.md) (lists all 15 fragments)
 - **Implementation Files**: `scripts/fragment-loader.js`, `/fragments/*.html`
 - **Authoring Guide**: [phase-10-authoring/FRAGMENT-AUTHORING-GUIDE.md](../phase-10-authoring/FRAGMENT-AUTHORING-GUIDE.md)
 

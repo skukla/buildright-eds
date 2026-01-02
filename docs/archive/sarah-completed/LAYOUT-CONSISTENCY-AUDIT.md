@@ -676,7 +676,7 @@ This accounts for:
 ### Medium Priority
 
 6. `styles/base.css` - Add sidebar width variables
-7. `docs/standards/CSS-ARCHITECTURE.md` - Add page structure standards
+7. `docs/reference/standards/CSS-ARCHITECTURE.md` - Add page structure standards
 
 ---
 

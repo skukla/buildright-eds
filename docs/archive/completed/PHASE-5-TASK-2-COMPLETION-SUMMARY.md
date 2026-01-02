@@ -6,7 +6,7 @@
 **👥 Audience**: Anyone implementing auth or adding demo accounts
 
 **🔗 Related Docs**:
-- **Quick Reference**: [quick-reference/add-demo-account.md](../quick-reference/add-demo-account.md)
+- **Quick Reference**: [planning/quick-start/add-demo-account.md](../planning/quick-start/add-demo-account.md)
 - **Implementation Files**: `scripts/auth.js`, `pages/login.html`, `pages/signup.html`
 - **Architectural Decision**: [adr/ADR-005](../adr/ADR-005-dual-mode-authentication.md)
 - **Persona Config**: `scripts/persona-config.js`

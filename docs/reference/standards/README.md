@@ -24,8 +24,8 @@ This folder contains all architectural and design standards that apply across th
 - Validated by Perplexity research
 
 **Related**:
-- [reference/decisions/AUTH-DROPIN-API-ONLY.md](../reference/decisions/AUTH-DROPIN-API-ONLY.md) - Why we chose API-only for auth
-- [reference/research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md](../reference/research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md) - Research validation
+- [decisions/AUTH-DROPIN-API-ONLY.md](../decisions/AUTH-DROPIN-API-ONLY.md) - Why we chose API-only for auth
+- [research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md](../research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md) - Research validation
 
 ---
 
@@ -98,7 +98,7 @@ These standards ensure:
 
 ---
 
-**Back to**: [Main Docs](../) | [Phase Plans Index](../planning/phase-plans-index.md) | [Core Docs Index](../archive/meta-docs/PERSONA-PLAN-CORE-DOCS.md)
+**Back to**: [Reference Index](../) | [Main Docs](../../) | [Phase Plans Index](../../planning/phase-plans-index.md)
 
 
 

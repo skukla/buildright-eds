@@ -26,29 +26,43 @@ BuildRight's documentation grew organically to 270+ markdown files. Navigation b
 
 ## Decision
 
-**Organize documentation into 3 primary categories by audience and purpose:**
+**Organize documentation into 4 primary categories by audience and purpose:**
 
 | Category | Audience | Purpose |
 |----------|----------|---------|
 | `docs/planning/` | AI/Dev | Implementation guides, task tracking, actionable checklists |
 | `docs/adr/` | Dev/Architect | Architectural decisions, principles, rationale |
 | `docs/explanations/` | Non-technical/Presentation | Visual diagrams, system overviews, how-it-works |
+| `docs/reference/` | Dev/Technical | Technical specs, API docs, standards, data flows |
 
 ### Structure
 
 ```
 docs/
 ├── planning/          # AI/Dev implementation guides
-│   ├── INDEX.md
+│   ├── index.md
 │   ├── phase-tracker.md
-│   └── features/      # Consolidated feature plans
+│   ├── features/      # Consolidated feature plans
+│   ├── quick-start/   # Fast 1-page guides
+│   ├── testing/       # QA strategies and checklists
+│   └── component-extraction/  # EDS blocks analysis
 ├── adr/               # Architecture decisions (existing)
 │   └── README.md
 ├── explanations/      # Non-technical visual docs
-│   ├── INDEX.md
+│   ├── index.md
+│   ├── personas/      # Persona visual overviews
 │   └── *.md           # ASCII diagrams, system flows
-├── archive/           # Historical reference (existing)
-└── implementation/    # Detailed specs (reference)
+├── reference/         # Technical specifications
+│   ├── standards/     # CSS, coding, design standards
+│   ├── backend/       # Backend specs, API docs
+│   ├── authoring/     # Content authoring specs
+│   ├── deployment/    # Deployment configurations
+│   └── decisions/     # Research-backed decisions
+├── implementation/    # Detailed implementation specs
+│   ├── sarah-end-to-end/
+│   ├── store-manager/
+│   └── other-personas/
+└── archive/           # Historical reference
 ```
 
 ### Explanation Docs Template
@@ -78,6 +92,7 @@ Each explanation doc follows this pattern:
 ### Neutral
 - Detailed specs remain in `implementation/` as reference
 - Archive contains historical context for debugging
+- `reference/` category separates technical specs from actionable planning docs
 
 ---
 
@@ -106,10 +121,28 @@ Each explanation doc follows this pattern:
 
 ## Implementation Notes
 
-Created in this restructure:
-- `docs/planning/INDEX.md`
+Created in initial restructure:
+- `docs/planning/index.md`
 - `docs/planning/phase-tracker.md`
 - `docs/planning/features/*.md` (5 consolidated files)
-- `docs/explanations/INDEX.md`
+- `docs/explanations/index.md`
 - `docs/explanations/*.md` (5 visual explanation docs)
-- `docs/CATEGORIZATION-MANIFEST.md`
+
+---
+
+## Amendment: 4th Category Added (2026-01-02)
+
+**Reason**: Analysis revealed that 3 categories could not accommodate technical reference material:
+- Standards (CSS, coding) are NOT decisions → don't belong in `adr/`
+- API specs are NOT actionable checklists → don't belong in `planning/`
+- Technical data flows are NOT for non-technical audience → don't fit `explanations/`
+
+**Changes**:
+1. Added `reference/` as 4th primary category
+2. Restructured planning sub-folders for better organization
+3. Migrated content from non-conforming folders:
+   - `planning/quick-start/` → `planning/quick-start/`
+   - `testing/` → `planning/testing/`
+   - `planning/component-extraction/` → `planning/component-extraction/`
+   - `standards/` → `reference/standards/`
+   - `personas/` → split between `explanations/personas/` and `reference/`

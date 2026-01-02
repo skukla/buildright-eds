@@ -27,8 +27,8 @@ This folder contains detailed decision records for key implementation patterns a
 - Benefits and trade-offs
 
 **Related Docs**:
-- **Pattern**: [standards/DROPIN-INTEGRATION-PATTERN.md](../../standards/DROPIN-INTEGRATION-PATTERN.md)
-- **Architecture**: [quick-reference/architecture-overview.md](../../quick-reference/architecture-overview.md)
+- **Pattern**: [standards/DROPIN-INTEGRATION-PATTERN.md](../../reference/standards/DROPIN-INTEGRATION-PATTERN.md)
+- **Architecture**: [planning/quick-start/architecture-overview.md](../../planning/quick-start/architecture-overview.md)
 
 ---
 
@@ -51,7 +51,7 @@ This folder contains detailed decision records for key implementation patterns a
 - Upgrade path
 
 **Related Docs**:
-- **Pattern**: [standards/DROPIN-INTEGRATION-PATTERN.md](../../standards/DROPIN-INTEGRATION-PATTERN.md)
+- **Pattern**: [standards/DROPIN-INTEGRATION-PATTERN.md](../../reference/standards/DROPIN-INTEGRATION-PATTERN.md)
 - **Research**: [research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md](../research/PERPLEXITY-DROPIN-CUSTOMIZATION-RESEARCH.md)
 - **Validation**: [research/RESEARCH-VALIDATION.md](../research/RESEARCH-VALIDATION.md)
 
@@ -73,6 +73,6 @@ When making implementation decisions:
 ## Related Folders
 
 - **[adr/](../../adr/)** - Architecture Decision Records (high-level architectural decisions)
-- **[standards/](../../standards/)** - Implementation standards and patterns
+- **[standards/](../../reference/standards/)** - Implementation standards and patterns
 - **[research/](../research/)** - External research and validation
 

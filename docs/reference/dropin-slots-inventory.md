@@ -496,7 +496,7 @@ slots: {
 
 ## Related Documentation
 
-- **Dropin Integration Pattern Guide**: `docs/standards/DROPIN-INTEGRATION-PATTERN.md`
+- **Dropin Integration Pattern Guide**: `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md`
 - **Dropin Slots and Config Reference**: `docs/reference/DROPIN-SLOTS-AND-CONFIG-REFERENCE.md`
 - **Dropin Visual Guide**: `docs/DROPIN-VISUAL-GUIDE.md`
 - **Dropin Approach Clarification**: `docs/DROPIN-APPROACH-CLARIFICATION.md`

@@ -30,7 +30,7 @@ Transformed documentation from **7/10** → **10/10** efficiency by implementing
 
 ### 2. ✅ Quick Reference Guides (High Impact)
 
-**Created**: [quick-reference/](./quick-reference/) folder with 5 files:
+**Created**: [planning/quick-start/](./planning/quick-start/) folder with 5 files:
 
 | Guide | Purpose | Time |
 |-------|---------|------|
@@ -200,7 +200,7 @@ docs/
 ├─ README.md (updated with entry point)
 ├─ PHASES-6B-TO-7-CONSOLIDATED.md (current work)
 │
-├─ quick-reference/ ⭐ FAST LOOKUPS
+├─ planning/quick-start/ ⭐ FAST LOOKUPS
 │  ├─ implement-persona.md
 │  ├─ add-demo-account.md
 │  ├─ what-exists.md
@@ -289,7 +289,7 @@ docs/
 5. 20 minutes to understand what exists
 
 **After (10/10)**:
-1. Open quick-reference/what-exists.md
+1. Open planning/quick-start/what-exists.md
 2. Scan inventory (5 shared components, 15 fragments, utilities)
 3. 3 minutes to understand what exists ✅
 
@@ -305,7 +305,7 @@ docs/
 5. 40 minutes to understand
 
 **After (10/10)**:
-1. Open quick-reference/architecture-overview.md
+1. Open planning/quick-start/architecture-overview.md
 2. Read 5-minute overview with diagrams
 3. Click links to deep dives if needed
 4. 5-10 minutes to understand ✅
@@ -315,7 +315,7 @@ docs/
 ## 🎯 Validation
 
 ✅ **Can find implementation plan in 1 click?** YES  
-✅ **Can lookup common tasks quickly?** YES (quick-reference/)  
+✅ **Can lookup common tasks quickly?** YES (planning/quick-start/)  
 ✅ **Can understand document hierarchy?** YES (markers on 10 docs)  
 ✅ **Can see visual overview?** YES (NAVIGATION-MAP)  
 ✅ **Can trace document relationships?** YES (bidirectional links)  
@@ -333,7 +333,7 @@ To keep docs at 10/10:
 2. **Add hierarchy markers** to any new comprehensive docs
 3. **Update quick references** when patterns change
 4. **Keep NAVIGATION-MAP current** as structure evolves
-5. **Create completion summaries** for new phases (add to quick-reference/what-exists)
+5. **Create completion summaries** for new phases (add to planning/quick-start/what-exists)
 
 ---
 

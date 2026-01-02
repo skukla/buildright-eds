@@ -624,5 +624,5 @@ After making consistency changes:
 - **Design System Reference**: `styles/base.css` (lines 1-150)
 - **Component Examples**: `styles/build-configurator.css`
 - **Layout Patterns**: `styles/page-specific.css`
-- **Architecture Guide**: `docs/standards/CSS-ARCHITECTURE.md`
+- **Architecture Guide**: `docs/reference/standards/CSS-ARCHITECTURE.md`
 

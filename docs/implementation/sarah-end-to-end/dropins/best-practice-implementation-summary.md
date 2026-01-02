@@ -59,7 +59,7 @@ Custom Queries → API Mesh (ACO + BuildRight)
 - Benefits and trade-offs
 
 ### Updated Documentation
-1. **`docs/quick-reference/architecture-overview.md`**
+1. **`docs/planning/quick-start/architecture-overview.md`**
    - Updated architecture diagram
    - Added dual-endpoint section
    - Linked to ADR-008
@@ -126,7 +126,7 @@ Once products are in Commerce:
 ## Documentation Navigation
 
 - **ADR**: `docs/reference/decisions/ADR-008-COMMERCE-DROPINS-DIRECT-CONNECTION.md`
-- **Architecture**: `docs/quick-reference/architecture-overview.md`
+- **Architecture**: `docs/planning/quick-start/architecture-overview.md`
 - **Decisions Index**: `docs/reference/decisions/README.md`
 
 ---

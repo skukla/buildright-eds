@@ -1113,8 +1113,8 @@ Upon completion of Phase 6A:
 
 ## Related Documents
 
-- [personas-strategy.md](../../../personas/personas-strategy.md) - Overall orchestration
-- [personas-overview.md](../../../personas/personas-overview.md) - Sarah's user journey
+- [personas-strategy.md](../../../planning/personas/personas-strategy.md) - Overall orchestration
+- [personas-overview.md](../../../explanations/personas/personas-overview.md) - Sarah's user journey
 - [sarah-implementation-plan.md](./sarah-implementation-plan.md) - Current implementation plan
 
 ---

@@ -268,7 +268,7 @@ For context, here's how Auth Dropin compares to others:
 
 ### Documentation
 - `docs/reference/decisions/AUTH-DROPIN-API-ONLY.md` - Full decision rationale
-- `docs/standards/DROPIN-INTEGRATION-PATTERN.md` - Pattern for all dropins
+- `docs/reference/standards/DROPIN-INTEGRATION-PATTERN.md` - Pattern for all dropins
 - `docs/reference/research/I have an existing front end design...md` - Perplexity research
 - `docs/reference/research/RESEARCH-VALIDATION.md` - This document
 

@@ -210,7 +210,7 @@ BuildRight uses **two types of dropins**:
 | [codebase-audit-dropins.md](./implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md) | Detailed file-by-file migration plan |
 | [commerce-dropins-integration.md](./implementation/sarah-end-to-end/dropins/commerce-dropins-integration.md) | Technical implementation guide |
 | [ADR-001](./adr/ADR-001-use-dropins-for-commerce.md) | Architecture decision |
-| [dropin-architecture.md](./dropin-architecture.md) | Dropin patterns |
+| [dropin-architecture.md](../reference/dropin-architecture.md) | Dropin patterns |
 | [auth-strategy.md](./archive/reference-old/AUTH-STRATEGY.md) | Authentication approach |
 
 ### Dropins to Integrate
@@ -323,7 +323,7 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 | [catalog-service-design.md](./implementation/sarah-end-to-end/features/catalog-service-design.md) | ACO catalog integration |
 | [sarah-wireframes.md](./implementation/sarah-end-to-end/features/sarah-wireframes.md) | UI wireframes |
 | [data-source-matrix.md](./reference/backend/data-source-matrix.md) | Commerce vs ACO data |
-| [personas-overview.md](./personas/personas-overview.md) | Sarah's profile |
+| [personas-overview.md](./explanations/personas/personas-overview.md) | Sarah's profile |
 
 **Completed:**
 - [x] Dashboard Simplification
@@ -352,8 +352,8 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 | Document | Purpose |
 |----------|---------|
 | [phases-6b-to-7-consolidated.md](./implementation/other-personas/phases-6b-to-7-consolidated.md) | Detailed implementation plan |
-| [personas-overview.md](./personas/personas-overview.md) | All persona profiles |
-| [personas-ux-patterns.md](./personas/personas-ux-patterns.md) | UX patterns per persona |
+| [personas-overview.md](./explanations/personas/personas-overview.md) | All persona profiles |
+| [personas-ux-patterns.md](./explanations/personas/personas-ux-patterns.md) | UX patterns per persona |
 
 | Phase | Persona | Key Feature | Demo Value |
 |-------|---------|-------------|------------|
@@ -377,7 +377,7 @@ By completing Sarah end-to-end, we prove all infrastructure before replicating f
 | [ADR-007](./adr/ADR-007-custom-sdk-dropins-for-aco.md) | Architecture decision and rationale |
 | [codebase-audit-dropins.md](./implementation/sarah-end-to-end/dropins/codebase-audit-dropins.md) | SDK dropin details (Phase 2 section) |
 | [eds-block-patterns.md](./reference/backend/eds-block-patterns.md) | Current block patterns |
-| [component-architecture/](./component-architecture/) | Component extraction guides |
+| [planning/component-extraction/](./planning/component-extraction/) | Component extraction guides |
 
 ### Why Custom SDK Dropins?
 
@@ -556,7 +556,7 @@ docs/
 ├── personas/                        # Persona profiles
 ├── standards/                       # Coding standards
 ├── testing/                         # Testing guides
-├── quick-reference/                 # Quick lookup guides
+├── planning/quick-start/                 # Quick lookup guides
 └── archive/                         # Historical docs
 ```
 
@@ -569,7 +569,7 @@ docs/
 | **Dropin CSS Refactoring** | [dropin-css-refactor-plan.md](./implementation/dropin-css-refactor-plan.md) |
 | **Sarah Implementation** | [implementation/sarah-end-to-end/features/](./implementation/sarah-end-to-end/features/) |
 | **Backend Reference** | [reference/backend/](./reference/backend/) |
-| **Personas** | [personas-overview.md](./personas/personas-overview.md) |
+| **Personas** | [personas-overview.md](./explanations/personas/personas-overview.md) |
 | **Architecture Decisions** | [adr/](./adr/) |
 | **Completed Work** | [implementation/completed/](./implementation/completed/) |
 | **Research** | [../.rptc/research/](../../.rptc/research/) |

@@ -258,10 +258,10 @@ But if I'm in `PHASES-6B-TO-7-CONSOLIDATED.md` Phase 6E, does it clearly say "Se
 
 #### 3. **Create Quick Reference Cards**
 
-**Proposal**: `quick-reference/` folder with 1-page guides:
+**Proposal**: `planning/quick-start/` folder with 1-page guides:
 
 ```
-docs/quick-reference/
+docs/planning/quick-start/
 ├─ implement-persona.md (1 page)
 ├─ add-demo-account.md (1 page)
 ├─ create-shared-component.md (1 page)

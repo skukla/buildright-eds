@@ -7,7 +7,7 @@
 **Decision Makers**: BuildRight Implementation Team
 
 **Related Documentation**:
-- `docs/dropin-architecture.md` - Canonical dropin reference
+- `docs/reference/dropin-architecture.md` - Canonical dropin reference
 - `docs/adr/ADR-008-dropin-css-refactoring-strategy.md` - CSS approach
 - `docs/adr/ADR-009-mesh-adapter-resolver-pattern.md` - Mesh adapter pattern
 
@@ -288,7 +288,7 @@ When implementing a new dropin (Auth, Cart, Checkout, Order):
 ## References
 
 ### Internal Documentation
-- `docs/dropin-architecture.md` - Canonical dropin reference
+- `docs/reference/dropin-architecture.md` - Canonical dropin reference
 - `blocks/product-list/product-list.js` - Reference implementation
 
 ### Adobe Documentation
