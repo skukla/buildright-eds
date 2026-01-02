@@ -21,16 +21,13 @@
 ```
 implementation/
 ├── README.md                 # This file
-├── sarah-martinez/         # Sarah Martinez (Production Builder)
-│   ├── features/             # 33 feature documents
+├── sarah-martinez/           # Sarah Martinez (Production Builder)
+│   ├── features/             # 30 feature documents (4 subdirs)
 │   └── dropins/              # Commerce dropin integration
 ├── kevin-rodriguez/          # Kevin Rodriguez (Store Manager)
 │   └── multi-location-architecture.md
-├── other-personas/           # Marcus, Lisa, David (consolidated planning)
-│   └── phases-6b-to-7-consolidated.md
-└── [root files]              # Cross-cutting implementation docs
-    ├── dropin-css-refactor-plan.md
-    └── product-images-*.md
+└── other-personas/           # Marcus, Lisa, David (consolidated planning)
+    └── phases-6b-to-7-consolidated.md
 ```
 
 ---
@@ -58,14 +55,15 @@ implementation/
 
 ---
 
-## Cross-Cutting Documentation
+## Cross-Cutting Standards
 
-| Document | Purpose |
-|----------|---------|
-| [dropin-css-refactor-plan.md](./dropin-css-refactor-plan.md) | CSS refactoring for Commerce dropins |
-| [product-images-convention.md](./product-images-convention.md) | Product image naming conventions |
-| [product-images-implementation-summary.md](./product-images-implementation-summary.md) | Image implementation summary |
-| [product-images-standardized-flow.md](./product-images-standardized-flow.md) | Standardized image flow |
+These documents have been moved to appropriate locations:
+
+| Document | New Location | Purpose |
+|----------|--------------|---------|
+| Product Image Convention | [reference/standards/](../reference/standards/product-images-convention.md) | Image naming conventions |
+| Product Image Flow | [reference/standards/](../reference/standards/product-images-standardized-flow.md) | Standardized image flow |
+| Dropin CSS Refactor | [archive/completed/](../archive/completed/dropin-css-refactor-plan.md) | Historical (see ADR-008) |
 
 ---
 
