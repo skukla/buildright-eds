@@ -17,22 +17,22 @@ BuildRight uses **two data sources** - knowing which owns what is critical for i
 ## Visual: Which System Handles What
 
 ```
-┌─────────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────────┐
 │  USER JOURNEY                                                │
-├─────────────────────────────────────────────────────────────┤
+├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  Browse Catalog ──▶ ACO (products, prices, filters)         │
+│  Browse Catalog ──▶ ACO (products, prices, filters)          │
 │         │                                                    │
 │         ▼                                                    │
-│  Add to Cart ────▶ Commerce (cart state via dropin)         │
+│  Add to Cart ────▶ Commerce (cart state via dropin)          │
 │         │                                                    │
 │         ▼                                                    │
-│  Checkout ───────▶ Commerce (payment, shipping)             │
+│  Checkout ───────▶ Commerce (payment, shipping)              │
 │         │                                                    │
 │         ▼                                                    │
-│  View Orders ────▶ Commerce (order history)                 │
+│  View Orders ────▶ Commerce (order history)                  │
 │                                                              │
-└─────────────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ## Key Rule
