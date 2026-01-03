@@ -39,39 +39,37 @@ Frontend → Mesh Resolver → ACO → Mesh Resolver → Frontend
 **What:** Intercepts product grid queries to add extensibility control.
 
 ```
-┌─────────────────────┐
-│  Product Discovery  │
-│  Dropin             │
-│  productSearch()    │
-└─────────┬───────────┘
+┌───────────────────────────┐
+│  Product Discovery Dropin │
+│  productSearch()          │
+└─────────┬─────────────────┘
           │ filter: { categoryPath: "Lumber" }
           ▼
-┌─────────────────────┐
-│  dropin-plp.js      │
-│  ┌───────────────┐  │
-│  │ 1. Validate   │  │  ← page_size: 1-100, phrase: max 200 chars
-│  │ 2. Transform  │  │  ← categoryPath → subcategory filter
-│  │ 3. Route      │  │  ← Query BuildRight_ prefixed source
-│  └───────────────┘  │
-└─────────┬───────────┘
+┌─────────────────────────────────┐
+│  dropin-plp.js                  │
+│  ┌───────────────┐              │
+│  │ 1. Validate   │              │  ← page_size: 1-100, phrase: max 200 chars
+│  │ 2. Transform  │              │  ← categoryPath → subcategory filter
+│  │ 3. Delegate   │              │  ← ACO_BuildRight.BuildRight_productSearch
+│  └───────────────┘              │
+└─────────┬───────────────────────┘
           ▼
-┌─────────────────────┐
-│  ACO                │
-│  Returns products   │
-│  with pricing       │
-└─────────┬───────────┘
+┌─────────────────────────────────┐
+│  ACO (BuildRight_productSearch) │  ◄── SAME QUERY as product-search.js
+│  Returns products with pricing  │
+└─────────┬───────────────────────┘
           ▼
-┌─────────────────────┐
-│  dropin-plp.js      │
-│  ┌───────────────┐  │
-│  │ Strip prefix  │  │  ← BuildRight_SimpleProductView → SimpleProductView
-│  └───────────────┘  │
-└─────────┬───────────┘
+┌─────────────────────────────────┐
+│  dropin-plp.js                  │
+│  ┌──────────────────┐           │
+│  │ Strip BR_ prefix │           │  ← BuildRight_SimpleProductView → SimpleProductView
+│  └──────────────────┘           │
+└─────────┬───────────────────────┘
           ▼
-┌─────────────────────┐
-│  Dropin renders     │
-│  product grid       │
-└─────────────────────┘
+┌───────────────────────────┐
+│  Dropin renders           │
+│  product grid             │
+└───────────────────────────┘
 ```
 
 **Key Transformation:**
@@ -87,38 +85,35 @@ OUT: subcategory: "Lumber"
 **What:** Handles custom BuildRight_* product queries for non-dropin blocks.
 
 ```
-┌─────────────────────┐
-│  Featured Products  │
-│  Block              │
-│  searchProducts()   │
-└─────────┬───────────┘
+┌───────────────────────────┐
+│  Featured Products Block  │
+│  searchProducts()         │
+└─────────┬─────────────────┘
           │ phrase: " ", pageSize: 6
           ▼
-┌─────────────────────┐
-│  product-search.js  │
-│  ┌───────────────┐  │
-│  │ Route to ACO  │  │  ← Uses BuildRight_ prefixed types
-│  │ Same source!  │  │  ← ACO_BuildRight.BuildRight_productSearch
-│  └───────────────┘  │
-└─────────┬───────────┘
+┌─────────────────────────────────┐
+│  product-search.js              │
+│  ┌───────────────┐              │
+│  │ Delegate      │              │  ← ACO_BuildRight.BuildRight_productSearch
+│  └───────────────┘              │
+└─────────┬───────────────────────┘
           ▼
-┌─────────────────────┐
-│  ACO                │
-│  Returns products   │
-│  with pricing       │
-└─────────┬───────────┘
+┌─────────────────────────────────┐
+│  ACO (BuildRight_productSearch) │  ◄── SAME QUERY as dropin-plp.js
+│  Returns products with pricing  │
+└─────────┬───────────────────────┘
           ▼
-┌─────────────────────┐
-│  product-search.js  │
-│  ┌───────────────┐  │
-│  │ Transform     │  │  ← Maps to BuildRight_Product type
-│  └───────────────┘  │
-└─────────┬───────────┘
+┌─────────────────────────────────┐
+│  product-search.js              │
+│  ┌───────────────┐              │
+│  │ Transform     │              │  ← Maps to BuildRight_Product type
+│  └───────────────┘              │
+└─────────┬───────────────────────┘
           ▼
-┌─────────────────────┐
-│  Block renders      │
-│  product cards      │
-└─────────────────────┘
+┌───────────────────────────┐
+│  Block renders            │
+│  product cards            │
+└───────────────────────────┘
 ```
 
 **Queries Provided:**
