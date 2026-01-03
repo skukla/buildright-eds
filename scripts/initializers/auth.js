@@ -13,6 +13,7 @@ import { catalogService } from '../services/catalog-service.js';
 
 // Track auth state
 let _currentCustomer = null;
+let _hasBeenAuthenticated = false; // Track if user was ever authenticated this session
 
 /**
  * Initialize the Auth Dropin
@@ -86,16 +87,26 @@ async function initializeGuestPersonaIfNeeded() {
  */
 function setupAuthEventListeners() {
   // Listen for authenticated event
+  // Note: { eager: true } fires immediately with current state on registration
   events.on('authenticated', async (isAuthenticated) => {
     console.log('[Auth Dropin] Authentication state changed:', isAuthenticated);
-    
+
     if (isAuthenticated) {
+      _hasBeenAuthenticated = true;
       await handleCustomerAuthenticated();
     } else {
-      await handleCustomerLoggedOut();
+      // Only handle logout if user was previously authenticated
+      // This prevents clearing persona cache on initial page load
+      // when eager:true fires with isAuthenticated=false
+      if (_hasBeenAuthenticated) {
+        _hasBeenAuthenticated = false;
+        await handleCustomerLoggedOut();
+      } else {
+        console.log('[Auth Dropin] Initial load (not authenticated), skipping logout handler');
+      }
     }
   }, { eager: true });
-  
+
   console.log('[Auth Dropin] Event listeners registered');
 }
 

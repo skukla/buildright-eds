@@ -120,20 +120,19 @@ export async function initializeDropins() {
         console.log('[Dropins] Updated ACO headers:', Object.keys(updatedHeaders));
       });
       
-      // Initialize individual dropins
-      // All dropins now use the same mesh endpoint
-      
-      // Auth dropin
-      const authInit = await import('./auth.js');
-      await authInit.initializeAuthDropin(initializers);
-      
-      // Cart dropin
-      const cartInit = await import('./cart.js');
-      await cartInit.initializeCartDropin(initializers);
-      
-      // Product Discovery dropin
-      const searchInit = await import('./search.js');
-      await searchInit.initializeSearchDropin(initializers);
+      // Initialize individual dropins in parallel
+      // All dropins use the same mesh endpoint and are independent
+      const [authInit, cartInit, searchInit] = await Promise.all([
+        import('./auth.js'),
+        import('./cart.js'),
+        import('./search.js'),
+      ]);
+
+      await Promise.all([
+        authInit.initializeAuthDropin(initializers),
+        cartInit.initializeCartDropin(initializers),
+        searchInit.initializeSearchDropin(initializers),
+      ]);
       
       // Mount all initializers
       initializers.mount();
