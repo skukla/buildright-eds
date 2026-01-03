@@ -5,6 +5,25 @@
 
 ---
 
+## TL;DR
+
+**Different resolvers, same underlying ACO query.**
+
+| | PLP Dropin | Featured Products |
+|---|---|---|
+| **Caller** | Adobe Product Discovery dropin | Custom BuildRight block |
+| **Query** | `productSearch()` | `BuildRight_searchProducts()` |
+| **Resolver** | `dropin-plp.js` | `product-search.js` |
+| **ACO query** | `BuildRight_productSearch` | `BuildRight_productSearch` |
+
+**Why two resolvers?**
+- `dropin-plp.js` makes Adobe's dropin work (transforms to/from native schema)
+- `product-search.js` serves custom blocks (no schema transformation needed)
+
+Both contain similar selection sets because they need the same product fields. This is intentional: **same data source, different adapters for different clients**.
+
+---
+
 ## The Key Insight
 
 Both the **PLP Product Grid** (Product Discovery dropin) and **Featured Products** (custom block) ultimately call the **same ACO query** (`BuildRight_productSearch`), but through different resolver paths.
@@ -186,22 +205,21 @@ Custom blocks use prefixed `BuildRight_*` queries directly.
 
 ---
 
-## Why Two Paths?
+## Why Two Resolvers?
 
-### Dropin Path Exists Because:
-- Adobe dropins expect native Commerce/ACO schema
-- Dropins can't be modified to use prefixed types
-- Interception provides extensibility without forking dropins
+**`dropin-plp.js`** exists to make Adobe's dropin work:
+- Intercepts the dropin's `productSearch()` call
+- Transforms filters (e.g., `categoryPath` → `subcategory`)
+- Strips `BuildRight_` prefix from response so dropin recognizes the types
 
-### Custom Path Exists Because:
-- Custom blocks aren't constrained by dropin schema
-- Can define BuildRight-specific types and fields
-- Simpler queries without schema transformation overhead
+**`product-search.js`** exists for custom blocks:
+- Provides `BuildRight_*` queries that custom blocks call directly
+- No schema transformation needed (custom blocks expect `BuildRight_` types)
 
-### They Share The Same Source Because:
-- Single source of truth for product data
-- Consistent pricing across all displays
-- Persona headers work identically for both
+**Why similar code in both?**
+Both resolvers contain similar selection sets because they fetch the same product fields from ACO. This duplication is intentional—they serve different consumers with different schema expectations.
+
+Think of it as: **same data source, different adapters for different clients**.
 
 ---
 
