@@ -7,13 +7,7 @@
   box-shadow: var(--shape-shadow-1);
 }
 
-/* Sticky header only on catalog pages */
-.page-catalog header,
-.page-catalog header .header,
-.page-catalog .header {
-  position: sticky;
-  top: 0;
-}
+/* Header scrolls naturally with page content on all pages */
 
 /* Top Utility Bar */
 .header-top {

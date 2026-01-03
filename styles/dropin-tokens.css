@@ -130,3 +130,19 @@
   --dropin-transition-base: var(--transition-base);
   --dropin-transition-slow: var(--transition-slow);
 }
+
+/* ============================================
+   DROPIN DESIGN OVERRIDE
+   Adobe dropins inject .dropin-design with default gray colors.
+   Override to use BuildRight brand colors (sapphire blue).
+   ============================================ */
+.dropin-design {
+  /* Primary brand colors - override Adobe's default gray (#454545) */
+  --color-brand-500: #0f5ba7;  /* Sapphire Blue */
+  --color-brand-600: #0a4580;  /* Hover state */
+  --color-brand-700: #083d6f;  /* Active state */
+
+  /* Button hover/active states */
+  --color-button-hover: #0a4580;
+  --color-button-active: #083d6f;
+}

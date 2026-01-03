@@ -164,6 +164,9 @@ async function handleCustomerLoggedOut() {
   sessionStorage.removeItem('buildright_persona');
   sessionStorage.removeItem('buildright_persona_headers');
   sessionStorage.removeItem('buildright_persona_email');
+
+  // Clear customer context (company/location for Kevin persona)
+  localStorage.removeItem('buildright_customer_context');
   
   // Reset catalog service first
   catalogService.reset();
