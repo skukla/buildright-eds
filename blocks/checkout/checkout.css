@@ -1,0 +1,558 @@
+/**
+ * Checkout Block Styles
+ *
+ * BuildRight styling for @dropins/storefront-checkout
+ * Uses design tokens from styles/base.css and dropin-tokens.css
+ *
+ * @module blocks/checkout/checkout.css
+ */
+
+/* ============================================
+   MAIN BLOCK CONTAINER
+   ============================================ */
+.checkout {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-large) var(--section-padding-horizontal);
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.buildright-checkout-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--spacing-medium);
+}
+
+.buildright-checkout-loading-text {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   TWO-COLUMN LAYOUT (Desktop)
+   ============================================ */
+.buildright-checkout-container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--spacing-xlarge);
+  align-items: start;
+}
+
+.buildright-checkout-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+}
+
+.buildright-checkout-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+}
+
+.buildright-checkout-sidebar {
+  position: sticky;
+  top: var(--spacing-large);
+}
+
+/* ============================================
+   SECTION COMMON STYLES
+   ============================================ */
+.buildright-checkout-section {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-large);
+}
+
+.buildright-checkout-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-medium) 0;
+  padding-bottom: var(--spacing-medium);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ============================================
+   SHIPPING ADDRESS SECTION
+   ============================================ */
+.buildright-checkout-address {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-medium);
+}
+
+.buildright-checkout-address-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-medium) 0;
+}
+
+/* ============================================
+   SHIPPING METHODS SECTION
+   ============================================ */
+.buildright-checkout-shipping {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-medium);
+}
+
+.buildright-checkout-shipping-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-medium) 0;
+}
+
+.buildright-checkout-shipping-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  padding: var(--spacing-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-1);
+  margin-bottom: var(--spacing-small);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.buildright-checkout-shipping-option:hover {
+  border-color: var(--color-brand-500);
+  background: var(--color-surface);
+}
+
+.buildright-checkout-shipping-option.selected {
+  border-color: var(--color-brand-500);
+  background: var(--color-brand-50);
+}
+
+.buildright-checkout-shipping-radio {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-brand-500);
+}
+
+.buildright-checkout-shipping-details {
+  flex: 1;
+}
+
+.buildright-checkout-shipping-method {
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.buildright-checkout-shipping-carrier {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.buildright-checkout-shipping-price {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ============================================
+   BILLING ADDRESS SECTION
+   ============================================ */
+.buildright-checkout-billing {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-medium);
+}
+
+.buildright-checkout-billing-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-medium) 0;
+}
+
+.buildright-checkout-billing-same-as-shipping {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-medium);
+}
+
+.buildright-checkout-billing-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-brand-500);
+}
+
+.buildright-checkout-billing-label {
+  font-size: 0.875rem;
+  color: var(--color-text);
+}
+
+/* ============================================
+   PAYMENT METHODS SECTION
+   ============================================ */
+.buildright-checkout-payment {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-medium);
+}
+
+.buildright-checkout-payment-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-medium) 0;
+}
+
+.buildright-checkout-payment-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  padding: var(--spacing-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-1);
+  margin-bottom: var(--spacing-small);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.buildright-checkout-payment-option:hover {
+  border-color: var(--color-brand-500);
+}
+
+.buildright-checkout-payment-option.selected {
+  border-color: var(--color-brand-500);
+  background: var(--color-brand-50);
+}
+
+.buildright-checkout-payment-radio {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-brand-500);
+}
+
+.buildright-checkout-payment-details {
+  flex: 1;
+}
+
+.buildright-checkout-payment-method {
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.buildright-checkout-payment-description {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   ORDER SUMMARY SECTION (Sidebar)
+   ============================================ */
+.buildright-checkout-summary {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-large);
+}
+
+.buildright-checkout-summary-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-medium) 0;
+  padding-bottom: var(--spacing-medium);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.buildright-checkout-summary-items {
+  margin-bottom: var(--spacing-medium);
+}
+
+.buildright-checkout-summary-item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: var(--spacing-small);
+  padding: var(--spacing-small) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.buildright-checkout-summary-item:last-child {
+  border-bottom: none;
+}
+
+.buildright-checkout-summary-item-image {
+  width: 60px;
+  height: 60px;
+  background: var(--color-background);
+  border-radius: var(--shape-border-radius-1);
+  overflow: hidden;
+}
+
+.buildright-checkout-summary-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.buildright-checkout-summary-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.buildright-checkout-summary-item-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.buildright-checkout-summary-item-qty {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.buildright-checkout-summary-item-price {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: right;
+}
+
+/* Summary Totals */
+.buildright-checkout-summary-totals {
+  margin-top: var(--spacing-medium);
+  padding-top: var(--spacing-medium);
+  border-top: 1px solid var(--color-border);
+}
+
+.buildright-checkout-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xsmall) 0;
+}
+
+.buildright-checkout-summary-label {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.buildright-checkout-summary-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.buildright-checkout-summary-total {
+  margin-top: var(--spacing-small);
+  padding-top: var(--spacing-small);
+  border-top: 2px solid var(--color-border);
+}
+
+.buildright-checkout-summary-total-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.buildright-checkout-summary-total-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* ============================================
+   PLACE ORDER ACTIONS
+   ============================================ */
+.buildright-checkout-actions {
+  margin-top: var(--spacing-large);
+}
+
+.buildright-checkout-place-order-btn {
+  width: 100%;
+  padding: var(--spacing-medium) var(--spacing-large);
+  font-size: 1.125rem;
+  font-weight: 600;
+  background: var(--color-brand-500);
+  color: var(--color-background);
+  border: none;
+  border-radius: var(--shape-border-radius-2);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.buildright-checkout-place-order-btn:hover {
+  background: var(--color-brand-600);
+}
+
+.buildright-checkout-place-order-btn:disabled {
+  background: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.buildright-checkout-terms {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: var(--spacing-small);
+}
+
+.buildright-checkout-terms a {
+  color: var(--color-brand-500);
+  text-decoration: none;
+}
+
+.buildright-checkout-terms a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   FORM INPUT STYLING
+   ============================================ */
+.buildright-checkout-form-group {
+  margin-bottom: var(--spacing-medium);
+}
+
+.buildright-checkout-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xsmall);
+}
+
+.buildright-checkout-form-input {
+  width: 100%;
+  padding: var(--spacing-small) var(--spacing-medium);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-1);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.buildright-checkout-form-input:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 3px rgba(15, 91, 167, 0.1);
+}
+
+.buildright-checkout-form-input:focus-within {
+  border-color: var(--color-brand-500);
+}
+
+.buildright-checkout-form-input::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.buildright-checkout-form-error {
+  font-size: 0.75rem;
+  color: var(--color-error);
+  margin-top: var(--spacing-xsmall);
+}
+
+.buildright-checkout-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-medium);
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+.buildright-checkout-error {
+  background: var(--color-error-light);
+  border: 1px solid var(--color-error);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-medium);
+  margin-bottom: var(--spacing-medium);
+}
+
+.buildright-checkout-error-title {
+  font-weight: 600;
+  color: var(--color-error);
+  margin: 0 0 var(--spacing-xsmall) 0;
+}
+
+.buildright-checkout-error-message {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE (< 768px)
+   ============================================ */
+@media (max-width: 768px) {
+  .checkout {
+    padding: var(--spacing-medium) var(--spacing-small);
+  }
+
+  .buildright-checkout-loading {
+    min-height: 300px;
+  }
+
+  .buildright-checkout-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-large);
+  }
+
+  .buildright-checkout-sidebar {
+    position: static;
+    order: -1;
+  }
+
+  .buildright-checkout-section {
+    padding: var(--spacing-medium);
+  }
+
+  .buildright-checkout-summary {
+    padding: var(--spacing-medium);
+  }
+
+  .buildright-checkout-summary-item {
+    grid-template-columns: 50px 1fr auto;
+  }
+
+  .buildright-checkout-summary-item-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .buildright-checkout-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .buildright-checkout-place-order-btn {
+    font-size: 1rem;
+    padding: var(--spacing-medium);
+  }
+}
+
+/* ============================================
+   TABLET RESPONSIVE (768px - 1024px)
+   ============================================ */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .buildright-checkout-container {
+    grid-template-columns: 1fr 350px;
+    gap: var(--spacing-large);
+  }
+
+  .buildright-checkout-summary-item-image {
+    width: 50px;
+    height: 50px;
+  }
+}

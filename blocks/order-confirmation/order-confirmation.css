@@ -1,0 +1,524 @@
+/**
+ * Order Confirmation Block Styles
+ *
+ * BuildRight styling for @dropins/storefront-order
+ * Uses design tokens from styles/base.css and dropin-tokens.css
+ *
+ * @module blocks/order-confirmation/order-confirmation.css
+ */
+
+/* ============================================
+   MAIN BLOCK CONTAINER
+   ============================================ */
+.order-confirmation {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xlarge) var(--section-padding-horizontal);
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.buildright-order-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--spacing-medium);
+}
+
+.buildright-order-loading-text {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   ORDER HEADER - SUCCESS BANNER
+   ============================================ */
+.buildright-order-header {
+  text-align: center;
+  padding: var(--spacing-xlarge);
+  background: linear-gradient(135deg, var(--color-brand-50) 0%, var(--color-surface) 100%);
+  border-radius: var(--shape-border-radius-3);
+  margin-bottom: var(--spacing-xlarge);
+}
+
+.buildright-order-success-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-medium);
+}
+
+.buildright-order-success-icon svg {
+  color: var(--color-success, #22c55e);
+  width: 64px;
+  height: 64px;
+}
+
+.buildright-order-header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-small) 0;
+}
+
+.buildright-order-header-number {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-brand-500);
+  margin: 0 0 var(--spacing-small) 0;
+}
+
+.buildright-order-header-message {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   TWO-COLUMN LAYOUT (Desktop)
+   ============================================ */
+.buildright-order-container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--spacing-xlarge);
+  align-items: start;
+}
+
+.buildright-order-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+}
+
+.buildright-order-sidebar {
+  position: sticky;
+  top: var(--spacing-large);
+}
+
+/* ============================================
+   SECTION COMMON STYLES
+   ============================================ */
+.buildright-order-section {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-large);
+}
+
+.buildright-order-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-medium) 0;
+  padding-bottom: var(--spacing-medium);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ============================================
+   ORDER ITEMS SECTION
+   ============================================ */
+.buildright-order-items {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-large);
+  margin-bottom: var(--spacing-large);
+}
+
+.buildright-order-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: var(--spacing-medium);
+  padding: var(--spacing-medium) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.buildright-order-item:last-child {
+  border-bottom: none;
+}
+
+.buildright-order-item-image {
+  width: 80px;
+  height: 80px;
+  background: var(--color-background);
+  border-radius: var(--shape-border-radius-1);
+  overflow: hidden;
+}
+
+.buildright-order-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.buildright-order-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.buildright-order-item-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.buildright-order-item-sku {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.buildright-order-item-qty {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.buildright-order-item-price {
+  text-align: right;
+}
+
+.buildright-order-item-price-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ============================================
+   ORDER TOTALS SECTION
+   ============================================ */
+.buildright-order-totals {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-large);
+  margin-bottom: var(--spacing-large);
+}
+
+.buildright-order-totals-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xsmall) 0;
+}
+
+.buildright-order-totals-label {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.buildright-order-totals-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.buildright-order-totals-grand {
+  margin-top: var(--spacing-small);
+  padding-top: var(--spacing-small);
+  border-top: 2px solid var(--color-border);
+}
+
+.buildright-order-totals-grand .buildright-order-totals-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.buildright-order-totals-grand .buildright-order-totals-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-brand-500);
+}
+
+/* ============================================
+   SHIPPING INFO SECTION
+   ============================================ */
+.buildright-order-shipping {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-large);
+  margin-bottom: var(--spacing-large);
+}
+
+.buildright-order-shipping-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-large);
+}
+
+.buildright-order-shipping-address {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.buildright-order-shipping-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xsmall);
+}
+
+.buildright-order-shipping-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.buildright-order-shipping-line {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.buildright-order-shipping-method {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.buildright-order-shipping-carrier {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.buildright-order-shipping-estimate {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   BILLING ADDRESS SECTION
+   ============================================ */
+.buildright-order-billing {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-large);
+  margin-bottom: var(--spacing-large);
+}
+
+/* ============================================
+   PAYMENT INFO SECTION
+   ============================================ */
+.buildright-order-payment {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-large);
+  margin-bottom: var(--spacing-large);
+}
+
+.buildright-order-payment-method {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.buildright-order-payment-icon {
+  width: 40px;
+  height: 24px;
+  background: var(--color-background);
+  border-radius: var(--shape-border-radius-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buildright-order-payment-details {
+  font-size: 0.875rem;
+  color: var(--color-text);
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+.buildright-order-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  margin-top: var(--spacing-large);
+}
+
+.buildright-order-continue-btn {
+  width: 100%;
+  padding: var(--spacing-medium) var(--spacing-large);
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--color-brand-500);
+  color: var(--color-background);
+  border: none;
+  border-radius: var(--shape-border-radius-2);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.buildright-order-continue-btn:hover {
+  background: var(--color-brand-600);
+}
+
+.buildright-order-history-btn {
+  width: 100%;
+  padding: var(--spacing-medium) var(--spacing-large);
+  font-size: 1rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--color-brand-500);
+  border: 1px solid var(--color-brand-500);
+  border-radius: var(--shape-border-radius-2);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.buildright-order-history-btn:hover {
+  background: var(--color-brand-50);
+}
+
+/* ============================================
+   PRINT BUTTON
+   ============================================ */
+.buildright-order-print-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall);
+  padding: var(--spacing-small) var(--spacing-medium);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-1);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.buildright-order-print-btn:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE (< 768px)
+   ============================================ */
+@media (max-width: 768px) {
+  .order-confirmation {
+    padding: var(--spacing-medium) var(--spacing-small);
+  }
+
+  .buildright-order-loading {
+    min-height: 300px;
+  }
+
+  .buildright-order-header {
+    padding: var(--spacing-large);
+  }
+
+  .buildright-order-header-title {
+    font-size: 1.5rem;
+  }
+
+  .buildright-order-header-number {
+    font-size: 1rem;
+  }
+
+  .buildright-order-success-icon svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .buildright-order-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-large);
+  }
+
+  .buildright-order-sidebar {
+    position: static;
+  }
+
+  .buildright-order-items,
+  .buildright-order-totals,
+  .buildright-order-shipping,
+  .buildright-order-billing,
+  .buildright-order-payment {
+    padding: var(--spacing-medium);
+  }
+
+  .buildright-order-item {
+    grid-template-columns: 60px 1fr;
+    gap: var(--spacing-small);
+  }
+
+  .buildright-order-item-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .buildright-order-item-price {
+    grid-column: 2;
+    text-align: left;
+    margin-top: var(--spacing-xsmall);
+  }
+
+  .buildright-order-shipping-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-medium);
+  }
+
+  .buildright-order-section-title {
+    font-size: 1.125rem;
+  }
+}
+
+/* ============================================
+   TABLET RESPONSIVE (768px - 1024px)
+   ============================================ */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .buildright-order-container {
+    grid-template-columns: 1fr 350px;
+    gap: var(--spacing-large);
+  }
+
+  .buildright-order-item-image {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .buildright-order-actions,
+  .buildright-order-print-btn {
+    display: none;
+  }
+
+  .buildright-order-header {
+    background: none;
+    border: 1px solid var(--color-border);
+  }
+
+  .buildright-order-items,
+  .buildright-order-totals,
+  .buildright-order-shipping {
+    break-inside: avoid;
+  }
+}

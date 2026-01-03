@@ -1,0 +1,484 @@
+/**
+ * Auth Block Styles
+ *
+ * BuildRight styling for @dropins/storefront-auth
+ * Uses design tokens from styles/base.css and dropin-tokens.css
+ *
+ * @module blocks/auth/auth.css
+ */
+
+/* ============================================
+   MAIN BLOCK CONTAINER
+   ============================================ */
+.auth {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--spacing-large) var(--section-padding-horizontal);
+}
+
+/* Header context: auth block should not affect layout */
+#user-menu-container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+}
+
+#user-menu-container .auth {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-width variant for checkout guest login */
+.auth.full-width {
+  max-width: 100%;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.buildright-auth-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: var(--spacing-medium);
+}
+
+.buildright-auth-loading-text {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   SIGN IN FORM STYLES
+   ============================================ */
+.buildright-auth-form {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-xlarge);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.buildright-auth-form-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-large) 0;
+  text-align: center;
+}
+
+/* ============================================
+   REGISTRATION FORM STYLES
+   ============================================ */
+.buildright-auth-register {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-xlarge);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.buildright-auth-register-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-large) 0;
+  text-align: center;
+}
+
+/* ============================================
+   RESET PASSWORD FORM STYLES
+   ============================================ */
+.buildright-auth-reset {
+  background: var(--color-surface);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-xlarge);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.buildright-auth-reset-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-large) 0;
+  text-align: center;
+}
+
+/* ============================================
+   USER MENU STYLES
+   ============================================ */
+.buildright-auth-user-menu {
+  position: relative;
+}
+
+.user-menu-logged-in,
+.user-menu-logged-out {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  min-width: 240px;
+}
+
+.user-menu-header {
+  padding: var(--spacing-medium);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.user-menu-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.user-menu-greeting {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-brand-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-initials {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-background);
+  text-transform: uppercase;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-company {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-content {
+  padding: var(--spacing-small);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+}
+
+.user-menu-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  padding: var(--spacing-small) var(--spacing-medium);
+  border-radius: var(--shape-border-radius-1);
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background-color var(--transition-fast);
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.user-menu-link:hover {
+  background: var(--color-surface);
+}
+
+.user-menu-link svg {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.user-menu-logout {
+  color: var(--color-text);
+}
+
+.user-menu-logout:hover {
+  background: var(--color-surface);
+}
+
+.user-menu-action {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+/* User menu dropdown - hidden by default, shown on toggle */
+.user-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+}
+
+.user-menu.active {
+  display: block;
+}
+
+/* ============================================
+   FORM INPUT STYLING
+   ============================================ */
+.buildright-auth-form input,
+.buildright-auth-register input,
+.buildright-auth-reset input {
+  width: 100%;
+  padding: var(--spacing-small) var(--spacing-medium);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-1);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.buildright-auth-form input:focus,
+.buildright-auth-register input:focus,
+.buildright-auth-reset input:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 3px rgba(15, 91, 167, 0.1);
+}
+
+.buildright-auth-form input:focus-within,
+.buildright-auth-register input:focus-within,
+.buildright-auth-reset input:focus-within {
+  border-color: var(--color-brand-500);
+}
+
+.buildright-auth-form input::placeholder,
+.buildright-auth-register input::placeholder,
+.buildright-auth-reset input::placeholder {
+  color: var(--color-text-disabled);
+}
+
+/* Form labels */
+.buildright-auth-form label,
+.buildright-auth-register label,
+.buildright-auth-reset label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xsmall);
+}
+
+/* Form field groups */
+.buildright-auth-form-group {
+  margin-bottom: var(--spacing-medium);
+}
+
+/* Form errors */
+.buildright-auth-form-error {
+  font-size: 0.75rem;
+  color: var(--color-error);
+  margin-top: var(--spacing-xsmall);
+}
+
+/* ============================================
+   BUTTON STYLING
+   ============================================ */
+.buildright-auth-form button[type="submit"],
+.buildright-auth-register button[type="submit"],
+.buildright-auth-reset button[type="submit"] {
+  width: 100%;
+  padding: var(--spacing-medium) var(--spacing-large);
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--color-brand-500);
+  color: var(--color-background);
+  border: none;
+  border-radius: var(--shape-border-radius-2);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  margin-top: var(--spacing-medium);
+}
+
+.buildright-auth-form button[type="submit"]:hover,
+.buildright-auth-register button[type="submit"]:hover,
+.buildright-auth-reset button[type="submit"]:hover {
+  background: var(--color-brand-600);
+}
+
+.buildright-auth-form button[type="submit"]:disabled,
+.buildright-auth-register button[type="submit"]:disabled,
+.buildright-auth-reset button[type="submit"]:disabled {
+  background: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* ============================================
+   LINKS STYLING
+   ============================================ */
+.buildright-auth-form a,
+.buildright-auth-register a,
+.buildright-auth-reset a {
+  color: var(--color-brand-500);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.buildright-auth-form a:hover,
+.buildright-auth-register a:hover,
+.buildright-auth-reset a:hover {
+  text-decoration: underline;
+}
+
+/* Forgot password link */
+.buildright-auth-forgot-link {
+  display: block;
+  text-align: right;
+  margin-top: var(--spacing-small);
+}
+
+/* Sign up / Sign in link */
+.buildright-auth-alternate-action {
+  text-align: center;
+  margin-top: var(--spacing-large);
+  padding-top: var(--spacing-large);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   SUCCESS/ERROR MESSAGES
+   ============================================ */
+.buildright-auth-success {
+  background: var(--color-success-light, #ecfdf5);
+  border: 1px solid var(--color-success, #10b981);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-medium);
+  margin-bottom: var(--spacing-medium);
+  color: var(--color-success-dark, #065f46);
+  font-size: 0.875rem;
+}
+
+.buildright-auth-error {
+  background: var(--color-error-light, #fef2f2);
+  border: 1px solid var(--color-error, #ef4444);
+  border-radius: var(--shape-border-radius-2);
+  padding: var(--spacing-medium);
+  margin-bottom: var(--spacing-medium);
+  color: var(--color-error-dark, #991b1b);
+  font-size: 0.875rem;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE (< 768px)
+   ============================================ */
+@media (max-width: 768px) {
+  .auth {
+    padding: var(--spacing-medium) var(--spacing-small);
+    max-width: 100%;
+  }
+
+  .buildright-auth-loading {
+    min-height: 200px;
+  }
+
+  .buildright-auth-form,
+  .buildright-auth-register,
+  .buildright-auth-reset {
+    padding: var(--spacing-large);
+  }
+
+  .buildright-auth-form-title,
+  .buildright-auth-register-title,
+  .buildright-auth-reset-title {
+    font-size: 1.25rem;
+  }
+
+  .user-menu-logged-in,
+  .user-menu-logged-out {
+    min-width: 200px;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .user-initials {
+    font-size: 0.75rem;
+  }
+}
+
+/* ============================================
+   TABLET RESPONSIVE (768px - 1024px)
+   ============================================ */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .auth {
+    max-width: 400px;
+  }
+
+  .buildright-auth-form,
+  .buildright-auth-register,
+  .buildright-auth-reset {
+    padding: var(--spacing-large);
+  }
+}
+
+/* ============================================
+   DROPIN OVERRIDES
+   ============================================ */
+
+/* Override dropin form styles to use BuildRight tokens */
+.buildright-auth-form .dropin-auth-form,
+.buildright-auth-register .dropin-auth-form,
+.buildright-auth-reset .dropin-auth-form {
+  font-family: var(--font-family-primary);
+}
+
+/* Ensure dropin inputs follow BuildRight styling */
+.buildright-auth-form .dropin-input,
+.buildright-auth-register .dropin-input,
+.buildright-auth-reset .dropin-input {
+  border-color: var(--color-border);
+  border-radius: var(--shape-border-radius-1);
+}
+
+.buildright-auth-form .dropin-input:focus,
+.buildright-auth-register .dropin-input:focus,
+.buildright-auth-reset .dropin-input:focus {
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 3px rgba(15, 91, 167, 0.1);
+}
+
+/* Ensure dropin buttons follow BuildRight styling */
+.buildright-auth-form .dropin-button--primary,
+.buildright-auth-register .dropin-button--primary,
+.buildright-auth-reset .dropin-button--primary {
+  background: var(--color-brand-500);
+  border-radius: var(--shape-border-radius-2);
+}
+
+.buildright-auth-form .dropin-button--primary:hover,
+.buildright-auth-register .dropin-button--primary:hover,
+.buildright-auth-reset .dropin-button--primary:hover {
+  background: var(--color-brand-600);
+}
