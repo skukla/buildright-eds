@@ -16,5 +16,8 @@ logs/
 # Node modules
 node_modules/
 
+# Commerce Dropins (copied from node_modules via postinstall)
+scripts/__dropins__/
+
 # Temporary prompt files
 docs/prompt.md

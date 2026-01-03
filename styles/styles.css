@@ -10,8 +10,7 @@
 @import url('utilities.css');
 
 /* Import block styles */
-@import url('../blocks/product-grid/product-grid.css');
-@import url('../blocks/filters-sidebar/filters-sidebar.css');
+/* Note: product-grid and filters-sidebar merged into product-list dropin (ADR-008) */
 @import url('../blocks/footer/footer.css');
 
 /* Import page-specific styles */

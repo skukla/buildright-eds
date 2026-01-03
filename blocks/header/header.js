@@ -298,17 +298,24 @@ export default async function decorate(block) {
   
   // URLs are now handled by base tag - no path fixing needed
   
-  // Show/hide location selector based on login status
+  // Show/hide location selector based on login status and persona
   // Note: With Commerce Dropins, we listen to auth events directly
   async function updateAuthenticatedElements() {
     // Find location section - try ID first, then fallback to class
-    const locationSection = block.querySelector('#header-location') || 
+    const locationSection = block.querySelector('#header-location') ||
                            block.querySelector('.header-location');
-    
-    // Location selector is now only shown for specific use cases
-    // Default to hidden, will be shown by persona-specific logic if needed
-    if (locationSection) {
-      locationSection.style.visibility = 'hidden';
+
+    if (!locationSection) return;
+
+    // Check if user has a company context (only Kevin has one)
+    const context = JSON.parse(localStorage.getItem('buildright_customer_context') || '{}');
+    const hasCompany = !!context.company;
+
+    // Show location selector only for personas with company context (Kevin)
+    if (hasCompany) {
+      locationSection.style.display = 'flex';
+    } else {
+      locationSection.style.display = 'none';
     }
   }
   
@@ -332,12 +339,12 @@ export default async function decorate(block) {
   
   const userMenuContainer = block.querySelector('#user-menu-container');
   if (userMenuContainer) {
-    // Create auth-dropin block and insert into custom container
+    // Create auth block and insert into custom container
     const authDropinBlock = document.createElement('div');
-    authDropinBlock.className = 'auth-dropin';
+    authDropinBlock.className = 'auth';
     authDropinBlock.dataset.headerContext = 'true'; // Signal this is in header
     userMenuContainer.appendChild(authDropinBlock);
-    await decorateBlock(authDropinBlock, 'auth-dropin');
+    await decorateBlock(authDropinBlock, 'auth');
   }
   
   const miniCartContainer = block.querySelector('#mini-cart-container');

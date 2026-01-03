@@ -6,7 +6,10 @@
 
 import { authService } from '../../scripts/auth.js';
 import { catalogService } from '../../scripts/services/catalog-service.js';
-import { resolveImagePath, formatCurrency } from '../../scripts/utils.js';
+import { formatCurrency, createProductImage } from '../../scripts/utils.js';
+
+/** Number of products to display - controls grid, API fetch, and skeleton count */
+const PRODUCTS_COUNT = 5;
 
 export default async function decorate(block) {
   const container = block.querySelector('.products-container');
@@ -30,7 +33,7 @@ export default async function decorate(block) {
     
     // Get products via catalogService (uses mesh or mock based on strategy)
     const result = await catalogService.searchProducts(' ', {
-      pageSize: 4,
+      pageSize: PRODUCTS_COUNT,
       currentPage: 1
     });
     
@@ -48,7 +51,7 @@ export default async function decorate(block) {
     if (products.length === 0) {
       // Show skeleton cards (looks professional, not broken)
       container.innerHTML = '';
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < PRODUCTS_COUNT; i++) {
         const skeleton = document.createElement('div');
         skeleton.className = 'product-card product-card-skeleton';
         skeleton.innerHTML = `
@@ -100,19 +103,10 @@ export default async function decorate(block) {
       card.className = 'product-card';
       card.href = `${basePath}pages/product-detail.html?sku=${product.sku}`;
       
-      // Image
+      // Image with automatic placeholder fallback (uses shared utility)
       const imageContainer = document.createElement('div');
       imageContainer.className = 'product-card-image';
-      
-      const imageUrl = resolveImagePath(product.image || '');
-      if (imageUrl && imageUrl.trim() !== '' && !imageUrl.includes('placeholder.png')) {
-        imageContainer.style.backgroundImage = `url('${imageUrl}')`;
-        imageContainer.style.backgroundSize = 'cover';
-        imageContainer.style.backgroundPosition = 'center';
-        imageContainer.style.backgroundRepeat = 'no-repeat';
-      } else {
-        imageContainer.classList.add('product-card-image-placeholder', 'image-placeholder-pattern');
-      }
+      createProductImage(imageContainer, product.image, product.name);
       
       // Header
       const header = document.createElement('div');
@@ -187,7 +181,7 @@ export default async function decorate(block) {
       actions.className = 'product-card-actions';
       
       const addToCartBtn = document.createElement('button');
-      addToCartBtn.className = 'btn btn-primary';
+      addToCartBtn.className = 'btn btn-primary btn-product-card';
       addToCartBtn.innerHTML = `
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 5v14M5 12h14"></path>

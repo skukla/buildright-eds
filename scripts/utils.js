@@ -216,6 +216,61 @@ function formatCurrency(amount, showCents = true) {
   }).format(amount || 0);
 }
 
+/**
+ * Handle image load error - shows placeholder pattern
+ * Works with the .image-placeholder CSS component from styles/components.css
+ * @param {HTMLImageElement} img - The img element that failed to load
+ * @param {HTMLElement} container - The container element to apply placeholder class to
+ */
+function handleImageError(img, container) {
+  img.style.display = 'none';
+  container.classList.add('image-placeholder');
+}
+
+/**
+ * Create a product image with automatic placeholder fallback
+ * Uses the shared .image-placeholder CSS component from styles/components.css
+ *
+ * @param {HTMLElement} container - Container element for the image
+ * @param {string} imageUrl - Image URL (will be resolved via resolveImagePath)
+ * @param {string} altText - Alt text for the image
+ * @param {Object} options - Additional options
+ * @param {string} options.placeholderClass - Additional class for placeholder state
+ * @returns {HTMLImageElement|null} The created img element, or null if no valid URL
+ *
+ * @example
+ * const imageContainer = document.createElement('div');
+ * imageContainer.className = 'product-card-image';
+ * createProductImage(imageContainer, product.image, product.name);
+ */
+function createProductImage(container, imageUrl, altText = '', options = {}) {
+  const resolvedUrl = resolveImagePath(imageUrl || '');
+
+  // No valid URL - apply placeholder immediately
+  if (!resolvedUrl || resolvedUrl.trim() === '' || resolvedUrl.includes('placeholder.png')) {
+    container.classList.add('image-placeholder');
+    if (options.placeholderClass) {
+      container.classList.add(options.placeholderClass);
+    }
+    return null;
+  }
+
+  // Create img element with error handling
+  const img = document.createElement('img');
+  img.src = resolvedUrl;
+  img.alt = altText;
+  img.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
+  img.onerror = () => {
+    handleImageError(img, container);
+    if (options.placeholderClass) {
+      container.classList.add(options.placeholderClass);
+    }
+  };
+
+  container.appendChild(img);
+  return img;
+}
+
 // ES6 exports - only actively used utilities
 export {
   getUrlParameter,
@@ -227,6 +282,8 @@ export {
   cleanupEventListeners,
   cleanElementListeners,
   formatCurrency,
+  handleImageError,
+  createProductImage,
   // Path resolution utilities already exported above as named exports
   // getBasePath,
   // resolvePath,

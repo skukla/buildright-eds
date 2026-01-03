@@ -13,6 +13,46 @@ import { PERSONAS } from '../../scripts/persona-config.js';
 import { loadConfig } from '../../scripts/site-config.js';
 
 /**
+ * Security: Validate redirect URL to prevent open redirect attacks
+ * Only allows relative URLs or same-origin URLs
+ *
+ * @param {string} url - URL to validate
+ * @returns {string|null} Safe URL or null if invalid
+ */
+function getSafeRedirectUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+
+  try {
+    const decoded = decodeURIComponent(url);
+
+    // Security: Reject URLs with control characters (newlines, tabs, etc.)
+    // These could be used for response splitting attacks
+    if (/[\n\r\t]/.test(decoded)) {
+      console.warn('[Login Form] Security: Rejected URL with control characters');
+      return null;
+    }
+
+    // Allow relative URLs (starting with / but not //)
+    if (decoded.startsWith('/') && !decoded.startsWith('//')) {
+      return decoded;
+    }
+
+    // Check if same origin for absolute URLs
+    const parsedUrl = new URL(decoded, window.location.origin);
+    if (parsedUrl.origin === window.location.origin) {
+      return parsedUrl.pathname + parsedUrl.search + parsedUrl.hash;
+    }
+
+    // Reject external URLs
+    console.warn('[Login Form] Security: Rejected external redirect URL:', decoded);
+    return null;
+  } catch (e) {
+    console.warn('[Login Form] Security: Invalid redirect URL:', url);
+    return null;
+  }
+}
+
+/**
  * Demo account mapping: Email → Persona
  */
 const DEMO_ACCOUNTS = {
@@ -260,14 +300,15 @@ function setupEmailLogin() {
         // Give it time to process
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Check for redirect parameter
+        // Check for redirect parameter (with security validation)
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get('redirect');
-        
-        // Redirect
-        if (redirect) {
-          console.log('[Login Form] Redirecting to:', decodeURIComponent(redirect));
-          window.location.href = decodeURIComponent(redirect);
+        const safeRedirect = getSafeRedirectUrl(redirect);
+
+        // Redirect to validated URL or default
+        if (safeRedirect) {
+          console.log('[Login Form] Redirecting to:', safeRedirect);
+          window.location.href = safeRedirect;
         } else {
           console.log('[Login Form] Redirecting to homepage');
           window.location.href = window.BASE_PATH || '/';
@@ -290,14 +331,15 @@ function setupEmailLogin() {
         
         if (success) {
           console.log('[Login Form] Demo authentication successful as:', account.name);
-          
+
           const urlParams = new URLSearchParams(window.location.search);
           const redirect = urlParams.get('redirect');
-          
+          const safeRedirect = getSafeRedirectUrl(redirect);
+
           await new Promise(resolve => setTimeout(resolve, 100));
-          
-          if (redirect) {
-            window.location.href = decodeURIComponent(redirect);
+
+          if (safeRedirect) {
+            window.location.href = safeRedirect;
           } else {
             window.location.href = window.BASE_PATH || '/';
           }
@@ -416,21 +458,22 @@ async function handleQuickLogin() {
     
     if (success) {
       console.log('[Login Form] Quick login successful:', personaId);
-      
-      // Check for redirect parameter
+
+      // Check for redirect parameter (with security validation)
       const urlParams = new URLSearchParams(window.location.search);
       const redirect = urlParams.get('redirect');
-      
+      const safeRedirect = getSafeRedirectUrl(redirect);
+
       // Get default route for persona
       const defaultRoute = authService.getDefaultRoute();
       console.log('[Login Form] Default route:', defaultRoute);
-      
+
       // Small delay to ensure localStorage is saved
       await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Redirect
-      if (redirect) {
-        window.location.href = decodeURIComponent(redirect);
+
+      // Redirect to validated URL or default
+      if (safeRedirect) {
+        window.location.href = safeRedirect;
       } else {
         window.location.href = window.BASE_PATH || '/';
       }

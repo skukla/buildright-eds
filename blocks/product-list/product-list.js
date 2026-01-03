@@ -425,10 +425,10 @@ export default async function decorate(block) {
         imageDiv.setAttribute('role', 'img');
         imageDiv.setAttribute('aria-label', product.name || 'Product image');
         
-        // Add error handler for fallback
+        // Add error handler for fallback - use shared .image-placeholder from components.css
         const testImg = new Image();
         testImg.onerror = () => {
-          imageWrapper.classList.add('buildright-image-error');
+          imageWrapper.classList.add('image-placeholder');
         };
         testImg.src = imageUrl;
         
@@ -536,7 +536,7 @@ export default async function decorate(block) {
         actions.className = 'buildright-product-actions';
 
         const viewButton = document.createElement('button');
-        viewButton.className = 'buildright-btn buildright-btn-primary';
+        viewButton.className = 'btn btn-primary btn-product-card';
 
         // Add icon
         viewButton.innerHTML = `

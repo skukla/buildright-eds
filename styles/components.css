@@ -426,6 +426,24 @@
   outline-offset: 2px;
 }
 
+/* Product Card Button - Fixed-width variant for product grids
+   Used by: featured-products, product-list (catalog grid) */
+.btn-product-card {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  border-radius: 8px;
+  width: 140px;
+  min-width: 140px;
+  white-space: nowrap;
+}
+
+.btn-product-card svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
 /* Loading Spinner */
 .loading-spinner {
   width: 60px;
@@ -832,6 +850,7 @@ button.card:hover,
   padding: 2rem 1.5rem;
   transition: all 0.2s;
   border: 1px solid var(--color-border);
+  background-color: var(--color-surface); /* Gray cards on white section background */
 }
 
 .featured-category-card:hover {

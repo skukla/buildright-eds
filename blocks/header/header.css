@@ -2,18 +2,17 @@
 .header {
   background-color: var(--color-background);
   border-bottom: 1px solid var(--color-border);
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 100;
   box-shadow: var(--shape-shadow-1);
 }
 
-/* Ensure header container is also sticky */
-header,
-header .header {
+/* Sticky header only on catalog pages */
+.page-catalog header,
+.page-catalog header .header,
+.page-catalog .header {
   position: sticky;
   top: 0;
-  z-index: 100;
 }
 
 /* Top Utility Bar */

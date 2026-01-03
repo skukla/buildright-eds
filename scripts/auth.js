@@ -29,42 +29,64 @@ class AuthService {
     this.currentUser = null;
     this.isDemo = true; // Default to demo, can be overridden by config
     this.initialized = false;
+    this._initializing = null; // Promise to prevent race conditions
   }
-  
+
   /**
    * Initialize auth service
    * Checks for existing session and restores user state
    * Determines mode from config.features.useDemoAuth
    */
   async initialize() {
+    // Already initialized - return immediately
     if (this.initialized) return;
-    
+
+    // Initialization in progress - wait for existing promise
+    if (this._initializing) {
+      return this._initializing;
+    }
+
+    // Start initialization and store the promise
+    this._initializing = this._doInitialize();
+
+    try {
+      await this._initializing;
+    } finally {
+      this._initializing = null;
+    }
+  }
+
+  /**
+   * Internal initialization logic
+   * @private
+   */
+  async _doInitialize() {
     console.log('[Auth] Initializing...');
-    
+
     // Load config to determine mode
     try {
       const config = await loadConfig();
       this.isDemo = config.features?.useDemoAuth !== false;
       _useDropins = config.features?.useCommerceDropins === true;
-      
-      console.log('[Auth] Mode:', this.isDemo ? 'demo' : 'production', 
+
+      console.log('[Auth] Mode:', this.isDemo ? 'demo' : 'production',
                   ', Dropins:', _useDropins ? 'enabled' : 'disabled');
     } catch (error) {
       console.warn('[Auth] Failed to load config, using demo mode:', error.message);
       this.isDemo = true;
     }
-    
+
     if (this.isDemo) {
       await this._initializeDemoMode();
     } else {
       await this._initializeProductionMode();
     }
-    
+
     // Set up event listeners for dropin events if dropins are enabled
     if (_useDropins) {
       this._setupDropinEventListeners();
     }
-    
+
     this.initialized = true;
   }
   
