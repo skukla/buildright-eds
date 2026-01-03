@@ -43,12 +43,22 @@ Without intervention:
 | `ACO_Dropins` | None | Schema provider - types dropins expect |
 | `ACO_BuildRight` | `BuildRight_` | Execution target - where queries run |
 
-**Adapter Resolvers:**
+**Adapter Resolvers (Product Discovery):**
 | Resolver | Intercepts | Routes To |
 |----------|------------|-----------|
-| `dropin-search.js` | `productSearch` | `BuildRight_productSearch` |
+| `dropin-plp.js` | `productSearch` | `BuildRight_productSearch` |
 | `dropin-pdp.js` | `products`, `refineProduct` | `BuildRight_products`, `BuildRight_refineProduct` |
 | `dropin-metadata.js` | `attributeMetadata` | Filters sortable attributes |
+
+> **Naming Convention:** Resolver files use `dropin-{abbrev}.js` where abbreviation matches Adobe's dropin naming: `plp` (Product List Page / Product Discovery), `pdp` (Product Detail Page), etc.
+
+**Adapter Resolvers (Commerce - Auth, Cart, Checkout, Orders):**
+| Resolver | Intercepts | Purpose |
+|----------|------------|---------|
+| `dropin-auth.js` | Auth mutations/queries | Customer authentication |
+| `dropin-cart.js` | Cart mutations/queries | Shopping cart operations |
+| `dropin-checkout.js` | Checkout mutations | Checkout flow |
+| `dropin-order.js` | Order queries | Order history/confirmation |
 
 ### Query Flow
 
@@ -58,7 +68,7 @@ Adobe Product Discovery Dropin
          | calls productSearch(phrase, filter, ...)
          v
 +---------------------------+
-|     dropin-search.js      |  <-- Intercepts for control
+|     dropin-plp.js         |  <-- Intercepts for control
 |     (Adapter Resolver)    |
 +---------------------------+
          |
@@ -79,7 +89,7 @@ Adobe Product Discovery Dropin
          |
          v
 +---------------------------+
-|     dropin-search.js      |  <-- Transform response
+|     dropin-plp.js         |  <-- Transform response
 |     - Strip BuildRight_ prefix from __typename
 |     - BuildRight_SimpleProductView -> SimpleProductView
 +---------------------------+
@@ -93,7 +103,7 @@ Adobe Product Discovery Dropin (displays products with prices)
 The adapter transforms dropin filter attributes to ACO-native format:
 
 ```javascript
-// dropin-search.js transformDropinFilter()
+// dropin-plp.js transformDropinFilter()
 if (attribute === 'categoryPath') {
   const segments = value.split('/');
   if (segments.length === 1) {
@@ -197,13 +207,31 @@ This enables category context preservation when users click facets.
 
 **Resolver Location**: `buildright-service/mesh/resolvers-src/`
 
-**Key Files**:
-- `dropin-search.js` - ProductSearch adapter
-- `dropin-pdp.js` - PDP adapter
+**Key Files (Product Discovery)**:
+- `dropin-plp.js` - ProductSearch adapter (PLP = Product List Page)
+- `dropin-pdp.js` - PDP adapter (Product Detail Page)
 - `dropin-metadata.js` - Metadata/SortBy adapter
 
-**Selection Set Pattern** (must use prefixed types):
+**Key Files (Commerce)**:
+- `dropin-auth.js` - Auth adapter (SignIn, SignUp, ResetPassword, UpdatePassword)
+- `dropin-cart.js` - Cart adapter
+- `dropin-checkout.js` - Checkout adapter
+- `dropin-order.js` - Order adapter
+
+**Custom Query Resolvers** (non-dropin blocks):
+- `product-search.js` - Featured products, search suggestions, single product lookup
+
+> **Note:** Both `dropin-plp.js` and `product-search.js` delegate to the same underlying ACO query (`BuildRight_productSearch`). See [Product Query Flows](../explanations/product-query-flows.md) for details.
+
+**Shared Utilities**:
+- `utils/typename-transform.js` - Shared `__typename` transformation (strips `BuildRight_` prefix)
+
+### Selection Set Pattern (CRITICAL)
+
+When delegating to `ACO_BuildRight`, inline fragment types **MUST** use the `BuildRight_` prefix:
+
 ```javascript
+// ✅ CORRECT - matches ACO_BuildRight source prefix
 const PRODUCT_SEARCH_SELECTION = `{
   items {
     productView {
@@ -224,7 +252,20 @@ const PRODUCT_SEARCH_SELECTION = `{
 }`;
 ```
 
-**Response Transformation**:
+> **⚠️ PITFALL:** Using unprefixed types (`SimpleProductView`) or wrong prefixes (`ACO_SimpleProductView`) causes GraphQL to **silently skip** those fragments. No error is thrown - fields just return `null`. This is a subtle bug that's hard to debug.
+
+```javascript
+// ❌ WRONG - types don't match prefixed source, returns NULL for price
+... on ACO_SimpleProductView { price { ... } }   // Wrong prefix
+... on SimpleProductView { price { ... } }       // No prefix
+```
+
+**Types that require `BuildRight_` prefix:**
+- `BuildRight_SimpleProductView` / `BuildRight_ComplexProductView`
+- `BuildRight_ScalarBucket` / `BuildRight_RangeBucket` / `BuildRight_CategoryBucket`
+
+### Response Transformation
+
 ```javascript
 function transformToNativeSchema(items) {
   return items.map(item => ({
@@ -255,4 +296,4 @@ function transformToNativeSchema(items) {
 
 ---
 
-**Last Updated**: December 2025
+**Last Updated**: January 2026

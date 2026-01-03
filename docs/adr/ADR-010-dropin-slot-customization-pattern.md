@@ -249,13 +249,15 @@ Custom slot content uses BuildRight design tokens:
 
 When implementing a new dropin (Auth, Cart, Checkout, Order):
 
-- [ ] Identify all available containers
-- [ ] Map slots within each container
-- [ ] Define which slots need BuildRight customization
-- [ ] Create `.buildright-*` CSS classes for custom content
-- [ ] Use BEM specificity chains (not `!important`)
-- [ ] Document slot usage in block's CSS files
-- [ ] Add visual ASCII diagram to dropin-architecture.md
+- [x] Identify all available containers
+- [x] Map slots within each container
+- [x] Define which slots need BuildRight customization
+- [x] Create `.buildright-*` CSS classes for custom content
+- [x] Use BEM specificity chains (not `!important`)
+- [x] Document slot usage in block's CSS files
+- [x] Add visual ASCII diagram to dropin-architecture.md
+
+**Status:** All commerce dropins (Auth, Cart, Checkout, Order Confirmation) have been implemented following this pattern. See `docs/reference/dropin-architecture.md` for visual diagrams of each dropin's container/slot structure.
 
 ---
 
@@ -298,4 +300,4 @@ When implementing a new dropin (Auth, Cart, Checkout, Order):
 
 ---
 
-**Last Updated**: December 2025
+**Last Updated**: January 2026

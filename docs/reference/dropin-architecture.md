@@ -1,7 +1,7 @@
 # BuildRight Dropin Architecture
 
 **Status**: Canonical Reference
-**Last Updated**: December 31, 2025 (categoryPath fix for facet category scoping)
+**Last Updated**: January 2, 2026 (Added per-dropin page architecture diagrams)
 
 ---
 
@@ -36,10 +36,10 @@ HIERARCHY
 | Dropin Package | Purpose | Status |
 |----------------|---------|--------|
 | `@dropins/storefront-product-discovery` | Product search, filters, sorting | **Production** |
-| `@dropins/storefront-auth` | Authentication UI | Planned (Phase 5.5) |
-| `@dropins/storefront-cart` | Cart functionality | Planned (Phase 5.5) |
-| `@dropins/storefront-checkout` | Checkout flow | Planned (Phase 5.5) |
-| `@dropins/storefront-order` | Order confirmation | Planned (Phase 5.5) |
+| `@dropins/storefront-auth` | Authentication UI | **Production** |
+| `@dropins/storefront-cart` | Cart functionality | **Production** |
+| `@dropins/storefront-checkout` | Checkout flow | **Production** |
+| `@dropins/storefront-order` | Order confirmation | **Production** |
 
 ---
 
@@ -235,6 +235,270 @@ See `buildright-service/mesh/README.md` for mesh adapter details.
 
 ---
 
+## Visual: /cart Page Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                             /cart (cart.html)                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ header (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║ cart (EDS Block)                                                    ║    │
+│  ║ Uses: @dropins/storefront-cart (DROPIN)                            ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌───────────────────────────────────────────────────────────────┐  ║    │
+│  ║  │ CartSummaryList (CONTAINER)                                   │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ EmptyCart SLOT (when cart is empty)                     │  │  ║    │
+│  ║  │  │ .buildright-cart-empty with icon, message, CTA          │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ Item SLOT (repeats for each product)                    │  │  ║    │
+│  ║  │  │ .buildright-cart-item with:                             │  │  ║    │
+│  ║  │  │ • Product image                                         │  │  ║    │
+│  ║  │  │ • Product name + SKU                                    │  │  ║    │
+│  ║  │  │ • Price display                                         │  │  ║    │
+│  ║  │  │ • Quantity controls                                     │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ Summary SLOT                                            │  │  ║    │
+│  ║  │  │ .buildright-cart-summary with:                          │  │  ║    │
+│  ║  │  │ • Subtotal                                              │  │  ║    │
+│  ║  │  │ • Proceed to Checkout button                            │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  └───────────────────────────────────────────────────────────────┘  ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ footer (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Events**: `cart:loading`, `cart:loaded`, `cart:error`, `cart/updated`
+
+---
+
+## Visual: /checkout Page Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         /checkout (checkout.html)                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ header (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║ checkout (EDS Block)                                                ║    │
+│  ║ Uses: @dropins/storefront-checkout (DROPIN)                        ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌───────────────────────────────────────────────────────────────┐  ║    │
+│  ║  │ Checkout (CONTAINER)                                          │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ ShippingAddress SLOT                                    │  │  ║    │
+│  ║  │  │ .buildright-checkout-address - Address form fields      │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ ShippingMethods SLOT                                    │  │  ║    │
+│  ║  │  │ .buildright-checkout-shipping - Shipping options        │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ BillingAddress SLOT                                     │  │  ║    │
+│  ║  │  │ .buildright-checkout-billing - Billing form fields      │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ PaymentMethods SLOT                                     │  │  ║    │
+│  ║  │  │ .buildright-checkout-payment - Payment options          │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ OrderSummary SLOT                                       │  │  ║    │
+│  ║  │  │ .buildright-checkout-summary - Cart summary             │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ PlaceOrder SLOT                                         │  │  ║    │
+│  ║  │  │ .buildright-checkout-actions                            │  │  ║    │
+│  ║  │  │ onOrderSuccess → redirect to /order-confirmation        │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  └───────────────────────────────────────────────────────────────┘  ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ footer (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Events**: `checkout:loading`, `checkout:loaded`, `checkout:error`, `checkout/updated`, `checkout/order-placed`
+
+---
+
+## Visual: /login Page Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            /login (login.html)                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ header (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║ auth (EDS Block)                                                    ║    │
+│  ║ Uses: @dropins/storefront-auth (DROPIN)                            ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  Variant: sign-in (default)                                         ║    │
+│  ║  ┌───────────────────────────────────────────────────────────────┐  ║    │
+│  ║  │ SignIn (CONTAINER)                                            │  ║    │
+│  ║  │ .buildright-auth-form                                         │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │ • Email input                                                 │  ║    │
+│  ║  │ • Password input                                              │  ║    │
+│  ║  │ • Sign In button (brand primary)                              │  ║    │
+│  ║  │ • Forgot Password link → /reset-password.html                 │  ║    │
+│  ║  │ • Create Account link → /signup.html                          │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │ onSuccess → initializeMeshForEmail() + redirect               │  ║    │
+│  ║  └───────────────────────────────────────────────────────────────┘  ║    │
+│  ║                                                                     ║    │
+│  ║  Variant: register (auth.register)                                  ║    │
+│  ║  ┌───────────────────────────────────────────────────────────────┐  ║    │
+│  ║  │ SignUp (CONTAINER)                                            │  ║    │
+│  ║  │ .buildright-auth-register                                     │  ║    │
+│  ║  └───────────────────────────────────────────────────────────────┘  ║    │
+│  ║                                                                     ║    │
+│  ║  Variant: reset-password                                            ║    │
+│  ║  ┌───────────────────────────────────────────────────────────────┐  ║    │
+│  ║  │ ResetPassword (CONTAINER)                                     │  ║    │
+│  ║  │ .buildright-auth-reset                                        │  ║    │
+│  ║  └───────────────────────────────────────────────────────────────┘  ║    │
+│  ║                                                                     ║    │
+│  ║  Variant: user-menu (header context)                                ║    │
+│  ║  ┌───────────────────────────────────────────────────────────────┐  ║    │
+│  ║  │ UserMenu (BuildRight custom)                                  │  ║    │
+│  ║  │ .buildright-auth-user-menu                                    │  ║    │
+│  ║  │ • Avatar with initials                                        │  ║    │
+│  ║  │ • User name + company                                         │  ║    │
+│  ║  │ • My Account link                                             │  ║    │
+│  ║  │ • Logout button                                               │  ║    │
+│  ║  └───────────────────────────────────────────────────────────────┘  ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ footer (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Events**: `auth:loading`, `auth:loaded`, `auth:success`, `auth:error`, `buildright:auth-changed`, `buildright:user-updated`
+
+---
+
+## Visual: /order-confirmation Page Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                  /order-confirmation (order-confirmation.html)              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ header (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║ order-confirmation (EDS Block)                                      ║    │
+│  ║ Uses: @dropins/storefront-order (DROPIN)                           ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌───────────────────────────────────────────────────────────────┐  ║    │
+│  ║  │ OrderConfirmation (CONTAINER)                                 │  ║    │
+│  ║  │ Query param: ?orderNumber={orderNumber} or ?token={guestToken}│  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ OrderHeader SLOT                                        │  │  ║    │
+│  ║  │  │ .buildright-order-header                                │  │  ║    │
+│  ║  │  │ • Success icon (checkmark)                              │  │  ║    │
+│  ║  │  │ • "Thank You for Your Order!"                           │  │  ║    │
+│  ║  │  │ • Order #12345                                          │  │  ║    │
+│  ║  │  │ • Confirmation email message                            │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ OrderItems SLOT                                         │  │  ║    │
+│  ║  │  │ .buildright-order-items                                 │  │  ║    │
+│  ║  │  │ Items ordered with product details                      │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ OrderTotals SLOT                                        │  │  ║    │
+│  ║  │  │ .buildright-order-totals                                │  │  ║    │
+│  ║  │  │ Order total breakdown                                   │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  │  ┌─────────────────────────────────────────────────────────┐  │  ║    │
+│  ║  │  │ ShippingInfo SLOT                                       │  │  ║    │
+│  ║  │  │ .buildright-order-shipping                              │  │  ║    │
+│  ║  │  │ Shipping address and delivery info                      │  │  ║    │
+│  ║  │  └─────────────────────────────────────────────────────────┘  │  ║    │
+│  ║  │                                                               │  ║    │
+│  ║  └───────────────────────────────────────────────────────────────┘  ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │ footer (EDS Block)                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Events**: `order:loading`, `order:loaded`, `order:error`, `order/confirmed`, `order/details`
+
+---
+
+## Slot Availability Summary
+
+| Dropin | Container | Key Slots | BuildRight Level |
+|--------|-----------|-----------|------------------|
+| `storefront-product-discovery` | SearchResults, Facets, SortBy, Pagination | ProductCardImage, ProductCardName, ProductCardPrice, ProductCardActions, SelectedFacets, FacetBucket | Level 2 (custom slot rendering) |
+| `storefront-cart` | CartSummaryList | EmptyCart, Item, Summary | Level 2 (custom slot rendering) |
+| `storefront-checkout` | Checkout | ShippingAddress, ShippingMethods, BillingAddress, PaymentMethods, OrderSummary, PlaceOrder | Level 2 (custom slot rendering) |
+| `storefront-auth` | SignIn, SignUp, ResetPassword | Form fields via container config | Level 1 (CSS styling) + custom UserMenu |
+| `storefront-order` | OrderConfirmation | OrderHeader, OrderItems, OrderTotals, ShippingInfo | Level 2 (custom slot rendering) |
+
+**BuildRight Customization Levels:**
+- **Level 1**: CSS-only styling (design tokens, brand colors)
+- **Level 2**: Custom slot rendering via `ctx.replaceWith()` / `ctx.appendChild()`
+- **Level 3**: Custom containers (not used - prefer native dropin containers)
+
+---
+
 ## Integration Pattern
 
 ### Block → Dropin → Containers → Slots
@@ -293,47 +557,71 @@ export default async function decorate(block) {
 
 ## Query Flow: Mesh Adapter Pattern
 
-Dropin queries are intercepted by mesh adapters for extensibility control:
+All dropin queries are intercepted by mesh adapters for extensibility control. BuildRight uses a unified adapter pattern across all dropin types:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
+│                         UNIFIED MESH ROUTING                                │
+├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  SearchResults Container                                                    │
-│       │                                                                     │
-│       │ calls productSearch(phrase, filter, ...)                           │
-│       ▼                                                                     │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │ dropin-search.js (Adapter Resolver)                                  │   │
-│  │ INTERCEPTS unprefixed query for extensibility control                │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
-│       │                                                                     │
-│       │ Routes to BuildRight_ prefixed source                              │
-│       ▼                                                                     │
+│  │                     DROPIN CONTAINERS                                │   │
+│  ├─────────────────────────────────────────────────────────────────────┤   │
+│  │ SearchResults │ CartSummaryList │ Checkout │ SignIn │ OrderConfirm  │   │
+│  └───────┬───────────────┬──────────────┬──────────┬────────────┬──────┘   │
+│          │               │              │          │            │          │
+│          ▼               ▼              ▼          ▼            ▼          │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │ ACO_BuildRight Source                                                │   │
-│  │ Executes BuildRight_productSearch with extensibility hooks           │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
-│       │                                                                     │
-│       │ ACO API with AC-View-Id (UUID) + AC-Price-Book-Id headers          │
-│       ▼                                                                     │
-│  ┌─────────────────────────────────────────────────────────────────────┐   │
-│  │ Adobe Commerce Optimizer (ACO)                                       │   │
-│  │ Returns products with pricing                                        │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
-│       │                                                                     │
-│       │ Response transforms __typename                                     │
-│       │ BuildRight_SimpleProductView → SimpleProductView                   │
-│       ▼                                                                     │
-│  SearchResults Container (displays products)                               │
+│  │                     MESH ADAPTER RESOLVERS                           │   │
+│  ├─────────────────────────────────────────────────────────────────────┤   │
+│  │ dropin-search │ dropin-cart │ dropin-checkout │ dropin-auth │ order │   │
+│  │    .js        │    .js      │      .js        │    .js      │  .js  │   │
+│  └───────┬───────────────┬──────────────┬──────────┬────────────┬──────┘   │
+│          │               │              │          │            │          │
+│          │ INTERCEPTS    │ INTERCEPTS   │ INTERCEPTS  INTERCEPTS INTERCEPTS│
+│          │ productSearch │ cart ops     │ checkout    auth       order     │
+│          │               │              │          │            │          │
+│          ▼               ▼              ▼          ▼            ▼          │
+│  ┌───────────────┐  ┌────────────────────────────────────────────────┐    │
+│  │ ACO_BuildRight│  │              Commerce Source                    │    │
+│  │    Source     │  │   (Cart, Checkout, Auth, Order mutations)       │    │
+│  │               │  │                                                 │    │
+│  │ BuildRight_   │  │   - createCart, addToCart, updateCart           │    │
+│  │ productSearch │  │   - setShippingAddress, placeOrder              │    │
+│  │               │  │   - signIn, signUp, resetPassword               │    │
+│  │ + extensibility│ │   - getOrderDetails                             │    │
+│  │   hooks       │  │                                                 │    │
+│  └───────┬───────┘  └──────────────────────┬─────────────────────────┘    │
+│          │                                  │                              │
+│          ▼                                  ▼                              │
+│  ┌───────────────┐                ┌─────────────────────────────────┐     │
+│  │ Adobe Commerce│                │         Adobe Commerce          │     │
+│  │ Optimizer(ACO)│                │     (Magento GraphQL API)       │     │
+│  │               │                │                                 │     │
+│  │ Products +    │                │ Cart, Checkout, Auth, Orders    │     │
+│  │ Pricing       │                │                                 │     │
+│  └───────────────┘                └─────────────────────────────────┘     │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Why the adapter?**
+### Adapter Routing by Dropin Type
+
+| Dropin | Adapter | Backend Source | Purpose |
+|--------|---------|----------------|---------|
+| Product Discovery (PLP) | `dropin-plp.js` | ACO (Adobe Commerce Optimizer) | Product search, facets, pricing |
+| Product Details (PDP) | `dropin-pdp.js` | ACO (Adobe Commerce Optimizer) | Product details, variants |
+| Cart | `dropin-cart.js` | Commerce (Magento) | Cart operations |
+| Checkout | `dropin-checkout.js` | Commerce (Magento) | Checkout mutations |
+| Auth | `dropin-auth.js` | Commerce (Magento) | Authentication |
+| Order | `dropin-order.js` | Commerce (Magento) | Order queries |
+
+**Why the adapter pattern?**
 - Provides programmatic control over dropin queries
 - Enables adding custom BuildRight fields
 - Centralizes business logic and logging
 - ACO returns pricing natively - adapter is for CONTROL, not required for basic pricing
+- Allows persona-aware routing (different catalog views per user tier)
 
 See `buildright-service/mesh/README.md` for mesh architecture details.
 
@@ -486,7 +774,7 @@ const initialFilter = [{
 }];
 ```
 
-**Mesh Transformation**: The mesh adapter (`dropin-search.js`) transforms `categoryPath` to ACO-native attributes:
+**Mesh Transformation**: The mesh adapter (`dropin-plp.js`) transforms `categoryPath` to ACO-native attributes:
 - `categoryPath: "structural-materials"` → `category: "structural-materials"` (top-level)
 - `categoryPath: "structural-materials/lumber"` → `subcategory: "lumber"` (nested path)
 
@@ -561,8 +849,8 @@ blocks/product-list/
 | `blocks/product-list/css/*.css` | Modular component CSS |
 | `pages/catalog.html` | Catalog page using product-list block |
 | `scripts/initializers/index.js` | Dropin initialization |
-| `buildright-service/mesh/resolvers-src/dropin-search.js` | Query adapter |
-| `buildright-service/mesh/resolvers-src/dropin-pdp.js` | PDP query adapter |
+| `buildright-service/mesh/resolvers-src/dropin-plp.js` | PLP query adapter (Product Discovery) |
+| `buildright-service/mesh/resolvers-src/dropin-pdp.js` | PDP query adapter (Product Details) |
 
 ---
 
@@ -576,6 +864,16 @@ The custom catalog implementation (direct ACO queries, custom `product-grid` and
 
 - [dropin-integration-reference.md](./dropin-integration-reference.md) - Configuration, slots, and implementation patterns
 - `buildright-service/mesh/README.md` - Mesh architecture and adapter pattern
-- `blocks/CLAUDE.md` - Block inventory
+- `blocks/CLAUDE.md` - Block inventory (29 blocks including cart, checkout, auth, order-confirmation)
 - `docs/adr/ADR-008-*.md` - CSS refactoring decisions
 - [ADR-014](../adr/ADR-014-eds-blocks-vs-dropins.md) - EDS Blocks vs Dropins decision framework
+
+### Block Implementation Files
+
+| Page | Block | File |
+|------|-------|------|
+| /catalog | product-list | `blocks/product-list/product-list.js` |
+| /cart | cart | `blocks/cart/cart.js` |
+| /checkout | checkout | `blocks/checkout/checkout.js` |
+| /login | auth | `blocks/auth/auth.js` |
+| /order-confirmation | order-confirmation | `blocks/order-confirmation/order-confirmation.js` |

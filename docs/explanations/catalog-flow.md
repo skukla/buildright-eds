@@ -29,7 +29,7 @@ Shows how a user browsing products triggers a complete flow from browser to data
                           ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │  4. API MESH RECEIVES QUERY                                      │
-│     Routes to dropin-search.js resolver                         │
+│     Routes to dropin-plp.js resolver                            │
 │     Transforms filters, forwards to ACO                         │
 └─────────────────────────┬───────────────────────────────────────┘
                           │

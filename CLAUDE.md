@@ -31,7 +31,7 @@ Per ADR-001 and ADR-007, this project uses a **hybrid dropin strategy**:
 | Phase | Status | Description |
 |-------|--------|-------------|
 | 0-5 | Complete | Research, ACO data, design system, core architecture |
-| 5.5 | **In Progress** | Commerce Dropins (Auth, Cart, Checkout, Orders) |
+| 5.5 | **Complete** | Commerce Dropins (Auth, Cart, Checkout, Orders) - All blocks created with BuildRight slots |
 | 6A | **In Progress** | Sarah persona end-to-end flow |
 | 7 | Planned | Custom SDK dropins for ACO |
 | 8 | Planned | Polish & performance |
@@ -141,13 +141,13 @@ The mesh has three sources (see `buildright-service/mesh/README.md` for details)
 
 2. **Dropin CSS Overrides:** Product list dropin CSS refactored (ADR-008). Now uses 6 component files with only 8 `!important` declarations (down from 299) and 49 design tokens in `styles/dropin-tokens.css`.
 
-3. **Demo Mode:** Auth currently uses demo mode fallback. Phase 5.5 will integrate real Auth dropin.
+3. **Auth Block:** Auth block now uses Commerce Auth dropin with 4 variants (SignIn, SignUp, ResetPassword, UpdatePassword). Includes security hardening for redirect validation and XSS prevention.
 
 4. **Dropin Pricing Architecture:** ACO returns pricing natively when correct headers are provided. If dropins show products without prices, verify:
    - `AC-View-Id` header contains **UUID** (not human-readable like "default") - persona service resolves this
    - `AC-Price-Book-Id` header is being sent
    - Persona initialization happens BEFORE dropin headers are set (see `scripts/initializers/index.js`)
-   - The `dropin-search.js` adapter is for **extensibility control**, not required for basic pricing
+   - The `dropin-plp.js` adapter is for **extensibility control**, not required for basic pricing
    - See `buildright-service/mesh/README.md` "Dropin Adapter Pattern" section
 
 ---

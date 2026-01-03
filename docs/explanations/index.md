@@ -23,8 +23,9 @@ This directory contains concise, visual explanations of BuildRight's architectur
 | [data-ownership.md](./data-ownership.md) | ACO vs Commerce data | Ownership matrix table |
 | [design-system-architecture.md](./design-system-architecture.md) | Token cascade | 3-layer flow diagram |
 | [dropin-pattern.md](./dropin-pattern.md) | Slot customization | Container → Slot → Component |
-| [mesh-adapter.md](./mesh-adapter.md) | All 7 mesh resolvers | Per-resolver data flow diagrams |
+| [mesh-adapter.md](./mesh-adapter.md) | All mesh resolvers | Per-resolver data flow diagrams |
 | [persona-system.md](./persona-system.md) | 5 B2B personas | Pricing tiers table |
+| [product-query-flows.md](./product-query-flows.md) | PLP vs Featured Products | Side-by-side resolver comparison |
 
 ---
 

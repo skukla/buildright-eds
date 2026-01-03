@@ -1,16 +1,22 @@
 # BuildRight EDS Blocks - AI Assistant Context
 
-## Block Inventory (29 Blocks)
+## Block Inventory (30 Blocks)
 
-### Commerce Dropins (Phase 5.5 - In Progress)
+### Commerce Dropins (Phase 5.5 - Complete)
 
-| Block | Purpose | Status |
-|-------|---------|--------|
-| `auth-dropin` | Commerce authentication UI (SignIn, SignUp, ResetPassword, UserMenu) | **Working** |
-| `cart-dropin` | Shopping cart container | Scaffold |
-| `checkout-dropin` | Checkout flow | Scaffold |
-| `commerce-mini-cart` | Mini-cart in header | **Working** |
-| `order-confirmation-dropin` | Order confirmation | Scaffold |
+| Block | Purpose | Lines | Status |
+|-------|---------|-------|--------|
+| `auth` | Commerce authentication (SignIn, SignUp, ResetPassword, UpdatePassword) | 458 | **Production** |
+| `cart` | Shopping cart with BuildRight slots | - | **Production** |
+| `checkout` | Checkout flow with BuildRight slots | - | **Production** |
+| `commerce-mini-cart` | Mini-cart in header | - | **Production** |
+| `order-confirmation` | Order confirmation with BuildRight slots | 277 | **Production** |
+
+**Mesh Adapters:** Each commerce dropin has a corresponding mesh adapter resolver:
+- `dropin-auth.js` - Intercepts auth queries
+- `dropin-cart.js` - Intercepts cart mutations/queries
+- `dropin-checkout.js` - Intercepts checkout flow
+- `dropin-order.js` - Intercepts order queries
 
 **Integration Pattern:**
 ```javascript
@@ -21,8 +27,11 @@ export default async function decorate(block) {
   // Wait for dropins to be ready
   await waitForDropins();
 
-  // Render dropin container
+  // Render dropin container with BuildRight slots
   const container = auth.render.SignIn(block, {
+    slots: {
+      // BuildRight customizations
+    },
     onSuccess: (user) => {
       // Bridge to persona system
       initializeMeshForEmail(user.email);

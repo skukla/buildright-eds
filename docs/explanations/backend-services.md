@@ -36,7 +36,7 @@ BuildRight uses a **shared backend service** (`buildright-service`) that all fro
 │  ┌───────────────────────────────────────────────────────────┐   │
 │  │  buildright-service/mesh/resolvers-src/                    │   │
 │  │  ┌────────────────┐  ┌────────────────┐  ┌──────────────┐ │   │
-│  │  │ dropin-search  │  │ bom-from-      │  │ persona      │ │   │
+│  │  │ dropin-plp     │  │ bom-from-      │  │ persona      │ │   │
 │  │  │                │  │ template       │  │              │ │   │
 │  │  │ Product grid   │  │ BOM generation │  │ Pricing      │ │   │
 │  │  │ for dropins    │  │ for templates  │  │ headers      │ │   │
@@ -65,7 +65,7 @@ BuildRight uses a **shared backend service** (`buildright-service`) that all fro
 
 | Resolver | What It Does | Who Uses It |
 |----------|--------------|-------------|
-| `dropin-search.js` | Product grid queries for Adobe dropins | All personas |
+| `dropin-plp.js` | Product grid queries for Adobe dropins | All personas |
 | `dropin-pdp.js` | Product detail page data | All personas |
 | `persona.js` | Resolves pricing headers (catalog view, price book) | All personas |
 | `bom-from-template.js` | Generates Bill of Materials from templates | Sarah, Marcus, Lisa |

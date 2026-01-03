@@ -21,17 +21,20 @@ Frontend → Mesh Resolver → ACO → Mesh Resolver → Frontend
 
 | Resolver | Purpose | Used By |
 |----------|---------|---------|
-| [dropin-search](#dropin-search) | Product grid queries | Product Discovery dropin |
+| [dropin-plp](#dropin-plp) | Product grid queries | Product Discovery dropin |
 | [dropin-pdp](#dropin-pdp) | Product detail queries | PDP dropin |
 | [dropin-metadata](#dropin-metadata) | Sort dropdown options | SortBy component |
+| [product-search](#product-search) | Custom product queries | Featured products, search suggestions |
 | [persona](#persona) | Customer → pricing headers | All authenticated queries |
 | [categories](#categories) | Category tree | Navigation menus |
 | [breadcrumbs](#breadcrumbs) | Navigation trail | Category pages |
 | [bom-from-template](#bom-from-template) | Bill of Materials | Sarah's build configurator |
 
+> **Note:** Both `dropin-plp` and `product-search` ultimately call the same ACO query (`BuildRight_productSearch`). See [Product Query Flows](./product-query-flows.md) for a detailed comparison.
+
 ---
 
-## dropin-search
+## dropin-plp
 
 **What:** Intercepts product grid queries to add extensibility control.
 
@@ -44,7 +47,7 @@ Frontend → Mesh Resolver → ACO → Mesh Resolver → Frontend
           │ filter: { categoryPath: "Lumber" }
           ▼
 ┌─────────────────────┐
-│  dropin-search.js   │
+│  dropin-plp.js      │
 │  ┌───────────────┐  │
 │  │ 1. Validate   │  │  ← page_size: 1-100, phrase: max 200 chars
 │  │ 2. Transform  │  │  ← categoryPath → subcategory filter
@@ -59,9 +62,9 @@ Frontend → Mesh Resolver → ACO → Mesh Resolver → Frontend
 └─────────┬───────────┘
           ▼
 ┌─────────────────────┐
-│  dropin-search.js   │
+│  dropin-plp.js      │
 │  ┌───────────────┐  │
-│  │ Strip prefix  │  │  ← BuildRight_Product → Product
+│  │ Strip prefix  │  │  ← BuildRight_SimpleProductView → SimpleProductView
 │  └───────────────┘  │
 └─────────┬───────────┘
           ▼
@@ -76,6 +79,53 @@ Frontend → Mesh Resolver → ACO → Mesh Resolver → Frontend
 IN:  categoryPath: "Building Materials/Lumber"
 OUT: subcategory: "Lumber"
 ```
+
+---
+
+## product-search
+
+**What:** Handles custom BuildRight_* product queries for non-dropin blocks.
+
+```
+┌─────────────────────┐
+│  Featured Products  │
+│  Block              │
+│  searchProducts()   │
+└─────────┬───────────┘
+          │ phrase: " ", pageSize: 6
+          ▼
+┌─────────────────────┐
+│  product-search.js  │
+│  ┌───────────────┐  │
+│  │ Route to ACO  │  │  ← Uses BuildRight_ prefixed types
+│  │ Same source!  │  │  ← ACO_BuildRight.BuildRight_productSearch
+│  └───────────────┘  │
+└─────────┬───────────┘
+          ▼
+┌─────────────────────┐
+│  ACO                │
+│  Returns products   │
+│  with pricing       │
+└─────────┬───────────┘
+          ▼
+┌─────────────────────┐
+│  product-search.js  │
+│  ┌───────────────┐  │
+│  │ Transform     │  │  ← Maps to BuildRight_Product type
+│  └───────────────┘  │
+└─────────┬───────────┘
+          ▼
+┌─────────────────────┐
+│  Block renders      │
+│  product cards      │
+└─────────────────────┘
+```
+
+**Queries Provided:**
+- `BuildRight_searchProducts` - Featured products, legacy search
+- `BuildRight_searchSuggestions` - Search autocomplete
+- `BuildRight_productSearchFilter` - Advanced search with facets
+- `BuildRight_getProductBySKU` - Single product lookup
 
 ---
 
@@ -319,7 +369,9 @@ All resolvers respect persona headers for pricing:
 
 | Need | Resolver | Query |
 |------|----------|-------|
-| Product grid | dropin-search | `productSearch(phrase, filter)` |
+| Product grid (dropin) | dropin-plp | `productSearch(phrase, filter)` |
+| Featured products | product-search | `BuildRight_searchProducts(phrase)` |
+| Search autocomplete | product-search | `BuildRight_searchSuggestions(phrase)` |
 | Single product | dropin-pdp | `products(skus)` |
 | Sort options | dropin-metadata | `attributeMetadata` |
 | Who is user | persona | `personaByEmail(email)` |
@@ -330,4 +382,4 @@ All resolvers respect persona headers for pricing:
 ---
 
 **Source:** `buildright-service/mesh/resolvers-src/`
-**See Also:** [Backend Services](./backend-services.md) | [ADR-009](../adr/ADR-009-mesh-adapter-resolver-pattern.md)
+**See Also:** [Product Query Flows](./product-query-flows.md) | [Backend Services](./backend-services.md) | [ADR-009](../adr/ADR-009-mesh-adapter-resolver-pattern.md)

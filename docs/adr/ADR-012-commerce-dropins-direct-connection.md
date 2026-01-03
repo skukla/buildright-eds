@@ -1,7 +1,13 @@
 # ADR-012: Commerce Dropins Direct Connection Pattern
 
 ## Status
-**ACCEPTED** - December 12, 2025
+**SUPERSEDED BY UPDATE** - January 2026
+
+> **Note:** This ADR has been updated to reflect the unified canonical adapter pattern.
+> The original dual-endpoint decision has evolved to a unified mesh-based architecture
+> for extensibility control. See "Decision Evolution" section below.
+
+**Original Status:** ACCEPTED - December 12, 2025
 
 ## Context
 
@@ -68,6 +74,84 @@ However, **Commerce Dropins are designed to connect directly to Commerce GraphQL
                                     │    ACO     │
                                     └────────────┘
 ```
+
+## Decision Evolution (January 2026)
+
+### Rationale for Unified Architecture
+
+The original dual-endpoint architecture (Commerce Dropins -> Commerce Direct, Custom Queries -> Mesh) worked but created challenges:
+
+1. **Split extensibility control**: Custom logic had to be implemented in two places (Commerce and Mesh)
+2. **Inconsistent patterns**: Different dropins followed different integration patterns
+3. **Limited observability**: No single point for logging, monitoring, or request transformation
+
+### New Approach: Unified Mesh Routing
+
+**ALL dropins now route through API Mesh with adapter resolvers.**
+
+This provides:
+- **Single extensibility control point**: One place to add custom logic, transformations, and routing
+- **Consistent pattern**: All 6 commerce dropins follow the same adapter resolver pattern
+- **Future-proof architecture**: Easier to add ACO routing, persona-based customization, or BOM integration
+
+### Updated Architecture (Unified)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Frontend (EDS)                        │
+│              All Commerce Dropins                        │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+              ┌──────────────────────┐
+              │      API Mesh        │
+              │  (Adapter Resolvers) │
+              │                      │
+              │ dropin-product-      │
+              │   discovery.js       │
+              │ dropin-pdp.js        │
+              │ dropin-cart.js       │
+              │ dropin-checkout.js   │
+              │ dropin-auth.js       │
+              │ dropin-order.js      │
+              └──────────┬───────────┘
+                         │
+           ┌─────────────┴─────────────┐
+           ▼                           ▼
+    ┌────────────┐              ┌────────────┐
+    │  Commerce  │              │    ACO     │
+    │   PaaS     │              │  Catalog   │
+    └────────────┘              └────────────┘
+```
+
+### Adapter Resolver Pattern
+
+Each dropin has a corresponding adapter resolver in the mesh:
+
+| Dropin Block | Adapter Resolver | Routes To |
+|--------------|------------------|-----------|
+| `dropin-product-discovery` | `dropin-product-discovery.js` | ACO (catalog/search) |
+| `dropin-pdp` | `dropin-pdp.js` | ACO (product details) |
+| `dropin-cart` | `dropin-cart.js` | Commerce (cart ops) |
+| `dropin-checkout` | `dropin-checkout.js` | Commerce (checkout) |
+| `dropin-auth` | `dropin-auth.js` | Commerce (auth) |
+| `dropin-order` | `dropin-order.js` | Commerce (orders) |
+
+**Key Insight:** The adapter resolver determines WHERE a dropin's queries go (Commerce vs ACO) and can transform, extend, or enrich the data before returning to the dropin.
+
+### Migration Path
+
+1. All dropins now use the mesh endpoint (not Commerce direct)
+2. Mesh adapter resolvers handle routing decisions
+3. Commerce-specific dropins (cart, checkout, auth, orders) route through to Commerce PaaS
+4. Catalog dropins (product-discovery, pdp) route to ACO
+
+### Evolution Timeline
+
+| Phase | Architecture | Rationale |
+|-------|--------------|-----------|
+| Dec 2025 | Direct Commerce + Mesh (dual) | Simplicity, standard dropin pattern |
+| Jan 2026 | Unified Mesh (current) | Extensibility control, consistent patterns |
 
 ## Implementation
 
@@ -198,14 +282,60 @@ This clear separation makes the system easier to understand, debug, and maintain
 
 ## Migration
 
+### Phase 1: Direct Connection (December 2025 - Completed)
+
 1. ✅ Updated `scripts/initializers/index.js` to use `commerceEndpoint`
 2. ✅ Removed Commerce source from `mesh/mesh.config.js`
 3. ✅ Removed Commerce operations from filterSchema
 4. ✅ Retained `scripts/commerce-fetch-adapter.js` as reference (see "Retained Reference Files" above)
 5. ✅ Removed `COMMERCE_GRAPHQL_ENDPOINT` and `COMMERCE_STORE_CODE` from mesh `.env`
 6. ✅ Deployed updated mesh
-7. 🔄 **Next:** Product synchronization from ACO to Commerce
-8. 🔄 **Future:** Re-audit dropin implementations for adapter pattern consistency
 
+### Phase 2: Unified Mesh Architecture (January 2026 - In Progress)
 
+1. ✅ Documented unified canonical adapter pattern (this update)
+2. 🔄 Create adapter resolvers for all 6 commerce dropins
+3. 🔄 Update dropin blocks to use mesh endpoint
+4. 🔄 Implement Commerce pass-through for cart/checkout/auth/orders
+5. 🔄 Test unified routing with all dropins
 
+## Historical Context
+
+> **Purpose:** This section preserves the original decision rationale for historical reference.
+> The architecture has evolved, but understanding WHY decisions were made remains valuable.
+
+### Original Problem (December 2025)
+
+When BuildRight first integrated Commerce Dropins, we faced a choice:
+1. Route everything through API Mesh (unified but complex)
+2. Route Commerce Dropins directly to Commerce (simple but split)
+
+We chose **Option 2** because:
+- Commerce Dropins are designed for direct Commerce connection
+- Mesh prefixing required a custom fetch adapter (maintenance burden)
+- Direct connection followed Adobe's recommended pattern
+- Performance: eliminated mesh hop for Commerce operations
+
+### Why This Made Sense Then
+
+The dual-endpoint architecture was pragmatic:
+- **Commerce Dropins** (auth, cart, checkout, orders) connected directly to Commerce
+- **Custom queries** (persona, BOM, ACO catalog) used the mesh
+
+This provided:
+- Standard dropin integration (no custom adapters)
+- Clear separation of concerns
+- Simpler debugging
+
+### What Changed (January 2026)
+
+As we built more dropins and custom functionality, we discovered:
+1. **Extensibility fragmentation**: Adding custom logic to Commerce dropin requests required different patterns than ACO requests
+2. **Slot limitations**: Some customizations needed data not in standard Commerce responses
+3. **Consistency value**: Having ONE place for all extensibility logic was worth the mesh complexity
+
+### Lessons Learned
+
+1. **Start simple, evolve when needed**: The direct connection was right for MVP
+2. **Extensibility is a forcing function**: As requirements grew, unified routing became essential
+3. **Preserve optionality**: Retaining `commerce-fetch-adapter.js` as reference enabled this evolution
