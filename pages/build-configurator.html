@@ -7,21 +7,20 @@
   <meta name="description" content="Configure a new build from a floor plan template">
   
   <!-- Critical initialization: BASE_PATH, cart preload -->
-  <script src="../scripts/critical-init.js"></script>
-  
-  <!-- Commerce Dropins Import Maps -->
+  <script src="../scripts/critical-init.js"></script><!-- Commerce Dropins Import Map (EDS Standard) -->
   <script type="importmap">
-  {
-    "imports": {
-      "@dropins/tools/": "/node_modules/@dropins/tools/",
-      "@dropins/storefront-auth/": "/node_modules/@dropins/storefront-auth/",
-      "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
-      "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
-      "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/"
-    }
+{
+  "imports": {
+    "@dropins/tools/": "/scripts/__dropins__/tools/",
+    "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/",
+    "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
+    "@dropins/storefront-checkout/": "/scripts/__dropins__/storefront-checkout/",
+    "@dropins/storefront-order/": "/scripts/__dropins__/storefront-order/",
+    "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/",
+    "@dropins/storefront-product-discovery/": "/scripts/__dropins__/storefront-product-discovery/"
   }
-  </script>
+}
+</script>
   
   <script type="module" src="../scripts/scripts.js"></script>
   

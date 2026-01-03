@@ -1,24 +1,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Commerce Dropins Import Maps -->
-<!-- Environment-based: Local node_modules for dev, CDN for production -->
+<!-- Commerce Dropins Import Map (EDS Standard) -->
+<!-- Packages copied from node_modules via: npm run install:dropins -->
+<!-- @see https://github.com/hlxsites/aem-boilerplate-commerce -->
 <script type="importmap">
 {
   "imports": {
-    "@dropins/tools/": "/node_modules/@dropins/tools/",
-    "@dropins/storefront-auth/": "/node_modules/@dropins/storefront-auth/",
-    "@dropins/storefront-cart/": "/node_modules/@dropins/storefront-cart/",
-    "@dropins/storefront-checkout/": "/node_modules/@dropins/storefront-checkout/",
-    "@dropins/storefront-order/": "/node_modules/@dropins/storefront-order/"
+    "@dropins/tools/": "/scripts/__dropins__/tools/",
+    "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/",
+    "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
+    "@dropins/storefront-checkout/": "/scripts/__dropins__/storefront-checkout/",
+    "@dropins/storefront-order/": "/scripts/__dropins__/storefront-order/",
+    "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/",
+    "@dropins/storefront-product-discovery/": "/scripts/__dropins__/storefront-product-discovery/"
   }
 }
 </script>
 
-<script src="./scripts/scripts.js" type="module"></script>
-<link rel="stylesheet" href="./styles/styles.css">
+<script src="/scripts/scripts.js" type="module"></script>
+<link rel="stylesheet" href="/styles/styles.css">
 
-<!-- Commerce Dropins Base Styles -->
-<link rel="stylesheet" href="/node_modules/@dropins/tools/styles/tokens.css">
 
 <link rel="icon" href="data:,">

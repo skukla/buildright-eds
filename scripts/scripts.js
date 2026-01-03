@@ -347,7 +347,7 @@ export function decorateMain(main) {
 async function initializeDropins() {
   try {
     const { shouldUseDropins, initializeDropins } = await import('./initializers/index.js');
-    
+
     if (await shouldUseDropins()) {
       console.log('[Scripts] Initializing Commerce Dropins...');
       await initializeDropins();
@@ -355,6 +355,73 @@ async function initializeDropins() {
   } catch (error) {
     console.warn('[Scripts] Failed to initialize Commerce Dropins:', error.message);
     // Non-blocking - demo mode will be used as fallback
+  }
+}
+
+/**
+ * Page Personalization System
+ *
+ * Registry of page types that need personalization.
+ * Each entry maps a page type to a dynamic import of its personalizer module.
+ * Personalizers run after dropins init but before block decoration.
+ *
+ * Convention: Module should export `personalize{PageType}(doc)` function
+ * Example: homepage -> personalizeHomepage(doc)
+ */
+const PAGE_PERSONALIZERS = {
+  homepage: () => import('./personalize-page.js'),
+  // Add more as needed:
+  // dashboard: () => import('./personalizers/dashboard.js'),
+};
+
+/**
+ * Determine page type from URL path
+ * @returns {string|null} Page type key or null if no personalization needed
+ */
+function getPageType() {
+  const path = window.location.pathname.toLowerCase();
+  const basePath = (window.BASE_PATH || '/').toLowerCase();
+
+  // Normalize path (remove base path prefix, collapse slashes)
+  const normalizedPath = path.replace(basePath, '/').replace(/\/+/g, '/');
+
+  // Homepage detection
+  if (normalizedPath === '/' || normalizedPath === '/index.html') {
+    return 'homepage';
+  }
+
+  // Add more page type detection as needed:
+  // if (normalizedPath.startsWith('/pages/dashboard')) return 'dashboard';
+
+  return null;
+}
+
+/**
+ * Load and run page-specific personalization
+ * Runs after dropins init, before block decoration
+ * @param {Document} doc - The document
+ */
+async function loadPersonalization(doc) {
+  const pageType = getPageType();
+  if (!pageType) return;
+
+  const getModule = PAGE_PERSONALIZERS[pageType];
+  if (!getModule) return;
+
+  try {
+    const module = await getModule();
+
+    // Convention: export function named personalize{PageType}
+    const fnName = `personalize${pageType.charAt(0).toUpperCase() + pageType.slice(1)}`;
+    const personalizer = module[fnName] || module.default;
+
+    if (typeof personalizer === 'function') {
+      console.log(`[Scripts] Running ${pageType} personalization...`);
+      await personalizer(doc);
+    }
+  } catch (error) {
+    console.warn(`[Scripts] Personalization failed for ${pageType}:`, error.message);
+    // Non-blocking - page will render with default content
   }
 }
 
@@ -376,7 +443,11 @@ async function loadEager(doc) {
   // This is cached in sessionStorage, so only first visit has network cost
   await initializeDropins();
 
-  // 5. Decorate main (blocks can now safely call mesh functions)
+  // 5. Run page personalization (after dropins ready, before blocks decorated)
+  // This allows personalizers to modify DOM (e.g., fragment paths) before decoration
+  await loadPersonalization(doc);
+
+  // 6. Decorate main (blocks can now safely call mesh functions)
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

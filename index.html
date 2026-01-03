@@ -6,26 +6,26 @@
   <!-- Critical initialization: BASE_PATH, cart preload, variant detection -->
   <script src="./scripts/critical-init.js"></script>
   <title>BuildRight Solutions - Building Materials Distributor</title>
-  
-  <!-- Commerce Dropins Import Maps -->
+
+  <!-- Commerce Dropins Import Map (EDS Standard) -->
   <script type="importmap">
   {
     "imports": {
-      "@dropins/tools/": "https://cdn.jsdelivr.net/npm/@dropins/tools@latest/",
-      "@dropins/storefront-auth/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-auth@latest/",
-      "@dropins/storefront-cart/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-cart@latest/",
-      "@dropins/storefront-checkout/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-checkout@latest/",
-      "@dropins/storefront-account/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-account@latest/",
-      "@dropins/storefront-order/": "https://cdn.jsdelivr.net/npm/@dropins/storefront-order@latest/"
+      "@dropins/tools/": "/scripts/__dropins__/tools/",
+      "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/",
+      "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
+      "@dropins/storefront-checkout/": "/scripts/__dropins__/storefront-checkout/",
+      "@dropins/storefront-order/": "/scripts/__dropins__/storefront-order/",
+      "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/",
+      "@dropins/storefront-product-discovery/": "/scripts/__dropins__/storefront-product-discovery/"
     }
   }
   </script>
-  
-  <!-- Note: scripts.js NOT loaded here - this page uses personalization system instead -->
+
+  <!-- Main EDS loader: dropins, personalization, blocks -->
+  <script src="./scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="./styles/styles.css">
-  <!-- Commerce Dropins Base Styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dropins/tools@latest/styles/tokens.css">
-  <!-- Critical CSS for inlined header -->
+    <!-- Critical CSS for inlined header -->
   <link rel="stylesheet" href="./blocks/header/header.css">
   <link rel="stylesheet" href="./styles/blocks/hero-banner.css">
   <link rel="stylesheet" href="./styles/blocks/ideas-center.css">
@@ -37,20 +37,15 @@
     }
     
     /* Comprehensive CLS prevention - reserve space for all dynamic content */
-    
-    /* Location selector - prevent dropdown menu shift */
-    .location-selector {
-      min-height: 40px;
-      min-width: 280px;
-    }
-    
+
+    /* Location menu dropdown positioning (not visible by default) */
     .location-menu {
       position: absolute;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.2s, visibility 0.2s;
     }
-    
+
     .location-menu.active {
       opacity: 1;
       visibility: visible;
@@ -95,8 +90,27 @@
     <div>/fragments/features-retail</div>
   </div>
 
-  <!-- Shop By Job (Unauthenticated Users Only) - Slate Section -->
+  <!-- Featured Products -->
   <main>
+    <section class="section" style="padding: 4rem 0; background: var(--color-surface);">
+      <div class="container">
+        <h2 class="text-center mb-2" style="font-size: 1.75rem; font-weight: 700;">Featured Products</h2>
+        <p class="text-center mb-4" style="color: var(--color-text-secondary); max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 2rem;">Explore our most popular building materials and supplies</p>
+
+        <!-- Featured Products Block -->
+        <div class="featured-products" data-block-name="featured-products" data-block-status="loading">
+          <div>
+            <div>
+              <div class="products-container featured-products">
+                <!-- Products will be loaded by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shop By Job (Unauthenticated Users Only) - Slate Section -->
     <section class="section section-dark unauthenticated-only" style="padding: 4rem 0 5rem 0;">
       <div class="container">
         <h2 class="text-center mb-2 text-2xl">Shop By Job</h2>
@@ -112,7 +126,7 @@
               <span class="ideas-center__link">Start Project →</span>
             </div>
           </a>
-          
+
           <!-- Install Windows -->
           <a href="pages/project-builder.html?type=windows" class="ideas-center__card">
             <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
@@ -123,7 +137,7 @@
               <span class="ideas-center__link">Start Project →</span>
             </div>
           </a>
-          
+
           <!-- Repair Plumbing -->
           <a href="pages/project-builder.html?type=plumbing" class="ideas-center__card">
             <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
@@ -134,7 +148,7 @@
               <span class="ideas-center__link">Start Project →</span>
             </div>
           </a>
-          
+
           <!-- Build a Deck -->
           <a href="pages/project-builder.html?type=deck" class="ideas-center__card">
             <div class="ideas-center__image" style="background-image: url('https://images.unsplash.com/photo-1656646549607-8fda5837a4ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
@@ -149,27 +163,8 @@
       </div>
     </section>
 
-    <!-- Featured Products -->
-    <section class="section" style="padding: 4rem 0; background: var(--color-background);">
-      <div class="container">
-        <h2 class="text-center mb-2" style="font-size: 1.75rem; font-weight: 700;">Featured Products</h2>
-        <p class="text-center mb-4" style="color: var(--color-text-secondary); max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 2rem;">Explore our most popular building materials and supplies</p>
-        
-        <!-- Featured Products Block -->
-        <div class="featured-products" data-block-name="featured-products" data-block-status="loading">
-          <div>
-            <div>
-              <div class="products-container featured-products">
-                <!-- Products will be loaded by JavaScript -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Featured Categories (Unauthenticated Users Only) -->
-    <section class="section unauthenticated-only" style="padding: 4rem 0; background: var(--color-surface);">
+    <section class="section unauthenticated-only" style="padding: 4rem 0; background: var(--color-background);">
       <div class="container">
         <h2 class="text-center mb-4" style="font-size: 1.75rem; font-weight: 700;">Featured Categories</h2>
         <div class="grid grid-3 gap-6">
@@ -231,31 +226,5 @@
     <div>/fragments/footer-buildright</div>
   </div>
 
-  <script type="module">
-    // Import required modules
-    import { personalizeHomepage } from './scripts/personalize-page.js';
-    import { decorateBlock } from './scripts/scripts.js';
-    
-    // Initialize the page
-    async function initPage() {
-      // 1. Personalize page with fragments
-      await personalizeHomepage();
-      
-      // 2. Initialize header interactivity
-      const header = document.querySelector('.header');
-      if (header) {
-        await decorateBlock(header, 'header');
-      }
-      
-      // 3. Load and decorate featured products block
-      const featuredBlock = document.querySelector('[data-block-name="featured-products"]');
-      if (featuredBlock) {
-        await decorateBlock(featuredBlock, 'featured-products');
-      }
-    }
-    
-    // Start page initialization
-    await initPage();
-  </script>
 </body>
 </html>
