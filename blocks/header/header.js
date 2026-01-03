@@ -693,25 +693,15 @@ export default async function decorate(block) {
   // Load dynamic categories from ACO
   async function loadDynamicCategories() {
     try {
-      console.log('[Header] Waiting for catalog service to initialize...');
+      console.log('[Header] Waiting for dropins to initialize (sets persona headers)...');
 
-      // Wait for catalog service to be initialized (which sets persona headers)
-      const { catalogService } = await import('../../scripts/services/catalog-service.js');
-
-      // Wait up to 10 seconds for catalog service initialization
-      const maxWait = 10000;
-      const startTime = Date.now();
-      while (!catalogService.isInitialized && (Date.now() - startTime) < maxWait) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-
-      if (!catalogService.isInitialized) {
-        throw new Error('Catalog service failed to initialize within 10 seconds');
-      }
+      // Wait for dropins to be initialized - this ensures persona headers are set
+      // Persona headers are required for getCategories() to return correct catalog view
+      const { waitForDropins } = await import('../../scripts/initializers/index.js');
+      await waitForDropins();
 
       // Use singleton promise pattern - getCategories() handles caching and deduplication
-      // If scripts.js already triggered the fetch, this returns the same promise
-      // The global window.__acoCategories is populated by mesh-client.js when the promise resolves
+      // Persona headers are now set, so this will fetch categories for the correct catalog view
       console.log('[Header] Loading categories via singleton promise...');
       const result = await getCategories();
       const categories = result.categories || [];
