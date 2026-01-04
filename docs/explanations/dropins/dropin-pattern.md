@@ -23,13 +23,13 @@ Dropins have **slots** - designated spots where we can insert custom content or 
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  ADOBE DROPIN (The Package)                                       │
-│  @dropins/storefront-product-discovery                            │
-│                                                                   │
+│  ADOBE DROPIN (The Package)                                      │
+│  @dropins/storefront-product-discovery                           │
+│                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐    │
-│  │  CONTAINER (The Component)                                │    │
-│  │  SearchResults                                            │    │
-│  │                                                           │    │
+│  │  CONTAINER (The Component)                               │    │
+│  │  SearchResults                                           │    │
+│  │                                                          │    │
 │  │  ┌─────────────────────────────────────────────────┐     │    │
 │  │  │  SLOT (The Customization Point)                 │     │    │
 │  │  │  ProductCardPrice                               │     │    │

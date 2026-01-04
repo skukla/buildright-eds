@@ -30,24 +30,24 @@ The catalog page has four main areas, all powered by the Product Discovery dropi
 │  │  FILTER SIDEBAR        │                                            │    │
 │  │                        │  PRODUCT GRID                              │    │
 │  │  ☑ Selected Filters    │                                            │    │
-│  │  [Clear All]           │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐   │    │
-│  │                        │  │[IMG] │  │[IMG] │  │[IMG] │  │[IMG] │   │    │
-│  │  ▼ Category            │  │Name  │  │Name  │  │Name  │  │Name  │   │    │
-│  │  ▼ Brand               │  │$99   │  │$149  │  │$79   │  │$199  │   │    │
-│  │  ▼ Price Range         │  │[Add] │  │[Add] │  │[Add] │  │[Add] │   │    │
-│  │  ▼ Quality Tier        │  └──────┘  └──────┘  └──────┘  └──────┘   │    │
+│  │  [Clear All]           │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐    │    │
+│  │                        │  │[IMG] │  │[IMG] │  │[IMG] │  │[IMG] │    │    │
+│  │  ▼ Category            │  │Name  │  │Name  │  │Name  │  │Name  │    │    │
+│  │  ▼ Brand               │  │$99   │  │$149  │  │$79   │  │$199  │    │    │
+│  │  ▼ Price Range         │  │[Add] │  │[Add] │  │[Add] │  │[Add] │    │    │
+│  │  ▼ Quality Tier        │  └──────┘  └──────┘  └──────┘  └──────┘    │    │
 │  │                        │                                            │    │
-│  │  Each filter section   │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐   │    │
-│  │  expands to show       │  │[IMG] │  │[IMG] │  │[IMG] │  │[IMG] │   │    │
-│  │  checkboxes            │  │Name  │  │Name  │  │Name  │  │Name  │   │    │
-│  │                        │  │$129  │  │$89   │  │$159  │  │$109  │   │    │
-│  │                        │  │[Add] │  │[Add] │  │[Add] │  │[Add] │   │    │
-│  │                        │  └──────┘  └──────┘  └──────┘  └──────┘   │    │
+│  │  Each filter section   │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐    │    │
+│  │  expands to show       │  │[IMG] │  │[IMG] │  │[IMG] │  │[IMG] │    │    │
+│  │  checkboxes            │  │Name  │  │Name  │  │Name  │  │Name  │    │    │
+│  │                        │  │$129  │  │$89   │  │$159  │  │$109  │    │    │
+│  │                        │  │[Add] │  │[Add] │  │[Add] │  │[Add] │    │    │
+│  │                        │  └──────┘  └──────┘  └──────┘  └──────┘    │    │
 │  └────────────────────────┴────────────────────────────────────────────┘    │
 │                                                                             │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │ PAGINATION                                                          │    │
-│  │ ◄ Prev    1   [2]   3   4   ...   10    Next ►                     │    │
+│  │ ◄ Prev    1   [2]   3   4   ...   10    Next ►                      │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                             │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │

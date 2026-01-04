@@ -192,6 +192,12 @@ npm start
 npx http-server -p 8000 -c-1
 ```
 
+**Local Testing URL:** http://localhost:8000
+
+Key pages:
+- Catalog: http://localhost:8000/pages/catalog.html
+- Catalog with category: http://localhost:8000/pages/catalog.html?category=structural-materials
+
 ---
 
 ## Important Constraints

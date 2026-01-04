@@ -126,7 +126,9 @@ export async function initializeDropins() {
     'AC-Price-Book-Id': personaHeaders['X-Price-Book-Id'] || config.aco.defaultPriceBookId
   });
 
-  // Register all dropins, mount, signal ready...
+  // Cart and Search dropins always load
+  // Auth dropin loads conditionally based on auth token cookie (performance optimization)
+  // See shouldInitializeAuth() - checks for 'auth_dropin_user_token' cookie
 }
 ```
 
