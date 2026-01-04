@@ -405,13 +405,33 @@ let categoriesPromise = null;
  */
 export async function getCategories() {
   if (!categoriesPromise) {
-    console.log('[MeshClient] Fetching categories (singleton)');
+    // Check sessionStorage first (persists across page navigations)
+    try {
+      const cached = sessionStorage.getItem('buildright_categories');
+      if (cached) {
+        const result = JSON.parse(cached);
+        window.__acoCategories = result.categories || [];
+        console.log('[MeshClient] Using cached categories:', window.__acoCategories.length);
+        categoriesPromise = Promise.resolve(result);
+        return categoriesPromise;
+      }
+    } catch (e) {
+      console.warn('[MeshClient] Categories cache read failed:', e);
+    }
+
+    console.log('[MeshClient] Fetching categories from mesh');
     categoriesPromise = meshQuery(queries.GET_CATEGORIES, {})
       .then((data) => {
         const result = data.BuildRight_getCategories;
+        // Cache in sessionStorage for subsequent page loads
+        try {
+          sessionStorage.setItem('buildright_categories', JSON.stringify(result));
+        } catch (e) {
+          console.warn('[MeshClient] Failed to cache categories:', e);
+        }
         // Also populate window global for synchronous access after load
         window.__acoCategories = result.categories || [];
-        console.log('[MeshClient] Categories cached:', window.__acoCategories.length);
+        console.log('[MeshClient] Categories fetched and cached:', window.__acoCategories.length);
         return result;
       })
       .catch((error) => {

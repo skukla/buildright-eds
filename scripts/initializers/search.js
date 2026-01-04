@@ -83,6 +83,24 @@ export async function initializeSearchDropin(initializers) {
 
     console.log('[Search Dropin] Registered');
 
+    // PERFORMANCE: Pre-import dropin containers on catalog pages
+    // Fire-and-forget: starts loading in background so they're cached when product-list needs them
+    // This moves import cost from block decoration time to initialization time
+    if (window.location.pathname.includes('catalog') || window.location.search.includes('category')) {
+      console.log('[Search Dropin] Pre-importing containers for catalog page...');
+      Promise.all([
+        import('@dropins/storefront-product-discovery/render.js'),
+        import('@dropins/storefront-product-discovery/containers/SearchResults.js'),
+        import('@dropins/storefront-product-discovery/containers/Facets.js'),
+        import('@dropins/storefront-product-discovery/containers/SortBy.js'),
+        import('@dropins/storefront-product-discovery/containers/Pagination.js'),
+      ]).then(() => {
+        console.log('[Search Dropin] Containers pre-imported');
+      }).catch(() => {
+        // Pre-import is best-effort, ignore errors
+      });
+    }
+
   } catch (error) {
     console.error('[Search Dropin] Failed to initialize:', error);
     throw error;

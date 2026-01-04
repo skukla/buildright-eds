@@ -136,7 +136,7 @@ export function parseProjectBuilderPath(pathname) {
 export function getCatalogUrl(categoryCode) {
   const basePath = getBasePath();
   
-  if (!categoryCode || categoryCode === 'all') {
+  if (!categoryCode || categoryCode === 'all' || categoryCode === 'all-products') {
     return `${basePath}catalog`;
   }
   
