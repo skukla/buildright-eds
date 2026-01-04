@@ -1,71 +1,98 @@
-# Dropin Pattern
+# Dropin Customization Pattern
 
-## What It Does
+**What it does**: Explains how we customize Adobe's pre-built components to match BuildRight's brand
+**Audience**: Technical consultants, solution architects, pre-sales engineers
 
-Adobe provides pre-built UI components called "dropins" for commerce features. We customize their appearance using "slots" - insertion points where we can inject our own HTML/CSS.
+---
 
-## How It Works
+## What Are Dropins?
+
+Adobe provides **pre-built UI components** called "dropins" for common e-commerce features:
+- Product grids
+- Shopping carts
+- Checkout flows
+- Login forms
+
+BuildRight uses these dropins but customizes their appearance to match our brand.
+
+---
+
+## How Customization Works
+
+Dropins have **slots** - designated spots where we can insert custom content or styling. Think of slots like picture frames - Adobe provides the frame, we fill it with our content.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  DROPIN (Adobe npm package)                                      │
-│  @dropins/storefront-product-discovery                           │
-│                                                                  │
+│  ADOBE DROPIN (The Package)                                       │
+│  @dropins/storefront-product-discovery                            │
+│                                                                   │
 │  ┌──────────────────────────────────────────────────────────┐    │
-│  │  CONTAINER (renderable component)                        │    │
-│  │  SearchResults                                           │    │
-│  │                                                          │    │
+│  │  CONTAINER (The Component)                                │    │
+│  │  SearchResults                                            │    │
+│  │                                                           │    │
 │  │  ┌─────────────────────────────────────────────────┐     │    │
-│  │  │  SLOT (customization point)                     │     │    │
+│  │  │  SLOT (The Customization Point)                 │     │    │
 │  │  │  ProductCardPrice                               │     │    │
 │  │  │                                                 │     │    │
 │  │  │  ┌───────────────────────────────────────┐      │     │    │
-│  │  │  │  CUSTOM COMPONENT                     │      │     │    │
-│  │  │  │  .buildright-price                    │      │     │    │
-│  │  │  │  (our custom styling/content)         │      │     │    │
+│  │  │  │  OUR CUSTOM CONTENT                   │      │     │    │
+│  │  │  │                                       │      │     │    │
+│  │  │  │  BuildRight-styled price display      │      │     │    │
+│  │  │  │  with wholesale/retail indicator      │      │     │    │
+│  │  │  │                                       │      │     │    │
 │  │  │  └───────────────────────────────────────┘      │     │    │
 │  │  └─────────────────────────────────────────────────┘     │    │
 │  └──────────────────────────────────────────────────────────┘    │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-## Slot Customization
+---
 
-```javascript
-// In product-list block
-SearchResults.render(container, {
-  slots: {
-    // Intercept the price slot
-    ProductCardPrice: (ctx) => {
-      const el = document.createElement('div');
-      el.className = 'buildright-price';  // Our custom CSS
-      el.textContent = formatPrice(ctx.product.price);
-      ctx.replaceWith(el);  // Replace default with ours
-    }
-  }
-});
-```
+## Three Levels of Customization
 
-## Available Slot Methods
+| Level | What You Change | Example |
+|-------|-----------------|---------|
+| **Level 1: CSS** | Colors, fonts, spacing | Making buttons Sapphire Blue |
+| **Level 2: Slots** | Content inside components | Adding a "Wholesale" badge to prices |
+| **Level 3: Behavior** | How components work | Custom price formatting logic |
 
-| Method | What It Does |
-|--------|--------------|
-| `ctx.replaceWith(el)` | Replace default content entirely |
-| `ctx.prependChild(el)` | Add before default content |
-| `ctx.appendChild(el)` | Add after default content |
-| `ctx.product` | Access product data |
-
-## CSS Naming Convention
-
-```css
-/* Our customizations use .buildright-* prefix */
-.buildright-price { ... }
-.buildright-tier-badge { ... }
-.buildright-product-image { ... }
-
-/* This avoids conflicts with Adobe's dropin CSS */
-```
+BuildRight primarily uses **Level 1** (CSS tokens) and **Level 2** (slot customization).
 
 ---
 
-**See Also:** [dropin-integration-reference.md](../reference/dropin-integration-reference.md) (pattern levels detail) | [ADR-014](../adr/ADR-014-eds-blocks-vs-dropins.md) | [catalog-flow.md](./catalog-flow.md)
+## Slot Actions
+
+When customizing a slot, you can:
+
+| Action | What It Does | When to Use |
+|--------|--------------|-------------|
+| **Replace** | Remove default, add custom | When you need completely different content |
+| **Prepend** | Add before default content | When you want to add above the default |
+| **Append** | Add after default content | When you want to add below the default |
+
+---
+
+## BuildRight's Naming Convention
+
+All BuildRight customizations use the `.buildright-*` CSS prefix:
+
+- `.buildright-price` - Custom price display
+- `.buildright-tier-badge` - Wholesale/Retail indicator
+- `.buildright-product-image` - Custom image styling
+
+This prevents conflicts with Adobe's dropin CSS.
+
+---
+
+## What This Means for Demos
+
+When explaining dropin customization:
+
+- **"Adobe provides the functionality"** - We don't build cart/checkout from scratch
+- **"We customize the appearance"** - Slots let us inject BuildRight branding
+- **"Best of both worlds"** - Production-ready e-commerce with custom brand feel
+- **"Easy to update"** - Change a token, update all components
+
+---
+
+**Related**: [Dropins Overview](./README.md) | [Design System](../design/README.md)
