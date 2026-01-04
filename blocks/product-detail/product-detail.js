@@ -71,9 +71,11 @@ export default async function decorate(block) {
   await waitForDropins();
 
   try {
-    // Import PDP dropin modules
-    const { render } = await import('@dropins/storefront-pdp/render.js');
-    const ProductDetails = (await import('@dropins/storefront-pdp/containers/ProductDetails.js')).default;
+    // Import PDP dropin modules (parallel for performance)
+    const [{ render }, { default: ProductDetails }] = await Promise.all([
+      import('@dropins/storefront-pdp/render.js'),
+      import('@dropins/storefront-pdp/containers/ProductDetails.js'),
+    ]);
 
     log('Rendering ProductDetails for SKU:', sku);
 

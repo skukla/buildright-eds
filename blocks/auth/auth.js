@@ -125,8 +125,11 @@ async function subscribeToAuthEvents() {
  * @param {string} basePath
  */
 async function renderSignInForm(block, basePath) {
-  const { render } = await import('@dropins/storefront-auth/render.js');
-  const SignIn = (await import('@dropins/storefront-auth/containers/SignIn.js')).default;
+  // Parallel imports for performance
+  const [{ render }, { default: SignIn }] = await Promise.all([
+    import('@dropins/storefront-auth/render.js'),
+    import('@dropins/storefront-auth/containers/SignIn.js'),
+  ]);
 
   log('Rendering SignIn form');
 
@@ -181,8 +184,11 @@ async function renderSignInForm(block, basePath) {
  * @param {string} basePath
  */
 async function renderRegisterForm(block, basePath) {
-  const { render } = await import('@dropins/storefront-auth/render.js');
-  const SignUp = (await import('@dropins/storefront-auth/containers/SignUp.js')).default;
+  // Parallel imports for performance
+  const [{ render }, { default: SignUp }] = await Promise.all([
+    import('@dropins/storefront-auth/render.js'),
+    import('@dropins/storefront-auth/containers/SignUp.js'),
+  ]);
 
   log('Rendering SignUp form');
 
@@ -217,8 +223,11 @@ async function renderRegisterForm(block, basePath) {
  * @param {string} basePath
  */
 async function renderResetPasswordForm(block, basePath) {
-  const { render } = await import('@dropins/storefront-auth/render.js');
-  const ResetPassword = (await import('@dropins/storefront-auth/containers/ResetPassword.js')).default;
+  // Parallel imports for performance
+  const [{ render }, { default: ResetPassword }] = await Promise.all([
+    import('@dropins/storefront-auth/render.js'),
+    import('@dropins/storefront-auth/containers/ResetPassword.js'),
+  ]);
 
   log('Rendering ResetPassword form');
 

@@ -153,9 +153,11 @@ export default async function decorate(block) {
   await waitForDropins();
 
   try {
-    // Import Order dropin modules
-    const { render } = await import('@dropins/storefront-order/render.js');
-    const OrderConfirmation = (await import('@dropins/storefront-order/containers/OrderConfirmation.js')).default;
+    // Import Order dropin modules (parallel for performance)
+    const [{ render }, { default: OrderConfirmation }] = await Promise.all([
+      import('@dropins/storefront-order/render.js'),
+      import('@dropins/storefront-order/containers/OrderConfirmation.js'),
+    ]);
 
     log('Rendering OrderConfirmation', { orderNumber });
 

@@ -32,9 +32,11 @@ export default async function decorate(block) {
   await waitForDropins();
 
   try {
-    // Import MiniCart container and render utility
-    const { render } = await import('@dropins/storefront-cart/render.js');
-    const { MiniCart } = await import('@dropins/storefront-cart/containers/MiniCart.js');
+    // Import MiniCart container and render utility (parallel for performance)
+    const [{ render }, { MiniCart }] = await Promise.all([
+      import('@dropins/storefront-cart/render.js'),
+      import('@dropins/storefront-cart/containers/MiniCart.js'),
+    ]);
 
     console.log('[Commerce Mini Cart] MiniCart container loaded');
 

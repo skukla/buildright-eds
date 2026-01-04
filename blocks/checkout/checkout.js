@@ -75,9 +75,11 @@ export default async function decorate(block) {
   await waitForDropins();
 
   try {
-    // Import Checkout dropin modules
-    const { render } = await import('@dropins/storefront-checkout/render.js');
-    const Checkout = (await import('@dropins/storefront-checkout/containers/Checkout.js')).default;
+    // Import Checkout dropin modules (parallel for performance)
+    const [{ render }, { default: Checkout }] = await Promise.all([
+      import('@dropins/storefront-checkout/render.js'),
+      import('@dropins/storefront-checkout/containers/Checkout.js'),
+    ]);
 
     log('Rendering Checkout');
 

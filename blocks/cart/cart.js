@@ -67,9 +67,11 @@ export default async function decorate(block) {
   await waitForDropins();
 
   try {
-    // Import Cart dropin modules
-    const { render } = await import('@dropins/storefront-cart/render.js');
-    const { CartSummaryList } = await import('@dropins/storefront-cart/containers/CartSummaryList.js');
+    // Import Cart dropin modules (parallel for performance)
+    const [{ render }, { CartSummaryList }] = await Promise.all([
+      import('@dropins/storefront-cart/render.js'),
+      import('@dropins/storefront-cart/containers/CartSummaryList.js'),
+    ]);
 
     log('Rendering CartSummaryList');
 
