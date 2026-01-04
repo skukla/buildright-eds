@@ -24,10 +24,10 @@
   min-width: 280px;
 }
 
-/* CLS Prevention - Active nav state */
+/* CLS Prevention - Active nav state (matches hover) */
 .nav-link.active,
 .nav-link[aria-current="page"] {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .header-top-content {
@@ -613,19 +613,19 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Active state for current page navigation link */
+/* Active state for current page navigation link - matches hover */
 .nav-link.active,
 .nav-link[aria-current="page"] {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Category-specific highlighting */
+/* Category-specific highlighting - matches hover */
 body[data-category="structural_materials"] .nav-link[data-category="structural_materials"],
 body[data-category="windows_doors"] .nav-link[data-category="windows_doors"],
 body[data-category="fasteners_hardware"] .nav-link[data-category="fasteners_hardware"],
 body[data-category="roofing"] .nav-link[data-category="roofing"],
 body[data-category="framing_drywall"] .nav-link[data-category="framing_drywall"] {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Project Builder CTA styling - higher specificity to override */

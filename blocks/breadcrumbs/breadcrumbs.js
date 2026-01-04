@@ -6,80 +6,24 @@
 
 import { getCategories, getCategoryDisplayName, getCategoryBreadcrumbs } from '../../scripts/services/mesh-client.js';
 
+/**
+ * Convert slug to title case (fallback for immediate display)
+ * @param {string} slug - URL slug (e.g., "structural-materials")
+ * @returns {string} - Title case (e.g., "Structural Materials")
+ */
+function slugToTitle(slug) {
+  return slug
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 // Navigation section mapping (kept - not category data)
 const NAV_SECTION_NAMES = {
   'structural-materials': 'Structural Materials',
   'windows-doors': 'Windows & Doors',
   'fasteners-hardware': 'Fasteners & Hardware'
 };
-
-/**
- * Wait for dropins to initialize (persona headers available)
- * @returns {Promise<void>}
- */
-function waitForDropins() {
-  return new Promise((resolve) => {
-    if (window.dropinsReady) {
-      resolve();
-    } else {
-      document.addEventListener('dropins:initialized', resolve, { once: true });
-      // Timeout fallback to prevent indefinite wait
-      setTimeout(resolve, 3000);
-    }
-  });
-}
-
-/**
- * Build hierarchical breadcrumb trail from mesh query
- * Renders: Home > Parent Category > ... > Current Category
- *
- * @param {string} slug - Category URL slug
- * @param {HTMLElement} nav - Navigation element to append items to
- * @returns {Promise<boolean>} - True if trail was rendered, false if fallback needed
- */
-async function buildCategoryBreadcrumbs(slug, nav) {
-  try {
-    // Wait for dropins to initialize (ensures persona headers are available)
-    await waitForDropins();
-
-    const result = await getCategoryBreadcrumbs(slug);
-    const { trail } = result;
-
-    if (!trail || trail.length === 0) {
-      return false; // Use fallback
-    }
-
-    // Render each item in the trail
-    trail.forEach((item, index) => {
-      const isLast = index === trail.length - 1;
-
-      if (isLast) {
-        // Current category - render as span (not clickable)
-        const span = document.createElement('span');
-        span.textContent = item.name;
-        span.setAttribute('aria-current', 'page');
-        nav.appendChild(span);
-      } else {
-        // Parent category - render as link
-        const link = document.createElement('a');
-        link.href = item.url;
-        link.textContent = item.name;
-        nav.appendChild(link);
-
-        // Add separator after non-last items
-        const separator = document.createElement('span');
-        separator.className = 'breadcrumb-separator';
-        separator.textContent = '/';
-        nav.appendChild(separator);
-      }
-    });
-
-    return true;
-  } catch (error) {
-    console.warn('[Breadcrumbs] Failed to build category trail:', error);
-    return false;
-  }
-}
 
 export default async function decorate(block) {
   const rows = block.querySelectorAll(':scope > div');
@@ -108,19 +52,76 @@ export default async function decorate(block) {
       nav.appendChild(separator);
     }
 
-    // Build hierarchical trail from mesh query
-    const trailRendered = await buildCategoryBreadcrumbs(category, nav);
+    // PERFORMANCE: Render fallback immediately (non-blocking)
+    // This prevents the blocking POST request from delaying FCP
+    const categorySpan = document.createElement('span');
+    categorySpan.id = 'breadcrumb-category';
+    categorySpan.textContent = slugToTitle(category);
+    categorySpan.setAttribute('aria-current', 'page');
+    nav.appendChild(categorySpan);
 
-    if (trailRendered) {
-      // Successfully rendered hierarchical trail
-      block.innerHTML = '';
-      block.appendChild(nav);
-      return;
-    }
+    // Render the fallback immediately
+    block.innerHTML = '';
+    block.appendChild(nav);
 
-    // Trail rendering failed - clear nav to avoid duplicate Home
-    nav.innerHTML = '';
-    // Fall through to default behavior
+    // PROGRESSIVE ENHANCEMENT: Fetch hierarchical trail in background
+    // Update breadcrumbs with full hierarchy when data arrives
+    (async () => {
+      try {
+        const result = await getCategoryBreadcrumbs(category);
+        const { trail } = result;
+
+        // Only update if we got a valid trail (even single item for subcategory name)
+        if (trail && trail.length > 0) {
+          // Rebuild nav with full hierarchy including Home
+          const newNav = document.createElement('nav');
+          newNav.setAttribute('aria-label', 'Breadcrumb');
+
+          // Always add Home first
+          const homeLink = document.createElement('a');
+          homeLink.href = '/';
+          homeLink.textContent = 'Home';
+          newNav.appendChild(homeLink);
+
+          const homeSep = document.createElement('span');
+          homeSep.className = 'breadcrumb-separator';
+          homeSep.textContent = '/';
+          newNav.appendChild(homeSep);
+
+          // Add category trail (parent categories + current)
+          trail.forEach((item, index) => {
+            const isLast = index === trail.length - 1;
+
+            if (isLast) {
+              const span = document.createElement('span');
+              span.id = 'breadcrumb-category';
+              span.textContent = item.name;
+              span.setAttribute('aria-current', 'page');
+              newNav.appendChild(span);
+            } else {
+              const link = document.createElement('a');
+              link.href = item.url;
+              link.textContent = item.name;
+              newNav.appendChild(link);
+
+              const sep = document.createElement('span');
+              sep.className = 'breadcrumb-separator';
+              sep.textContent = '/';
+              newNav.appendChild(sep);
+            }
+          });
+
+          // Replace breadcrumbs with full hierarchy
+          block.innerHTML = '';
+          block.appendChild(newNav);
+        }
+      } catch (error) {
+        console.warn('[Breadcrumbs] Background hierarchy fetch failed:', error);
+        // Keep fallback - no action needed
+      }
+    })();
+
+    return;
   }
 
   // Default behavior: Process each row from HTML content

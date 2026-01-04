@@ -1,4 +1,14 @@
 // Header block decoration
+//
+// ARCHITECTURE NOTE (ADR-016):
+// Current: Categories fetched from API, cached in sessionStorage
+// Future:  Categories authored in /nav fragment, edge-cached
+//
+// The code is structured to make this transition easy:
+// - renderCategoryNavigation() handles HTML generation
+// - wireUpCategoryDropdowns() handles event binding
+// - Both can work with data from API OR parsed fragment
+//
 import { getCatalogUrl, parseCatalogPath, handleLegacyRedirect } from '../../scripts/url-router.js';
 import { parseHTMLFragment } from '../../scripts/utils.js';
 import { getCompany } from '../../scripts/company-config.js';
@@ -16,6 +26,150 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = String(text);
   return div.innerHTML;
+}
+
+/**
+ * Render category navigation HTML from category data
+ * TRANSITION NOTE: This function works with API data now, but the same
+ * structure could be generated from an authored /nav fragment in the future.
+ *
+ * @param {Array} categories - All categories from ACO
+ * @returns {string} - Navigation HTML string
+ */
+function renderCategoryNavigation(categories) {
+  const topCategories = categories.filter(cat => !cat.parentSlug);
+
+  return `
+    ${topCategories.map(cat => {
+      const subcategories = categories.filter(sub => sub.parentSlug === cat.slug);
+      const hasDropdown = subcategories.length > 0;
+
+      // Categories without subcategories render as links, with subcategories as buttons
+      if (!hasDropdown) {
+        return `
+        <div class="nav-item">
+          <a href="catalog" class="nav-link" data-category="${escapeHtml(cat.slug)}">${escapeHtml(cat.name)}</a>
+        </div>
+      `;
+      }
+
+      return `
+        <div class="nav-item nav-item-with-dropdown">
+          <button class="nav-link" data-category="${escapeHtml(cat.slug)}" data-category-name="${escapeHtml(cat.name)}">
+            ${escapeHtml(cat.name)}
+            <span class="dropdown-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </button>
+          <div class="category-dropdown" data-parent="${escapeHtml(cat.slug)}">
+            <div class="category-dropdown-content">
+              <ul class="subcategory-list">
+                ${subcategories.map(sub => `
+                  <li><a href="#" data-subcategory="${escapeHtml(sub.slug)}" data-parent-slug="${escapeHtml(cat.slug)}">${escapeHtml(sub.name)}</a></li>
+                `).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+}
+
+/**
+ * Wire up event handlers for category dropdowns
+ * TRANSITION NOTE: This function is decoupled from data fetching.
+ * It works with any nav element containing the expected structure,
+ * whether that HTML came from API data or an authored fragment.
+ *
+ * @param {HTMLElement} mainNav - The main navigation container
+ */
+function wireUpCategoryDropdowns(mainNav) {
+  // Add hover and click handlers for category dropdowns
+  mainNav.querySelectorAll('.nav-item-with-dropdown').forEach(navItem => {
+    const button = navItem.querySelector('.nav-link');
+    const dropdown = navItem.querySelector('.category-dropdown');
+
+    if (!dropdown) return;
+
+    let hoverTimeout;
+
+    // Desktop: Hover behavior
+    if (window.matchMedia('(min-width: 1024px)').matches) {
+      navItem.addEventListener('mouseenter', () => {
+        clearTimeout(hoverTimeout);
+
+        // Close all other dropdowns first to prevent bleed
+        mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
+          if (d !== dropdown) d.classList.remove('active');
+        });
+
+        dropdown.classList.add('active');
+      });
+
+      navItem.addEventListener('mouseleave', () => {
+        hoverTimeout = setTimeout(() => {
+          dropdown.classList.remove('active');
+        }, 200);
+      });
+    }
+
+    // Mobile/Tablet: Click behavior
+    button.addEventListener('click', (e) => {
+      if (window.matchMedia('(max-width: 1023px)').matches) {
+        e.stopPropagation();
+
+        // Close other dropdowns
+        mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
+          if (d !== dropdown) d.classList.remove('active');
+        });
+
+        dropdown.classList.toggle('active');
+      } else {
+        // Desktop: Navigate to category using slug (categoryUrlKey filter)
+        // EDS pattern: Full page navigation for CDN-cached pages
+        const categorySlug = button.dataset.category;
+        const catalogUrl = `catalog?category=${categorySlug}`;
+        window.location.href = catalogUrl;
+      }
+    });
+  });
+
+  // Add click handlers for subcategory links
+  // EDS pattern: Full page navigation for CDN-cached pages
+  mainNav.querySelectorAll('[data-subcategory]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const subcategorySlug = link.dataset.subcategory;
+      const catalogUrl = `catalog?category=${subcategorySlug}`;
+      window.location.href = catalogUrl;
+    });
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-item-with-dropdown')) {
+      mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
+        d.classList.remove('active');
+      });
+    }
+  });
+}
+
+/**
+ * Try to get cached categories synchronously from sessionStorage
+ * Returns null if not cached, avoiding async wait for dropins
+ * @returns {Array|null} - Cached categories or null
+ */
+function getCachedCategories() {
+  try {
+    const cached = sessionStorage.getItem('buildright_categories');
+    if (cached) {
+      const result = JSON.parse(cached);
+      return result.categories || [];
+    }
+  } catch (e) {
+    // Cache miss or parse error - will fetch from API
+  }
+  return null;
 }
 
 /**
@@ -61,6 +215,9 @@ async function initializeHeaderSearch(block) {
   /**
    * Lazy-load catalog service on first search interaction
    * Uses direct GraphQL queries - does NOT affect catalog page grid
+   *
+   * NOTE: Catalog service is initialized centrally in initializers/index.js
+   * This function just imports the module - no initialization needed here
    */
   async function ensureCatalogServiceLoaded() {
     if (catalogServiceLoaded) return true;
@@ -69,17 +226,20 @@ async function initializeHeaderSearch(block) {
       const module = await import('../../scripts/services/catalog-service.js');
       catalogService = module.catalogService;
 
-      // Wait for catalog service to initialize
+      // Catalog service should already be initialized by initializers/index.js
+      // If not (edge case: dropins disabled or failed), wait briefly then initialize
       if (!catalogService.isInitialized) {
-        const maxWait = 5000;
-        const startTime = Date.now();
-        while (!catalogService.isInitialized && (Date.now() - startTime) < maxWait) {
-          await new Promise((resolve) => { setTimeout(resolve, 100); });
+        // Brief wait in case initialization is in progress
+        await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+        if (!catalogService.isInitialized) {
+          console.warn('[Header Search] Catalog service not initialized - initializing as fallback');
+          await catalogService.initialize('guest');
         }
       }
 
       catalogServiceLoaded = true;
-      console.log('[Header Search] Catalog service loaded (isolated from dropin events)');
+      console.log('[Header Search] Catalog service ready');
       return true;
     } catch (error) {
       console.error('[Header Search] Failed to load catalog service:', error);
@@ -646,20 +806,34 @@ export default async function decorate(block) {
   // Parse current page to get active category
   let currentCategory = null;
   if (isOnCatalog) {
-    const catalogInfo = parseCatalogPath(currentPath);
-    if (catalogInfo.type === 'category') {
-      currentCategory = catalogInfo.value;
-    } else if (catalogInfo.type === 'division') {
-      currentCategory = catalogInfo.value;
+    // First check URL query parameter (e.g., ?category=structural-materials)
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+
+    if (categoryParam) {
+      // Category from query param is already in kebab-case (e.g., "structural-materials")
+      currentCategory = categoryParam;
+    } else {
+      // Fallback to path-based detection (e.g., /catalog/structural-materials)
+      const catalogInfo = parseCatalogPath(currentPath);
+      if (catalogInfo.type === 'category') {
+        // parseCatalogPath returns underscore format, convert to kebab-case
+        currentCategory = catalogInfo.value ? catalogInfo.value.replace(/_/g, '-') : null;
+      } else if (catalogInfo.type === 'division') {
+        currentCategory = catalogInfo.value;
+      }
     }
   }
-  
-  navLinks.forEach(link => {
+
+  // currentCategory is now in kebab-case (matching nav link data-category attributes)
+  const normalizedCurrentCategory = currentCategory;
+
+  navLinks.forEach((link) => {
     const linkCategory = link.getAttribute('data-category');
     const linkHref = link.getAttribute('href');
     const normalizedLinkHref = normalizePath(linkHref);
     let isActive = false;
-    
+
     // Determine if this link should be active (mutually exclusive logic)
     if (isOnProjectBuilder) {
       // On project builder page - only highlight Project Builder link
@@ -667,12 +841,12 @@ export default async function decorate(block) {
       isActive = isProjectBuilderLink;
     } else if (isOnCatalog) {
       // On catalog page - highlight based on category
-      if (currentCategory) {
+      if (normalizedCurrentCategory) {
         // Specific category selected - only highlight that category button
-        isActive = linkCategory === currentCategory;
+        isActive = linkCategory === normalizedCurrentCategory;
       } else {
         // No category (showing all products) - only highlight "All Products"
-        isActive = linkCategory === 'all';
+        isActive = linkCategory === 'all' || linkCategory === 'all-products';
       }
     }
     
@@ -691,207 +865,93 @@ export default async function decorate(block) {
   // The dropin listens to cart/product/added events and shows notifications
   
   // Load dynamic categories from ACO
+  // TRANSITION NOTE (ADR-016): This function is structured for easy migration to
+  // content-first navigation. The rendering (renderCategoryNavigation) and event
+  // wiring (wireUpCategoryDropdowns) are decoupled from data fetching.
+  // Future: Replace API fetch with fragment loading from /nav.plain.html
   async function loadDynamicCategories() {
-    try {
-      console.log('[Header] Waiting for dropins to initialize (sets persona headers)...');
+    const mainNav = block.querySelector('.main-nav');
+    if (!mainNav) {
+      console.warn('[Header] Main nav not found');
+      return;
+    }
 
-      // Wait for dropins to be initialized - this ensures persona headers are set
-      // Persona headers are required for getCategories() to return correct catalog view
+    // Always show nav bar (keep blue bar visible)
+    const navBar = block.querySelector('.header-nav-bar');
+    if (navBar) {
+      navBar.style.display = '';
+    }
+
+    /**
+     * Render navigation from categories array
+     * Extracted to work with any data source (cache, API, or future fragment)
+     */
+    function renderNavigation(categories) {
+      const topCategories = categories.filter((cat) => !cat.parentSlug);
+
+      if (topCategories.length === 0) {
+        // Show skeleton placeholders while loading
+        mainNav.innerHTML = `
+          <div class="nav-item"><span class="nav-link-skeleton"></span></div>
+          <div class="nav-item"><span class="nav-link-skeleton" style="width: 140px;"></span></div>
+          <div class="nav-item"><span class="nav-link-skeleton" style="width: 120px;"></span></div>
+          <div class="nav-item"><span class="nav-link-skeleton" style="width: 160px;"></span></div>
+          <div class="nav-item"><span class="nav-link-skeleton" style="width: 130px;"></span></div>
+        `;
+        const industrySection = block.querySelector('.nav-industry');
+        if (industrySection) industrySection.style.display = 'none';
+        return;
+      }
+
+      // Show "Shop By Industry" when we have categories
+      const industrySection = block.querySelector('.nav-industry');
+      if (industrySection) industrySection.style.display = 'flex';
+
+      // Use extracted rendering function (same HTML structure for any data source)
+      mainNav.innerHTML = renderCategoryNavigation(categories);
+
+      // Use extracted event wiring (decoupled from data source)
+      wireUpCategoryDropdowns(mainNav);
+
+      console.log(`[Header] Rendered ${topCategories.length} categories`);
+    }
+
+    // PERFORMANCE OPTIMIZATION: Try sessionStorage cache first (synchronous)
+    // This renders navigation instantly on repeat visits without waiting for dropins
+    const cachedCategories = getCachedCategories();
+    if (cachedCategories && cachedCategories.length > 0) {
+      console.log('[Header] Using cached categories (instant render)');
+      renderNavigation(cachedCategories);
+
+      // Still fetch fresh data in background to update cache for next visit
+      // This is the "stale-while-revalidate" pattern
+      (async () => {
+        try {
+          const { waitForDropins } = await import('../../scripts/initializers/index.js');
+          await waitForDropins();
+          await getCategories(); // Updates sessionStorage cache
+        } catch (e) {
+          console.warn('[Header] Background cache refresh failed:', e);
+        }
+      })();
+
+      return;
+    }
+
+    // No cache - need to wait for dropins and fetch from API
+    try {
+      console.log('[Header] No cache, waiting for dropins to initialize...');
       const { waitForDropins } = await import('../../scripts/initializers/index.js');
       await waitForDropins();
 
-      // Use singleton promise pattern - getCategories() handles caching and deduplication
-      // Persona headers are now set, so this will fetch categories for the correct catalog view
-      console.log('[Header] Loading categories via singleton promise...');
+      console.log('[Header] Fetching categories from API...');
       const result = await getCategories();
       const categories = result.categories || [];
 
-      // Filter to get only top-level categories (no parent)
-      const topCategories = categories
-        .filter(cat => !cat.parentSlug);
-      
-      console.log(`[Header] Loaded ${topCategories.length} top-level categories from ACO`);
-      
-      // Find the main nav container
-      const mainNav = block.querySelector('.main-nav');
-      if (!mainNav) {
-        console.warn('[Header] Main nav not found');
-        return;
-      }
-      
-      // Always show nav bar (keep blue bar visible)
-      const navBar = block.querySelector('.header-nav-bar');
-      if (navBar) {
-        navBar.style.display = '';
-      }
-      
-      // Only show navigation if we have categories
-      if (topCategories.length === 0) {
-        // Show subtle placeholder navigation (minimal, not intrusive)
-        mainNav.innerHTML = `
-          <div class="nav-item">
-            <span class="nav-link-skeleton"></span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-link-skeleton" style="width: 140px;"></span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-link-skeleton" style="width: 120px;"></span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-link-skeleton" style="width: 160px;"></span>
-          </div>
-          <div class="nav-item">
-            <span class="nav-link-skeleton" style="width: 130px;"></span>
-          </div>
-        `;
-        // Hide "Shop By Industry" when no categories
-        const industrySection = block.querySelector('.nav-industry');
-        if (industrySection) {
-          industrySection.style.display = 'none';
-        }
-        return;
-      }
-      
-      // Show "Shop By Industry" when we have categories
-      const industrySection = block.querySelector('.nav-industry');
-      if (industrySection) {
-        industrySection.style.display = 'flex';
-      }
-      
-      // Build navigation HTML with "All Products" + categories with dropdowns
-      // Security: All dynamic data escaped with escapeHtml() to prevent XSS
-      const navHTML = `
-        <div class="nav-item">
-          <a href="catalog" class="nav-link" data-category="all">All Products</a>
-        </div>
-        ${topCategories.map(cat => {
-          // Get subcategories for this category
-          const subcategories = categories.filter(sub => sub.parentSlug === cat.slug);
-
-          return `
-            <div class="nav-item nav-item-with-dropdown">
-              <button class="nav-link" data-category="${escapeHtml(cat.slug)}" data-category-name="${escapeHtml(cat.name)}">
-                ${escapeHtml(cat.name)}
-                ${subcategories.length > 0 ? '<span class="dropdown-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>' : ''}
-              </button>
-              ${subcategories.length > 0 ? `
-                <div class="category-dropdown" data-parent="${escapeHtml(cat.slug)}">
-                  <div class="category-dropdown-content">
-                    <ul class="subcategory-list">
-                      ${subcategories.map(sub => `
-                        <li><a href="#" data-subcategory="${escapeHtml(sub.slug)}" data-parent-slug="${escapeHtml(cat.slug)}">${escapeHtml(sub.name)}</a></li>
-                      `).join('')}
-                    </ul>
-                  </div>
-                </div>
-              ` : ''}
-            </div>
-          `;
-        }).join('')}
-      `;
-      
-      // Replace navigation
-      mainNav.innerHTML = navHTML;
-      
-      // Add hover and click handlers for category dropdowns
-      mainNav.querySelectorAll('.nav-item-with-dropdown').forEach(navItem => {
-        const button = navItem.querySelector('.nav-link');
-        const dropdown = navItem.querySelector('.category-dropdown');
-        
-        if (!dropdown) return;
-        
-        let hoverTimeout;
-        
-        // Desktop: Hover behavior
-        if (window.matchMedia('(min-width: 1024px)').matches) {
-          navItem.addEventListener('mouseenter', () => {
-            clearTimeout(hoverTimeout);
-            
-            // Close all other dropdowns first to prevent bleed
-            mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
-              if (d !== dropdown) d.classList.remove('active');
-            });
-            
-            dropdown.classList.add('active');
-          });
-          
-          navItem.addEventListener('mouseleave', () => {
-            hoverTimeout = setTimeout(() => {
-              dropdown.classList.remove('active');
-            }, 200);
-          });
-        }
-        
-        // Mobile/Tablet: Click behavior
-        button.addEventListener('click', (e) => {
-          if (window.matchMedia('(max-width: 1023px)').matches) {
-            e.stopPropagation();
-            
-            // Close other dropdowns
-            mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
-              if (d !== dropdown) d.classList.remove('active');
-            });
-            
-            dropdown.classList.toggle('active');
-          } else {
-            // Desktop: Navigate to category using slug (categoryUrlKey filter)
-            const categorySlug = button.dataset.category;
-            
-            // Build catalog URL with category slug parameter
-            const catalogUrl = window.location.pathname.includes('/catalog') 
-              ? `${window.location.pathname}?category=${categorySlug}`
-              : `catalog?category=${categorySlug}`;
-            
-            // Navigate to catalog with category filter
-            window.location.href = catalogUrl;
-          }
-        });
-      });
-      
-      // Add click handlers for subcategory links
-      mainNav.querySelectorAll('[data-subcategory]').forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          
-          // Products are assigned to full hierarchical paths (parent/subcategory)
-          // When clicking "Lumber" (subcategory), filter by "structural-materials/lumber"
-          const subcategorySlug = link.dataset.subcategory;
-          
-          // Build catalog URL with full subcategory path parameter
-          const catalogUrl = window.location.pathname.includes('/catalog') 
-            ? `${window.location.pathname}?category=${subcategorySlug}`
-            : `catalog?category=${subcategorySlug}`;
-          
-          // Navigate to catalog with subcategory filter
-          window.location.href = catalogUrl;
-        });
-      });
-      
-      // Close dropdowns when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav-item-with-dropdown')) {
-          mainNav.querySelectorAll('.category-dropdown.active').forEach(d => {
-            d.classList.remove('active');
-          });
-        }
-      });
-      
-      console.log(`[Header] Loaded ${topCategories.length} categories from ACO`);
+      renderNavigation(categories);
     } catch (error) {
-      console.error('[Header] Error loading dynamic categories from ACO:', error);
-      
-      // On error, keep nav bar visible but show nothing (empty blue bar)
-      const mainNav = block.querySelector('.main-nav');
-      if (mainNav) {
-        mainNav.innerHTML = '';
-      }
-      
-      // Ensure nav bar is visible
-      const navBar = block.querySelector('.header-nav-bar');
-      if (navBar) {
-        navBar.style.display = '';
-      }
+      console.error('[Header] Error loading categories:', error);
+      mainNav.innerHTML = '';
     }
   }
   
