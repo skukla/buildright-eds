@@ -1,35 +1,93 @@
 # Explanations
 
-**Audience:** Non-technical, presentations
-**Purpose:** Visual "how it works" documentation for stakeholders
+**Audience**: Technical consultants, solution architects, pre-sales engineers
+**Purpose**: Visual "how it works" documentation for client explanations and presentations
 
-## Overview
+---
 
-This directory contains concise, visual explanations of BuildRight's architecture and systems. Each document uses:
-- ASCII diagrams for architecture
-- Tables for comparisons
-- Minimal jargon
-- Clear examples
+## How to Use This Section
 
-## Documents
+These documents explain BuildRight's architecture using:
+- ASCII diagrams (easy to recreate in PowerPoint)
+- Plain language (no code examples)
+- Clear tables for comparisons
+- Practical talking points for demos
 
-| Document | Purpose | Key Visual |
-|----------|---------|------------|
-| [architecture-overview.md](./architecture-overview.md) | System architecture | Browser → Mesh → ACO/Commerce |
-| [backend-services.md](./backend-services.md) | Shared backend services | Resolver architecture diagram |
-| [buildright-requirements.md](./buildright-requirements.md) | Business scope & terminology | Scope diagram, persona terms |
-| [catalog-flow.md](./catalog-flow.md) | Catalog E2E flow | 8-step user journey |
-| [components-visual-guide.md](./components-visual-guide.md) | Block categories & composition | Page layout diagram |
-| [data-ownership.md](./data-ownership.md) | ACO vs Commerce data | Ownership matrix table |
-| [design-system-architecture.md](./design-system-architecture.md) | Token cascade | 3-layer flow diagram |
-| [dropin-pattern.md](./dropin-pattern.md) | Slot customization | Container → Slot → Component |
-| [mesh-adapter.md](./mesh-adapter.md) | All mesh resolvers | Per-resolver data flow diagrams |
-| [persona-system.md](./persona-system.md) | 5 B2B personas | Pricing tiers table |
-| [product-query-flows.md](./product-query-flows.md) | PLP vs Featured Products | Side-by-side resolver comparison |
+---
+
+## Section Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    DOCUMENTATION SECTIONS                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   architecture/     How components connect                       │
+│       │             System overview, data ownership              │
+│       │                                                          │
+│   mesh/             The API layer                                │
+│       │             Routes requests to ACO or Commerce           │
+│       │                                                          │
+│   dropins/          Pre-built UI components                      │
+│       │             Adobe's commerce widgets we customize        │
+│       │                                                          │
+│   personas/         Customer personalization                     │
+│       │             5 B2B customer types with different views    │
+│       │                                                          │
+│   design/           Visual consistency                           │
+│                     Token cascade, 29 UI blocks                  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Sections
+
+| Section | What It Covers | Start Here |
+|---------|----------------|------------|
+| [Architecture](./architecture/README.md) | System overview, data flow, service ownership | [Architecture Overview](./architecture/architecture-overview.md) |
+| [Mesh](./mesh/README.md) | API routing, resolvers, request handling | [Unified Routing](./mesh/unified-routing.md) |
+| [Dropins](./dropins/README.md) | Adobe's 5 commerce components | [Dropins Overview](./dropins/README.md) |
+| [Personas](./personas/README.md) | 5 B2B customer types, pricing tiers | [Persona System](./personas/persona-system.md) |
+| [Design](./design/README.md) | Token cascade, 29 UI blocks | [Design System](./design/design-system-architecture.md) |
+
+---
+
+## Quick Links by Topic
+
+**"How does the catalog work?"**
+→ [Catalog Flow](./architecture/catalog-flow.md) + [Product Query Flows](./mesh/product-query-flows.md)
+
+**"How do we customize Adobe components?"**
+→ [Dropin Pattern](./dropins/dropin-pattern.md) + [Dropins Overview](./dropins/README.md)
+
+**"How do different customers see different prices?"**
+→ [Persona System](./personas/persona-system.md)
+
+**"What's the difference between ACO and Commerce?"**
+→ [Data Ownership](./architecture/data-ownership.md)
+
+**"How do dropins connect to backends?"**
+→ [Unified Routing](./mesh/unified-routing.md)
+
+**"Why do we intercept dropin requests?"**
+→ [Adapter Pattern](./mesh/adapter-pattern.md)
+
+**"How do the 3 mesh sources work together?"**
+→ [Source Architecture](./mesh/source-architecture.md)
+
+---
+
+## Other Documents
+
+| Document | Purpose |
+|----------|---------|
+| [BuildRight Requirements](./buildright-requirements.md) | Business scope, terminology, project overview |
 
 ---
 
 **Navigation:**
 - [← Back to Docs](../README.md)
-- [ADRs](../adr/README.md)
-- [Planning](../planning/index.md)
+- [ADRs](../adr/README.md) (Architecture Decision Records)
+- [Reference](../reference/) (Technical specifications)
