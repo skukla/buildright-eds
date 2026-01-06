@@ -5,7 +5,131 @@
 
 ---
 
-## Page Layout
+## Container/Slot Architecture
+
+The Product Discovery dropin uses multiple containers, each with customizable slots:
+
+### SearchResults Container
+
+```
++-------------------------------------------------------------+
+| SearchResults Container                                      |
+| +----------------------------------------------------------+ |
+| | ProductCard Slot (repeats for each product)               | |
+| | +-------------------+  +--------------------------------+ | |
+| | | ProductCardImage  |  | ProductCardPrice               | | |
+| | | SLOT              |  | SLOT                           | | |
+| | | (buildright-      |  | (buildright-price + tier       | | |
+| | | product-image)    |  | badge)                         | | |
+| | +-------------------+  +--------------------------------+ | |
+| |                                                          | |
+| | +-------------------+  +--------------------------------+ | |
+| | | ProductCardName   |  | ProductCardActions             | | |
+| | | SLOT              |  | SLOT                           | | |
+| | | (buildright-      |  | (buildright-add-to-cart)       | | |
+| | | product-name)     |  |                                | | |
+| | +-------------------+  +--------------------------------+ | |
+| +----------------------------------------------------------+ |
++-------------------------------------------------------------+
+```
+
+### Facets Container
+
+```
++---------------------------+
+| Facets Container          |
+| +------------------------+ |
+| | SelectedFacets SLOT    | |
+| | (Clear All button)     | |
+| +------------------------+ |
+|                           |
+| +------------------------+ |
+| | FacetBucket SLOT       | |
+| | +--------------------+ | |
+| | | Category           | | |
+| | | [ ] Option 1 (12)  | | |
+| | | [ ] Option 2 (8)   | | |
+| | +--------------------+ | |
+| | +--------------------+ | |
+| | | Brand              | | |
+| | | [ ] DeWalt (15)    | | |
+| | | [ ] Makita (10)    | | |
+| | +--------------------+ | |
+| +------------------------+ |
++---------------------------+
+```
+
+### Slot Customization Summary
+
+| Container | Slot | Adobe Default | BuildRight Override | CSS Class |
+|-----------|------|---------------|---------------------|-----------|
+| **SearchResults** | ProductCardImage | `<img>` tag | Background image div | `.buildright-product-image` |
+| **SearchResults** | ProductCardName | Plain text | SKU + Name layout | `.buildright-product-name` |
+| **SearchResults** | ProductCardPrice | Complex price | Simplified + savings | `.buildright-product-price` |
+| **SearchResults** | ProductCardActions | Add to cart | View Details button | `.buildright-add-to-cart` |
+| **Facets** | SelectedFacets | Chips | Custom clear button | Native styling |
+| **Facets** | FacetBucket | Checkboxes | Custom checkbox styling | Native styling |
+
+---
+
+## Full Page Layout
+
+```
++-----------------------------------------------------------------------------+
+|                           /catalog (catalog.html)                            |
++-----------------------------------------------------------------------------+
+|                                                                             |
+|  +-----------------------------------------------------------------------+  |
+|  | header (EDS Block)                                                    |  |
+|  +-----------------------------------------------------------------------+  |
+|                                                                             |
+|  +-----------------------------------------------------------------------+  |
+|  | breadcrumbs (EDS Block)                                               |  |
+|  +-----------------------------------------------------------------------+  |
+|                                                                             |
+|  +=======================================================================+  |
+|  || product-list (EDS Block)                                            ||  |
+|  || Uses: @dropins/storefront-product-discovery (DROPIN)                ||  |
+|  ||=====================================================================||  |
+|  ||                                                                     ||  |
+|  ||  +-----------------------------+  +-----------------------------+   ||  |
+|  ||  | SearchBarInput (CONTAINER)  |  | SortBy (CONTAINER)          |   ||  |
+|  ||  +-----------------------------+  +-----------------------------+   ||  |
+|  ||                                                                     ||  |
+|  ||  +-----------------------+----------------------------------------+ ||  |
+|  ||  |                       |                                        | ||  |
+|  ||  |  Facets (CONTAINER)   |  SearchResults (CONTAINER)             | ||  |
+|  ||  |                       |                                        | ||  |
+|  ||  |  +------------------+ |  +----------------------------------+  | ||  |
+|  ||  |  | SelectedFacets   | |  | ProductCard (repeats in grid)    |  | ||  |
+|  ||  |  | SLOT             | |  | +------------------------------+ |  | ||  |
+|  ||  |  +------------------+ |  | | ProductCardImage SLOT        | |  | ||  |
+|  ||  |                       |  | | ProductCardName SLOT         | |  | ||  |
+|  ||  |  +------------------+ |  | | ProductCardPrice SLOT        | |  | ||  |
+|  ||  |  | FacetBucket SLOT | |  | | ProductCardActions SLOT      | |  | ||  |
+|  ||  |  | [ ] Option 1 (12)| |  | +------------------------------+ |  | ||  |
+|  ||  |  | [ ] Option 2 (8) | |  +----------------------------------+  | ||  |
+|  ||  |  +------------------+ |                                        | ||  |
+|  ||  |                       |                                        | ||  |
+|  ||  +-----------------------+----------------------------------------+ ||  |
+|  ||                                                                     ||  |
+|  ||  +---------------------------------------------------------------+  ||  |
+|  ||  | Pagination (CONTAINER)                                        |  ||  |
+|  ||  |  < Prev   1   [2]   3   4   ...   10   Next >                |  ||  |
+|  ||  +---------------------------------------------------------------+  ||  |
+|  ||                                                                     ||  |
+|  +=======================================================================+  |
+|                                                                             |
+|  +-----------------------------------------------------------------------+  |
+|  | footer (EDS Block)                                                    |  |
+|  +-----------------------------------------------------------------------+  |
+|                                                                             |
++-----------------------------------------------------------------------------+
+```
+
+---
+
+## Page Layout Detail
 
 The catalog page has four main areas, all powered by the Product Discovery dropin:
 

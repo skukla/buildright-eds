@@ -35,11 +35,12 @@ HIERARCHY
 
 | Dropin Package | Purpose | Status | Visualization |
 |----------------|---------|--------|---------------|
-| `@dropins/storefront-product-discovery` | Product search, filters, sorting | **Production** | [product-discovery.md](../explanations/dropins/product-discovery.md) |
-| `@dropins/storefront-auth` | Authentication UI | **Production** | [auth.md](../explanations/dropins/auth.md) |
-| `@dropins/storefront-cart` | Cart functionality | **Production** | [cart.md](../explanations/dropins/cart.md) |
-| `@dropins/storefront-checkout` | Checkout flow | **Production** | [checkout.md](../explanations/dropins/checkout.md) |
-| `@dropins/storefront-order` | Order confirmation | **Production** | [order.md](../explanations/dropins/order.md) |
+| `@dropins/storefront-product-discovery` | Product search, filters, sorting | **Production** | [product-discovery.md](../explanations/dropins/visuals/product-discovery.md) |
+| `@dropins/storefront-pdp` | Product detail display | **Production** | [pdp.md](../explanations/dropins/visuals/pdp.md) |
+| `@dropins/storefront-auth` | Authentication UI | **Production** | [auth.md](../explanations/dropins/visuals/auth.md) |
+| `@dropins/storefront-cart` | Cart functionality | **Production** | [cart.md](../explanations/dropins/visuals/cart.md) |
+| `@dropins/storefront-checkout` | Checkout flow | **Production** | [checkout.md](../explanations/dropins/visuals/checkout.md) |
+| `@dropins/storefront-order` | Order confirmation | **Production** | [order.md](../explanations/dropins/visuals/order.md) |
 
 > **Visual Documentation**: Per-dropin page architecture diagrams, slot details, and customization patterns have been moved to [docs/explanations/dropins/](../explanations/dropins/README.md) for better maintainability.
 

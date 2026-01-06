@@ -19,13 +19,14 @@ This document provides a visual inventory of all custom slots BuildRight has imp
 | **MiniCart** | Level 2 | `MiniCart` | ✅ **4 slots** | ~8 slots | **50%** |
 | **PLP (v1)** | Level 2 | `SearchResults` | ✅ **4 slots** | ~10 slots | **40%** |
 | **PLP (v2)** | Level 2 | `SearchResults` | ✅ **7 slots** | ~10 slots | **70%** |
+| **PDP** | Level 2 | `ProductDetails` | ✅ **5 slots** | ~8 slots | **63%** |
 | **Auth** | Level 1 | `SignIn`, `SignUp`, `ResetPassword` | ❌ **0 slots** | 1-2 slots each | **0%** |
 | **Cart Page** | Level 1 | `CartSummaryList` | ❌ **0 slots** | ~8 slots | **0%** |
 | **Checkout** | Level 1 | `Checkout` | ❌ **0 slots** | ~10 slots | **0%** |
 | **Order Confirmation** | Level 1 | `OrderConfirmation` | ❌ **0 slots** | ~5 slots | **0%** |
 | **User Menu** | Level 3 | None (custom HTML) | N/A | N/A | N/A |
 
-**Key Finding**: 85% of dropin implementations use **Level 1** (no custom slots), only 15% require custom slots for BuildRight-specific design.
+**Key Finding**: ~78% of dropin implementations use **Level 1** (no custom slots), ~22% require custom slots for BuildRight-specific design.
 
 ---
 
@@ -203,6 +204,65 @@ SearchResults Container Structure:
 
 ---
 
+### 📦 Product Detail Page - PDP (Level 2)
+
+**Status**: ✅ **Implemented**  
+**Package**: `@dropins/storefront-pdp`  
+**File**: `blocks/product-detail/product-detail.js`  
+**Container**: `ProductDetails`
+
+```
+ProductDetails Container Structure:
+├── Image slot ← ✅ YOU control image rendering with wrapper
+├── Title slot ← ✅ YOU control product name as H1
+├── Sku slot ← ✅ YOU control SKU display styling
+├── Price slot ← ✅ YOU control price display with currency formatting
+└── Actions slot ← ✅ YOU control add-to-cart action container
+```
+
+#### Custom Slot Implementations
+
+**1. Image Slot**
+- **Purpose**: Product image display with custom wrapper
+- **BuildRight HTML**:
+  - Wrapper div with `.buildright-pdp-image-wrapper` class
+  - `<img>` tag with `.buildright-pdp-image` class
+  - Fallback to `/images/placeholder-product.jpg` if no URL
+  - Eager loading for above-the-fold performance
+- **Why Custom**: BuildRight uses custom image wrapper styling and fallback handling
+
+**2. Title Slot**
+- **Purpose**: Product name as page heading
+- **BuildRight HTML**:
+  - Header div with `.buildright-pdp-header` class
+  - `<h1>` tag with `.buildright-pdp-name` class
+- **Why Custom**: BuildRight-specific heading styling and semantic HTML
+
+**3. Sku Slot**
+- **Purpose**: Display product SKU
+- **BuildRight HTML**:
+  - Div with `.buildright-pdp-sku` class
+  - Plain text SKU value
+- **Why Custom**: BuildRight-specific SKU styling
+
+**4. Price Slot**
+- **Purpose**: Display product price with currency formatting
+- **BuildRight HTML**:
+  - Container div with `.buildright-pdp-pricing` class
+  - Price value div with `.buildright-pdp-price-value` class
+  - Uses `Intl.NumberFormat` for currency display
+  - Handles multiple price structures (final, regular, value)
+- **Why Custom**: BuildRight-specific price styling and flexible price extraction
+
+**5. Actions Slot**
+- **Purpose**: Add-to-cart action container
+- **BuildRight HTML**:
+  - Div with `.buildright-pdp-actions` class
+  - Uses `ctx.appendChild()` to augment default actions
+- **Why Custom**: BuildRight-specific action button styling
+
+---
+
 ### 🔐 Auth Dropins (Level 1)
 
 **Status**: ✅ **Implemented**  
@@ -325,13 +385,15 @@ Adobe's default order confirmation UI is professional and complete. Configuratio
 
 ### 2️⃣ Slots Used for Custom Design (15% of implementations)
 
-**Finding**: Only 2 dropin implementations use **Level 2** (UI Container + Slots):
+**Finding**: Only 3 dropin implementations use **Level 2** (UI Container + Slots):
 - **MiniCart**: Needs BuildRight's header dropdown design
 - **PLP**: Needs BuildRight's product tile design (tier badges, manufacturer, grade, SKU)
+- **PDP**: Needs BuildRight's product detail layout (custom image wrapper, pricing format)
 
 **Why**: BuildRight's design significantly differs from Adobe's default:
 - **MiniCart**: Dropdown in header requires close button and custom layout
 - **PLP**: Product tiles show tier badges, manufacturer, grade, and prominent SKU
+- **PDP**: Custom image gallery, persona-aware pricing, and tabbed content layout
 
 **Pattern**: Use slots when BuildRight's design truly differs from default, not for minor styling.
 
@@ -536,9 +598,9 @@ When considering removing custom slots:
 
 | Pattern Level | Implementations | Percentage | Examples |
 |---------------|----------------|------------|----------|
-| **Level 1** (Config only) | 6 | **85%** | Auth, Cart, Checkout, Order |
-| **Level 2** (Config + Slots) | 2 | **15%** | MiniCart, PLP |
-| **Level 3** (Custom HTML + APIs) | 1 | **Special** | User Menu |
+| **Level 1** (Config only) | 5 | **56%** | Auth, Cart, Checkout, Order |
+| **Level 2** (Config + Slots) | 3 | **33%** | MiniCart, PLP, PDP |
+| **Level 3** (Custom HTML + APIs) | 1 | **11%** | User Menu |
 
 ---
 
@@ -546,10 +608,10 @@ When considering removing custom slots:
 
 | Metric | Value |
 |--------|-------|
-| **Total dropin implementations** | 8 |
-| **Implementations using slots** | 2 (25%) |
-| **Implementations NOT using slots** | 6 (75%) |
-| **Average slots used (when using slots)** | 5.5 slots |
+| **Total dropin implementations** | 9 |
+| **Implementations using slots** | 3 (33%) |
+| **Implementations NOT using slots** | 5 (56%) |
+| **Average slots used (when using slots)** | 5.3 slots |
 | **Highest slot usage** | 70% (PLP v2: 7/10 slots) |
 | **Lowest slot usage** | 40% (PLP v1: 4/10 slots) |
 
@@ -559,8 +621,8 @@ When considering removing custom slots:
 
 BuildRight's dropin strategy is **pragmatic and maintainable**:
 
-✅ **Use Adobe's default UI** for 85% of implementations (auth, cart, checkout)  
-✅ **Customize via slots** only where design truly differs (MiniCart, PLP)  
+✅ **Use Adobe's default UI** for ~56% of implementations (auth, cart, checkout)  
+✅ **Customize via slots** only where design truly differs (MiniCart, PLP, PDP)  
 ✅ **Start minimal**, add slots only when necessary  
 ✅ **Prioritize configuration options** over custom slots when possible
 

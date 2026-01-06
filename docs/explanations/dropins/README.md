@@ -40,17 +40,19 @@ DROPIN (the package)
 | Page | Dropin | What It Does |
 |------|--------|--------------|
 | Catalog (`/catalog`) | Product Discovery | Product grid, filters, sorting, search |
+| Product Detail (`/pages/product-detail.html`) | PDP | Product details, images, pricing, add-to-cart |
 | Cart (`/cart`) | Cart | Shopping cart display and management |
 | Checkout (`/checkout`) | Checkout | Address forms, shipping, payment, order placement |
 | Login (`/login`) | Auth | Sign in, sign up, password reset |
 | Order Confirmation | Order | Order details after purchase |
 
 **Detailed documentation for each:**
-- [Product Discovery](./product-discovery.md) - How the catalog page works
-- [Cart](./cart.md) - How the shopping cart works
-- [Checkout](./checkout.md) - How the checkout flow works
-- [Auth](./auth.md) - How login and registration work
-- [Order](./order.md) - How order confirmation works
+- [Product Discovery](./visuals/product-discovery.md) - How the catalog page works
+- [PDP](./visuals/pdp.md) - How the product detail page works
+- [Cart](./visuals/cart.md) - How the shopping cart works
+- [Checkout](./visuals/checkout.md) - How the checkout flow works
+- [Auth](./visuals/auth.md) - How login and registration work
+- [Order](./visuals/order.md) - How order confirmation works
 
 ---
 
