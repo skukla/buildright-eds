@@ -108,22 +108,28 @@ async function handleCustomerAuthenticated() {
     _currentCustomer = customer;
     console.log('[Auth] Customer:', customer.email, customer.firstName);
 
-    // Initialize persona by email
+    // Initialize persona by email - this maps Commerce customer to BuildRight persona
+    let persona = null;
     try {
-      const persona = await initializePersonaByEmail(customer.email);
-      console.log('[Auth] Persona:', persona?.name || 'default');
+      persona = await initializePersonaByEmail(customer.email);
+      console.log('[Auth] Persona:', persona?.id, persona?.name || 'default');
     } catch (error) {
       console.warn('[Auth] Persona lookup failed:', error.message);
     }
 
     // Dispatch event for UI updates
+    // Include persona data for personalization (fragments, UI customization)
     window.dispatchEvent(new CustomEvent('auth:login', {
       detail: {
         user: {
           id: customer.id,
           email: customer.email,
           name: `${customer.firstName || ''} ${customer.lastName || ''}`.trim(),
-          customerGroup: customer.groupUid
+          customerGroup: customer.groupUid,
+          personaId: persona?.id || null,
+          personaName: persona?.name || null,
+          roleType: persona?.roleType || 'default',
+          useCase: persona?.useCase || 'default'
         }
       }
     }));

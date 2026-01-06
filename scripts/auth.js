@@ -161,7 +161,7 @@ class AuthService {
   
   /**
    * Production mode: Use Commerce Auth Dropin
-   * Initializes dropins and checks for existing session
+   * Initializes dropins and waits for auth state to be fully resolved
    * @private
    */
   async _initializeProductionMode() {
@@ -174,31 +174,27 @@ class AuthService {
     
     try {
       // Wait for dropins to be initialized
-      const { waitForDropins, areDropinsInitialized } = await import('./initializers/index.js');
+      const { waitForDropins, areDropinsInitialized, waitForAuthResolved } = await import('./initializers/index.js');
       
       if (!areDropinsInitialized()) {
         console.log('[Auth] Waiting for dropins to initialize...');
         await waitForDropins();
       }
       
-      // Check if user is already authenticated via cookies
-      const { isAuthenticated, getCurrentCustomer } = await import('./initializers/auth.js');
+      // Wait for auth state to be fully resolved (including persona fetch)
+      // This ensures personalization has access to complete user data
+      console.log('[Auth] Waiting for auth state to resolve...');
+      const user = await waitForAuthResolved();
       
-      if (isAuthenticated()) {
-        const customer = getCurrentCustomer();
-        if (customer) {
-          this.currentUser = {
-            id: customer.id,
-            name: `${customer.firstname || ''} ${customer.lastname || ''}`.trim(),
-            email: customer.email,
-            customerGroup: customer.group_id,
-            isDropinUser: true,
-            commerceUser: customer
-          };
-          console.log('[Auth] Restored Commerce session:', this.currentUser.name);
-        }
+      if (user) {
+        // User authenticated - set from auth:login event data
+        this.currentUser = {
+          ...user,
+          isDropinUser: true
+        };
+        console.log('[Auth] Session restored:', this.currentUser.name, 'persona:', this.currentUser.personaId);
       } else {
-        console.log('[Auth] No active Commerce session');
+        console.log('[Auth] No active Commerce session (guest)');
       }
     } catch (error) {
       console.error('[Auth] Failed to initialize production mode:', error);

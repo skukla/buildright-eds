@@ -12,6 +12,8 @@ import { loadConfig } from '../site-config.js';
 // Track initialization state
 let _initialized = false;
 let _initPromise = null;
+let _authResolvedPromise = null;
+let _resolveAuth = null;
 
 /**
  * Check if Commerce Dropins should be enabled
@@ -320,6 +322,32 @@ export async function initializeDropins() {
         }
       }
 
+      // Set up auth resolution promise BEFORE mount
+      // This allows personalization to wait for auth state
+      const hasAuthToken = loadAuth;
+      if (hasAuthToken) {
+        _authResolvedPromise = new Promise((resolve) => {
+          _resolveAuth = resolve;
+          // Listen for auth:login event (dispatched by auth.js after persona is fetched)
+          const onAuthLogin = (event) => {
+            console.log('[Dropins] Auth resolved with persona:', event.detail?.user?.personaId);
+            window.removeEventListener('auth:login', onAuthLogin);
+            resolve(event.detail?.user || null);
+          };
+          window.addEventListener('auth:login', onAuthLogin);
+          
+          // Timeout fallback - don't block forever if auth fails
+          setTimeout(() => {
+            window.removeEventListener('auth:login', onAuthLogin);
+            console.warn('[Dropins] Auth resolution timed out');
+            resolve(null);
+          }, 5000);
+        });
+      } else {
+        // No auth token - resolve immediately with null
+        _authResolvedPromise = Promise.resolve(null);
+      }
+
       // Mount all initializers
       initializers.mount();
 
@@ -360,3 +388,18 @@ export function waitForDropins() {
   });
 }
 
+/**
+ * Wait for auth state to be resolved
+ * Returns the authenticated user (with personaId) or null for guest
+ * 
+ * This should be called AFTER waitForDropins() to ensure auth events can fire.
+ * The promise resolves when:
+ * - auth:login event fires (user authenticated with persona)
+ * - Timeout occurs (fallback to guest)
+ * - No auth token present (immediate resolve with null)
+ * 
+ * @returns {Promise<Object|null>} User object with personaId or null
+ */
+export function waitForAuthResolved() {
+  return _authResolvedPromise || Promise.resolve(null);
+}
