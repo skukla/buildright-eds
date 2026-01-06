@@ -56,41 +56,35 @@ async function getEndpoint() {
   return _meshEndpoint;
 }
 
+// In-memory persona headers - set once per page load, no sessionStorage needed
+let _personaHeaders = {};
+let _currentPersona = null;
+
 /**
- * Get persona headers from session storage
- * These headers are required for product queries
+ * Get persona headers for mesh requests
  * Headers are set by initializePersona() after fetching from mesh
- * 
- * @throws {Error} If headers are not set (must call initializePersona first)
  */
 export function getPersonaHeaders() {
-  try {
-    const personaData = sessionStorage.getItem('buildright_persona_headers');
-    if (personaData) {
-      return JSON.parse(personaData);
-    }
-  } catch (e) {
-    console.warn('[MeshClient] Failed to parse persona headers:', e);
-  }
-  
-  // Return empty object instead of throwing (headers may not be set yet)
-  return {};
+  return _personaHeaders;
 }
 
 /**
- * Set persona headers in session storage
- * Call this after fetching persona info
- * 
+ * Get current persona data
+ */
+export function getCurrentPersona() {
+  return _currentPersona;
+}
+
+/**
+ * Set persona headers (in-memory only)
  * @param {Object} headers - { catalogViewId, priceBookId }
  */
 export function setPersonaHeaders(headers) {
-  // Use AC-* headers (what the mesh resolver expects)
-  const meshHeaders = {
+  _personaHeaders = {
     'AC-View-Id': headers.catalogViewId,
     'AC-Price-Book-Id': headers.priceBookId
   };
-  sessionStorage.setItem('buildright_persona_headers', JSON.stringify(meshHeaders));
-  console.log('[MeshClient] Persona headers set:', meshHeaders);
+  console.log('[MeshClient] Persona headers set:', _personaHeaders);
 
   // Notify dropins to update their headers
   window.dispatchEvent(new CustomEvent('personaHeadersUpdated', {
@@ -177,111 +171,60 @@ export async function meshQuery(query, variables = {}, options = {}) {
 /**
  * Fetch persona and set headers
  * Call this on app init or login
- * 
- * Uses sessionStorage caching to avoid redundant mesh queries.
- * Force refresh by passing { forceRefresh: true } in options.
- * 
+ *
+ * Fetches fresh on each page load - no caching needed (fast query)
+ *
  * @param {string} customerGroupId - Customer group ID from Commerce
- * @param {Object} options - { forceRefresh: boolean }
  * @returns {Promise<Object>} Persona data
  */
-export async function initializePersona(customerGroupId, options = {}) {
-  const { forceRefresh = false } = options;
-  
-  // Check cache first (unless force refresh requested)
-  if (!forceRefresh) {
-    try {
-      const cachedPersona = sessionStorage.getItem('buildright_persona');
-      const cachedHeaders = sessionStorage.getItem('buildright_persona_headers');
-      
-      if (cachedPersona && cachedHeaders) {
-        const persona = JSON.parse(cachedPersona);
-        console.log('[MeshClient] Using cached persona:', persona.name);
-        return persona;
-      }
-    } catch (e) {
-      console.warn('[MeshClient] Cache read failed, fetching fresh:', e);
-    }
-  }
-  
-  console.log('[MeshClient] Fetching persona from mesh for:', customerGroupId);
-  
+export async function initializePersona(customerGroupId) {
+  console.log('[MeshClient] Fetching persona for customer group:', customerGroupId);
+
   const data = await meshQuery(queries.GET_PERSONA, { customerGroupId }, {
-    includePersonaHeaders: false // Don't need persona headers to GET persona
+    includePersonaHeaders: false
   });
-  
+
   const persona = data.BuildRight_personaForCustomer;
-  
+
   if (persona) {
-    // Store persona headers for future requests
+    _currentPersona = persona;
     setPersonaHeaders({
       catalogViewId: persona.catalogViewId,
       priceBookId: persona.priceBookId
     });
-    
-    // Also store full persona info
-    sessionStorage.setItem('buildright_persona', JSON.stringify(persona));
-    
-    console.log('[MeshClient] Persona fetched and cached:', persona.name);
+    console.log('[MeshClient] Persona initialized:', persona.name);
   }
-  
+
   return persona;
 }
 
 /**
  * Initialize persona by email address
- * This is the recommended approach - calls the persona action which
- * internally decides whether to use JSON or Commerce data source.
- * 
+ * Fetches fresh on each page load - no caching needed (fast query)
+ *
  * @param {string} email - Customer email address
- * @param {Object} options - Options { forceRefresh: boolean }
  * @returns {Promise<Object>} Persona data
  */
-export async function initializePersonaByEmail(email, options = {}) {
-  const { forceRefresh = false } = options;
-  
-  // Check cache first (unless force refresh requested)
-  if (!forceRefresh) {
-    try {
-      const cachedPersona = sessionStorage.getItem('buildright_persona');
-      const cachedHeaders = sessionStorage.getItem('buildright_persona_headers');
-      const cachedEmail = sessionStorage.getItem('buildright_persona_email');
-      
-      // Only use cache if it's for the same email
-      if (cachedPersona && cachedHeaders && cachedEmail === email) {
-        const persona = JSON.parse(cachedPersona);
-        console.log('[MeshClient] Using cached persona for:', email, '-', persona.name);
-        return persona;
-      }
-    } catch (e) {
-      console.warn('[MeshClient] Cache read failed, fetching fresh:', e);
-    }
-  }
-  
+export async function initializePersonaByEmail(email) {
   console.log('[MeshClient] Fetching persona by email:', email);
-  
+
   const data = await meshQuery(queries.GET_PERSONA_BY_EMAIL, { email }, {
-    includePersonaHeaders: false // Don't need persona headers to GET persona
+    includePersonaHeaders: false
   });
-  
+
   const persona = data.BuildRight_personaByEmail;
-  
+
   if (persona) {
-    // Store persona headers for future requests
+    _currentPersona = persona;
     setPersonaHeaders({
       catalogViewId: persona.catalogViewId,
       priceBookId: persona.priceBookId
     });
-    
-    // Store full persona info and email for cache validation
-    sessionStorage.setItem('buildright_persona', JSON.stringify(persona));
-    sessionStorage.setItem('buildright_persona_email', email);
-    
-    console.log('[MeshClient] Persona fetched and cached:', persona.name);
+    console.log('[MeshClient] Persona initialized:', persona.name);
   } else {
     console.warn('[MeshClient] No persona found for email:', email);
   }
-  
+
   return persona;
 }
 

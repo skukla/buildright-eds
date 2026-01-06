@@ -1,165 +1,129 @@
 /**
  * Auth Dropin Initializer
- * 
+ *
  * Initializes the Commerce Auth dropin and bridges it with the BuildRight
  * persona system for ACO catalog view/price book resolution.
- * 
+ *
+ * Simplified architecture:
+ * - Auth token cookie is source of truth (managed by Commerce dropin)
+ * - Persona fetched fresh on each page load (fast mesh query, no caching)
+ * - In-memory state only, no sessionStorage for persona
+ *
  * @module scripts/initializers/auth
  */
 
 import { events } from '@dropins/tools/event-bus.js';
-import { initializeMeshForEmail } from '../services/mesh-integration.js';
-import { catalogService } from '../services/catalog-service.js';
+import { setFetchGraphQlHeader } from '@dropins/tools/fetch-graphql.js';
+import { initializePersona, initializePersonaByEmail } from '../services/mesh-client.js';
 
-// Track auth state
+// In-memory auth state
 let _currentCustomer = null;
-let _hasBeenAuthenticated = false; // Track if user was ever authenticated this session
+let _hasBeenAuthenticated = false;
 
 /**
  * Initialize the Auth Dropin
  * @param {Object} initializers - Dropin initializers from @dropins/tools
  */
 export async function initializeAuthDropin(initializers) {
-  console.log('[Auth Dropin] Initializing...');
-  
+  console.log('[Auth] Initializing...');
+
   try {
-    // Import auth dropin API
-    const { initialize, getCustomerData } = await import('@dropins/storefront-auth/api.js');
-    
-    // Register auth dropin with initializers
+    const { initialize } = await import('@dropins/storefront-auth/api.js');
+
     initializers.register(initialize, {
-      langDefinitions: {
-        default: {
-          // Custom labels can go here
-        }
-      }
+      langDefinitions: { default: {} }
     });
-    
-    // Listen for authentication events
+
     setupAuthEventListeners();
-    
-    // CRITICAL: Initialize guest persona for anonymous users
-    // This ensures that EVERY page has persona headers set before any queries run
     await initializeGuestPersonaIfNeeded();
-    
-    console.log('[Auth Dropin] Registered');
-    
+
+    console.log('[Auth] Initialized');
   } catch (error) {
-    console.error('[Auth Dropin] Failed to initialize:', error);
+    console.error('[Auth] Failed to initialize:', error);
     throw error;
   }
 }
 
 /**
- * Initialize guest persona if no persona is currently set
- * This ensures anonymous users can browse the catalog
+ * Initialize guest persona if no auth token present
  */
 async function initializeGuestPersonaIfNeeded() {
   try {
-    // Check if persona headers are already set (from cache or previous session)
-    const existingHeaders = sessionStorage.getItem('buildright_persona_headers');
-    if (existingHeaders) {
-      console.log('[Auth Dropin] Persona headers already set, skipping guest initialization');
-      return;
-    }
-    
-    // Check if user is authenticated via token
     const token = getAuthTokenFromCookie();
     if (token) {
-      console.log('[Auth Dropin] Auth token found, skipping guest initialization (will authenticate)');
+      console.log('[Auth] Auth token found, will authenticate');
       return;
     }
-    
-    // Initialize guest persona (customer group 0 = BuildRight-Default catalog view)
-    console.log('[Auth Dropin] Initializing guest persona for anonymous user...');
-    const { initializePersona } = await import('../services/mesh-client.js');
-    await initializePersona('0'); // Customer group 0 = guest
-    console.log('[Auth Dropin] Guest persona initialized');
-    
+
+    console.log('[Auth] No auth token, initializing guest persona...');
+    await initializePersona('0');
   } catch (error) {
-    console.error('[Auth Dropin] Failed to initialize guest persona:', error);
-    // Don't throw - allow page to continue, but queries may fail
+    console.error('[Auth] Failed to initialize guest persona:', error);
   }
 }
 
 /**
- * Set up event listeners for auth events
+ * Set up auth event listeners
  */
 function setupAuthEventListeners() {
-  // Listen for authenticated event
-  // Note: { eager: true } fires immediately with current state on registration
   events.on('authenticated', async (isAuthenticated) => {
-    console.log('[Auth Dropin] Authentication state changed:', isAuthenticated);
+    console.log('[Auth] Authentication state:', isAuthenticated);
 
     if (isAuthenticated) {
       _hasBeenAuthenticated = true;
       await handleCustomerAuthenticated();
-    } else {
-      // Only handle logout if user was previously authenticated
-      // This prevents clearing persona cache on initial page load
-      // when eager:true fires with isAuthenticated=false
-      if (_hasBeenAuthenticated) {
-        _hasBeenAuthenticated = false;
-        await handleCustomerLoggedOut();
-      } else {
-        console.log('[Auth Dropin] Initial load (not authenticated), skipping logout handler');
-      }
+    } else if (_hasBeenAuthenticated) {
+      _hasBeenAuthenticated = false;
+      await handleCustomerLoggedOut();
     }
   }, { eager: true });
-
-  console.log('[Auth Dropin] Event listeners registered');
 }
 
 /**
  * Handle customer authentication
- * Bridges Commerce auth with BuildRight persona system
  */
 async function handleCustomerAuthenticated() {
   try {
-    // Get customer data from Commerce
     const { getCustomerData } = await import('@dropins/storefront-auth/api.js');
-    
-    // Get auth token from cookie
+
     const token = getAuthTokenFromCookie();
     if (!token) {
-      console.warn('[Auth Dropin] No auth token found');
+      console.warn('[Auth] No auth token found');
       return;
     }
-    
+
+    // Set Authorization header for dropin GraphQL requests
+    setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
+
     const customer = await getCustomerData(token);
     _currentCustomer = customer;
-    
-    console.log('[Auth Dropin] Customer authenticated:', customer?.email);
-    
-    // Bridge to BuildRight persona system
-    // This calls the persona action via API Mesh to get ACO context
+
+    console.log('[Auth] Customer:', customer?.email, customer?.firstName);
+
+    // Initialize persona by email
     if (customer?.email) {
       try {
-        const meshData = await initializeMeshForEmail(customer.email);
-        console.log('[Auth Dropin] Persona initialized:', meshData?.persona?.name || 'default');
-        
-        // Store persona info in sessionStorage for other modules
-        sessionStorage.setItem('buildright_persona_email', customer.email);
-        
-      } catch (personaError) {
-        console.warn('[Auth Dropin] Persona lookup failed, using default:', personaError.message);
+        const persona = await initializePersonaByEmail(customer.email);
+        console.log('[Auth] Persona:', persona?.name || 'default');
+      } catch (error) {
+        console.warn('[Auth] Persona lookup failed:', error.message);
       }
     }
-    
-    // Dispatch event for BuildRight UI updates
+
+    // Dispatch event for UI updates
     window.dispatchEvent(new CustomEvent('auth:login', {
-      detail: { 
+      detail: {
         user: {
           id: customer?.id,
           email: customer?.email,
-          name: `${customer?.firstname || ''} ${customer?.lastname || ''}`.trim(),
-          customerGroup: customer?.group_id
+          name: `${customer?.firstName || ''} ${customer?.lastName || ''}`.trim(),
+          customerGroup: customer?.groupUid
         }
       }
     }));
-    
+
   } catch (error) {
-    console.error('[Auth Dropin] Failed to handle authentication:', error);
+    console.error('[Auth] Authentication failed:', error);
   }
 }
 
@@ -167,31 +131,21 @@ async function handleCustomerAuthenticated() {
  * Handle customer logout
  */
 async function handleCustomerLoggedOut() {
-  console.log('[Auth Dropin] Customer logged out');
-  
+  console.log('[Auth] Customer logged out');
+
   _currentCustomer = null;
-  
-  // Clear persona cache
-  sessionStorage.removeItem('buildright_persona');
-  sessionStorage.removeItem('buildright_persona_headers');
-  sessionStorage.removeItem('buildright_persona_email');
 
   // Clear customer context (company/location for Kevin persona)
   localStorage.removeItem('buildright_customer_context');
-  
-  // Reset catalog service first
-  catalogService.reset();
-  
-  // Reinitialize catalog service with guest persona (customer group 0)
-  // This ensures the site continues to work after logout
+
+  // Reinitialize guest persona
   try {
-    await catalogService.initialize('guest');
-    console.log('[Auth Dropin] Reinitialized guest persona after logout');
+    await initializePersona('0');
+    console.log('[Auth] Guest persona reinitialized');
   } catch (error) {
-    console.error('[Auth Dropin] Failed to reinitialize guest persona:', error);
+    console.error('[Auth] Failed to reinitialize guest persona:', error);
   }
-  
-  // Dispatch event for BuildRight UI updates
+
   window.dispatchEvent(new CustomEvent('auth:logout', {
     detail: { previousUser: null }
   }));
@@ -199,7 +153,6 @@ async function handleCustomerLoggedOut() {
 
 /**
  * Get auth token from cookie
- * @returns {string|null}
  */
 function getAuthTokenFromCookie() {
   const cookies = document.cookie.split(';');
@@ -214,32 +167,27 @@ function getAuthTokenFromCookie() {
 
 /**
  * Get current authenticated customer
- * @returns {Object|null}
  */
 export function getCurrentCustomer() {
   return _currentCustomer;
 }
 
 /**
- * Check if a customer is currently authenticated
- * @returns {boolean}
+ * Check if customer is authenticated
  */
 export function isAuthenticated() {
   return _currentCustomer !== null;
 }
 
 /**
- * Programmatically trigger logout
+ * Trigger logout
  */
 export async function logout() {
   try {
     const { revokeCustomerToken } = await import('@dropins/storefront-auth/api.js');
     await revokeCustomerToken();
-    // Event listener will handle the rest
   } catch (error) {
-    console.error('[Auth Dropin] Logout failed:', error);
-    // Force local logout even if API fails
+    console.error('[Auth] Logout failed:', error);
     await handleCustomerLoggedOut();
   }
 }
-
