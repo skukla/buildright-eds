@@ -319,28 +319,6 @@ export function getPersonasByGroup(customerGroup) {
 }
 
 /**
- * Check if persona has feature
- * @param {string} personaId - Persona ID
- * @param {string} feature - Feature key
- * @returns {boolean} True if persona has feature enabled
- */
-export function hasFeature(personaId, feature) {
-  const persona = getPersona(personaId);
-  return persona?.features?.[feature] === true;
-}
-
-/**
- * Get persona preference
- * @param {string} personaId - Persona ID
- * @param {string} prefKey - Preference key
- * @returns {*} Preference value or undefined
- */
-export function getPreference(personaId, prefKey) {
-  const persona = getPersona(personaId);
-  return persona?.preferences?.[prefKey];
-}
-
-/**
  * Get persona attributes (for ACO policy filtering)
  * @param {string} personaId - Persona ID
  * @returns {Object} Persona attributes object

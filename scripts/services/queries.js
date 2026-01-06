@@ -61,25 +61,7 @@ export const GET_PERSONA_BY_EMAIL = `
       company
       region
       primaryWarehouse
-      features {
-        templates
-        bomGeneration
-        phaseOrdering
-        repeatOrdering
-        projectWizard
-        deckBuilder
-        restockDashboard
-        multiLocation
-      }
-      preferences {
-        defaultView
-        showFloorPlans
-        showAnalytics
-        showEducationalContent
-        guidedMode
-        showVelocity
-        priorityIndicators
-      }
+      sections
     }
   }
 `;

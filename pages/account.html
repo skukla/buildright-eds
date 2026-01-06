@@ -325,7 +325,7 @@
       const cards = [];
       
       // Persona-specific first card
-      if (persona?.features?.templates) {
+      if (persona?.sections?.includes('builds')) {
         // Sarah: My Builds card - navigates to builds section
         cards.push(`
           <a href="#builds" class="card quick-action-nav-item" data-section="builds">
@@ -345,7 +345,7 @@
             </div>
           </a>
         `);
-      } else if (persona?.features?.restockDashboard) {
+      } else if (persona?.sections?.includes('restock')) {
         // Kevin: Restock Dashboard card - navigates to external dashboard.html
         cards.push(`
           <a href="/pages/dashboard.html" class="card quick-action-card">
@@ -401,8 +401,8 @@
       const personaNavContainer = document.getElementById('persona-nav-items');
       const navItems = [];
       
-      // Sarah: My Builds & Deliveries (Phase 6A)
-      if (persona?.features?.templates) {
+      // Sarah: My Builds & Deliveries
+      if (persona?.sections?.includes('builds')) {
         navItems.push(`
           <a href="#builds" class="account-nav-item" data-section="builds">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -412,6 +412,9 @@
             My Builds
           </a>
         `);
+      }
+      
+      if (persona?.sections?.includes('deliveries')) {
         navItems.push(`
           <a href="#deliveries" class="account-nav-item" data-section="deliveries">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -426,7 +429,7 @@
       }
       
       // Kevin: Restock Dashboard (links to /pages/dashboard.html)
-      if (persona?.features?.restockDashboard) {
+      if (persona?.sections?.includes('restock')) {
         navItems.push(`
           <a href="/pages/dashboard.html" class="account-nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -440,7 +443,7 @@
       }
       
       // Marcus/Lisa: Project Builder
-      if (persona?.features?.projectWizard || persona?.features?.packageBuilder) {
+      if (persona?.sections?.includes('projects')) {
         navItems.push(`
           <a href="builder.html" class="account-nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -544,7 +547,7 @@
       const persona = currentUser?.persona;
       
       // Only load builds for Sarah
-      if (!persona?.features?.templates) return;
+      if (!persona?.sections?.includes('builds')) return;
       
       const builds = [
         {
@@ -670,7 +673,7 @@
       const persona = currentUser?.persona;
       
       // Only load deliveries for Sarah
-      if (!persona?.features?.templates) return;
+      if (!persona?.sections?.includes('deliveries')) return;
       
       const deliveries = [
         {
@@ -820,7 +823,7 @@
       }
       
       // For Sarah, add build/phase context to orders
-      if (persona?.features?.templates) {
+      if (persona?.sections?.includes('builds')) {
         // Mock orders with build context
         const buildsOrders = [
           {

@@ -196,7 +196,7 @@ class AuthService {
         };
         console.log('[Auth] Session restored:', this.currentUser.name, 
           'persona:', user.persona?.id || 'unknown',
-          'features:', user.persona?.features ? 'loaded' : 'none');
+          'sections:', user.persona?.sections?.length || 0);
       } else {
         console.log('[Auth] No active Commerce session (guest)');
       }
@@ -416,31 +416,17 @@ class AuthService {
   }
   
   /**
-   * Check if user has feature access
+   * Check if user has a specific dashboard section
    * 
-   * @param {string} feature - Feature key
-   * @returns {boolean} True if user has access
+   * @param {string} section - Section name (e.g., 'builds', 'projects', 'restock', 'locations')
+   * @returns {boolean} True if user has access to this section
    */
-  hasFeature(feature) {
-    if (!this.currentUser?.persona) {
+  hasSection(section) {
+    if (!this.currentUser?.persona?.sections) {
       return false;
     }
     
-    return this.currentUser.persona.features[feature] === true;
-  }
-  
-  /**
-   * Get user preference
-   * 
-   * @param {string} prefKey - Preference key
-   * @returns {*} Preference value or undefined
-   */
-  getPreference(prefKey) {
-    if (!this.currentUser?.persona) {
-      return undefined;
-    }
-    
-    return this.currentUser.persona.preferences[prefKey];
+    return this.currentUser.persona.sections.includes(section);
   }
   
   /**

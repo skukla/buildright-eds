@@ -54,7 +54,8 @@ class DashboardRouter {
    */
   _getDefaultView() {
     const persona = authService.getPersona();
-    const defaultView = persona?.preferences?.defaultView || 'overview';
+    // Use persona's useCase as the default view (templates, projects, diy, restock)
+    const defaultView = persona?.useCase || 'overview';
     
     console.log('[Dashboard] Default view:', defaultView);
     return defaultView;
