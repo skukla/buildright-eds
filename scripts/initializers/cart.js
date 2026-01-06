@@ -57,38 +57,49 @@ function setupCartEventListeners() {
     _cartInitialized = true;
     updateCartBadge();
   }, { eager: true });
-  
+
+  // Listen for dropin errors - these can occur during cart operations
+  // when Commerce returns malformed data (e.g., null Money.value on empty carts)
+  events.on('cart/error', (error) => {
+    console.warn('[Cart Dropin] Cart error (non-fatal):', error?.message || error);
+  }, { eager: true });
+
   // Listen for cart updates
   events.on('cart/updated', (cart) => {
     console.log('[Cart Dropin] Cart updated, items:', cart?.items?.length || 0);
     _cartData = cart;
     updateCartBadge();
   }, { eager: true });
-  
+
   // Listen for cart data
   events.on('cart/data', (cart) => {
     _cartData = cart;
     updateCartBadge();
   }, { eager: true });
-  
+
+  // Listen for cart merge success
+  events.on('cart/merged', ({ oldCartItems }) => {
+    console.log('[Cart Dropin] Cart merged, previous items:', oldCartItems?.length || 0);
+  }, { eager: true });
+
   // Listen for product added
   events.on('cart/product/added', () => {
     console.log('[Cart Dropin] Product added to cart');
     showCartNotification('added');
   }, { eager: true });
-  
+
   // Listen for product updated
   events.on('cart/product/updated', () => {
     console.log('[Cart Dropin] Product updated in cart');
   }, { eager: true });
-  
+
   // Listen for cart reset (after order placed)
   events.on('cart/reset', () => {
     console.log('[Cart Dropin] Cart reset');
     _cartData = null;
     updateCartBadge();
   }, { eager: true });
-  
+
   console.log('[Cart Dropin] Event listeners registered');
 }
 

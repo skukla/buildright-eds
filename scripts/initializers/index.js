@@ -23,6 +23,63 @@ export async function shouldUseDropins() {
 }
 
 /**
+ * Get auth token from cookie
+ * @returns {string|null}
+ */
+function getAuthTokenFromCookie() {
+  try {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'auth_dropin_user_token') {
+        return decodeURIComponent(value);
+      }
+    }
+  } catch (error) {
+    console.warn('[Dropins] Error reading auth token:', error.message);
+  }
+  return null;
+}
+
+/**
+ * Clear invalid auth token cookie
+ * Called when Commerce returns null customer (token expired/invalid)
+ */
+function clearInvalidAuthToken() {
+  document.cookie = 'auth_dropin_user_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+  console.log('[Dropins] Cleared invalid auth token cookie');
+}
+
+/**
+ * Get guest cart ID from cookie
+ * The cart dropin stores guest cart ID in this cookie
+ * @returns {string|null}
+ */
+function getGuestCartIdCookie() {
+  try {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'DROPIN__CART__CART-ID') {
+        return decodeURIComponent(value);
+      }
+    }
+  } catch (error) {
+    // Ignore parsing errors
+  }
+  return null;
+}
+
+/**
+ * Clear stale guest cart cookie
+ * Called when user is authenticated to prevent merge with invalid cart
+ */
+function clearGuestCartCookie() {
+  document.cookie = 'DROPIN__CART__CART-ID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+  console.log('[Dropins] Cleared stale guest cart cookie');
+}
+
+/**
  * Check if auth dropin should be initialized based on auth token presence.
  *
  * Returns true for authenticated users (auth token cookie exists),
@@ -34,29 +91,13 @@ export async function shouldUseDropins() {
  * @returns {boolean} true if auth dropin should be loaded
  */
 export function shouldInitializeAuth() {
-  try {
-    const cookies = document.cookie;
-    if (!cookies) {
-      console.log('[Dropins] No auth token - guest user, skipping auth dropin');
-      return false;
-    }
-
-    const hasAuthToken = cookies.split(';').some((cookie) =>
-      cookie.trim().startsWith('auth_dropin_user_token=')
-    );
-
-    if (hasAuthToken) {
-      console.log('[Dropins] Auth token found - user is authenticated');
-      return true;
-    }
-
-    console.log('[Dropins] No auth token - guest user, skipping auth dropin');
-    return false;
-  } catch (error) {
-    // Handle malformed cookies gracefully - default to guest user behavior
-    console.warn('[Dropins] Error checking auth token:', error.message);
-    return false;
+  const token = getAuthTokenFromCookie();
+  if (token) {
+    console.log('[Dropins] Auth token found - user is authenticated');
+    return true;
   }
+  console.log('[Dropins] No auth token - guest user, skipping auth dropin');
+  return false;
 }
 
 /**
@@ -200,13 +241,91 @@ export async function initializeDropins() {
       }
 
       await Promise.all(initPromises);
-      
+
+      // CRITICAL: Validate token BEFORE setting header and mounting
+      // Cart dropin immediately tries authenticated operations on mount
+      // If token is invalid, Commerce returns partial data with null Money.value
+      let tokenValid = false;
+      if (loadAuth) {
+        const token = getAuthTokenFromCookie();
+        if (token) {
+          console.log('[Dropins] Validating auth token before mount...');
+
+          try {
+            // Validate token with direct GraphQL query (dropin API not ready before mount)
+            const customerQuery = `query { customer { email firstname } }`;
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                'Store': config.commerceStoreCode || 'default',
+              },
+              body: JSON.stringify({ query: customerQuery }),
+            });
+
+            const result = await response.json();
+            const customer = result?.data?.customer;
+
+            if (customer?.email) {
+              console.log('[Dropins] Token valid for:', customer.email);
+              tokenValid = true;
+              // Set the Authorization header for dropins
+              const { setFetchGraphQlHeader } = await import('@dropins/tools/fetch-graphql.js');
+              setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
+
+              // CRITICAL: Validate guest cart BEFORE mount to prevent merge errors
+              // If guest cart is stale/invalid, Commerce returns null Money.value
+              // which crashes the dropin. Only clear if cart is truly invalid.
+              const guestCartId = getGuestCartIdCookie();
+              if (guestCartId) {
+                console.log('[Dropins] Validating guest cart before merge:', guestCartId);
+                try {
+                  const cartQuery = `query($id: String!) { cart(cart_id: $id) { id total_quantity } }`;
+                  const cartResponse = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Store': config.commerceStoreCode || 'default',
+                    },
+                    body: JSON.stringify({
+                      query: cartQuery,
+                      variables: { id: guestCartId },
+                    }),
+                  });
+                  const cartResult = await cartResponse.json();
+                  const cart = cartResult?.data?.cart;
+                  if (cart?.id) {
+                    console.log('[Dropins] Guest cart valid, will merge:', cart.total_quantity, 'items');
+                    // Valid cart - let dropin merge it
+                  } else {
+                    // Cart doesn't exist or is invalid
+                    console.log('[Dropins] Guest cart invalid/expired, clearing to prevent merge errors');
+                    clearGuestCartCookie();
+                  }
+                } catch (cartError) {
+                  console.warn('[Dropins] Could not validate guest cart, clearing:', cartError.message);
+                  clearGuestCartCookie();
+                }
+              }
+            } else {
+              // Token expired/invalid - Commerce returned null
+              console.warn('[Dropins] Token invalid - clearing and mounting as guest');
+              clearInvalidAuthToken();
+            }
+          } catch (error) {
+            console.warn('[Dropins] Token validation failed:', error.message);
+            clearInvalidAuthToken();
+          }
+        }
+      }
+
       // Mount all initializers
       initializers.mount();
-      
+
       console.log('[Dropins] All Commerce Dropins initialized');
       _initialized = true;
-      
+
       // Dispatch event for other modules to know dropins are ready
       window.dispatchEvent(new CustomEvent('dropins:initialized'));
       

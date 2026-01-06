@@ -59,6 +59,7 @@ async function getEndpoint() {
 // In-memory persona headers - set once per page load, no sessionStorage needed
 let _personaHeaders = {};
 let _currentPersona = null;
+let _lastPersonaGroupId = null; // Track which group we initialized for
 
 /**
  * Get persona headers for mesh requests
@@ -172,12 +173,18 @@ export async function meshQuery(query, variables = {}, options = {}) {
  * Fetch persona and set headers
  * Call this on app init or login
  *
- * Fetches fresh on each page load - no caching needed (fast query)
+ * Skips fetch if already initialized with same customerGroupId (deduplication)
  *
  * @param {string} customerGroupId - Customer group ID from Commerce
  * @returns {Promise<Object>} Persona data
  */
 export async function initializePersona(customerGroupId) {
+  // Skip if already initialized with same group (avoid duplicate fetches)
+  if (_currentPersona && _lastPersonaGroupId === customerGroupId) {
+    console.log('[MeshClient] Persona already initialized for group:', customerGroupId);
+    return _currentPersona;
+  }
+
   console.log('[MeshClient] Fetching persona for customer group:', customerGroupId);
 
   const data = await meshQuery(queries.GET_PERSONA, { customerGroupId }, {
@@ -188,6 +195,7 @@ export async function initializePersona(customerGroupId) {
 
   if (persona) {
     _currentPersona = persona;
+    _lastPersonaGroupId = customerGroupId;
     setPersonaHeaders({
       catalogViewId: persona.catalogViewId,
       priceBookId: persona.priceBookId

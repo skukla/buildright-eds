@@ -96,28 +96,34 @@ async function handleCustomerAuthenticated() {
     setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
 
     const customer = await getCustomerData(token);
-    _currentCustomer = customer;
 
-    console.log('[Auth] Customer:', customer?.email, customer?.firstName);
+    // Check if token is valid - Commerce returns null for expired/invalid tokens
+    if (!customer) {
+      console.warn('[Auth] Token invalid or expired - Commerce returned null customer');
+      clearInvalidAuthToken();
+      await initializePersona('0'); // Fall back to guest
+      return;
+    }
+
+    _currentCustomer = customer;
+    console.log('[Auth] Customer:', customer.email, customer.firstName);
 
     // Initialize persona by email
-    if (customer?.email) {
-      try {
-        const persona = await initializePersonaByEmail(customer.email);
-        console.log('[Auth] Persona:', persona?.name || 'default');
-      } catch (error) {
-        console.warn('[Auth] Persona lookup failed:', error.message);
-      }
+    try {
+      const persona = await initializePersonaByEmail(customer.email);
+      console.log('[Auth] Persona:', persona?.name || 'default');
+    } catch (error) {
+      console.warn('[Auth] Persona lookup failed:', error.message);
     }
 
     // Dispatch event for UI updates
     window.dispatchEvent(new CustomEvent('auth:login', {
       detail: {
         user: {
-          id: customer?.id,
-          email: customer?.email,
-          name: `${customer?.firstName || ''} ${customer?.lastName || ''}`.trim(),
-          customerGroup: customer?.groupUid
+          id: customer.id,
+          email: customer.email,
+          name: `${customer.firstName || ''} ${customer.lastName || ''}`.trim(),
+          customerGroup: customer.groupUid
         }
       }
     }));
@@ -135,8 +141,8 @@ async function handleCustomerLoggedOut() {
 
   _currentCustomer = null;
 
-  // Clear customer context (company/location for Kevin persona)
-  localStorage.removeItem('buildright_customer_context');
+  // Clear commerce state using proper APIs
+  await clearCommerceState();
 
   // Reinitialize guest persona
   try {
@@ -149,6 +155,41 @@ async function handleCustomerLoggedOut() {
   window.dispatchEvent(new CustomEvent('auth:logout', {
     detail: { previousUser: null }
   }));
+}
+
+/**
+ * Clear commerce state on logout using proper APIs
+ */
+async function clearCommerceState() {
+  // Use cart dropin's API to reset cart state (it manages its own storage)
+  try {
+    const { resetCart } = await import('@dropins/storefront-cart/api.js');
+    await resetCart();
+    console.log('[Auth] Cart state reset via dropin API');
+  } catch (error) {
+    console.warn('[Auth] Failed to reset cart:', error.message);
+  }
+
+  // Clear only the specific keys WE control
+  const ourKeys = [
+    'buildright_customer_context',  // Kevin persona company/location
+  ];
+
+  ourKeys.forEach(key => {
+    if (localStorage.getItem(key)) {
+      localStorage.removeItem(key);
+      console.log('[Auth] Cleared:', key);
+    }
+  });
+}
+
+/**
+ * Clear invalid auth token cookie
+ * Called when Commerce returns null customer (token expired/invalid)
+ */
+function clearInvalidAuthToken() {
+  document.cookie = 'auth_dropin_user_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+  console.log('[Auth] Cleared invalid auth token cookie');
 }
 
 /**
