@@ -246,6 +246,7 @@ export const GET_PRODUCT = `
       category
       attributes {
         name
+        label
         value
       }
     }

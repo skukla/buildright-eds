@@ -403,9 +403,13 @@ export default async function decorate(block) {
     // Render SearchResults with FULL slot customization
     log('Rendering SearchResults with custom slots...');
     
+    // Configure base path for PDP navigation - used by slots to create product links
+    const basePath = window.BASE_PATH || '/';
+    
     const slotsConfig = {
       /**
        * ProductImage Slot - BuildRight namespaced wrapper
+       * Also sets up card-level click navigation to PDP
        */
       ProductImage: (ctx) => {
         log('ProductImage slot:', ctx.product?.sku);
@@ -438,14 +442,34 @@ export default async function decorate(block) {
         
         imageWrapper.appendChild(imageDiv);
         ctx.replaceWith(imageWrapper);
+        
+        // Make entire card clickable - find parent card and add navigation
+        requestAnimationFrame(() => {
+          const card = imageWrapper.closest('.dropin-product-item-card');
+          if (card && !card.dataset.pdpUrl) {
+            const pdpUrl = `${basePath}pages/product-detail.html?sku=${product.sku}`;
+            card.dataset.pdpUrl = pdpUrl;
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+              // Don't navigate if clicking a button or link inside the card
+              if (e.target.closest('button, a')) return;
+              window.location.href = pdpUrl;
+            });
+          }
+        });
       },
           
       /**
-       * ProductName Slot - BuildRight header with SKU
+       * ProductName Slot - BuildRight header with SKU, linked to PDP
        */
       ProductName: (ctx) => {
         log('ProductName slot:', ctx.product?.sku);
         const { product } = ctx;
+        
+        // Create link wrapper for navigation to PDP
+        const link = document.createElement('a');
+        link.href = `${basePath}pages/product-detail.html?sku=${product.sku}`;
+        link.className = 'buildright-product-link';
         
         // Create BuildRight header container
         const header = document.createElement('div');
@@ -463,8 +487,9 @@ export default async function decorate(block) {
         
         header.appendChild(sku);
         header.appendChild(name);
+        link.appendChild(header);
         
-        ctx.replaceWith(header);
+        ctx.replaceWith(link);
       },
           
       /**
@@ -665,6 +690,8 @@ export default async function decorate(block) {
       imageWidth: 400,
       imageHeight: 400,
       skeletonCount: 0, // Disable Adobe skeletons - we use our own custom ones
+      // Route product clicks to PDP page with SKU parameter
+      routeProduct: (product) => `${basePath}pages/product-detail.html?sku=${product.sku}`,
       onSearchResult: (products) => {
         log('Search results callback:', products.length, 'items on page');
         // Note: Loading states are now managed via search/loading event subscription

@@ -15,7 +15,7 @@
  * @module scripts/services/mesh-client
  */
 
-import { getMeshEndpoint, getCommerceStoreCode } from '../site-config.js';
+import { getMeshEndpoint, getCommerceStoreCode, loadConfig } from '../site-config.js';
 import * as queries from './queries.js';
 
 // Re-export queries for backwards compatibility
@@ -110,11 +110,23 @@ export async function meshQuery(query, variables = {}, options = {}) {
 
   // Get store code for Commerce queries (from config/env.json)
   const storeCode = await getCommerceStoreCode();
+  
+  // Get ACO config for environment headers
+  const config = await loadConfig();
+  const acoConfig = config.aco || {};
 
   const headers = {
     'Content-Type': 'application/json',
     'Store': storeCode
   };
+  
+  // Add ACO environment headers (required for mesh to route to ACO)
+  if (acoConfig.environmentId) {
+    headers['AC-Environment-Id'] = acoConfig.environmentId;
+  }
+  if (acoConfig.sourceLocale) {
+    headers['AC-Source-Locale'] = acoConfig.sourceLocale;
+  }
 
   // Add persona headers for product queries
   if (includePersonaHeaders) {

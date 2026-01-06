@@ -252,15 +252,29 @@
         }
 
         // Transform mesh response to expected format
-        // Mesh returns attributes as array [{name, value}], convert to object
+        // Mesh returns attributes as array [{name, label, value}]
+        // Keep as array to preserve labels from mesh, but also create object for legacy access
         const attributesObj = {};
+        const attributesArray = [];
         if (Array.isArray(rawProduct.attributes)) {
           rawProduct.attributes.forEach(attr => {
             attributesObj[attr.name] = attr.value;
+            attributesArray.push({
+              name: attr.name,
+              label: attr.label || attr.name,  // Use mesh label, fallback to name
+              value: attr.value
+            });
           });
         } else if (rawProduct.attributes) {
-          // Already an object (mock data format)
-          Object.assign(attributesObj, rawProduct.attributes);
+          // Already an object (mock data format) - convert to array with generated labels
+          Object.entries(rawProduct.attributes).forEach(([key, value]) => {
+            attributesObj[key] = value;
+            attributesArray.push({
+              name: key,
+              label: key.replace(/^br_/, '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+              value: value
+            });
+          });
         }
 
         const product = {
@@ -270,7 +284,8 @@
           image: rawProduct.imageUrl || rawProduct.image,
           inStock: rawProduct.inStock,
           category: rawProduct.category,
-          attributes: attributesObj
+          attributes: attributesObj,      // Object for legacy access (e.g., product.attributes.br_brand)
+          attributesList: attributesArray // Array for display with labels
         };
 
         // If category not in attributes but in product root, add it
@@ -456,18 +471,19 @@
         await decorateBlock(inventoryStatus, 'inventory-status');
 
         const specsContainer = document.getElementById('product-specs');
-        if (product.attributes && Object.keys(product.attributes).length > 0) {
+        if (product.attributesList && product.attributesList.length > 0) {
           const table = document.createElement('table');
           const tbody = document.createElement('tbody');
           
-          Object.entries(product.attributes).forEach(([key, value]) => {
+          // Use attributesList which has labels from mesh
+          product.attributesList.forEach(attr => {
             const row = document.createElement('tr');
             const keyCell = document.createElement('td');
-            keyCell.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            keyCell.textContent = attr.label;  // Use label directly from mesh
             row.appendChild(keyCell);
             
             const valueCell = document.createElement('td');
-            valueCell.textContent = Array.isArray(value) ? value.join(', ') : value;
+            valueCell.textContent = Array.isArray(attr.value) ? attr.value.join(', ') : attr.value;
             row.appendChild(valueCell);
             
             tbody.appendChild(row);
