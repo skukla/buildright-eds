@@ -52,6 +52,7 @@ export const GET_PERSONA_BY_EMAIL = `
       id
       name
       displayName
+      tier
       catalogViewId
       priceBookId
       customerGroupId

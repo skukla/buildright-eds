@@ -229,6 +229,12 @@ export async function initializePersonaByEmail(email) {
       priceBookId: persona.priceBookId
     });
     console.log('[MeshClient] Persona initialized:', persona.name);
+    console.log('[MeshClient] Persona data:', { 
+      tier: persona.tier, 
+      sections: persona.sections, 
+      roleType: persona.roleType,
+      useCase: persona.useCase
+    });
   } else {
     console.warn('[MeshClient] No persona found for email:', email);
   }
