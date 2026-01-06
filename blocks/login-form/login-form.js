@@ -11,6 +11,9 @@
 import { authService } from '../../scripts/auth.js';
 import { PERSONAS } from '../../scripts/persona-config.js';
 import { loadConfig } from '../../scripts/site-config.js';
+import { setFetchGraphQlHeader } from '@dropins/tools/fetch-graphql.js';
+import { events } from '@dropins/tools/event-bus.js';
+import { initializeMeshForPersona } from '../../scripts/services/mesh-integration.js';
 
 /**
  * Security: Validate redirect URL to prevent open redirect attacks
@@ -54,6 +57,7 @@ function getSafeRedirectUrl(url) {
 
 /**
  * Demo account mapping: Email → Persona
+ * Must match persona-config.js and demo-customers.json
  */
 const DEMO_ACCOUNTS = {
   'sunbelt_homes': {
@@ -62,22 +66,22 @@ const DEMO_ACCOUNTS = {
     company: 'Sunbelt Homes',
     personaId: 'sarah'
   },
-  'custom_builders': {
-    email: 'marcus.johnson@custombuilders.com',
+  'johnson_construction': {
+    email: 'marcus.johnson@johnsonconstruction.com',
     name: 'Marcus Johnson',
-    company: 'Custom Builders LLC',
+    company: 'Johnson Construction',
     personaId: 'marcus'
   },
-  'elite_remodeling': {
-    email: 'lisa.chen@eliteremodeling.com',
+  'chen_design_build': {
+    email: 'lisa.chen@chendesignbuild.com',
     name: 'Lisa Chen',
-    company: 'Elite Remodeling',
+    company: 'Chen Design Build',
     personaId: 'lisa'
   },
-  'thompson_residence': {
-    email: 'david.thompson@gmail.com',
+  'thompson_diy': {
+    email: 'david.thompson@email.com',
     name: 'David Thompson',
-    company: 'Thompson Residence',
+    company: null,
     personaId: 'david'
   },
   'precision_lumber': {
@@ -260,8 +264,7 @@ function setupEmailLogin() {
     
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
-    const remember = document.getElementById('remember').checked;
-    
+
     console.log('[Login Form] Email login submitted:', email);
     
     // Validate inputs
@@ -434,55 +437,219 @@ function hidePersonaDetails() {
 }
 
 /**
+ * Mask email for PII protection in logs
+ * Shows first 3 characters followed by ***@***
+ *
+ * @param {string} email - Email address to mask
+ * @returns {string} Masked email (e.g., "sar***@***")
+ */
+function maskEmail(email) {
+  if (!email || typeof email !== 'string') return 'unknown';
+  return `${email.substring(0, 3)}***@***`;
+}
+
+/**
+ * Setup authenticated session with Commerce token
+ *
+ * This function:
+ * 1. Stores the Commerce JWT token in a cookie (auth_dropin_user_token)
+ * 2. Configures dropin GraphQL headers with Authorization Bearer token
+ * 3. Emits 'authenticated' event for auth initializer to handle mesh setup
+ * 4. Syncs with authService for local state management
+ *
+ * @param {string} token - JWT token from Commerce auth
+ * @param {string} email - User email address
+ * @returns {Promise<void>}
+ */
+async function setupAuthenticatedSession(token, email) {
+  // Mask email for PII protection in logs
+  const maskedEmail = maskEmail(email);
+  console.log('[Login Form] Setting up authenticated session for:', maskedEmail);
+  console.log('[Login Form] Token received:', token ? `${token.substring(0, 20)}...` : 'none');
+
+  // Step 1: Store Commerce JWT token in cookie
+  // Cookie name matches what auth dropin expects (auth_dropin_user_token)
+  // max-age=3600 = 1 hour (matches Commerce token default expiration)
+  // SameSite=Lax for cross-site safety while allowing navigation
+  document.cookie = `auth_dropin_user_token=${encodeURIComponent(token)}; path=/; max-age=3600; SameSite=Lax`;
+  console.log('[Login Form] Auth token stored in cookie');
+
+  // Step 2: Configure dropin GraphQL headers with Bearer token
+  // This enables authenticated requests to Commerce API via dropins
+  setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
+  console.log('[Login Form] GraphQL Authorization header set');
+
+  // Step 3: Emit authenticated event
+  // The auth initializer (scripts/initializers/auth.js) listens for this event
+  // and calls initializeMeshForEmail() to set up persona headers
+  events.emit('authenticated', true);
+  console.log('[Login Form] Authenticated event emitted');
+
+  // Step 4: Initialize persona context for ACO headers (catalog view, price book)
+  // This sets up the proper headers for catalog/pricing queries
+  const persona = Object.values(PERSONAS).find(p => p.email === email);
+  if (persona) {
+    try {
+      await initializeMeshForPersona(persona.id);
+      console.log('[Login Form] Persona context initialized:', persona.id);
+
+      // Store persona selection for session persistence
+      // Key matches PERSONA_STORAGE_KEY in scripts/auth.js
+      localStorage.setItem('currentPersona', persona.id);
+
+      // Dispatch auth:login event for UI updates (header, etc.)
+      window.dispatchEvent(new CustomEvent('auth:login', {
+        detail: {
+          user: {
+            id: persona.id,
+            name: persona.name,
+            email: persona.email,
+            role: persona.role,
+            company: persona.company
+          }
+        }
+      }));
+    } catch (error) {
+      console.warn('[Login Form] Persona context initialization failed:', error.message);
+      // Continue anyway - Commerce auth succeeded, catalog will use defaults
+    }
+  }
+}
+
+/**
+ * Authenticate persona via API Mesh GraphQL mutation
+ *
+ * Uses BuildRight_authenticatePersona mutation which routes through
+ * the mesh resolver to the I/O action for secure credential handling.
+ *
+ * @param {string} email - Persona email address
+ * @param {string} meshEndpoint - API Mesh GraphQL endpoint
+ * @returns {Promise<{success: boolean, token?: string, expiresIn?: number, error?: string}>}
+ */
+async function authenticatePersonaViaMesh(email, meshEndpoint) {
+  const mutation = `
+    mutation AuthenticatePersona($email: String!) {
+      BuildRight_authenticatePersona(email: $email) {
+        success
+        token
+        expiresIn
+        maskedEmail
+        error
+      }
+    }
+  `;
+
+  console.log('[Login Form] Calling mesh mutation BuildRight_authenticatePersona');
+
+  const response = await fetch(meshEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({
+      query: mutation,
+      variables: { email }
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Mesh request failed: ${response.status}`);
+  }
+
+  const result = await response.json();
+
+  // Check for GraphQL errors
+  if (result.errors && result.errors.length > 0) {
+    const errorMsg = result.errors.map(e => e.message).join(', ');
+    console.error('[Login Form] GraphQL errors:', errorMsg);
+    throw new Error(errorMsg);
+  }
+
+  const authResult = result.data?.BuildRight_authenticatePersona;
+  if (!authResult) {
+    throw new Error('No authentication result returned');
+  }
+
+  return authResult;
+}
+
+/**
  * Handle quick persona login
+ * Authenticates user with Commerce via mesh GraphQL mutation
  */
 async function handleQuickLogin() {
   const select = document.getElementById('persona-select');
   const loginBtn = document.getElementById('quick-login-btn');
-  
+
   if (!select || !loginBtn) return;
-  
+
   const personaId = select.value;
   if (!personaId) {
     alert('Please select a persona');
     return;
   }
-  
+
+  // Look up persona to get email
+  const persona = Object.values(PERSONAS).find(p => p.id === personaId);
+  if (!persona) {
+    console.error('[Login Form] Persona not found:', personaId);
+    alert('Invalid persona selected. Please try again.');
+    return;
+  }
+
   const originalText = loginBtn.textContent;
   loginBtn.disabled = true;
-  loginBtn.textContent = 'Logging in...';
-  
+  loginBtn.textContent = 'Authenticating...';
+
   try {
-    console.log('[Login Form] Quick login as persona:', personaId);
-    const success = await authService.loginWithPersona(personaId);
-    
-    if (success) {
-      console.log('[Login Form] Quick login successful:', personaId);
+    console.log('[Login Form] Quick login as persona:', personaId, maskEmail(persona.email));
 
-      // Check for redirect parameter (with security validation)
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirect = urlParams.get('redirect');
-      const safeRedirect = getSafeRedirectUrl(redirect);
+    // Load config to get mesh endpoint
+    const config = await loadConfig();
+    const meshEndpoint = config.meshEndpoint;
 
-      // Get default route for persona
-      const defaultRoute = authService.getDefaultRoute();
-      console.log('[Login Form] Default route:', defaultRoute);
-
-      // Small delay to ensure localStorage is saved
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Redirect to validated URL or default
-      if (safeRedirect) {
-        window.location.href = safeRedirect;
-      } else {
-        window.location.href = window.BASE_PATH || '/';
-      }
+    if (!meshEndpoint) {
+      console.warn('[Login Form] meshEndpoint not configured, falling back to demo auth');
+      // Fallback to demo auth if mesh endpoint not configured
+      const success = await authService.loginWithPersona(personaId);
+      if (!success) throw new Error('Login failed');
     } else {
-      throw new Error('Login failed');
+      // Authenticate via mesh GraphQL mutation
+      const result = await authenticatePersonaViaMesh(persona.email, meshEndpoint);
+
+      // Check for auth failure
+      if (!result.success) {
+        const errorMsg = result.error || 'Authentication failed';
+        console.error('[Login Form] Mesh auth failed:', errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      console.log('[Login Form] Mesh auth successful, token received');
+
+      // Setup authenticated session with Commerce token
+      await setupAuthenticatedSession(result.token, persona.email);
+    }
+
+    console.log('[Login Form] Quick login successful:', personaId);
+
+    // Check for redirect parameter (with security validation)
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get('redirect');
+    const safeRedirect = getSafeRedirectUrl(redirect);
+
+    // Small delay to ensure localStorage is saved
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Redirect to validated URL or default
+    if (safeRedirect) {
+      window.location.href = safeRedirect;
+    } else {
+      window.location.href = window.BASE_PATH || '/';
     }
   } catch (error) {
     console.error('[Login Form] Quick login error:', error);
-    alert('Login failed. Please try again.');
+    alert(error.message || 'Authentication failed. Please try again.');
     loginBtn.disabled = false;
     loginBtn.textContent = originalText;
   }
