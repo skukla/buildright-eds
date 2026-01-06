@@ -289,6 +289,19 @@ export function getPersona(personaId) {
 }
 
 /**
+ * Get persona by email address
+ * Used to map Commerce customers to frontend persona config
+ * @param {string} email - Customer email address
+ * @returns {Object|null} Persona object or null if not found
+ */
+export function getPersonaByEmail(email) {
+  if (!email) return null;
+  return Object.values(PERSONAS).find(p => 
+    p.email?.toLowerCase() === email.toLowerCase()
+  ) || null;
+}
+
+/**
  * Get all personas as array
  * @returns {Array} Array of all persona objects
  */

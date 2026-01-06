@@ -51,11 +51,35 @@ export const GET_PERSONA_BY_EMAIL = `
     BuildRight_personaByEmail(email: $email) {
       id
       name
+      displayName
       catalogViewId
       priceBookId
       customerGroupId
       roleType
       useCase
+      defaultRoute
+      company
+      region
+      primaryWarehouse
+      features {
+        templates
+        bomGeneration
+        phaseOrdering
+        repeatOrdering
+        projectWizard
+        deckBuilder
+        restockDashboard
+        multiLocation
+      }
+      preferences {
+        defaultView
+        showFloorPlans
+        showAnalytics
+        showEducationalContent
+        guidedMode
+        showVelocity
+        priorityIndicators
+      }
     }
   }
 `;
