@@ -54,6 +54,8 @@ export const GET_PERSONA_BY_EMAIL = `
       catalogViewId
       priceBookId
       customerGroupId
+      roleType
+      useCase
     }
   }
 `;

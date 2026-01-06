@@ -29,13 +29,18 @@ export async function personalizeHomepage(doc = document) {
     const user = authService.getCurrentUser();
     console.log('[Personalize] User:', user);
 
-    // Use user.id (not user.personaId) to get the persona
-    const persona = getPersona(user.id);
-    console.log('[Personalize] Persona:', persona);
+    // For dropin users, roleType/useCase come directly from mesh persona
+    // For demo mode, fall back to frontend persona config lookup
+    let roleType = user.roleType;
+    let useCase = user.useCase;
 
-    // Get role-based attributes
-    const roleType = getRoleType(persona);    // e.g., 'builder', 'specialty', 'retail'
-    const useCase = getUseCase(persona);      // e.g., 'templates', 'projects', 'diy'
+    if (!roleType || roleType === 'default') {
+      // Fall back to frontend persona config for demo mode
+      const personaId = user.personaId || user.id;
+      const persona = getPersona(personaId);
+      roleType = getRoleType(persona) || 'default';
+      useCase = getUseCase(persona) || 'default';
+    }
 
     console.log(`[Personalize] Loading fragments for role: ${roleType}, use-case: ${useCase}`);
 
@@ -65,7 +70,13 @@ export async function personalizeHomepage(doc = document) {
     await Promise.all(Array.from(fragments).map(fragment => decorateBlock(fragment, 'fragment')));
 
     // Add dynamic personalization on top of fragments
-    personalizeWithDynamicData(persona, doc);
+    // For dropin users, construct persona-like object from user data
+    const personaData = {
+      name: user.name || user.personaName || 'User',
+      company: user.company || '',
+      role: user.roleType || 'default'
+    };
+    personalizeWithDynamicData(personaData, doc);
 
   } else {
     // Unauthenticated: fragments already have default paths in HTML

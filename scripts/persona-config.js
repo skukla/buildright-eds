@@ -379,6 +379,8 @@ export function getRoleType(personaIdOrObject) {
   
   if (!persona) return 'default';
   
+  // Map frontend demo persona IDs to role types
+  // Production mode uses roleType directly from mesh persona
   const roleMap = {
     'sarah': 'builder',
     'marcus': 'builder',
@@ -403,6 +405,8 @@ export function getUseCase(personaIdOrObject) {
   
   if (!persona) return 'default';
   
+  // Map frontend demo persona IDs to use cases
+  // Production mode uses useCase directly from mesh persona
   const useCaseMap = {
     'sarah': 'templates',
     'marcus': 'projects',
