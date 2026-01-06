@@ -48,6 +48,7 @@
         <div class="account-layout">
           <!-- Sidebar Navigation -->
           <nav class="account-nav" aria-label="Account navigation">
+            <!-- Universal nav items (always shown) -->
             <a href="#dashboard" class="account-nav-item active" data-section="dashboard" aria-current="page">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -70,14 +71,7 @@
               </svg>
               Orders
             </a>
-            <a href="#locations" class="account-nav-item" data-section="locations" id="locations-nav-item" hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              Store Locations
-            </a>
-            <!-- Persona-specific nav items will be added here -->
+            <!-- Persona-specific nav items (from sections array) -->
             <div id="persona-nav-items"></div>
           </nav>
 
@@ -117,7 +111,7 @@
             </div>
 
             <!-- My Builds Section (Sarah only) -->
-            <div class="account-section" id="section-builds">
+            <div class="account-section" id="section-builds" hidden>
               <h2 class="section-header">My Builds</h2>
               <p class="section-description">Track your active construction projects and order materials.</p>
               
@@ -133,7 +127,7 @@
             </div>
             
             <!-- Deliveries Section (Sarah only) -->
-            <div class="account-section" id="section-deliveries">
+            <div class="account-section" id="section-deliveries" hidden>
               <h2 class="section-header">Deliveries</h2>
               <p class="section-description">Track scheduled and completed material deliveries.</p>
               
@@ -143,8 +137,8 @@
               </div>
             </div>
 
-            <!-- Store Locations Section -->
-            <div class="account-section" id="section-locations">
+            <!-- Store Locations Section (only for personas with 'locations' in sections) -->
+            <div class="account-section" id="section-locations" hidden>
               <h2 class="section-header">Store Locations</h2>
               <p class="section-description">Manage your store locations and set your primary warehouse.</p>
               <div id="company-locations" class="locations-grid"></div>
@@ -220,16 +214,11 @@
       
       document.getElementById('tier-label-inline').textContent = tierNames[customerGroup] || 'Standard';
       
-      // Locations - Only show if persona has multi-location company
+      // Populate locations content (visibility controlled by loadPersonaNav based on sections)
       const company = getCompanyForPersona(persona);
       const locationsContainer = document.getElementById('company-locations');
-      const locationsNavItem = document.getElementById('locations-nav-item');
       
-      if (persona?.hasMultipleLocations && company && company.locations && company.locations.length > 1) {
-        // Show locations nav item
-        locationsNavItem.hidden = false;
-        
-        // Create location cards
+      if (company && company.locations && company.locations.length > 0) {
         const locationsHTML = company.locations.map(loc => {
           const primaryCheckmark = loc.isPrimary 
             ? `<svg class="location-primary-icon" fill="currentColor" viewBox="0 0 20 20">
@@ -264,9 +253,6 @@
         }).join('');
         
         locationsContainer.innerHTML = locationsHTML;
-      } else {
-        // Hide locations nav item
-        locationsNavItem.hidden = true;
       }
     }
     
@@ -390,7 +376,9 @@
       quickActionsGrid.innerHTML = cards.join('');
     }
     
-    // Load persona-specific navigation items
+    // Load persona-specific navigation items from sections array
+    // Note: Dashboard, Profile, and Orders are universal (hardcoded in HTML)
+    // Sections array controls persona-specific features only
     async function loadPersonaNav() {
       await authService.initialize();
       const currentUser = authService.getCurrentUser();
@@ -399,64 +387,80 @@
       
       const persona = currentUser.persona;
       const personaNavContainer = document.getElementById('persona-nav-items');
-      const navItems = [];
+      const sections = persona?.sections || [];
       
-      // Sarah: My Builds & Deliveries
-      if (persona?.sections?.includes('builds')) {
-        navItems.push(`
-          <a href="#builds" class="account-nav-item" data-section="builds">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            My Builds
-          </a>
-        `);
-      }
+      // Define persona-specific nav items (not universal items like profile/orders)
+      const navItemDefs = {
+        builds: {
+          href: '#builds',
+          dataSection: 'builds',
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>`,
+          label: 'My Builds'
+        },
+        deliveries: {
+          href: '#deliveries',
+          dataSection: 'deliveries',
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13"/>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+            <circle cx="5.5" cy="18.5" r="2.5"/>
+            <circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>`,
+          label: 'Deliveries'
+        },
+        projects: {
+          href: 'builder.html',
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>`,
+          label: 'Project Builder'
+        },
+        restock: {
+          href: '/pages/dashboard.html',
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>`,
+          label: 'Restock Dashboard'
+        },
+        locations: {
+          href: '#locations',
+          dataSection: 'locations',
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>`,
+          label: 'Store Locations'
+        }
+      };
       
-      if (persona?.sections?.includes('deliveries')) {
-        navItems.push(`
-          <a href="#deliveries" class="account-nav-item" data-section="deliveries">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="3" width="15" height="13"/>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-              <circle cx="5.5" cy="18.5" r="2.5"/>
-              <circle cx="18.5" cy="18.5" r="2.5"/>
-            </svg>
-            Deliveries
-          </a>
-        `);
-      }
+      // Generate nav items in section order
+      const navItems = sections
+        .filter(section => navItemDefs[section])
+        .map(section => {
+          const def = navItemDefs[section];
+          const dataSectionAttr = def.dataSection ? `data-section="${def.dataSection}"` : '';
+          return `
+            <a href="${def.href}" class="account-nav-item" ${dataSectionAttr}>
+              ${def.icon}
+              ${def.label}
+            </a>
+          `;
+        });
       
-      // Kevin: Restock Dashboard (links to /pages/dashboard.html)
-      if (persona?.sections?.includes('restock')) {
-        navItems.push(`
-          <a href="/pages/dashboard.html" class="account-nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <ellipse cx="12" cy="5" rx="9" ry="3"/>
-              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-            </svg>
-            Restock Dashboard
-          </a>
-        `);
-      }
+      personaNavContainer.innerHTML = navItems.join('');
       
-      // Marcus/Lisa: Project Builder
-      if (persona?.sections?.includes('projects')) {
-        navItems.push(`
-          <a href="builder.html" class="account-nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-            Project Builder
-          </a>
-        `);
-      }
-      
-      if (navItems.length > 0) {
-        personaNavContainer.innerHTML = navItems.join('');
-      }
+      // Show/hide persona-specific sections based on sections array
+      Object.keys(navItemDefs).forEach(section => {
+        const sectionEl = document.getElementById(`section-${section}`);
+        if (sectionEl) {
+          sectionEl.hidden = !sections.includes(section);
+        }
+      });
     }
 
     // Format date helper
@@ -872,6 +876,16 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
+      // Check authentication - redirect guests to login
+      await authService.initialize();
+      const currentUser = authService.getCurrentUser();
+      
+      if (!currentUser) {
+        // Redirect to homepage with login prompt
+        window.location.href = '/?login=required';
+        return;
+      }
+      
       await loadAccountInfo();
       await loadQuickActions();
       await loadPersonaNav();
