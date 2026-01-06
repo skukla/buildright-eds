@@ -36,12 +36,13 @@ When Sarah Martinez logs in, how does the system know to show her Production Bui
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-The persona service provides two pieces of context:
+The persona service provides three pieces of context:
 
 | Context | What It Controls | Example |
 |---------|------------------|---------|
 | **Catalog View** | Which products are visible | Pro builders see commercial-grade items |
 | **Price Book** | What prices are shown | Wholesale vs retail pricing |
+| **Dashboard Sections** | Which UI components are available | Sarah sees builds/deliveries, Kevin sees restock/locations |
 
 ---
 
@@ -136,14 +137,16 @@ The persona service provides two pieces of context:
 
 ## The Five BuildRight Personas
 
-| Persona | Customer Type | Catalog View | Price Book |
-|---------|---------------|--------------|------------|
-| **Sarah Martinez** | Production Builder | Pro Builder | Production-Builder |
-| **Marcus Johnson** | General Contractor | Contractor | Contractor |
-| **Lisa Chen** | Remodeling Specialist | Remodeler | Remodeler |
-| **David Thompson** | Pro DIY Homeowner | Consumer | US-Retail |
-| **Kevin Rodriguez** | Store Manager | All Products | Staff |
-| **Guest** | Anonymous visitor | Default | US-Retail |
+| Persona | Customer Type | Catalog View | Price Book | Dashboard Sections |
+|---------|---------------|--------------|------------|--------------------|
+| **Sarah Martinez** | Production Builder | Pro Builder | Production-Builder | builds, deliveries, orders |
+| **Marcus Johnson** | General Contractor | Contractor | Contractor | projects, orders |
+| **Lisa Chen** | Remodeling Specialist | Remodeler | Remodeler | projects, orders |
+| **David Thompson** | Pro DIY Homeowner | Consumer | US-Retail | projects, orders |
+| **Kevin Rodriguez** | Store Manager | All Products | Staff | restock, **locations**, orders |
+| **Guest** | Anonymous visitor | Default | US-Retail | (none) |
+
+**Note**: Kevin is the only persona with access to the `locations` section for multi-store management.
 
 ---
 
@@ -203,6 +206,54 @@ The persona service provides two pieces of context:
 
 ---
 
+## Dashboard Sections
+
+The persona service also controls which dashboard UI components each user sees:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     PERSONA SECTIONS                                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│   Sarah Martinez (Production Builder)                                        │
+│   ══════════════════════════════════                                         │
+│   sections: ["builds", "deliveries", "orders"]                               │
+│                                                                              │
+│   Dashboard shows:                                                           │
+│   • My Builds - Active construction projects                                 │
+│   • Deliveries - Scheduled deliveries by phase                               │
+│   • Orders - Order history with build context                                │
+│                                                                              │
+│   ─────────────────────────────────────────────────────────────────────      │
+│                                                                              │
+│   Marcus Johnson (Trade Professional)                                        │
+│   ═════════════════════════════════                                          │
+│   sections: ["projects", "orders"]                                           │
+│                                                                              │
+│   Dashboard shows:                                                           │
+│   • Projects - Saved project templates                                       │
+│   • Orders - Standard order history                                          │
+│                                                                              │
+│   ─────────────────────────────────────────────────────────────────────      │
+│                                                                              │
+│   Kevin Rodriguez (Wholesale Reseller)                                       │
+│   ═══════════════════════════════                                            │
+│   sections: ["restock", "locations", "orders"]                               │
+│                                                                              │
+│   Dashboard shows:                                                           │
+│   • Restock Dashboard - Inventory velocity analytics                         │
+│   • Store Locations - Multi-location management                              │
+│   • Orders - Order history across all locations                              │
+│                                                                              │
+│   Note: Kevin is the ONLY persona with "locations" section                   │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Key principle**: The frontend is "dumb" - it only renders what the backend tells it to. If the persona doesn't have `"builds"` in their sections array, the frontend doesn't show build management UI.
+
+---
+
 ## Common Questions
 
 **Q: Why not cache the persona?**
@@ -216,6 +267,12 @@ A: Persona Auth handles *logging in* (getting a JWT token). Persona Service hand
 
 **Q: Can a user have multiple personas?**
 A: No. Each email maps to exactly one persona. The mapping is determined by customer group in Commerce.
+
+**Q: What are dashboard sections?**
+A: Sections define which UI components appear in the Account Dashboard. Examples: `builds` (Sarah's project tracking), `locations` (Kevin's multi-store management), `projects` (Marcus/Lisa's saved templates). The frontend checks `persona.sections.includes('builds')` to decide what to render.
+
+**Q: Can I add new sections without changing the frontend?**
+A: Yes and no. You can add section names in the backend, but the frontend needs code to render those sections. The sections array just controls visibility - it doesn't generate UI automatically.
 
 ---
 

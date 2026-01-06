@@ -249,7 +249,7 @@ All logging masks personal information. Even if logs are exposed, emails are pro
 Each persona has a unique combination of:
 - **Catalog View** - What products they can see
 - **Price Book** - What prices they pay
-- **Features** - What tools they can access
+- **Dashboard Sections** - What UI components they access (builds, deliveries, projects, orders, restock, locations)
 
 ---
 
