@@ -160,6 +160,7 @@ export const PRODUCT_SEARCH_FILTER = `
 
 /**
  * Get categories from ACO
+ * Position field is sourced from Commerce backend for correct sort order
  */
 export const GET_CATEGORIES = `
   query GetCategories {
@@ -170,6 +171,7 @@ export const GET_CATEGORIES = `
         parentSlug
         path
         productCount
+        position
       }
       totalCount
     }

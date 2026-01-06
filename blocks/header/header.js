@@ -37,10 +37,12 @@ function escapeHtml(text) {
  * @returns {string} - Navigation HTML string
  */
 function renderCategoryNavigation(categories) {
+  // Categories come pre-sorted by position from mesh, but filter for top-level
   const topCategories = categories.filter(cat => !cat.parentSlug);
 
   return `
     ${topCategories.map(cat => {
+      // Get subcategories (already sorted by position from mesh)
       const subcategories = categories.filter(sub => sub.parentSlug === cat.slug);
       const hasDropdown = subcategories.length > 0;
 
