@@ -77,6 +77,7 @@ The persona service provides three pieces of context:
 │   │  • name: "Production Builder"                                       │   │
 │   │  • catalogViewId: "22c02790-7c5e-474d-a3b6-c72b22203be5"           │   │
 │   │  • priceBookId: "Production-Builder"                                │   │
+│   │  • sections: ["builds", "deliveries", "orders"]                     │   │
 │   └─────────────────────────────────────────────────────────────────────┘   │
 │                                                                              │
 │          │                                                                   │
@@ -166,10 +167,11 @@ The persona service provides three pieces of context:
 │   • sarah@ → Production Builder         • What products each view contains   │
 │   • marcus@ → Contractor                • Product visibility rules           │
 │   • lisa@ → Remodeler                                                        │
-│                                         Price Books                          │
-│   Customer Group → Persona              • Price tiers per book               │
-│   • Group 0 → Guest                     • Volume discounts                   │
-│   • Group 1 → Production Builder        • Customer-specific pricing          │
+│   • Dashboard sections config           Price Books                          │
+│                                         • Price tiers per book               │
+│   Customer Group → Persona              • Volume discounts                   │
+│   • Group 0 → Guest                     • Customer-specific pricing          │
+│   • Group 1 → Production Builder                                             │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
