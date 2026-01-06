@@ -408,6 +408,8 @@ const products = await safeQuery(
 }
 ```
 
+> **Note:** Quick Login uses the `BuildRight_authenticatePersona` GraphQL mutation via the mesh endpoint. The mesh resolver calls the persona auth I/O action to generate Commerce JWT tokens for demo personas.
+
 ---
 
 ## Import Patterns

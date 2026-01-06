@@ -24,6 +24,7 @@ Frontend → Mesh Resolver → ACO → Mesh Resolver → Frontend
 | [dropin-plp](#dropin-plp) | Product grid queries | Product Discovery dropin |
 | [dropin-pdp](#dropin-pdp) | Product detail queries | PDP dropin |
 | [dropin-metadata](#dropin-metadata) | Sort dropdown options | SortBy component |
+| [dropin-persona-auth](#dropin-persona-auth) | Demo persona authentication | Quick Login |
 | [product-search](#product-search) | Custom product queries | Featured products, search suggestions |
 | [persona](#persona) | Customer → pricing headers | All authenticated queries |
 | [categories](#categories) | Category tree | Navigation menus |
@@ -188,6 +189,57 @@ IN:  sortable: [{ attribute: "relevance", label: "Relevance" }, ...]
 OUT: sortable: [{ attribute: "relevance", label: "Best Match" }, ...]
      (with "position" removed)
 ```
+
+---
+
+## dropin-persona-auth
+
+**What:** Authenticates demo personas via I/O action for Commerce JWT tokens.
+
+```
+┌─────────────────────┐
+│  Quick Login UI     │
+│  Click "Sarah"      │
+└─────────┬───────────┘
+          │ email: "sarah.martinez@..."
+          ▼
+┌─────────────────────────────────┐
+│  dropin-persona-auth.js         │
+│  ┌───────────────┐              │
+│  │ 1. Validate   │              │  ← email required, trimmed
+│  │ 2. Mask PII   │              │  ← sarah@ → sar***@***
+│  │ 3. Delegate   │              │  ← HTTP POST to I/O action
+│  └───────────────┘              │
+└─────────┬───────────────────────┘
+          ▼
+┌─────────────────────────────────┐
+│  I/O Runtime (persona-auth)     │
+│  ┌───────────────┐              │
+│  │ Lookup pwd    │              │  ← From .env secrets
+│  │ Call Commerce │              │  ← generateCustomerToken
+│  └───────────────┘              │
+└─────────┬───────────────────────┘
+          ▼
+┌─────────────────────────────────┐
+│  Returns:                       │
+│  { success, token, expiresIn }  │
+└─────────────────────────────────┘
+```
+
+**GraphQL:**
+```graphql
+mutation {
+  BuildRight_authenticatePersona(email: "sarah@...") {
+    success
+    token
+    expiresIn
+    maskedEmail
+    error
+  }
+}
+```
+
+**See:** [Persona Auth Reference](./persona-auth.md) for full details.
 
 ---
 
@@ -369,6 +421,7 @@ All resolvers respect persona headers for pricing:
 | Search autocomplete | product-search | `BuildRight_searchSuggestions(phrase)` |
 | Single product | dropin-pdp | `products(skus)` |
 | Sort options | dropin-metadata | `attributeMetadata` |
+| Demo persona login | dropin-persona-auth | `BuildRight_authenticatePersona(email)` |
 | Who is user | persona | `personaByEmail(email)` |
 | Nav menu | categories | `getCategories` |
 | Page trail | breadcrumbs | `getCategoryBreadcrumbs(slug)` |

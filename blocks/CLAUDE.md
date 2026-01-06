@@ -90,7 +90,7 @@ export default async function decorate(block) {
 | `footer` | Site footer |
 | `breadcrumbs` | Navigation breadcrumbs |
 | `fragment` | Content fragment loader |
-| `login-form` | Login form (demo mode fallback) |
+| `login-form` | Login form with dual-mode auth: Email Login (Commerce Auth Dropin) and Quick Login (persona auth via I/O Runtime action) |
 
 ---
 
