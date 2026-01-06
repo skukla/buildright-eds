@@ -96,6 +96,8 @@ The mesh translates between different data formats so the storefront doesn't nee
 | [Mesh Resolvers](./mesh-resolvers.md) | How each resolver works |
 | [Product Query Flows](./product-query-flows.md) | How product data flows through the system |
 | [Backend Services](./backend-services.md) | Shared backend services architecture |
+| [Persona Service](./persona-service.md) | How personalized pricing works |
+| [Persona Authentication](./persona-authentication.md) | How Quick Login works for demos |
 
 ---
 

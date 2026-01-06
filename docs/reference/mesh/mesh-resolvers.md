@@ -245,7 +245,7 @@ mutation {
 
 ## persona
 
-**What:** Maps customer identity to ACO pricing headers.
+**What:** Maps customer identity to ACO pricing headers (catalog view + price book).
 
 ```
 ┌─────────────────────┐
@@ -257,22 +257,69 @@ mutation {
 │  persona.js         │
 │  ┌───────────────┐  │
 │  │ personaByEmail│  │  ← Query: Who is this customer?
-│  │ Map to ACO    │  │  ← sarah → catalog_view_id, price_book_id
+│  │ → I/O Action  │  │  ← Calls persona action for mapping
 │  └───────────────┘  │
 └─────────┬───────────┘
           ▼
 ┌─────────────────────┐
 │  Returns:           │
-│  AC-View-Id: UUID   │  ← What products they see
-│  AC-Price-Book-Id   │  ← What prices they pay
+│  catalogViewId: UUID│  ← What products they see
+│  priceBookId: string│  ← What prices they pay
 └─────────────────────┘
 ```
 
 **Queries Available:**
-- `personaByEmail(email)` - Lookup by email
-- `personaById(personaId)` - Lookup by persona ID
-- `personaForCustomer(customerGroupId)` - Lookup by Commerce group
-- `personas` - List all personas
+
+| Query | Parameter | Use Case |
+|-------|-----------|----------|
+| `BuildRight_personaByEmail` | `email` | After Commerce login |
+| `BuildRight_personaForCustomer` | `customerGroupId` | Guest users (group "0") |
+
+### GraphQL Schema
+
+```graphql
+type BuildRight_Persona {
+  id: String!
+  name: String!
+  catalogViewId: String!
+  priceBookId: String!
+  customerGroupCode: String
+}
+
+extend type Query {
+  BuildRight_personaByEmail(email: String!): BuildRight_Persona
+  BuildRight_personaForCustomer(customerGroupId: String!): BuildRight_Persona
+}
+```
+
+### Response Example
+
+```json
+{
+  "data": {
+    "BuildRight_personaByEmail": {
+      "id": "sarah",
+      "name": "Production Builder",
+      "catalogViewId": "22c02790-7c5e-474d-a3b6-c72b22203be5",
+      "priceBookId": "Production-Builder",
+      "customerGroupCode": "production-builder"
+    }
+  }
+}
+```
+
+### Frontend Usage
+
+```javascript
+// scripts/services/mesh-client.js
+import { initializePersonaByEmail } from './mesh-client.js';
+
+// After login, fetch persona and set headers
+const persona = await initializePersonaByEmail('sarah.martinez@sunbelthomes.com');
+// Headers automatically set: AC-View-Id, AC-Price-Book-Id
+```
+
+**See:** [Persona Service Explanation](../../explanations/mesh/persona-service.md) for architecture overview.
 
 ---
 
