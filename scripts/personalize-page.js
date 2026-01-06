@@ -27,19 +27,18 @@ export async function personalizeHomepage(doc = document) {
 
   if (isAuth) {
     const user = authService.getCurrentUser();
-    console.log('[Personalize] User:', user);
+    const persona = user.persona;
+    console.log('[Personalize] User:', user.name, 'Persona:', persona?.id);
 
-    // For dropin users, roleType/useCase come directly from mesh persona
-    // For demo mode, fall back to frontend persona config lookup
-    let roleType = user.roleType;
-    let useCase = user.useCase;
+    // Get roleType/useCase from persona (mesh for dropins, frontend config for demo)
+    let roleType = persona?.roleType;
+    let useCase = persona?.useCase;
 
+    // Fall back to frontend persona config lookup for demo mode
     if (!roleType || roleType === 'default') {
-      // Fall back to frontend persona config for demo mode
-      const personaId = user.personaId || user.id;
-      const persona = getPersona(personaId);
-      roleType = getRoleType(persona) || 'default';
-      useCase = getUseCase(persona) || 'default';
+      const frontendPersona = getPersona(persona?.id || user.id);
+      roleType = getRoleType(frontendPersona) || 'default';
+      useCase = getUseCase(frontendPersona) || 'default';
     }
 
     console.log(`[Personalize] Loading fragments for role: ${roleType}, use-case: ${useCase}`);
@@ -70,11 +69,11 @@ export async function personalizeHomepage(doc = document) {
     await Promise.all(Array.from(fragments).map(fragment => decorateBlock(fragment, 'fragment')));
 
     // Add dynamic personalization on top of fragments
-    // For dropin users, construct persona-like object from user data
+    // Persona data comes from mesh for dropin users
     const personaData = {
-      name: user.name || user.personaName || 'User',
-      company: user.company || '',
-      role: user.roleType || 'default'
+      name: persona?.displayName || user.name || 'User',
+      company: persona?.company || '',
+      role: persona?.roleType || 'default'
     };
     personalizeWithDynamicData(personaData, doc);
 

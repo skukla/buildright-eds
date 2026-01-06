@@ -100,11 +100,11 @@ class AuthService {
     window.addEventListener('auth:login', (event) => {
       if (event.detail?.user && !this.currentUser) {
         console.log('[Auth] Received dropin login event');
-        // Dropin already set up the user via initializeMeshForEmail
-        // We just need to sync our state
+        // Persona comes directly from mesh - includes features, preferences, company
         this.currentUser = {
           ...event.detail.user,
           isDropinUser: true
+          // persona is already in event.detail.user from mesh
         };
       }
     });
@@ -188,11 +188,15 @@ class AuthService {
       
       if (user) {
         // User authenticated - set from auth:login event data
+        // Persona comes directly from mesh with features, preferences, company
         this.currentUser = {
           ...user,
           isDropinUser: true
+          // persona is already in user from mesh
         };
-        console.log('[Auth] Session restored:', this.currentUser.name, 'persona:', this.currentUser.personaId);
+        console.log('[Auth] Session restored:', this.currentUser.name, 
+          'persona:', user.persona?.id || 'unknown',
+          'features:', user.persona?.features ? 'loaded' : 'none');
       } else {
         console.log('[Auth] No active Commerce session (guest)');
       }

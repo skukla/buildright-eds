@@ -118,18 +118,16 @@ async function handleCustomerAuthenticated() {
     }
 
     // Dispatch event for UI updates
-    // Include persona data for personalization (fragments, UI customization)
+    // Include full persona data from mesh for personalization
     window.dispatchEvent(new CustomEvent('auth:login', {
       detail: {
         user: {
           id: customer.id,
           email: customer.email,
-          name: `${customer.firstName || ''} ${customer.lastName || ''}`.trim(),
+          name: persona?.displayName || `${customer.firstName || ''} ${customer.lastName || ''}`.trim(),
           customerGroup: customer.groupUid,
-          personaId: persona?.id || null,
-          personaName: persona?.name || null,
-          roleType: persona?.roleType || 'default',
-          useCase: persona?.useCase || 'default'
+          // Full persona from mesh - includes features, preferences, company info
+          persona: persona || null
         }
       }
     }));
