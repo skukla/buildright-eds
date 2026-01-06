@@ -40,8 +40,14 @@
       </div>
     </div>
 
-    <!-- Account Dashboard with Sidebar -->
-    <section class="section">
+    <!-- Full-page loading state (shown while auth resolves) -->
+    <div id="account-loading" class="account-loading-overlay">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading your account...</p>
+    </div>
+
+    <!-- Account Dashboard with Sidebar (hidden until loaded) -->
+    <section class="section" id="account-section" hidden>
       <div class="container">
         <h1 class="page-header">Account Dashboard</h1>
 
@@ -122,7 +128,10 @@
 
               <!-- Builds Table -->
               <div id="builds-content">
-                <!-- Builds will be loaded here dynamically -->
+                <div class="section-loading-state">
+                  <div class="loading-spinner loading-spinner-sm"></div>
+                  <span>Loading builds...</span>
+                </div>
               </div>
             </div>
             
@@ -133,7 +142,10 @@
               
               <!-- Deliveries Table -->
               <div id="deliveries-content">
-                <!-- Deliveries will be loaded here dynamically -->
+                <div class="section-loading-state">
+                  <div class="loading-spinner loading-spinner-sm"></div>
+                  <span>Loading deliveries...</span>
+                </div>
               </div>
             </div>
 
@@ -161,7 +173,10 @@
               <h2 class="section-header">Order History</h2>
               <p class="section-description">View and track your orders.</p>
               <div id="orders-content">
-                <!-- Orders will be loaded here dynamically -->
+                <div class="section-loading-state">
+                  <div class="loading-spinner loading-spinner-sm"></div>
+                  <span>Loading orders...</span>
+                </div>
               </div>
             </div>
           </div>
@@ -202,17 +217,9 @@
       // Primary Warehouse - Get from persona
       document.getElementById('primary-warehouse').textContent = persona?.primaryWarehouse || 'Not set';
       
-      // Account Tier - Display inline with company name
-      const customerGroup = currentUser?.customerGroup || 'US-Retail';
-      const tierNames = {
-        'Production-Builder': 'Production Builder',
-        'Trade-Professional': 'Trade Professional',
-        'Wholesale-Reseller': 'Wholesale Reseller',
-        'Retail-Registered': 'Registered Customer',
-        'US-Retail': 'Standard'
-      };
-      
-      document.getElementById('tier-label-inline').textContent = tierNames[customerGroup] || 'Standard';
+      // Account Tier - Display from persona data (tier 1-5 maps to display name)
+      const tierLabel = persona?.name || 'Standard';
+      document.getElementById('tier-label-inline').textContent = tierLabel;
       
       // Populate locations content (visibility controlled by loadPersonaNav based on sections)
       const company = getCompanyForPersona(persona);
@@ -874,8 +881,21 @@
       );
     }
 
+    // Show/hide loading state
+    function showLoading() {
+      document.getElementById('account-loading').hidden = false;
+      document.getElementById('account-section').hidden = true;
+    }
+    
+    function hideLoading() {
+      document.getElementById('account-loading').hidden = true;
+      document.getElementById('account-section').hidden = false;
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
+      showLoading();
+      
       // Check authentication - redirect guests to login
       await authService.initialize();
       const currentUser = authService.getCurrentUser();
@@ -886,13 +906,19 @@
         return;
       }
       
+      // Load account data
       await loadAccountInfo();
       await loadQuickActions();
       await loadPersonaNav();
-      await loadBuilds();
-      await loadDeliveries();
-      await loadOrders();
+      
+      // Show account section, then load async data
+      hideLoading();
       initNavigation();
+      
+      // Load section data in parallel (with their own loading states)
+      loadBuilds();
+      loadDeliveries();
+      loadOrders();
     });
   </script>
 </body>
