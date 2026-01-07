@@ -722,6 +722,15 @@ export default async function decorate(block) {
     window.__productDiscoveryBaseParams = searchParams;
     window.__productDiscoverySearch = search;
 
+    // =====================================================
+    // CRITICAL: Wait for auth before loading products
+    // This ensures products load with correct persona pricing (like PDP does)
+    // Without this, products load with guest pricing first, then need re-fetch
+    // =====================================================
+    const { authService } = await import('../../scripts/auth.js');
+    await authService.initialize();
+    log('Auth initialized, user context available for correct pricing');
+
     // Start search NOW (non-blocking) - runs in parallel with container renders below
     log('Starting search in background:', searchParams);
     const searchPromise = deduplicatedSearch(search, searchParams);

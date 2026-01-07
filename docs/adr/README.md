@@ -21,6 +21,12 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [ADR-012](./ADR-012-commerce-dropins-direct-connection.md) | Commerce Dropins Direct Connection Pattern | Accepted | 2025-12-12 |
 | [ADR-013](./ADR-013-unified-product-taxonomy.md) | Unified Product Taxonomy | Accepted | 2025-11-15 |
 | [ADR-014](./ADR-014-eds-blocks-vs-dropins.md) | EDS Blocks vs Dropins Decision Framework | Accepted | 2026-01-02 |
+| [ADR-015](./ADR-015-parallel-dynamic-imports.md) | Parallel Dynamic Imports | Accepted | 2026-01-03 |
+| [ADR-016](./ADR-016-navigation-category-architecture.md) | Navigation Category Architecture | Accepted | 2026-01-04 |
+| [ADR-017](./ADR-017-dropin-loading-performance.md) | Dropin Loading Performance | Accepted | 2026-01-04 |
+| [ADR-018](./ADR-018-mesh-based-persona-authentication.md) | Mesh-Based Persona Authentication | Accepted | 2026-01-05 |
+| [ADR-019](./ADR-019-attribute-visibility-pattern.md) | Attribute Visibility Pattern | Accepted | 2026-01-06 |
+| [ADR-020](./ADR-020-user-context-initialization-pattern.md) | User Context Initialization Pattern | Accepted | 2026-01-07 |
 
 ## Archived ADRs
 
@@ -81,5 +87,5 @@ What are the positive and negative outcomes?
 
 ---
 
-**Last Updated**: January 2, 2026
+**Last Updated**: January 7, 2026
 
