@@ -257,16 +257,12 @@ header:empty {
   background: none;
 }
 
-/* FOUC Prevention - Hide main content until header is loaded */
-body:not(.header-loaded) main,
-body:not(.header-loaded) .breadcrumbs {
-  visibility: hidden;
+/* FOUC Prevention - Keep header and main visible, reserve space for content */
+main {
+  min-height: 400px; /* Reserve space to prevent jump */
 }
 
-body.header-loaded main,
-body.header-loaded .breadcrumbs {
-  visibility: visible;
-}
+/* Header and breadcrumbs load immediately - always visible */
 
 /* Typography - Using Adobe Commerce Storefront typography tokens */
 h1 {
