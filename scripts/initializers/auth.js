@@ -95,7 +95,34 @@ async function handleCustomerAuthenticated() {
     // Set Authorization header for dropin GraphQL requests
     setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
 
-    const customer = await getCustomerData(token);
+    // Check for cached customer data (5 minute TTL)
+    const cacheKey = 'buildright_customer_data';
+    const cacheTimestampKey = 'buildright_customer_data_timestamp';
+    const cacheTTL = 5 * 60 * 1000; // 5 minutes
+    
+    let customer = null;
+    const cachedData = sessionStorage.getItem(cacheKey);
+    const cachedTimestamp = sessionStorage.getItem(cacheTimestampKey);
+    
+    if (cachedData && cachedTimestamp) {
+      const age = Date.now() - parseInt(cachedTimestamp, 10);
+      if (age < cacheTTL) {
+        customer = JSON.parse(cachedData);
+        console.log('[Auth] Using cached customer data (age:', Math.round(age / 1000), 'seconds)');
+      }
+    }
+    
+    // Fetch fresh customer data if not cached
+    if (!customer) {
+      customer = await getCustomerData(token);
+      
+      // Cache the customer data
+      if (customer) {
+        sessionStorage.setItem(cacheKey, JSON.stringify(customer));
+        sessionStorage.setItem(cacheTimestampKey, Date.now().toString());
+        console.log('[Auth] Customer data cached');
+      }
+    }
 
     // Check if token is valid - Commerce returns null for expired/invalid tokens
     if (!customer) {
@@ -144,6 +171,10 @@ async function handleCustomerLoggedOut() {
   console.log('[Auth] Customer logged out');
 
   _currentCustomer = null;
+  
+  // Clear customer data cache
+  sessionStorage.removeItem('buildright_customer_data');
+  sessionStorage.removeItem('buildright_customer_data_timestamp');
 
   // Clear commerce state using proper APIs
   await clearCommerceState();

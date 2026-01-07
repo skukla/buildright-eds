@@ -220,12 +220,37 @@ export async function initializePersona(customerGroupId) {
 
 /**
  * Initialize persona by email address
- * Fetches fresh on each page load - no caching needed (fast query)
+ * Caches persona data per session to avoid redundant fetches
  *
  * @param {string} email - Customer email address
  * @returns {Promise<Object>} Persona data
  */
 export async function initializePersonaByEmail(email) {
+  // Check session storage for cached persona
+  const cachedEmail = sessionStorage.getItem('buildright_persona_email');
+  const cachedPersonaData = sessionStorage.getItem('buildright_persona');
+  
+  if (cachedEmail === email && cachedPersonaData) {
+    try {
+      const persona = JSON.parse(cachedPersonaData);
+      console.log('[MeshClient] Using cached persona for:', email);
+      
+      // Restore persona state
+      _currentPersona = persona;
+      setPersonaHeaders({
+        catalogViewId: persona.catalogViewId,
+        priceBookId: persona.priceBookId
+      });
+      
+      return persona;
+    } catch (error) {
+      console.warn('[MeshClient] Failed to parse cached persona, refetching:', error.message);
+      // Clear invalid cache
+      sessionStorage.removeItem('buildright_persona');
+      sessionStorage.removeItem('buildright_persona_email');
+    }
+  }
+
   console.log('[MeshClient] Fetching persona by email:', email);
 
   const data = await meshQuery(queries.GET_PERSONA_BY_EMAIL, { email }, {
@@ -240,6 +265,11 @@ export async function initializePersonaByEmail(email) {
       catalogViewId: persona.catalogViewId,
       priceBookId: persona.priceBookId
     });
+    
+    // Cache persona data in sessionStorage
+    sessionStorage.setItem('buildright_persona', JSON.stringify(persona));
+    sessionStorage.setItem('buildright_persona_email', email);
+    
     console.log('[MeshClient] Persona initialized:', persona.name);
     console.log('[MeshClient] Persona data:', { 
       tier: persona.tier, 
