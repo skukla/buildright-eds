@@ -5,6 +5,7 @@
 
 import { catalogService } from './services/catalog-service.js';
 import { authService } from './auth.js';
+import { showLoadingOverlay, hideLoadingOverlay } from './loading-overlay.js';
 
 class BOMReview {
   constructor() {
@@ -55,7 +56,7 @@ class BOMReview {
     await this.loadData();
     
     if (!this.bomData) {
-      this.hideLoadingOverlay();
+      hideLoadingOverlay();
       this.showError('No BOM data found. Please configure a build first.');
       return;
     }
@@ -74,15 +75,10 @@ class BOMReview {
     this.setupCartListener();
     
     // Hide loading overlay now that page is fully rendered
-    this.hideLoadingOverlay();
+    hideLoadingOverlay();
   }
   
-  hideLoadingOverlay() {
-    if (this.elements.loadingOverlay) {
-      this.elements.loadingOverlay.dataset.visible = 'false';
-      document.body.style.overflow = '';
-    }
-  }
+  // hideLoadingOverlay method removed - now using global helper
   
   setupCartListener() {
     window.addEventListener('cartUpdated', async () => {
@@ -714,9 +710,10 @@ class BOMReview {
   async addAllToCart() {
     const isEditing = !!this.editingBundleId;
     
-    this.elements.loadingOverlay.dataset.visible = 'true';
-    document.getElementById('loading-title').textContent = isEditing ? 'Updating cart...' : 'Adding to cart...';
-    document.getElementById('loading-subtitle').textContent = `${this.bomData.lineItems.length} items`;
+    showLoadingOverlay({
+      title: isEditing ? 'Updating cart...' : 'Adding to cart...',
+      subtitle: `${this.bomData.lineItems.length} items`
+    });
     
     // Create a bundle from the BOM items
     const bundleId = isEditing ? this.editingBundleId : `bom-${Date.now()}`;
@@ -777,7 +774,7 @@ class BOMReview {
     // Brief delay for UX
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    this.elements.loadingOverlay.dataset.visible = 'false';
+    hideLoadingOverlay();
     
     // Show success
     this.elements.successMessage.dataset.visible = 'true';

@@ -479,6 +479,60 @@
 }
 
 /* ============================================
+   LOADING OVERLAY - Full-page blocking
+   Use for operations requiring user to wait:
+   - Add to cart
+   - Generate BOM  
+   - Process checkout
+   ============================================ */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.loading-overlay[data-visible="true"] {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.loading-overlay .loading-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium);
+}
+
+.loading-overlay .loading-content h3 {
+  margin: 0;
+  color: var(--color-text);
+  font: var(--type-body-1-strong-font);
+}
+
+.loading-overlay .loading-content p {
+  color: var(--color-text-secondary);
+  font: var(--type-body-2-default-font);
+  margin: 0;
+}
+
+/* Use standard spinner from above */
+.loading-overlay .loading-spinner {
+  /* Inherits from .loading-spinner defined above */
+}
+
+/* ============================================
    STATE COMPONENTS
    Reusable loading, error, and empty state displays
    ============================================ */
