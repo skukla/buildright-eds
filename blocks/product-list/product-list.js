@@ -29,18 +29,8 @@ const selectedPriceRanges = new Map();
 // Flag to track when we're clearing filters - prevents visual blip during re-render
 let isClearingFilters = false;
 
-// ============================================
-// EDS PERFORMANCE OPTIMIZATIONS
-// ============================================
-//
-// EDS uses setTimeout(3000) in delayed.js for analytics/tracking.
-// We use requestIdleCallback for cache warming because timing matters:
-// - Analytics: "run eventually, never interfere" → fixed 3s delay is fine
-// - Prefetch: "run ASAP when idle" → sooner prefetch = faster UX
-//
-// This aligns with EDS philosophy (performance-first) while using
-// the right tool for the job.
-// ============================================
+// Flag to track initial load - prevents spinner during first load (skeletons show instead)
+let isInitialLoad = true;
 
 /**
  * Request deduplication - prevents duplicate in-flight GraphQL requests
@@ -49,28 +39,8 @@ let isClearingFilters = false;
 const inflightRequests = new Map();
 
 /**
- * Cache warming state - tracks which query patterns have been prefetched
- * Prevents redundant prefetch requests during the session
- */
-const prefetchedQueries = new Set();
-
-/**
- * Cross-browser requestIdleCallback with fallback
- * EDS pattern: Use idle time for non-critical background work
- * @param {Function} callback - Function to execute during idle time
- * @param {Object} options - Options with timeout
- */
-function scheduleIdleTask(callback, options = { timeout: 5000 }) {
-  if (typeof requestIdleCallback === 'function') {
-    return requestIdleCallback(callback, options);
-  }
-  // Fallback for Safari and older browsers
-  return setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 50 }), 1);
-}
-
-/**
  * Generate cache key for search params
- * Used for both deduplication and prefetch tracking
+ * Used for request deduplication
  */
 function getSearchCacheKey(params) {
   return JSON.stringify({
@@ -108,44 +78,11 @@ async function deduplicatedSearch(searchFn, params) {
 }
 
 /**
- * Prefetch search results during idle time
- * EDS pattern: Warm server-side caches before user needs the data
- * @param {Function} searchFn - The dropin search function
- * @param {Object} params - Search parameters to prefetch
- * @param {string} label - Description for logging
- */
-function prefetchSearch(searchFn, params, label = 'query') {
-  const cacheKey = getSearchCacheKey(params);
-
-  // Skip if already prefetched this session
-  if (prefetchedQueries.has(cacheKey)) {
-    log('Prefetch skipped (already cached):', label);
-    return;
-  }
-
-  scheduleIdleTask(async (deadline) => {
-    // Only prefetch if we have idle time or hit timeout
-    if (deadline.timeRemaining() > 0 || deadline.didTimeout) {
-      log('Prefetching during idle:', label);
-
-      try {
-        await deduplicatedSearch(searchFn, params);
-        prefetchedQueries.add(cacheKey);
-        log('Prefetch complete:', label);
-      } catch (err) {
-        // Prefetch failures are non-critical - log but don't throw
-        console.warn('[ProductList] Prefetch failed:', label, err.message);
-      }
-    }
-  }, { timeout: 10000 }); // 10s timeout ensures prefetch happens even on busy pages
-}
-
-/**
  * Called when all products have finished rendering (based on slot callback count)
  * Removes loading states and shows pagination
  */
 function onRenderComplete() {
-  log('All products rendered, removing loading states');
+  log(`[TIMING] onRenderComplete() START at ${performance.now().toFixed(2)}ms`);
   const resultsContainer = document.querySelector('.dropin-search-results-container');
   const facetsEl = document.querySelector('.dropin-facets-container');
   const paginationEl = document.querySelector('.dropin-pagination-container');
@@ -154,8 +91,45 @@ function onRenderComplete() {
     resultsContainer.classList.remove('validating', 'updating');
     // Remove loading spinner
     const spinner = resultsContainer.querySelector('.loading-spinner');
-    if (spinner) spinner.remove();
+    if (spinner) {
+      log(`[TIMING] Removing spinner at ${performance.now().toFixed(2)}ms`);
+      spinner.remove();
+    }
   }
+  
+  // Remove skeleton placeholders and reveal real content
+  const facetsSkeleton = document.querySelector('.facets-skeleton');
+  const productGridSkeleton = document.querySelector('.product-grid-skeleton');
+  
+  if (facetsSkeleton) {
+    log(`[TIMING] Removing facets skeleton at ${performance.now().toFixed(2)}ms`);
+    facetsSkeleton.remove();
+  }
+  
+  if (productGridSkeleton) {
+    log(`[TIMING] Removing product grid skeleton at ${performance.now().toFixed(2)}ms`);
+    productGridSkeleton.remove();
+  }
+  
+  // Reveal real facets sidebar, product grid, and product count together
+  const facetsWrapper = document.querySelector('.buildright-facets-wrapper');
+  const productCount = document.querySelector('.product-count');
+  
+  if (facetsWrapper) {
+    facetsWrapper.style.opacity = '1';
+    facetsWrapper.style.transition = 'opacity 0.3s ease-in-out';
+  }
+  
+  if (resultsContainer) {
+    resultsContainer.style.opacity = '1';
+    resultsContainer.style.transition = 'opacity 0.3s ease-in-out';
+  }
+  
+  if (productCount) {
+    productCount.style.opacity = '1';
+    productCount.style.transition = 'opacity 0.3s ease-in-out';
+  }
+  
   if (facetsEl) facetsEl.classList.remove('validating', 'clearing');
   if (paginationEl) paginationEl.style.display = '';
 
@@ -176,6 +150,12 @@ function onRenderComplete() {
       facetsEl.classList.remove('clearing-filters');
       log('onRenderComplete: Clearing state ended');
     }, 50);
+  }
+  
+  // Mark initial load as complete (allows subsequent searches to show loading states)
+  if (isInitialLoad) {
+    isInitialLoad = false;
+    log('Initial load complete');
   }
 
   // Emit event for external listeners
@@ -334,7 +314,8 @@ async function updateCategoryUI(categorySlug) {
 }
 
 export default async function decorate(block) {
-  log('Initializing Level 2 integration with full slots...');
+  const startTime = performance.now();
+  log(`[TIMING] decorate() START at ${startTime.toFixed(2)}ms`);
   
   // Get containers (facetsContainer queried after dropin init to ensure DOM is ready)
   const searchResultsContainer = block.querySelector('.dropin-search-results-container');
@@ -347,9 +328,17 @@ export default async function decorate(block) {
     return;
   }
   
+  // Check for initial loader (now outside dropin container)
+  const initialLoader = document.querySelector('.catalog-initial-loader');
+  log(`[TIMING] Initial loader present: ${!!initialLoader}`);
+  
   try {
     // Emit loading event immediately (matches product-grid.js pattern)
     emitCatalogEvent('catalogLoading');
+    log(`[TIMING] catalogLoading event emitted at ${(performance.now() - startTime).toFixed(2)}ms`);
+
+    // Catalog section is visible by default for progressive loading
+    // Only the product grid shows a spinner during initial load
 
     // Wait for dropins to be ready (scripts.js initializes them before blocks)
     // Using waitForDropins() instead of initializeDropins() avoids redundant work
@@ -412,8 +401,12 @@ export default async function decorate(block) {
        * Also sets up card-level click navigation to PDP
        */
       ProductImage: (ctx) => {
-        log('ProductImage slot:', ctx.product?.sku);
         const { product } = ctx;
+        // Log timing for first product only
+        if (renderedProductCount === 0) {
+          log(`[TIMING] First ProductImage rendering at ${performance.now().toFixed(2)}ms`);
+        }
+        log('ProductImage slot:', ctx.product?.sku);
         
         // Create BuildRight-namespaced wrapper
         const imageWrapper = document.createElement('div');
@@ -689,7 +682,7 @@ export default async function decorate(block) {
     await render.render(SearchResults, {
       imageWidth: 400,
       imageHeight: 400,
-      skeletonCount: 0, // Disable Adobe skeletons - we use our own custom ones
+      skeletonCount: 0, // Disable Adobe skeletons - they don't clear properly
       // Route product clicks to PDP page with SKU parameter
       routeProduct: (product) => `${basePath}pages/product-detail.html?sku=${product.sku}`,
       onSearchResult: (products) => {
@@ -701,6 +694,8 @@ export default async function decorate(block) {
     })(searchResultsContainer);
 
     log('SearchResults rendered');
+    
+    // Results container starts hidden, revealed in onRenderComplete when products load
 
     // =====================================================
     // PERFORMANCE: Start search IMMEDIATELY after SearchResults renders
@@ -742,7 +737,7 @@ export default async function decorate(block) {
 
     // Subscribe to search/loading events - the dropin's native loading state
     events.on('search/loading', (isLoading) => {
-      log('search/loading event:', isLoading);
+      log(`[TIMING] search/loading event: ${isLoading} at ${performance.now().toFixed(2)}ms`);
 
       if (isLoading) {
         // Search starting - show loading states and reset render counter
@@ -752,18 +747,28 @@ export default async function decorate(block) {
         const facetsEl = document.querySelector('.dropin-facets-container');
         const paginationEl = document.querySelector('.dropin-pagination-container');
 
+        // Show loading states for all searches
         if (resultsContainer) {
           resultsContainer.classList.add('validating');
-          // Inject loading spinner for product grid
-          if (!resultsContainer.querySelector('.loading-spinner')) {
+          // Only inject spinner if there's no initial loader (i.e., subsequent searches)
+          const initialLoader = document.querySelector('.catalog-initial-loader');
+          log(`[TIMING] Initial loader still present: ${!!initialLoader}`);
+          if (!initialLoader && !resultsContainer.querySelector('.loading-spinner')) {
+            log(`[TIMING] Injecting new spinner at ${performance.now().toFixed(2)}ms`);
             const spinner = document.createElement('div');
             spinner.className = 'loading-spinner loading-spinner-sm';
             resultsContainer.appendChild(spinner);
+          } else {
+            log(`[TIMING] Using existing loader (initial or spinner)`);
           }
         }
         if (facetsEl) facetsEl.classList.add('validating');
         if (paginationEl) paginationEl.style.display = 'none';
         emitCatalogEvent('facetsValidating', { validating: true });
+
+      } else {
+        // Search completed - but DON'T mark initial load as done yet
+        // Wait until products actually render (onRenderComplete will handle it)
       }
     }, { eager: true });
 
@@ -1236,32 +1241,6 @@ export default async function decorate(block) {
     try {
       const result = await searchPromise;
       log('Search completed, total:', result?.totalCount ?? result?.pageInfo?.totalItems ?? 'unknown');
-
-      // Mark initial query as prefetched (it's now in ACO cache)
-      prefetchedQueries.add(getSearchCacheKey(searchParams));
-
-      // EDS Optimization: If user landed with a search term, prefetch the "cleared" state
-      if (phrase) {
-        const clearedParams = {
-          phrase: '',
-          filter: initialFilter.length > 0 ? initialFilter : undefined,
-          pageSize: PAGE_SIZE,
-          currentPage: 1,
-        };
-        prefetchSearch(search, clearedParams, 'cleared catalog state');
-      }
-
-      // EDS Optimization: Prefetch page 2 for faster pagination
-      const totalCount = result?.totalCount ?? result?.pageInfo?.totalItems ?? 0;
-      if (totalCount > PAGE_SIZE) {
-        const page2Params = {
-          phrase,
-          filter: initialFilter.length > 0 ? initialFilter : undefined,
-          pageSize: PAGE_SIZE,
-          currentPage: 2,
-        };
-        prefetchSearch(search, page2Params, 'page 2');
-      }
     } catch (searchError) {
       console.error('[ProductListDropin] Search failed:', searchError);
       throw searchError;
@@ -1323,18 +1302,6 @@ export default async function decorate(block) {
           // Trigger dropin search with deduplication
           try {
             await deduplicatedSearch(search, searchParams);
-
-            // EDS Optimization: After searching, prefetch the "cleared" state
-            // so user can quickly return to full catalog
-            if (query) {
-              const clearedParams = {
-                phrase: '',
-                filter: initialFilter.length > 0 ? initialFilter : undefined,
-                pageSize: PAGE_SIZE,
-                currentPage: 1,
-              };
-              prefetchSearch(search, clearedParams, 'cleared state after search');
-            }
           } catch (err) {
             console.error('[ProductList] Catalog search failed:', err);
           }

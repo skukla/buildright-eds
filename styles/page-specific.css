@@ -1,9 +1,119 @@
-odd/* 
+/* 
  * Layout-specific styles for catalog and product pages
  * Following EDS best practices: semantic, reusable, no duplication
  */
 
 /* Breadcrumbs styles moved to blocks/breadcrumbs/breadcrumbs.css */
+
+/* ===================================
+   Skeleton Loading States
+   =================================== */
+
+/* ===================================
+   Facets Sidebar Skeleton
+   Matches actual filter structure with borders
+   =================================== */
+
+/* Outer wrapper - matches .buildright-facets-wrapper */
+.facets-skeleton {
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--shape-border-radius-3);
+  padding: var(--spacing-medium);
+  padding-top: var(--spacing-small); /* Less top padding to position header higher */
+}
+
+/* Inner container - matches .dropin-facets-container */
+.facets-skeleton-inner {
+  padding: 8px 16px 16px 16px; /* Small top padding for proper header positioning */
+  min-height: 300px;
+}
+
+/* Header - "Refine Results" + "Clear All" */
+.facets-skeleton-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 16px 0;
+  padding: 0 0 8px 0; /* Reduced bottom padding to make header more compact */
+  border-bottom: 2px solid rgb(203, 213, 225);
+  min-height: 26px; /* Ensure minimum height to match text line-height */
+}
+
+/* Filter group */
+.facets-skeleton-group {
+  padding: 12px 0;
+  border-bottom: 1px solid #CBD5E1;
+}
+
+.facets-skeleton-group:last-child {
+  border-bottom: none;
+}
+
+/* Group header - title + chevron */
+.facets-skeleton-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 0;
+}
+
+/* Checkbox row - checkbox + label + count */
+.facets-skeleton-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+/* Checkbox box skeleton */
+.skeleton-checkbox-box {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
+
+/* Product Grid Skeleton - matches product-list grid exactly */
+.product-grid-skeleton {
+  display: grid;
+  grid-template-columns: 240px 240px 240px 240px; /* Match product-list 4-column layout */
+  gap: 24px;
+  column-gap: 24px;
+  row-gap: 24px;
+  align-items: start;
+  width: 100%;
+  padding: 0;
+}
+
+/* Responsive skeleton grid - match product-list breakpoints */
+@media (max-width: 1200px) {
+  .product-grid-skeleton {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid-skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid-skeleton {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Additional staggered animations for 12 cards (featured-products only has 5) */
+.product-card-skeleton:nth-child(6) { animation-delay: 250ms; }
+.product-card-skeleton:nth-child(7) { animation-delay: 300ms; }
+.product-card-skeleton:nth-child(8) { animation-delay: 350ms; }
+.product-card-skeleton:nth-child(9) { animation-delay: 400ms; }
+.product-card-skeleton:nth-child(10) { animation-delay: 450ms; }
+.product-card-skeleton:nth-child(11) { animation-delay: 500ms; }
+.product-card-skeleton:nth-child(12) { animation-delay: 550ms; }
 
 /* ===================================
    Catalog Layout
@@ -221,25 +331,7 @@ odd/*
   display: none;
 }
 
-/* Catalog Loading Overlay */
-.catalog-loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 80px; /* Position in upper portion with good breathing room */
-  z-index: 10;
-  /* No background - transparent overlay */
-}
-
-.catalog-loading-overlay.hidden {
-  display: none;
-}
+/* Catalog and PDP now use global .loading-overlay from components.css */
 
 @media (max-width: 768px) {
   .catalog-controls {
@@ -306,25 +398,7 @@ main {
 /* ===================================
    Product Detail Page Loading State
    =================================== */
-/* Product Detail Loading - matches catalog page style */
-.product-detail-loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 80px;
-  z-index: 100;
-  /* No background - transparent like catalog */
-}
-
-.product-detail-loading-overlay.hidden {
-  display: none;
-}
+/* Product detail now uses global .loading-overlay from components.css */
 
 .loading-spinner-container {
   display: flex;

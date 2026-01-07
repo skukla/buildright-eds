@@ -189,18 +189,6 @@
    ---------------------------------------- */
 
 /* ----------------------------------------
-   ADOBE SKELETON HANDLING
-   Hide Adobe's built-in skeletons (we use custom loading states)
-   ---------------------------------------- */
-
-.dropin-search-results-container .dropin-product-item-card-skeleton,
-.dropin-search-results-container .dropin-product-item-card__skeleton,
-.dropin-search-results-container .dropin-product-item-card__skeleton__content,
-.product-discovery-product-list__grid .dropin-product-item-card-skeleton {
-  display: none !important;
-}
-
-/* ----------------------------------------
    SORT DROPDOWN - LOADING STATE
    Subtle indication during sort changes
    ---------------------------------------- */
@@ -220,3 +208,4 @@
   opacity: 0.5;
   transition: opacity 0.2s ease;
 }
+

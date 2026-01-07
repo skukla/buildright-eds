@@ -164,21 +164,27 @@
 .product-card-skeleton {
   pointer-events: none;
   opacity: 1;
-  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
-  border: 1px solid #e5e5e5;
+  background: var(--color-surface-nested); /* slate-50 - lighter background for better shimmer contrast */
+  border: 1px solid var(--color-surface-hover); /* slate-200 - softer border */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    #f0f0f0 0%,
-    #e8e8e8 50%,
-    #f0f0f0 100%
+    var(--color-surface-hover) 0%,
+    var(--color-border) 50%,
+    var(--color-surface-hover) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
   border-radius: var(--shape-border-radius-2);
+}
+
+/* Ensure skeleton image shimmer fills the 200px container */
+.product-card-skeleton .product-card-image.skeleton-shimmer {
+  height: 200px;
+  width: 100%;
 }
 
 @keyframes shimmer {
