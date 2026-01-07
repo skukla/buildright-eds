@@ -81,11 +81,27 @@ export function getCurrentPersona() {
  * @param {Object} headers - { catalogViewId, priceBookId }
  */
 export function setPersonaHeaders(headers) {
+  const previousCatalogViewId = _personaHeaders['AC-View-Id'];
+  const newCatalogViewId = headers.catalogViewId;
+  
   _personaHeaders = {
     'AC-View-Id': headers.catalogViewId,
     'AC-Price-Book-Id': headers.priceBookId
   };
   console.log('[MeshClient] Persona headers set:', _personaHeaders);
+
+  // If persona changed, invalidate category cache (categories are persona-specific)
+  if (previousCatalogViewId && newCatalogViewId !== previousCatalogViewId) {
+    console.log('[MeshClient] Persona changed, clearing category cache');
+    try {
+      sessionStorage.removeItem('buildright_categories');
+      sessionStorage.removeItem('buildright_categories_persona');
+      categoriesPromise = null; // Reset promise to force fresh fetch
+      window.__acoCategories = []; // Clear window cache
+    } catch (e) {
+      console.warn('[MeshClient] Failed to clear category cache:', e);
+    }
+  }
 
   // Notify dropins to update their headers
   window.dispatchEvent(new CustomEvent('personaHeadersUpdated', {
@@ -392,6 +408,39 @@ export async function searchSuggestions(phrase) {
 let categoriesPromise = null;
 
 /**
+ * Get cached categories synchronously from sessionStorage
+ * This is used for instant page rendering without flicker.
+ * Returns empty array if no cache exists or persona mismatch.
+ *
+ * IMPORTANT: Categories are persona-specific (fetched with AC-View-Id header).
+ * We must validate that cached categories match the current persona.
+ *
+ * @returns {Array} - Array of category objects (or empty array)
+ */
+export function getCachedCategories() {
+  try {
+    const cached = sessionStorage.getItem('buildright_categories');
+    const cachedPersonaId = sessionStorage.getItem('buildright_categories_persona');
+    
+    if (cached && cachedPersonaId) {
+      const currentPersonaId = _currentPersona?.catalogViewId;
+      
+      // Only use cache if persona matches
+      if (currentPersonaId && cachedPersonaId === currentPersonaId) {
+        const result = JSON.parse(cached);
+        return result.categories || [];
+      }
+      
+      // Persona mismatch - cache is stale
+      console.log('[MeshClient] Category cache invalid: persona changed');
+    }
+  } catch (e) {
+    console.warn('[MeshClient] Failed to read cached categories:', e);
+  }
+  return [];
+}
+
+/**
  * Get categories from ACO (with singleton promise caching)
  * First call initiates fetch, subsequent calls return same promise.
  * This eliminates race conditions between blocks needing category data.
@@ -405,14 +454,20 @@ let categoriesPromise = null;
 export async function getCategories() {
   if (!categoriesPromise) {
     // Check sessionStorage first (persists across page navigations)
+    // IMPORTANT: Validate persona to prevent showing wrong categories on persona switch
     try {
       const cached = sessionStorage.getItem('buildright_categories');
-      if (cached) {
+      const cachedPersonaId = sessionStorage.getItem('buildright_categories_persona');
+      const currentPersonaId = _currentPersona?.catalogViewId;
+      
+      if (cached && cachedPersonaId && currentPersonaId && cachedPersonaId === currentPersonaId) {
         const result = JSON.parse(cached);
         window.__acoCategories = result.categories || [];
         console.log('[MeshClient] Using cached categories:', window.__acoCategories.length);
         categoriesPromise = Promise.resolve(result);
         return categoriesPromise;
+      } else if (cached && cachedPersonaId && currentPersonaId && cachedPersonaId !== currentPersonaId) {
+        console.log('[MeshClient] Category cache invalid: persona changed from', cachedPersonaId, 'to', currentPersonaId);
       }
     } catch (e) {
       console.warn('[MeshClient] Categories cache read failed:', e);
@@ -423,8 +478,11 @@ export async function getCategories() {
       .then((data) => {
         const result = data.BuildRight_getCategories;
         // Cache in sessionStorage for subsequent page loads
+        // IMPORTANT: Store persona ID with cache to validate on retrieval
         try {
           sessionStorage.setItem('buildright_categories', JSON.stringify(result));
+          sessionStorage.setItem('buildright_categories_persona', _currentPersona?.catalogViewId || '');
+          console.log('[MeshClient] Categories cached with persona:', _currentPersona?.catalogViewId);
         } catch (e) {
           console.warn('[MeshClient] Failed to cache categories:', e);
         }

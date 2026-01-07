@@ -8,7 +8,7 @@
  * - BuildRight controls all visual presentation
  */
 
-import { getCategories, getCategoryDisplayName } from '../../scripts/services/mesh-client.js';
+import { getCategories, getCachedCategories, getCategoryDisplayName } from '../../scripts/services/mesh-client.js';
 
 // Debug mode - set to true for verbose logging during development
 const DEBUG = true;
@@ -377,16 +377,18 @@ export default async function decorate(block) {
     ]);
 
     // =====================================================
-    // FCP OPTIMIZATION: Set immediate title from URL slug (non-blocking)
-    // The full display name will be set by updateCategoryUI() on search/result event
-    // This avoids blocking FCP on the categories network fetch
+    // FCP OPTIMIZATION: Set immediate title using cached categories (no flicker)
+    // Cached categories are available synchronously from sessionStorage
+    // If cache exists, this shows the correct name immediately
+    // If no cache, falls back to slug formatting (which will be updated on first load)
     // =====================================================
     if (category) {
-      const immediateTitle = getCategoryDisplayName(category, []); // Uses slugToTitle fallback
+      const cachedCategories = getCachedCategories();
+      const immediateTitle = getCategoryDisplayName(category, cachedCategories);
       const catalogTitle = document.getElementById('catalog-title');
       if (catalogTitle) catalogTitle.textContent = immediateTitle;
       document.title = `${immediateTitle} | BuildRight Solutions`;
-      log('Immediate title from slug:', immediateTitle);
+      log('Immediate title set:', immediateTitle, `(using ${cachedCategories.length > 0 ? 'cached' : 'slug'} data)`);
     }
     
     // Render SearchResults with FULL slot customization
