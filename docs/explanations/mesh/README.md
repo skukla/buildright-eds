@@ -100,6 +100,12 @@ The mesh translates between different data formats so the storefront doesn't nee
 | [Persona Service](./persona-service.md) | How personalized pricing works |
 | [Persona Authentication](./persona-authentication.md) | How Quick Login works for demos |
 
+### Visual Explanations
+
+| Document | Purpose |
+|----------|---------|
+| [ACO Header Requirements](./visuals/aco-header-requirements.md) | **Why the two ACO sources have different headers** - explains the navigation vs. pricing header conflict |
+
 ---
 
 ## Related Documentation

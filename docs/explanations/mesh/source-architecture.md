@@ -45,6 +45,8 @@ BuildRight's API Mesh connects to three distinct backend sources. Understanding 
 
 This is the key insight that explains the adapter pattern:
 
+> ⚠️ **Header Configuration**: The two ACO sources also have **different header configurations** due to ACO API conflicts. See [ACO Header Requirements](./visuals/aco-header-requirements.md) for the full visual explanation.
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                     THE DUAL ACO SOURCE PATTERN                             │
@@ -169,11 +171,11 @@ Multiple resolvers can share the same underlying query:
 
 ## Quick Reference Table
 
-| Source | Prefix | What It Provides | Who Uses It |
-|--------|--------|------------------|-------------|
-| **ACO_Dropins** | (none) | Schema types only | Dropin type compatibility |
-| **ACO_BuildRight** | `BuildRight_` | Queries + data | All product resolvers |
-| **Commerce** | (none) | Transactions | Cart, Checkout, Auth, Orders |
+| Source | Prefix | What It Provides | Who Uses It | AC-Environment-Id |
+|--------|--------|------------------|-------------|-------------------|
+| **ACO_Dropins** | (none) | Schema types + product queries | Dropin type compatibility, product grid/detail | ❌ Not included (conflicts with pricing) |
+| **ACO_BuildRight** | `BuildRight_` | Navigation + custom queries | All product resolvers, categories | ✅ Included (required for navigation) |
+| **Commerce** | (none) | Transactions | Cart, Checkout, Auth, Orders | N/A |
 
 ---
 
@@ -193,4 +195,5 @@ When explaining to clients:
 - [Adapter Pattern](./adapter-pattern.md) - Why we intercept dropin queries
 - [Unified Routing](./unified-routing.md) - How dropins route through adapters
 - [Mesh Resolvers](./mesh-resolvers.md) - Individual resolver details
+- [ACO Header Requirements](./visuals/aco-header-requirements.md) - **Why the two ACO sources have different headers**
 - [Technical Reference](../../reference/mesh/mesh-resolvers.md) - Code-level documentation
