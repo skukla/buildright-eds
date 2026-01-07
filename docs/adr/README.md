@@ -27,6 +27,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [ADR-018](./ADR-018-mesh-based-persona-authentication.md) | Mesh-Based Persona Authentication | Accepted | 2026-01-05 |
 | [ADR-019](./ADR-019-attribute-visibility-pattern.md) | Attribute Visibility Pattern | Accepted | 2026-01-06 |
 | [ADR-020](./ADR-020-user-context-initialization-pattern.md) | User Context Initialization Pattern | Accepted | 2026-01-07 |
+| [ADR-021](./ADR-021-inline-header-for-instant-visibility.md) | Inline Header HTML for Instant Visibility | Accepted | 2026-01-07 |
 
 ## Archived ADRs
 
@@ -87,5 +88,5 @@ What are the positive and negative outcomes?
 
 ---
 
-**Last Updated**: January 7, 2026
+**Last Updated**: January 7, 2026 (Added ADR-021: Inline Header for Instant Visibility)
 

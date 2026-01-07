@@ -489,18 +489,24 @@ async function loadLazy(doc) {
   // Fix static links first
   fixStaticLinks();
   
-  // Load blocks in main
-  if (main) {
-    await loadBlocks(main);
-  }
-  
-  // Load header and footer
+  // Load header and main blocks in parallel for faster perceived performance
   const header = doc.querySelector('header');
   const footer = doc.querySelector('footer');
   
-  if (header && !header.querySelector('.header')) {
-    await loadHeader(header);
+  const promises = [];
+  
+  // Load header first (critical above-the-fold content with cached categories)
+  if (header) {
+    promises.push(loadHeader(header));
   }
+  
+  // Load blocks in main (in parallel with header)
+  if (main) {
+    promises.push(loadBlocks(main));
+  }
+  
+  // Wait for both to complete
+  await Promise.all(promises);
   
   // Only load footer if it's not already a .site-footer element (from fragments) 
   // and doesn't contain a .site-footer child (already loaded)

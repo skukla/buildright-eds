@@ -498,25 +498,37 @@ export default async function decorate(block) {
   
   // Initialize Commerce Dropins in custom BuildRight containers
   // This is the BuildRight pattern: Keep our design, use Dropin APIs
+  // PERFORMANCE: Load asynchronously to avoid blocking header render
   
   const userMenuContainer = block.querySelector('#user-menu-container');
   if (userMenuContainer) {
-    // Create auth block and insert into custom container
-    const authDropinBlock = document.createElement('div');
-    authDropinBlock.className = 'auth';
-    authDropinBlock.dataset.headerContext = 'true'; // Signal this is in header
-    userMenuContainer.appendChild(authDropinBlock);
-    await decorateBlock(authDropinBlock, 'auth');
+    // Show placeholder while loading
+    userMenuContainer.innerHTML = '<div class="auth-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>';
+    
+    // Create auth block and insert into custom container (async)
+    (async () => {
+      const authDropinBlock = document.createElement('div');
+      authDropinBlock.className = 'auth';
+      authDropinBlock.dataset.headerContext = 'true'; // Signal this is in header
+      userMenuContainer.innerHTML = ''; // Clear placeholder
+      userMenuContainer.appendChild(authDropinBlock);
+      await decorateBlock(authDropinBlock, 'auth');
+    })();
   }
   
   const miniCartContainer = block.querySelector('#mini-cart-container');
   if (miniCartContainer) {
-    // Create commerce-mini-cart block and insert into custom container
-    const miniCartBlock = document.createElement('div');
-    miniCartBlock.className = 'commerce-mini-cart';
-    miniCartBlock.dataset.headerContext = 'true'; // Signal this is in header
-    miniCartContainer.appendChild(miniCartBlock);
-    await decorateBlock(miniCartBlock, 'commerce-mini-cart');
+    // Cart icon already visible in HTML, just add placeholder badge
+    // The mini-cart block will replace this when ready
+    
+    // Create commerce-mini-cart block and insert into custom container (async)
+    (async () => {
+      const miniCartBlock = document.createElement('div');
+      miniCartBlock.className = 'commerce-mini-cart';
+      miniCartBlock.dataset.headerContext = 'true'; // Signal this is in header
+      miniCartContainer.appendChild(miniCartBlock);
+      await decorateBlock(miniCartBlock, 'commerce-mini-cart');
+    })();
   }
 
   // Initialize location display from customer context
@@ -773,7 +785,8 @@ export default async function decorate(block) {
   // Search functionality using Adobe Product Discovery Dropin
   // Replaces custom debouncing, suggestion rendering, and keyboard navigation
   // The dropin handles: debouncing (300ms), live suggestions, keyboard nav, API calls
-  await initializeHeaderSearch(block);
+  // PERFORMANCE: Initialize asynchronously to avoid blocking header render
+  initializeHeaderSearch(block);
 
   // Navigation links
   const navLinks = block.querySelectorAll('.nav-link');
@@ -958,7 +971,8 @@ export default async function decorate(block) {
   }
   
   // Load categories after persona is initialized
-  loadDynamicCategories();
+  // Await to ensure cached categories render before header is marked complete
+  await loadDynamicCategories();
   
   // Mark header as loaded to prevent FOUC
   document.body.classList.add('header-loaded');

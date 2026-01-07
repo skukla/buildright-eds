@@ -401,6 +401,22 @@
   position: relative;
 }
 
+/* Auth Placeholder - shown while auth dropin loads */
+.auth-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.auth-placeholder svg {
+  width: 24px;
+  height: 24px;
+}
+
 .user-link {
   display: flex;
   align-items: center;

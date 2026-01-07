@@ -23,11 +23,165 @@
   <script src="../scripts/scripts.js" type="module"></script>
   <link rel="stylesheet" href="../styles/styles.css">
   <link rel="stylesheet" href="../blocks/project-filter/project-filter.css">
+  <!-- Preload header CSS for inlined header (prevents FOUC) -->
+  <link rel="stylesheet" href="../blocks/header/header.css">
+  <!-- Product card styles for skeleton loading (shared with featured-products) -->
+  <link rel="stylesheet" href="../blocks/featured-products/featured-products.css">
   <!-- Note: Header CLS prevention now in styles/base.css -->
 </head>
 <body class="page-catalog">
-  <!-- Header loaded dynamically from blocks/header/ -->
-  <header></header>
+  <!-- Header pre-rendered for instant visibility (EDS best practice) -->
+  <!-- JavaScript will still decorate this block to add dynamic functionality -->
+  <header>
+    <div class="header" data-block-name="header" data-block-status="loading">
+      <!-- Top Utility Bar -->
+      <div class="header-top">
+        <div class="header-top-content">
+          <div class="header-location" id="header-location" style="display: none;">
+            <span class="location-label">You're Shopping</span>
+            <div class="location-selector-wrapper">
+              <button class="location-selector" id="location-selector">
+                <span class="location-name">Premium Commercial Builders - Los Angeles, CA</span>
+                <span class="location-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <!-- Location Dropdown -->
+              <div class="location-menu" id="location-menu">
+                <div class="location-menu-content">
+                  <ul class="location-menu-list" id="location-menu-list">
+                    <!-- Locations will be populated by JavaScript -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Header -->
+      <div class="header-main">
+        <div class="header-main-content">
+          <div class="header-brand">
+            <a href="index.html">BuildRight</a>
+          </div>
+          
+          <!-- Search Bar -->
+          <div class="header-search">
+            <!-- Full search bar (hidden on compact screens) -->
+            <form class="search-form" autocomplete="off">
+              <input type="search" placeholder="Search products, SKUs, or keywords..." class="search-input" id="header-search-input" autocomplete="off">
+              <button class="search-button" aria-label="Search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m21 21-4.34-4.34" />
+                  <circle cx="11" cy="11" r="8" />
+                </svg>
+              </button>
+              <!-- Live Search Suggestions Dropdown -->
+              <div class="search-suggestions" id="search-suggestions" hidden>
+                <div class="search-suggestions-loading" id="search-suggestions-loading" hidden>
+                  <div class="loading-spinner loading-spinner-sm"></div>
+                  <span>Searching...</span>
+                </div>
+                <div class="search-suggestions-list" id="search-suggestions-list">
+                  <!-- Populated by JavaScript -->
+                </div>
+                <div class="search-suggestions-footer" id="search-suggestions-footer" hidden>
+                  <a href="#" id="search-suggestions-view-all">View all results</a>
+                </div>
+              </div>
+            </form>
+            <!-- Search icon toggle (shown on compact screens) -->
+            <button class="search-icon-toggle" aria-label="Search" id="search-icon-toggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="header-actions">
+            <div class="user-menu-wrapper">
+              <button class="user-link" id="user-menu-toggle" aria-expanded="false" aria-label="User menu">
+                <span class="user-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </span>
+                <span class="user-label">Account</span>
+              </button>
+              <!-- User Menu Dropdown - Populated by auth-dropin block -->
+              <div id="user-menu-container"></div>
+            </div>
+            <div class="cart-link-wrapper">
+              <button class="cart-link" id="cart-link-toggle" aria-expanded="false" aria-label="Shopping cart">
+                <span class="cart-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="8" cy="21" r="1"/>
+                    <circle cx="19" cy="21" r="1"/>
+                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                  </svg>
+                </span>
+                <span class="cart-label">Cart</span>
+                <span class="cart-badge" data-cart-badge></span>
+              </button>
+              <!-- Mini Cart Dropdown - Populated by commerce-mini-cart block -->
+              <div id="mini-cart-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Bar -->
+      <div class="header-nav-bar">
+        <div class="header-nav-content">
+          <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+            <nav class="main-nav">
+              <!-- Navigation will be populated by JavaScript from ACO categories -->
+            </nav>
+          <div class="nav-industry">
+              <button class="industry-toggle" id="industry-toggle" aria-expanded="false">
+                Shop By Industry
+                <span class="industry-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Industry Dropdown -->
+      <div class="industry-menu" id="industry-menu">
+        <div class="industry-menu-content">
+            <div class="industry-column">
+              <h3>Commercial</h3>
+              <ul>
+                <li><a href="catalog/commercial">Commercial Construction</a></li>
+                <li><a href="catalog/structural-materials">Structural Materials</a></li>
+                <li><a href="catalog/windows-doors">Windows & Doors</a></li>
+              </ul>
+            </div>
+            <div class="industry-column">
+              <h3>Residential</h3>
+              <ul>
+                <li><a href="catalog/residential">Residential Construction</a></li>
+                <li><a href="catalog/structural-materials">Framing Materials</a></li>
+                <li><a href="catalog/windows-doors">Residential Windows</a></li>
+              </ul>
+            </div>
+            <div class="industry-column">
+              <h3>Pro</h3>
+              <ul>
+                <li><a href="catalog/pro">Trade Contractors</a></li>
+                <li><a href="catalog/fasteners-hardware">Fasteners & Tools</a></li>
+                <li><a href="catalog/roofing">Roofing Supplies</a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <!-- Main Content -->
   <main>
@@ -45,15 +199,9 @@
       <div class="container">
         <h1 id="catalog-title">All Products</h1>
         
-        <div class="catalog-layout" id="catalog-layout">
-          <!-- Catalog Loading Overlay -->
-          <div class="catalog-loading-overlay" id="catalog-loading">
-            <div class="loading-spinner loading-spinner-sm"></div>
-            <p style="margin-top: var(--spacing-medium); color: var(--color-text-secondary);">Loading catalog...</p>
-          </div>
-          
+        <div class="catalog-layout" id="catalog-layout">          
           <!-- Search and Sort Bar (spans full width) -->
-          <div class="catalog-controls-wrapper" style="visibility: hidden;">
+          <div class="catalog-controls-wrapper">
             <div class="catalog-controls">
               <div class="catalog-search">
                 <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -82,8 +230,93 @@
           </div>
           
           <!-- Filters Sidebar (BuildRight Wrapper) -->
-          <aside id="filters-aside" style="visibility: hidden;">
-            <div class="buildright-facets-wrapper">
+          <aside id="filters-aside">
+            <!-- Skeleton placeholder for facets (removed when real facets load) -->
+            <div class="facets-skeleton">
+              <div class="facets-skeleton-inner">
+              <!-- Header skeleton -->
+              <div class="facets-skeleton-header">
+                <div class="skeleton-shimmer" style="width: 130px; height: 18px;"></div>
+                <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+              </div>
+              
+              <!-- Filter group 1 -->
+              <div class="facets-skeleton-group">
+                <div class="facets-skeleton-group-header">
+                  <div class="skeleton-shimmer" style="width: 140px; height: 18px;"></div>
+                  <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 120px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 24px; height: 14px; margin-left: auto;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 100px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 140px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 18px; height: 14px; margin-left: auto;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 110px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 22px; height: 14px; margin-left: auto;"></div>
+                </div>
+              </div>
+              
+              <!-- Filter group 2 -->
+              <div class="facets-skeleton-group">
+                <div class="facets-skeleton-group-header">
+                  <div class="skeleton-shimmer" style="width: 80px; height: 18px;"></div>
+                  <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 130px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 110px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 24px; height: 14px; margin-left: auto;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 120px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 18px; height: 14px; margin-left: auto;"></div>
+                </div>
+              </div>
+              
+              <!-- Filter group 3 -->
+              <div class="facets-skeleton-group">
+                <div class="facets-skeleton-group-header">
+                  <div class="skeleton-shimmer" style="width: 100px; height: 18px;"></div>
+                  <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 90px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 26px; height: 14px; margin-left: auto;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 115px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
+                </div>
+                <div class="facets-skeleton-checkbox">
+                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                  <div class="skeleton-shimmer" style="width: 105px; height: 14px;"></div>
+                  <div class="skeleton-shimmer" style="width: 22px; height: 14px; margin-left: auto;"></div>
+                </div>
+              </div>
+              </div>
+            </div>
+            
+            <div class="buildright-facets-wrapper" style="opacity: 0;">
               <div class="dropin-facets-container">
                 <!-- Facets dropin renders here -->
               </div>
@@ -91,7 +324,7 @@
           </aside>
 
           <!-- Product Grid (Dropin with Custom Slots) -->
-          <div style="visibility: hidden;" id="product-grid-wrapper">
+          <div id="product-grid-wrapper">
             <div class="product-list" data-block-name="product-list" data-block-status="loading">
               <div>
                 <div>
@@ -99,10 +332,218 @@
                     <div class="grid-header-controls">
                       <button class="btn btn-secondary btn-sm" id="mobile-filter-toggle">Filters</button>
                     </div>
-                    <div class="product-count">Loading products...</div>
+                    <div class="product-count" style="opacity: 0;"></div>
                   </div>
                   
-                  <div class="dropin-search-results-container">
+                  <!-- Skeleton placeholder for product grid (removed when real products load) -->
+                  <div class="product-grid-skeleton">
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-card product-card-skeleton">
+                      <div class="product-card-image skeleton-shimmer"></div>
+                      <div class="product-card-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100%; height: 20px;"></div>
+                      </div>
+                      <div class="product-card-body" style="min-height: 40px;"></div>
+                      <div class="product-card-footer">
+                        <div class="product-card-pricing">
+                          <div class="skeleton-shimmer" style="width: 80px; height: 24px; margin-bottom: 4px;"></div>
+                          <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                        </div>
+                        <div class="product-card-actions">
+                          <div class="skeleton-shimmer" style="width: 120px; height: 36px; border-radius: var(--shape-border-radius-1);"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="dropin-search-results-container" style="opacity: 0;">
                     <!-- SearchResults dropin with custom slots will render here -->
                   </div>
                   
@@ -120,32 +561,6 @@
 
   <!-- Footer loaded dynamically from blocks/footer/ -->
   <footer></footer>
-
-  <script>
-    // Handle catalog loading overlay
-    (async function() {
-      const overlay = document.getElementById('catalog-loading');
-      const controlsWrapper = document.querySelector('.catalog-controls-wrapper');
-      const filtersAside = document.getElementById('filters-aside');
-      const productGridWrapper = document.getElementById('product-grid-wrapper');
-
-      // Listen for catalog loaded event (hide spinner, show content)
-      window.addEventListener('catalogLoaded', () => {
-        if (overlay) {
-          overlay.classList.add('hidden');
-        }
-        if (controlsWrapper) {
-          controlsWrapper.style.visibility = 'visible';
-        }
-        if (filtersAside) {
-          filtersAside.style.visibility = 'visible';
-        }
-        if (productGridWrapper) {
-          productGridWrapper.style.visibility = 'visible';
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
 
