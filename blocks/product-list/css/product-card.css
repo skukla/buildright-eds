@@ -13,6 +13,20 @@
  */
 
 /* ----------------------------------------
+   Product Link Wrapper
+   ---------------------------------------- */
+
+.product-list .dropin-product-item-card .buildright-product-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-list .dropin-product-item-card .buildright-product-link:hover {
+  text-decoration: none;
+}
+
+/* ----------------------------------------
    Product Image (ProductImage slot)
    ---------------------------------------- */
 
