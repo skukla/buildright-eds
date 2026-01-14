@@ -229,105 +229,106 @@
             </div>
           </div>
           
-          <!-- Filters Sidebar (BuildRight Wrapper) -->
-          <aside id="filters-aside">
-            <!-- Skeleton placeholder for facets (removed when real facets load) -->
-            <div class="facets-skeleton">
-              <div class="facets-skeleton-inner">
-              <!-- Header skeleton -->
-              <div class="facets-skeleton-header">
-                <div class="skeleton-shimmer" style="width: 130px; height: 18px;"></div>
-                <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
-              </div>
-              
-              <!-- Filter group 1 -->
-              <div class="facets-skeleton-group">
-                <div class="facets-skeleton-group-header">
-                  <div class="skeleton-shimmer" style="width: 140px; height: 18px;"></div>
-                  <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 120px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 24px; height: 14px; margin-left: auto;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 100px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 140px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 18px; height: 14px; margin-left: auto;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 110px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 22px; height: 14px; margin-left: auto;"></div>
-                </div>
-              </div>
-              
-              <!-- Filter group 2 -->
-              <div class="facets-skeleton-group">
-                <div class="facets-skeleton-group-header">
-                  <div class="skeleton-shimmer" style="width: 80px; height: 18px;"></div>
-                  <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 130px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 110px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 24px; height: 14px; margin-left: auto;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 120px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 18px; height: 14px; margin-left: auto;"></div>
-                </div>
-              </div>
-              
-              <!-- Filter group 3 -->
-              <div class="facets-skeleton-group">
-                <div class="facets-skeleton-group-header">
-                  <div class="skeleton-shimmer" style="width: 100px; height: 18px;"></div>
-                  <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 90px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 26px; height: 14px; margin-left: auto;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 115px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
-                </div>
-                <div class="facets-skeleton-checkbox">
-                  <div class="skeleton-shimmer skeleton-checkbox-box"></div>
-                  <div class="skeleton-shimmer" style="width: 105px; height: 14px;"></div>
-                  <div class="skeleton-shimmer" style="width: 22px; height: 14px; margin-left: auto;"></div>
-                </div>
-              </div>
-              </div>
-            </div>
-            
-            <div class="buildright-facets-wrapper" style="opacity: 0;">
-              <div class="dropin-facets-container">
-                <!-- Facets dropin renders here -->
-              </div>
-            </div>
-          </aside>
+          <!-- Product List Block (contains both facets and product grid) -->
+          <div class="product-list" data-block-name="product-list" data-block-status="loading">
+            <div>
+              <div class="product-list-inner">
+                <!-- Filters Sidebar (inside block for proper slot grouping) -->
+                <aside id="filters-aside">
+                  <!-- Skeleton placeholder for facets (removed when real facets load) -->
+                  <div class="facets-skeleton">
+                    <div class="facets-skeleton-inner">
+                    <!-- Header skeleton -->
+                    <div class="facets-skeleton-header">
+                      <div class="skeleton-shimmer" style="width: 130px; height: 18px;"></div>
+                      <div class="skeleton-shimmer" style="width: 60px; height: 14px;"></div>
+                    </div>
 
-          <!-- Product Grid (Dropin with Custom Slots) -->
-          <div id="product-grid-wrapper">
-            <div class="product-list" data-block-name="product-list" data-block-status="loading">
-              <div>
-                <div>
+                    <!-- Filter group 1 -->
+                    <div class="facets-skeleton-group">
+                      <div class="facets-skeleton-group-header">
+                        <div class="skeleton-shimmer" style="width: 140px; height: 18px;"></div>
+                        <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 120px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 24px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 100px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 140px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 18px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 110px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 22px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                    </div>
+
+                    <!-- Filter group 2 -->
+                    <div class="facets-skeleton-group">
+                      <div class="facets-skeleton-group-header">
+                        <div class="skeleton-shimmer" style="width: 80px; height: 18px;"></div>
+                        <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 130px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 110px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 24px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 120px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 18px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                    </div>
+
+                    <!-- Filter group 3 -->
+                    <div class="facets-skeleton-group">
+                      <div class="facets-skeleton-group-header">
+                        <div class="skeleton-shimmer" style="width: 100px; height: 18px;"></div>
+                        <div class="skeleton-shimmer" style="width: 16px; height: 16px;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 90px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 26px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 115px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 20px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                      <div class="facets-skeleton-checkbox">
+                        <div class="skeleton-shimmer skeleton-checkbox-box"></div>
+                        <div class="skeleton-shimmer" style="width: 105px; height: 14px;"></div>
+                        <div class="skeleton-shimmer" style="width: 22px; height: 14px; margin-left: auto;"></div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+
+                  <div class="buildright-facets-wrapper" style="opacity: 0;">
+                    <div class="dropin-facets-container">
+                      <!-- Facets dropin renders here -->
+                    </div>
+                  </div>
+                </aside>
+
+                <!-- Product Grid Area -->
+                <div class="product-grid-area">
                   <div class="grid-header">
                     <div class="grid-header-controls">
                       <button class="btn btn-secondary btn-sm" id="mobile-filter-toggle">Filters</button>
@@ -546,16 +547,22 @@
                   <div class="dropin-search-results-container" style="opacity: 0;">
                     <!-- SearchResults dropin with custom slots will render here -->
                   </div>
-                  
+
                   <div class="dropin-pagination-container">
                     <!-- Pagination dropin will render here -->
                   </div>
                 </div>
+                <!-- Close product-grid-area -->
               </div>
+              <!-- Close product-list-inner -->
             </div>
+            <!-- Close EDS block row div -->
           </div>
+          <!-- Close product-list block -->
         </div>
+        <!-- Close catalog-layout -->
       </div>
+      <!-- Close container -->
     </section>
   </main>
 

@@ -12,9 +12,9 @@ The Product Discovery dropin uses multiple containers, each with customizable sl
 ### SearchResults Container
 
 ```
-+-------------------------------------------------------------+
-| SearchResults Container                                      |
-| +----------------------------------------------------------+ |
++---------------------------------------------------------------+
+| SearchResults Container                                       |
+| +-----------------------------------------------------------+ |
 | | ProductCard Slot (repeats for each product)               | |
 | | +-------------------+  +--------------------------------+ | |
 | | | ProductCardImage  |  | ProductCardPrice               | | |
@@ -22,15 +22,15 @@ The Product Discovery dropin uses multiple containers, each with customizable sl
 | | | (buildright-      |  | (buildright-price + tier       | | |
 | | | product-image)    |  | badge)                         | | |
 | | +-------------------+  +--------------------------------+ | |
-| |                                                          | |
+| |                                                           | |
 | | +-------------------+  +--------------------------------+ | |
 | | | ProductCardName   |  | ProductCardActions             | | |
 | | | SLOT              |  | SLOT                           | | |
 | | | (buildright-      |  | (buildright-add-to-cart)       | | |
 | | | product-name)     |  |                                | | |
 | | +-------------------+  +--------------------------------+ | |
-| +----------------------------------------------------------+ |
-+-------------------------------------------------------------+
+| +-----------------------------------------------------------+ |
++---------------------------------------------------------------+
 ```
 
 ### Facets Container

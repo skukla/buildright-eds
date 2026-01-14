@@ -183,8 +183,8 @@ function emitCatalogEvent(eventName, detail = {}) {
 async function collectFiltersAndSearch(facetsContainer, source = 'facet') {
   const combinedFilters = [];
 
-  // Collect filters from checked ScalarBucket checkboxes
-  // Mesh adds `attribute` to each bucket, stored as data-attribute on checkbox
+  // Collect filters from checked ScalarBucket checkboxes (if custom-rendered)
+  // Note: Adobe's default ScalarBucket rendering handles filtering internally
   const scalarCheckboxes = facetsContainer.querySelectorAll(
     'input.dropin-checkbox__checkbox[data-attribute]:checked',
   );
@@ -854,16 +854,20 @@ export default async function decorate(block) {
 
         await render.render(Facets, {
         slots: {
-          // Facet slot - builds title→attribute map for FacetBucket to use
-          // NOTE: All Facet slots run BEFORE any FacetBucket slots (not interleaved)
+          // Facet slot - individual facet options (ScalarBucket items)
+          // Adobe's default rendering handles filtering automatically via dropin internals
+          // We just collect metadata for debugging; return null to let default render
           Facet: (ctx) => {
             const { data } = ctx;
-            log('Facet slot:', { title: data?.title, attribute: data?.attribute });
-            // Store mapping for FacetBucket to look up via DOM traversal
-            if (data?.title && data?.attribute) {
-              facetTitleToAttribute.set(data.title, data.attribute);
+            log('Facet slot:', { title: data?.title, id: data?.id });
+            // Store mapping for debugging (mesh encodes attribute in id: "{attribute}:{value}")
+            if (data?.title && data?.id) {
+              const colonIndex = data.id.indexOf(':');
+              if (colonIndex > 0) {
+                facetTitleToAttribute.set(data.title, data.id.substring(0, colonIndex));
+              }
             }
-            // Return null to let default rendering proceed
+            // Return null to let Adobe's default rendering proceed (handles filtering internally)
             return null;
           },
           // Custom SelectedFacets - show only Clear All button, no chips
@@ -974,9 +978,8 @@ export default async function decorate(block) {
               wrapper.appendChild(checkbox);
               wrapper.appendChild(label);
               ctx.replaceWith(wrapper);
-            // ScalarBucket (brand, color, etc.) - Let dropin handle natively
-            // With categoryPath filter, dropin automatically preserves category context
-            // when facets are clicked (built-in category context preservation)
+            // ScalarBucket (brand, color, etc.) - Adobe's default rendering handles filtering
+            // RangeBucket is handled above; other bucket types fall through to default
             }
           },
         },

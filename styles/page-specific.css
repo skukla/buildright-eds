@@ -247,17 +247,26 @@
 }
 
 .catalog-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 2rem;
-  column-gap: 2rem;
-  row-gap: 0; /* No gap between controls and content rows */
   position: relative; /* For absolute positioning of overlay */
   min-height: 600px; /* Reserve space during loading */
 }
 
+/* Product list inner grid - contains sidebar and product grid */
+.product-list-inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  column-gap: 2rem;
+  row-gap: 0;
+}
+
+/* Product grid area - contains header, grid, and pagination */
+.product-grid-area {
+  min-width: 0; /* Prevent grid blowout */
+}
+
 /* Empty catalog: single column, hide sidebar and controls */
-.catalog-layout.catalog-empty-state {
+.catalog-layout.catalog-empty-state .product-list-inner {
   grid-template-columns: 1fr;
 }
 
@@ -353,22 +362,18 @@
     flex: 1;
   }
   
-  .catalog-layout {
+  .product-list-inner {
     grid-template-columns: 1fr;
     display: flex; /* Switch to flex on mobile for easier stacking */
     flex-direction: column;
   }
-  
-  .catalog-controls-wrapper {
-    order: 1; /* Controls first */
-  }
-  
+
   #filters-aside {
-    order: 2; /* Filters second (toggled) */
+    order: 1; /* Filters first (toggled) */
   }
-  
-  #product-grid-wrapper {
-    order: 3; /* Products last */
+
+  .product-grid-area {
+    order: 2; /* Products after filters */
   }
   
   .cart-layout {

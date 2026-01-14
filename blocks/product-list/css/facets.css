@@ -28,7 +28,7 @@ body.white-variant .product-list .buildright-facets-wrapper {
   padding: 16px;
   min-height: 300px;
   background: white;
-  border: 1px solid rgb(203, 213, 225);
+  border: none;
   border-radius: 8px;
 }
 
