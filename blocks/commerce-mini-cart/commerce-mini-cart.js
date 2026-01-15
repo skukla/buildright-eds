@@ -7,13 +7,11 @@
  * - Custom slots with .buildright-* classes for UI customization
  * - Click-outside behavior for closing (follows dropin best practices)
  *
- * Available MiniCart Slots:
- * - Heading: Customize cart header
- * - EmptyCart: Custom empty state UI
+ * Available MiniCart Slots (verified via DOM inspection):
  * - ProductList: Customize product list
+ * - EmptyCart: Custom empty state UI
  * - ProductListFooter: Add content after products
  * - PreCheckoutSection: Add content before checkout
- * - Footer: Customize footer
  *
  * Rendering:
  * - Content renders inside the block element (required for dropin inspector)
