@@ -25,14 +25,26 @@ export async function initializeCartDropin(initializers) {
     const { initialize } = await import('@dropins/storefront-cart/api.js');
     
     // Register cart dropin with initializers
+    // Language keys follow Cart.* namespace (see @dropins/storefront-cart/i18n/en_US.json.d.ts)
     initializers.register(initialize, {
       langDefinitions: {
         default: {
-          // Custom labels can go here
-        }
+          Cart: {
+            EmptyCart: {
+              heading: 'Your Shopping Cart is Empty',
+              cta: 'Continue Shopping',
+            },
+            MiniCart: {
+              heading: 'Shopping Cart ({count})',
+              subtotal: 'Subtotal',
+              cartLink: 'View Full Cart',
+              checkoutLink: 'Checkout',
+            },
+          },
+        },
       },
       // Don't disable guest cart - allow anonymous shopping
-      disableGuestCart: false
+      disableGuestCart: false,
     });
     
     // Listen for cart events

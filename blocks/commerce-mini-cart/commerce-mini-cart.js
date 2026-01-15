@@ -1,15 +1,24 @@
 /**
  * Commerce Mini Cart Block
- * 
- * Integration Pattern: UI Container + Configuration + Slots (Level 2)
+ *
+ * Integration Pattern: UI Container + Slots + Design Tokens (Level 2)
  * - Uses MiniCart dropin container for data and state management
- * - Customizes UI via slots to match BuildRight design
  * - Dropin handles cart updates, events, and synchronization automatically
- * 
- * Context-Aware Rendering:
- * - Header context: Renders in #mini-cart-container with dropdown
- * - Standalone context: Renders standalone mini cart
- * 
+ * - Custom slots with .buildright-* classes for UI customization
+ * - Click-outside behavior for closing (follows dropin best practices)
+ *
+ * Available MiniCart Slots:
+ * - Heading: Customize cart header
+ * - EmptyCart: Custom empty state UI
+ * - ProductList: Customize product list
+ * - ProductListFooter: Add content after products
+ * - PreCheckoutSection: Add content before checkout
+ * - Footer: Customize footer
+ *
+ * Rendering:
+ * - Content renders inside the block element (required for dropin inspector)
+ * - Header integration wires up toggle button and click-outside handling
+ *
  * @module blocks/commerce-mini-cart
  */
 
@@ -18,157 +27,84 @@ export default async function decorate(block) {
 
   const basePath = window.BASE_PATH || '/';
 
-  // Determine if we're in header context (mini-cart in dropdown) or standalone
-  const isHeaderContext = block.closest('header') !== null;
-  const targetContainer = isHeaderContext ? document.getElementById('mini-cart-container') : block;
-
-  if (!targetContainer) {
-    console.error('[Commerce Mini Cart] Target container not found');
-    return;
-  }
-
   // Wait for dropins to be initialized
   const { waitForDropins } = await import('../../scripts/initializers/index.js');
   await waitForDropins();
 
   try {
     // Import MiniCart container and render utility (parallel for performance)
-    const [{ render }, { MiniCart }] = await Promise.all([
+    const [{ render }, miniCartModule] = await Promise.all([
       import('@dropins/storefront-cart/render.js'),
       import('@dropins/storefront-cart/containers/MiniCart.js'),
     ]);
 
-    console.log('[Commerce Mini Cart] MiniCart container loaded');
+    // MiniCart might be default or named export - handle both
+    const MiniCart = miniCartModule.MiniCart || miniCartModule.default;
+    console.log('[Commerce Mini Cart] MiniCart container loaded:', MiniCart);
+    console.log('[Commerce Mini Cart] Module exports:', Object.keys(miniCartModule));
 
-    // Render MiniCart container with BuildRight customization via slots
-    await render.render(MiniCart, {
-      // Configuration options
-      routeProduct: (item) => `${basePath}pages/product-detail.html?sku=${item.product?.sku || item.sku}`,
-      routeCart: () => `${basePath}pages/cart.html`,
-      routeCheckout: () => `${basePath}pages/checkout.html`,
-      routeEmptyCartCTA: () => `${basePath}pages/catalog.html`,
-      displayAllItems: false, // Limit to 5 items
-      enableItemRemoval: true,
-      hideHeading: true, // We provide custom heading via slot
-      
-      // Custom slots for BuildRight design
-      slots: {
-        /**
-         * Custom heading with close button
-         */
-        Heading: () => {
-          return `
-            <div class="mini-cart-header">
-              <div class="mini-cart-header-content">
-                <h3 class="mini-cart-title">Shopping Cart</h3>
-                <span class="mini-cart-item-count" data-cart-count></span>
-              </div>
-              <button class="mini-cart-close" id="mini-cart-close" aria-label="Close cart">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 6 6 18"/>
-                  <path d="m6 6 12 12"/>
+    // Create our own wrapper with .mini-cart class for CSS targeting
+    // IMPORTANT: Render inside `block` (not targetContainer) so slots are inside
+    // the block element with data-block-name for dropin inspector detection
+    const miniCartWrapper = document.createElement('div');
+    miniCartWrapper.className = 'mini-cart';
+    block.appendChild(miniCartWrapper);
+
+    // Render MiniCart container INSIDE our wrapper
+    console.log('[Commerce Mini Cart] About to render, wrapper:', miniCartWrapper);
+    console.log('[Commerce Mini Cart] render.render function:', typeof render.render);
+
+    try {
+      const renderFn = render.render(MiniCart, {
+        routeProduct: (item) => `${basePath}pages/product-detail.html?sku=${item.product?.sku || item.sku}`,
+        routeCart: () => `${basePath}pages/cart.html`,
+        routeCheckout: () => `${basePath}pages/checkout.html`,
+        routeEmptyCartCTA: () => `${basePath}pages/catalog.html`,
+        slots: {
+          // Custom empty cart UI with BuildRight styling
+          EmptyCart: (ctx) => {
+            const emptyCart = document.createElement('div');
+            emptyCart.className = 'buildright-empty-cart';
+            emptyCart.innerHTML = `
+              <div class="buildright-empty-cart__icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                 </svg>
-              </button>
-            </div>
-          `;
+              </div>
+              <h3 class="buildright-empty-cart__heading">Your Shopping Cart is Empty</h3>
+              <p class="buildright-empty-cart__message">Looks like you haven't added any items yet.</p>
+              <a href="${basePath}pages/catalog.html" class="btn btn-primary buildright-empty-cart__cta">
+                Continue Shopping
+              </a>
+            `;
+            ctx.replaceWith(emptyCart);
+          },
         },
+      });
+      console.log('[Commerce Mini Cart] renderFn:', renderFn);
 
-        /**
-         * Custom empty cart state
-         */
-        EmptyCart: () => {
-          return `
-            <div class="mini-cart-empty">
-              <svg class="mini-cart-empty-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8" cy="21" r="1"/>
-                <circle cx="19" cy="21" r="1"/>
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-              </svg>
-              <p class="mini-cart-empty-title">Your cart is empty</p>
-              <p class="mini-cart-empty-text">Browse our catalog to find products</p>
-              <a href="${basePath}pages/catalog.html" class="mini-cart-empty-cta">Browse Catalog</a>
-            </div>
-          `;
-        },
-
-        /**
-         * Custom cart item with BuildRight styling
-         */
-        CartItem: (context) => {
-          const { item } = context;
-          
-          // Helper function to escape HTML
-          const escapeHtml = (text) => {
-            const div = document.createElement('div');
-            div.textContent = text || '';
-            return div.innerHTML;
-          };
-
-          const name = item.product?.name || 'Unknown Product';
-          const sku = item.product?.sku || item.sku || '';
-          const quantity = item.quantity || 0;
-          const price = item.prices?.row_total?.value || 0;
-          const imageUrl = item.product?.image?.url || '';
-          const hasImage = imageUrl && imageUrl.trim() !== '';
-
-          return `
-            <a href="${basePath}pages/product-detail.html?sku=${sku}" class="mini-cart-item mini-cart-item-link" data-item-id="${item.id}">
-              <div class="mini-cart-item-image ${!hasImage ? 'mini-cart-item-image-placeholder image-placeholder-pattern' : ''}">
-                ${hasImage ? `<img src="${imageUrl}" alt="${escapeHtml(name)}" onerror="this.parentElement.classList.add('mini-cart-item-image-placeholder', 'image-placeholder-pattern'); this.classList.add('hidden');">` : ''}
-              </div>
-              <div class="mini-cart-item-info">
-                <div class="mini-cart-item-header-row">
-                  <div class="mini-cart-item-name-row">
-                    <div class="mini-cart-item-name">${escapeHtml(name)}</div>
-                  </div>
-                  <button class="mini-cart-item-remove" data-item-id="${item.id}" aria-label="Remove ${escapeHtml(name)}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M18 6 6 18"/>
-                      <path d="m6 6 12 12"/>
-                    </svg>
-                  </button>
-                </div>
-                <div class="mini-cart-item-details-row">
-                  <span class="mini-cart-item-quantity">Qty: ${quantity}</span>
-                  <span class="mini-cart-item-price">$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </div>
-              </div>
-            </a>
-          `;
-        },
-
-        /**
-         * Custom footer with subtotal and action buttons
-         */
-        Footer: () => {
-          return `
-            <div class="mini-cart-footer">
-              <div class="mini-cart-subtotal">
-                <span class="mini-cart-subtotal-label">Subtotal</span>
-                <span class="mini-cart-total" data-cart-total></span>
-              </div>
-              <div class="mini-cart-actions">
-                <a href="${basePath}pages/cart.html" class="btn btn-secondary btn-sm">View Cart</a>
-                <a href="${basePath}pages/checkout.html" class="btn btn-cta btn-sm">Checkout</a>
-              </div>
-            </div>
-          `;
-        }
-      }
-    })(targetContainer);
+      const miniCartInstance = await renderFn(miniCartWrapper);
+      console.log('[Commerce Mini Cart] MiniCart instance:', miniCartInstance);
+      console.log('[Commerce Mini Cart] Wrapper innerHTML after render:', miniCartWrapper.innerHTML.substring(0, 200));
+    } catch (renderError) {
+      console.error('[Commerce Mini Cart] Render error:', renderError);
+      throw renderError;
+    }
 
     console.log('[Commerce Mini Cart] MiniCart container rendered');
 
-    // Post-render: Wire up close button and header integration
-    setupHeaderIntegration(targetContainer);
+    // Post-render: Wire up toggle and click-outside handling
+    setupHeaderIntegration(block);
 
     console.log('[Commerce Mini Cart] Initialization complete');
 
   } catch (error) {
     console.error('[Commerce Mini Cart] Failed to render MiniCart container:', error);
-    
+
     // Fallback error message
-    targetContainer.innerHTML = `
+    block.innerHTML = `
       <div class="mini-cart mini-cart-error">
         <div class="mini-cart-error-message">
           <p>Unable to load cart</p>
@@ -181,11 +117,10 @@ export default async function decorate(block) {
 
 /**
  * Setup header integration for mini cart dropdown
- * Wires up toggle button, close button, and click-outside handling
+ * Wires up toggle button and click-outside handling
  */
-function setupHeaderIntegration(targetContainer) {
-  const miniCart = targetContainer.querySelector('.mini-cart') || targetContainer.querySelector('[class*="mini-cart"]');
-  const closeBtn = targetContainer.querySelector('#mini-cart-close');
+function setupHeaderIntegration(block) {
+  const miniCart = block.querySelector('.mini-cart') || block.querySelector('[class*="mini-cart"]');
   const cartToggle = document.getElementById('cart-link-toggle');
 
   if (!miniCart) {
@@ -203,16 +138,6 @@ function setupHeaderIntegration(targetContainer) {
     });
   }
 
-  // Setup close button
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      miniCart.classList.remove('active');
-      if (cartToggle) {
-        cartToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-
   // Close mini cart when clicking outside
   document.addEventListener('click', (e) => {
     if (cartToggle) {
@@ -226,3 +151,4 @@ function setupHeaderIntegration(targetContainer) {
 
   console.log('[Commerce Mini Cart] Header integration complete');
 }
+
