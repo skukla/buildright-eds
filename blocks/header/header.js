@@ -503,16 +503,18 @@ export default async function decorate(block) {
   const userMenuContainer = block.querySelector('#user-menu-container');
   if (userMenuContainer) {
     // Show placeholder while loading
-    userMenuContainer.innerHTML = '<div class="auth-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>';
-    
-    // Create auth block and insert into custom container (async)
+    userMenuContainer.innerHTML = '<div class="user-menu-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>';
+
+    // Create user-menu block and insert into custom container (async)
+    // Note: user-menu is a custom BuildRight block (not using auth dropin)
     (async () => {
-      const authDropinBlock = document.createElement('div');
-      authDropinBlock.className = 'auth';
-      authDropinBlock.dataset.headerContext = 'true'; // Signal this is in header
+      const userMenuBlock = document.createElement('div');
+      userMenuBlock.className = 'user-menu';
+      userMenuBlock.dataset.blockName = 'user-menu'; // Required for dropin inspector
+      userMenuBlock.dataset.headerContext = 'true'; // Signal this is in header
       userMenuContainer.innerHTML = ''; // Clear placeholder
-      userMenuContainer.appendChild(authDropinBlock);
-      await decorateBlock(authDropinBlock, 'auth');
+      userMenuContainer.appendChild(userMenuBlock);
+      await decorateBlock(userMenuBlock, 'user-menu');
     })();
   }
   
@@ -520,14 +522,22 @@ export default async function decorate(block) {
   if (miniCartContainer) {
     // Cart icon already visible in HTML, just add placeholder badge
     // The mini-cart block will replace this when ready
-    
+
     // Create commerce-mini-cart block and insert into custom container (async)
     (async () => {
-      const miniCartBlock = document.createElement('div');
-      miniCartBlock.className = 'commerce-mini-cart';
-      miniCartBlock.dataset.headerContext = 'true'; // Signal this is in header
-      miniCartContainer.appendChild(miniCartBlock);
-      await decorateBlock(miniCartBlock, 'commerce-mini-cart');
+      try {
+        console.log('[Header] Creating commerce-mini-cart block');
+        const miniCartBlock = document.createElement('div');
+        miniCartBlock.className = 'commerce-mini-cart';
+        miniCartBlock.dataset.blockName = 'commerce-mini-cart'; // Required for dropin inspector
+        miniCartBlock.dataset.headerContext = 'true'; // Signal this is in header
+        miniCartContainer.appendChild(miniCartBlock);
+        console.log('[Header] Decorating commerce-mini-cart block');
+        await decorateBlock(miniCartBlock, 'commerce-mini-cart');
+        console.log('[Header] commerce-mini-cart block decorated');
+      } catch (error) {
+        console.error('[Header] Failed to initialize commerce-mini-cart:', error);
+      }
     })();
   }
 

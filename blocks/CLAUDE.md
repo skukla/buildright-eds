@@ -6,11 +6,13 @@
 
 | Block | Purpose | Lines | Status |
 |-------|---------|-------|--------|
-| `auth` | Commerce authentication (SignIn, SignUp, ResetPassword, UpdatePassword) | 458 | **Production** |
+| `auth` | Commerce authentication (SignIn, SignUp, ResetPassword) - uses @dropins/storefront-auth | ~290 | **Production** |
 | `cart` | Shopping cart with BuildRight slots | - | **Production** |
 | `checkout` | Checkout flow with BuildRight slots | - | **Production** |
 | `commerce-mini-cart` | Mini-cart in header | - | **Production** |
 | `order-confirmation` | Order confirmation with BuildRight slots | 277 | **Production** |
+
+**Note:** The `user-menu` block (header account dropdown) is NOT a dropin - it's custom BuildRight UI. See Foundation & Navigation section.
 
 **Mesh Adapters:** Each commerce dropin has a corresponding mesh adapter resolver:
 - `dropin-auth.js` - Intercepts auth queries
@@ -86,11 +88,17 @@ export default async function decorate(block) {
 
 | Block | Purpose |
 |-------|---------|
-| `header` | Site navigation & user menu |
+| `header` | Site navigation, creates user-menu and commerce-mini-cart dynamically |
+| `user-menu` | Header account dropdown (custom BuildRight UI, NOT a dropin) - shows user name/avatar when authenticated, login/signup CTAs when guest |
 | `footer` | Site footer |
 | `breadcrumbs` | Navigation breadcrumbs |
 | `fragment` | Content fragment loader |
 | `login-form` | Login form with dual-mode auth: Email Login (Commerce Auth Dropin) and Quick Login (persona auth via I/O Runtime action) |
+
+**Architecture Note:** The `user-menu` block was separated from `auth` because:
+- `auth` uses Adobe's @dropins/storefront-auth containers (SignIn, SignUp, ResetPassword)
+- `user-menu` is completely custom BuildRight UI with no dropin involvement
+- This separation clarifies architecture and improves dropin inspector visibility
 
 ---
 
