@@ -13,9 +13,9 @@ scripts/
 ├── company-config.js       # Company/warehouse config
 ├── warehouse-config.js     # Multi-location setup
 ├── initializers/           # Dropin initialization
-│   ├── index.js            # Main initialization hub (177 lines)
+│   ├── index.js            # Main initialization hub
 │   ├── auth.js             # Auth dropin setup
-│   ├── cart.js             # Cart dropin setup (stub)
+│   ├── cart.js             # Cart dropin setup, events, badge updates
 │   └── search.js           # Product Discovery setup
 └── services/               # API services
     ├── mesh-client.js      # ACO GraphQL client (460+ lines)
@@ -165,6 +165,32 @@ export function initializeAuth() {
   });
 }
 ```
+
+### initializers/cart.js
+
+Cart dropin initialization with event listeners:
+
+```javascript
+import { events } from '@dropins/tools/event-bus.js';
+
+export async function initializeCartDropin(initializers, config) {
+  const { initialize, setEndpoint, setFetchGraphQlHeaders } =
+    await import('@dropins/storefront-cart/api.js');
+
+  // Cart dropin has its own endpoint/headers config (separate from tools)
+  setEndpoint(config.endpoint);
+  setFetchGraphQlHeaders(config.headers);
+
+  initializers.register(initialize, { /* langDefinitions */ });
+
+  // Listen for cart events
+  events.on('cart/initialized', updateCartBadge);
+  events.on('cart/updated', updateCartBadge);
+  events.on('cart/product/added', showCartNotification);
+}
+```
+
+> **Note:** Null Money.value fixes for gift_options fields are handled at the mesh level (`dropin-cart.js` resolver), not in the frontend.
 
 ---
 

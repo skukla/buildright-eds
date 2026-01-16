@@ -115,11 +115,12 @@ AC-Price-Book-Id: [from persona, e.g., "US-Retail"]
 
 > **Critical:** `AC-View-Id` must be a UUID, not a human-readable string like "default". The persona service resolves human-readable identifiers to UUIDs.
 
-**Mesh Architecture:**
-The mesh has three sources (see `buildright-service/mesh/README.md` for details):
-- `ACO_Dropins` - Unprefixed ACO queries for Adobe dropins
-- `ACO_BuildRight` - Prefixed (`BuildRight_*`) ACO queries for custom blocks
+**Mesh Architecture (Single-Source Pattern):**
+The mesh has two sources (see `buildright-service/mesh/README.md` for details):
+- `ACO` - Single ACO source for all queries (both dropin and custom)
 - `Commerce` - Adobe Commerce for cart/auth (catalog filtered out)
+
+**Key Pattern:** Adapter resolvers intercept queries, delegate to `context.ACO.Query.*` with unprefixed types, and transform responses to custom `BuildRight_*` output types defined in `additionalTypeDefs`.
 
 ---
 
