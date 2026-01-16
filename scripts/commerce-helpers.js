@@ -87,16 +87,11 @@ export async function addMultipleToCart(items) {
  * @returns {Promise<Object>} Cart data
  */
 async function addToLocalCart(product, quantity) {
-  const { addItem, getCart } = await import('./cart-manager.js');
-  
-  addItem({
-    sku: product.sku,
-    name: product.name || product.sku,
-    price: product.price?.value || product.price || 0,
-    quantity,
-    imageUrl: product.imageUrl || product.image
-  });
-  
+  const { addToCart, getCart } = await import('./cart-manager.js');
+
+  // Local cart manager uses simple (sku, quantity) signature
+  addToCart(product.sku, quantity);
+
   return getCart();
 }
 
@@ -221,8 +216,9 @@ export function createAddToCartButton(product, options = {}) {
     
     try {
       await addProductToCart(product, 1);
-      showAddToCartNotification(product, 1);
-      
+      // Note: Toast notification is handled by dropin's cart/product/added event
+      // See scripts/initializers/cart.js
+
       button.textContent = 'Added!';
       button.classList.add('success');
       

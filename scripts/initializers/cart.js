@@ -1,13 +1,16 @@
 /**
  * Cart Dropin Initializer
- * 
+ *
  * Initializes the Commerce Cart dropin for BuildRight.
  * Since products come from ACO, items are added by SKU.
- * 
+ *
+ * Note: Null Money value fixes are handled at the mesh level (dropin-cart.js resolver).
+ *
  * @module scripts/initializers/cart
  */
 
 import { events } from '@dropins/tools/event-bus.js';
+import { showCartNotification } from '../cart-notification.js';
 
 // Track cart state
 let _cartData = null;
@@ -17,13 +20,25 @@ let _cartInitialized = false;
  * Initialize the Cart Dropin
  * @param {Object} initializers - Dropin initializers from @dropins/tools
  */
-export async function initializeCartDropin(initializers) {
+export async function initializeCartDropin(initializers, config = {}) {
   console.log('[Cart Dropin] Initializing...');
-  
+
   try {
-    // Import cart dropin API
-    const { initialize } = await import('@dropins/storefront-cart/api.js');
-    
+    // Import cart dropin API - IMPORTANT: Cart dropin has its OWN endpoint/headers config
+    const { initialize, setEndpoint, setFetchGraphQlHeaders } = await import('@dropins/storefront-cart/api.js');
+
+    // Configure cart dropin's endpoint and headers
+    // These are SEPARATE from @dropins/tools/fetch-graphql.js
+    if (config.endpoint) {
+      setEndpoint(config.endpoint);
+      console.log('[Cart Dropin] Set endpoint:', config.endpoint);
+    }
+
+    if (config.headers) {
+      setFetchGraphQlHeaders(config.headers);
+      console.log('[Cart Dropin] Set headers:', Object.keys(config.headers));
+    }
+
     // Register cart dropin with initializers
     // Language keys follow Cart.* namespace (see @dropins/storefront-cart/i18n/en_US.json.d.ts)
     initializers.register(initialize, {
@@ -59,6 +74,29 @@ export async function initializeCartDropin(initializers) {
 }
 
 /**
+ * Clear the cart cookie to recover from stale/invalid cart state
+ */
+function clearCartCookie() {
+  document.cookie = 'DROPIN__CART__CART-ID=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+  console.log('[Cart Dropin] Cleared stale cart cookie');
+}
+
+// Track if we've already attempted cart recovery this session (persists across reloads)
+const CART_RECOVERY_KEY = 'buildright_cart_recovery_attempted';
+
+function hasAttemptedCartRecovery() {
+  return sessionStorage.getItem(CART_RECOVERY_KEY) === 'true';
+}
+
+function markCartRecoveryAttempted() {
+  sessionStorage.setItem(CART_RECOVERY_KEY, 'true');
+}
+
+function clearCartRecoveryFlag() {
+  sessionStorage.removeItem(CART_RECOVERY_KEY);
+}
+
+/**
  * Set up event listeners for cart events
  */
 function setupCartEventListeners() {
@@ -68,12 +106,25 @@ function setupCartEventListeners() {
     _cartData = cart;
     _cartInitialized = true;
     updateCartBadge();
+    // Clear recovery flag on successful init (allows future recovery if needed)
+    clearCartRecoveryFlag();
   }, { eager: true });
 
   // Listen for dropin errors - these can occur during cart operations
-  // when Commerce returns malformed data (e.g., null Money.value on empty carts)
+  // when Commerce returns malformed data (e.g., null Money.value on stale carts)
   events.on('cart/error', (error) => {
-    console.warn('[Cart Dropin] Cart error (non-fatal):', error?.message || error);
+    const errorMsg = error?.message || String(error);
+    console.warn('[Cart Dropin] Cart error:', errorMsg);
+
+    // Auto-recover from Money.value null errors (stale cart with deleted products)
+    // Only attempt recovery once per session to prevent infinite reload loops
+    if ((errorMsg.includes('Money.value') || errorMsg.includes('non-nullable field')) && !hasAttemptedCartRecovery()) {
+      markCartRecoveryAttempted();
+      console.warn('[Cart Dropin] Detected stale cart data - clearing and reloading...');
+      clearCartCookie();
+      // Reload the page to reinitialize with a fresh cart
+      setTimeout(() => window.location.reload(), 100);
+    }
   }, { eager: true });
 
   // Listen for cart updates
@@ -95,9 +146,12 @@ function setupCartEventListeners() {
   }, { eager: true });
 
   // Listen for product added
-  events.on('cart/product/added', () => {
-    console.log('[Cart Dropin] Product added to cart');
-    showCartNotification('added');
+  events.on('cart/product/added', (data) => {
+    console.log('[Cart Dropin] Product added to cart', data);
+    // Show toast notification with product name if available
+    const productName = data?.product?.name || data?.name || 'Item';
+    const quantity = data?.quantity || 1;
+    showCartNotification(productName, quantity);
   }, { eager: true });
 
   // Listen for product updated
@@ -139,16 +193,8 @@ function updateCartBadge() {
   });
 }
 
-/**
- * Show cart notification
- * @param {string} type - Notification type ('added', 'updated', 'removed')
- */
-function showCartNotification(type) {
-  // Dispatch event for notification handling
-  window.dispatchEvent(new CustomEvent('cart:notification', {
-    detail: { type }
-  }));
-}
+// Note: showCartNotification imported from '../cart-notification.js'
+// Called directly in cart/product/added event handler
 
 /**
  * Add product to cart by SKU
@@ -161,16 +207,16 @@ function showCartNotification(type) {
  */
 export async function addToCart(sku, quantity = 1, options = {}) {
   console.log('[Cart Dropin] Adding to cart:', { sku, quantity });
-  
+
   try {
     const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
-    
+
     const item = {
       sku,
       quantity,
       ...options
     };
-    
+
     const cart = await addProductsToCart([item]);
     return cart;
     
@@ -189,7 +235,7 @@ export async function addToCart(sku, quantity = 1, options = {}) {
  */
 export async function addMultipleToCart(items) {
   console.log('[Cart Dropin] Adding multiple items:', items.length);
-  
+
   try {
     const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
     const cart = await addProductsToCart(items);

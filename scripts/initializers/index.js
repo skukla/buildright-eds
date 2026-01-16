@@ -110,22 +110,22 @@ export async function initializeDropins() {
   if (_initialized) {
     return;
   }
-  
+
   if (_initPromise) {
     return _initPromise;
   }
-  
+
   _initPromise = (async () => {
     const config = await loadConfig();
-    
+
     // Check if dropins should be enabled
     if (!config.features?.useCommerceDropins) {
       console.log('[Dropins] Commerce Dropins disabled in config');
       return;
     }
-    
+
     console.log('[Dropins] Initializing Commerce Dropins...');
-    
+
     try {
       // Import dropin tools and mesh client in parallel for performance
       const [
@@ -195,8 +195,9 @@ export async function initializeDropins() {
       }
 
       // Also include store code for Commerce compatibility
+      // IMPORTANT: Use lowercase 'store' to match mesh config which reads context.headers["store"]
       if (config.commerceStoreCode) {
-        headers['Store'] = config.commerceStoreCode;
+        headers['store'] = config.commerceStoreCode;
       }
 
       setFetchGraphQlHeaders(headers);
@@ -233,8 +234,17 @@ export async function initializeDropins() {
       const [cartInit, searchInit, authInit] = await Promise.all(dropinImports);
 
       // Initialize dropins - cart and search always, auth conditionally
+      // IMPORTANT: Cart dropin has its own setEndpoint/setFetchGraphQlHeaders - pass config
+      const cartConfig = {
+        endpoint,
+        headers: {
+          ...headers,
+          'store': config.commerceStoreCode || 'default',
+        },
+      };
+
       const initPromises = [
-        cartInit.initializeCartDropin(initializers),
+        cartInit.initializeCartDropin(initializers, cartConfig),
         searchInit.initializeSearchDropin(initializers),
       ];
 
@@ -261,7 +271,7 @@ export async function initializeDropins() {
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
-                'Store': config.commerceStoreCode || 'default',
+                'store': config.commerceStoreCode || 'default',
               },
               body: JSON.stringify({ query: customerQuery }),
             });
@@ -288,7 +298,7 @@ export async function initializeDropins() {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
-                      'Store': config.commerceStoreCode || 'default',
+                      'store': config.commerceStoreCode || 'default',
                     },
                     body: JSON.stringify({
                       query: cartQuery,
