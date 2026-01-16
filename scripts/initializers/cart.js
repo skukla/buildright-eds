@@ -148,10 +148,14 @@ function setupCartEventListeners() {
   // Listen for product added
   events.on('cart/product/added', (data) => {
     console.log('[Cart Dropin] Product added to cart', data);
-    // Show toast notification with product name if available
-    const productName = data?.product?.name || data?.name || 'Item';
-    const quantity = data?.quantity || 1;
-    showCartNotification(productName, quantity);
+    // Only show notification if dropin provides actual product name
+    // Blocks that call showCartNotification directly (featured-products, PDP)
+    // will handle their own notification with the full product name
+    const productName = data?.product?.name || data?.name;
+    if (productName) {
+      const quantity = data?.quantity || 1;
+      showCartNotification(productName, quantity);
+    }
   }, { eager: true });
 
   // Listen for product updated

@@ -495,7 +495,77 @@ export default async function decorate(block) {
     cartBadge.classList.remove('has-items');
     console.log('[Header] Cart badge initialized to hidden state');
   }
-  
+
+  // Cart toggle button reference
+  const cartLinkToggle = block.querySelector('#cart-link-toggle, .cart-link');
+
+  // Setup cart toggle functionality
+  function setupCartToggle(miniCart) {
+    if (!cartLinkToggle || !miniCart) return;
+
+    // Toggle mini cart on click
+    cartLinkToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const isOpen = miniCart.classList.contains('active');
+      if (isOpen) {
+        miniCart.classList.remove('active');
+        cartLinkToggle.setAttribute('aria-expanded', 'false');
+        miniCartContainer.classList.remove('cart-open');
+      } else {
+        miniCart.classList.add('active');
+        cartLinkToggle.setAttribute('aria-expanded', 'true');
+        miniCartContainer.classList.add('cart-open');
+      }
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!miniCart.contains(e.target) && !cartLinkToggle.contains(e.target)) {
+        miniCart.classList.remove('active');
+        cartLinkToggle.setAttribute('aria-expanded', 'false');
+        miniCartContainer.classList.remove('cart-open');
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && miniCart.classList.contains('active')) {
+        miniCart.classList.remove('active');
+        cartLinkToggle.setAttribute('aria-expanded', 'false');
+        miniCartContainer.classList.remove('cart-open');
+      }
+    });
+  }
+
+  // Listen for cart updates to update badge
+  window.addEventListener('cartUpdated', async () => {
+    const { getCart } = await import('../../scripts/cart-manager.js');
+    const cart = getCart();
+    const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+    if (cartBadge) {
+      if (totalItems > 0) {
+        cartBadge.textContent = totalItems > 99 ? '99+' : totalItems;
+        cartBadge.classList.add('has-items');
+      } else {
+        cartBadge.textContent = '';
+        cartBadge.classList.remove('has-items');
+      }
+    }
+  });
+
+  // Listen for open mini cart event (from add-to-cart buttons)
+  window.addEventListener('openMiniCart', () => {
+    const miniCart = miniCartContainer?.querySelector('.mini-cart');
+    if (miniCart && cartLinkToggle) {
+      miniCart.classList.add('active');
+      cartLinkToggle.setAttribute('aria-expanded', 'true');
+      miniCartContainer.classList.add('cart-open');
+    }
+  });
+
   // Initialize Commerce Dropins in custom BuildRight containers
   // This is the BuildRight pattern: Keep our design, use Dropin APIs
   // PERFORMANCE: Load asynchronously to avoid blocking header render
@@ -520,23 +590,40 @@ export default async function decorate(block) {
   
   const miniCartContainer = block.querySelector('#mini-cart-container');
   if (miniCartContainer) {
-    // Cart icon already visible in HTML, just add placeholder badge
-    // The mini-cart block will replace this when ready
-
-    // Create commerce-mini-cart block and insert into custom container (async)
+    // Load custom mini-cart block (full control over UI, uses Commerce cart API)
     (async () => {
       try {
-        console.log('[Header] Creating commerce-mini-cart block');
-        const miniCartBlock = document.createElement('div');
-        miniCartBlock.className = 'commerce-mini-cart';
-        miniCartBlock.dataset.blockName = 'commerce-mini-cart'; // Required for dropin inspector
-        miniCartBlock.dataset.headerContext = 'true'; // Signal this is in header
-        miniCartContainer.appendChild(miniCartBlock);
-        console.log('[Header] Decorating commerce-mini-cart block');
-        await decorateBlock(miniCartBlock, 'commerce-mini-cart');
-        console.log('[Header] commerce-mini-cart block decorated');
+        console.log('[Header] Loading custom mini-cart block');
+
+        // Load CSS first
+        const { loadBlockHTML, loadBlockCSS } = await import('../../scripts/utils.js');
+        loadBlockCSS('mini-cart');
+
+        // Add data-block-name to container for dropin inspector detection
+        // (must be on statically-positioned element, not the absolute-positioned .mini-cart)
+        miniCartContainer.dataset.blockName = 'mini-cart';
+        miniCartContainer.classList.add('block');
+
+        // Load and parse HTML
+        const miniCartHTML = await loadBlockHTML('mini-cart');
+        if (miniCartHTML) {
+          const miniCartFragment = parseHTMLFragment(miniCartHTML);
+          miniCartContainer.appendChild(miniCartFragment);
+          const miniCart = miniCartContainer.querySelector('.mini-cart');
+
+          // Decorate the mini-cart block
+          if (miniCart) {
+            const miniCartModule = await import('../../blocks/mini-cart/mini-cart.js');
+            const decorateMiniCart = miniCartModule.default;
+            await decorateMiniCart(miniCart);
+            console.log('[Header] Custom mini-cart block decorated');
+
+            // Setup cart toggle after mini-cart is loaded
+            setupCartToggle(miniCart);
+          }
+        }
       } catch (error) {
-        console.error('[Header] Failed to initialize commerce-mini-cart:', error);
+        console.error('[Header] Failed to initialize mini-cart:', error);
       }
     })();
   }
