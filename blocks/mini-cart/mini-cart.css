@@ -366,6 +366,33 @@
   margin-bottom: 0.25rem;
 }
 
+/* Loading state for items being removed */
+.mini-cart-item.is-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.mini-cart-item.is-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-brand-500);
+  border-radius: 50%;
+  animation: mini-cart-spinner 0.8s linear infinite;
+}
+
+@keyframes mini-cart-spinner {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 /* Mobile responsive */
 @media (max-width: 480px) {
   .mini-cart {

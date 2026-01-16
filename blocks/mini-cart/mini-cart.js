@@ -297,23 +297,40 @@ export default async function decorate(block) {
   block.addEventListener('click', async (e) => {
     const removeBtn = e.target.closest('.mini-cart-item-remove');
     const bundleEditLink = e.target.closest('.mini-cart-bundle-edit');
-    
+
     if (removeBtn) {
       // Prevent link navigation when clicking remove button
       e.preventDefault();
       e.stopPropagation();
-      
+
+      // Get parent item for loading state
+      const cartItem = removeBtn.closest('.mini-cart-item');
+
       // Check if it's a bundle or Commerce item
       const bundleId = removeBtn.getAttribute('data-bundle-id');
       const uid = removeBtn.getAttribute('data-uid');
 
-      if (bundleId) {
-        // Bundle removal - use legacy cart-manager
-        removeBundleItem(bundleId);
-      } else if (uid) {
-        // Commerce item removal - use Commerce cart initializer (by uid)
-        await removeCommerceItem(uid);
+      // Show loading state on the item
+      if (cartItem) {
+        cartItem.classList.add('is-loading');
       }
+
+      try {
+        if (bundleId) {
+          // Bundle removal - use legacy cart-manager
+          removeBundleItem(bundleId);
+        } else if (uid) {
+          // Commerce item removal - use Commerce cart initializer (by uid)
+          await removeCommerceItem(uid);
+        }
+      } catch (error) {
+        console.error('[MiniCart] Failed to remove item:', error);
+        // Remove loading state on error so user can retry
+        if (cartItem) {
+          cartItem.classList.remove('is-loading');
+        }
+      }
+      // Note: On success, cart/updated event triggers re-render which removes loading state
     } else if (bundleEditLink && !e.target.closest('.mini-cart-item-remove')) {
       // Handle bundle edit - navigate to BOM review
       e.preventDefault();
