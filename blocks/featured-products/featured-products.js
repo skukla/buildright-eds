@@ -188,12 +188,57 @@ export default async function decorate(block) {
         </svg>
         Add to Cart
       `;
-      addToCartBtn.addEventListener('click', (e) => {
+      addToCartBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        window.dispatchEvent(new CustomEvent('addToCart', {
-          detail: { sku: product.sku, quantity: 1, productName: product.name }
-        }));
+
+        const button = e.currentTarget;
+        const originalHTML = button.innerHTML;
+
+        // Icons matching product-list pattern
+        const spinnerHTML = '<span class="loading-spinner loading-spinner-xs"></span>';
+        const checkSVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        const errorSVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+
+        // Loading state
+        button.disabled = true;
+        button.classList.add('loading');
+        button.innerHTML = `${spinnerHTML} Adding...`;
+
+        try {
+          const { addProductToCart, showAddToCartNotification } = await import('../../scripts/commerce-helpers.js');
+
+          await addProductToCart(product, 1);
+
+          // Success state
+          button.classList.remove('loading');
+          button.classList.add('success');
+          button.innerHTML = `${checkSVG} Added!`;
+
+          // Show notification
+          showAddToCartNotification(product, 1);
+
+          // Reset after 1500ms
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('success');
+            button.disabled = false;
+          }, 1500);
+        } catch (error) {
+          console.error('[Featured Products] Add to cart failed:', error);
+
+          // Error state
+          button.classList.remove('loading');
+          button.classList.add('error');
+          button.innerHTML = `${errorSVG} Error`;
+
+          // Reset after 2000ms
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('error');
+            button.disabled = false;
+          }, 2000);
+        }
       });
       actions.appendChild(addToCartBtn);
       

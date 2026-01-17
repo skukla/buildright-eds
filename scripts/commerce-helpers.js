@@ -161,11 +161,8 @@ export function showAddToCartNotification(product, quantity = 1) {
   // Also try to import and use the cart-notification module
   import('./cart-notification.js')
     .then(module => {
-      if (module.showNotification) {
-        module.showNotification({
-          type: 'success',
-          message: `Added ${quantity}x ${product.name || product.sku} to cart`
-        });
+      if (module.showCartNotification) {
+        module.showCartNotification(product.name || product.sku, quantity);
       }
     })
     .catch(() => {

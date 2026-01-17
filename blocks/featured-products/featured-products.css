@@ -203,3 +203,13 @@
 .product-card-skeleton:nth-child(4) { animation-delay: 150ms; }
 .product-card-skeleton:nth-child(5) { animation-delay: 200ms; }
 
+/* Add to Cart button states - matches product-list behavior */
+.btn-product-card.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.btn-product-card:disabled {
+  pointer-events: none;
+}
+
