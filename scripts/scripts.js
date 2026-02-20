@@ -542,6 +542,14 @@ function loadDelayed() {
   // Load delayed features after 3 seconds
   window.setTimeout(async () => {
     // Load analytics, tracking, etc.
+
+    // Demo Inspector (optional — loads only when submodule is present)
+    try {
+      const { initInspector } = await import('./demo-inspector-init.js');
+      await initInspector();
+    } catch {
+      // Inspector not available — skip silently
+    }
   }, 3000);
 }
 
