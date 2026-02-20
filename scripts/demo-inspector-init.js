@@ -35,7 +35,8 @@ function tagBlockSources() {
 
 /**
  * Loads the universal inspector and applies Level 1 source tagging.
- * Fails silently if the inspector submodule is not installed.
+ * The inspector is bundled as a regular file at demo-inspector/dist/demo-inspector.js.
+ * Fails silently if the inspector is not installed.
  */
 export async function initInspector() {
   try {
