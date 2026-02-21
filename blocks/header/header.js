@@ -987,6 +987,7 @@ export default async function decorate(block) {
       console.warn('[Header] Main nav not found');
       return;
     }
+    mainNav.setAttribute('data-inspector-source', 'commerce');
 
     // Always show nav bar (keep blue bar visible)
     const navBar = block.querySelector('.header-nav-bar');
