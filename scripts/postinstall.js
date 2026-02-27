@@ -96,5 +96,30 @@ function postinstall() {
   console.log('');
 }
 
+/**
+ * Copy Demo Inspector SDK source files for browser import
+ */
+function copySDK() {
+  const sdkSrc = path.join(__dirname, '..', 'node_modules', '@demo-inspector', 'sdk', 'src');
+  const sdkDest = path.join(__dirname, 'demo-inspector-sdk');
+
+  if (!fs.existsSync(sdkSrc)) {
+    console.log('  ⚠️  @demo-inspector/sdk not installed — skipping');
+    return;
+  }
+
+  fs.mkdirSync(sdkDest, { recursive: true });
+
+  for (const file of ['index.js', 'mesh.js', 'eds.js', 'tracking.js']) {
+    const src = path.join(sdkSrc, file);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, path.join(sdkDest, file));
+    }
+  }
+
+  console.log('  ✅ Demo Inspector SDK copied to scripts/demo-inspector-sdk/');
+}
+
 // Run
 postinstall();
+copySDK();

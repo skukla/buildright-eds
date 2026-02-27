@@ -1,12 +1,15 @@
 /**
  * Demo Inspector Initialization
  *
- * Loads the universal demo-inspector custom element and applies
- * Level 1 block-to-source tagging for API Mesh mode.
+ * Tags EDS blocks with their primary API Mesh data source for the
+ * Demo Inspector Chrome extension. The extension handles all UI —
+ * this script only sets data attributes.
  *
  * Level 1: Maps EDS block names to their primary API Mesh data source.
  * Level 2: Per-block sub-container tagging is done in individual block decorators.
  */
+
+import { tagMeshSource } from '/scripts/demo-inspector-sdk/mesh.js';
 
 // Block name → primary API Mesh data source
 const SOURCE_MAP = {
@@ -30,25 +33,15 @@ function tagBlockSources() {
     const name = block.getAttribute('data-block-name');
     const source = SOURCE_MAP[name] || (name.startsWith('commerce-') ? 'commerce' : null);
     if (source) {
-      block.setAttribute('data-inspector-source', source);
+      tagMeshSource(block, source);
     }
   });
 }
 
 /**
- * Loads the universal inspector and applies Level 1 source tagging.
- * The inspector is bundled as a regular file at demo-inspector/dist/demo-inspector.js.
- * Fails silently if the inspector is not installed.
+ * Applies Level 1 source tagging for the Chrome extension.
+ * Fails silently if the SDK is not installed.
  */
-export async function initInspector() {
-  try {
-    // eslint-disable-next-line import/no-unresolved, import/no-absolute-path -- AEM runtime path
-    await import('/demo-inspector/dist/demo-inspector.js');
-    tagBlockSources();
-    const el = document.createElement('demo-inspector');
-    el.setAttribute('modes', 'mesh,eds');
-    document.body.appendChild(el);
-  } catch {
-    // Inspector not installed — skip silently
-  }
+export function initInspector() {
+  tagBlockSources();
 }

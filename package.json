@@ -32,6 +32,7 @@
     "glob": "^10.4.5"
   },
   "devDependencies": {
+    "@demo-inspector/sdk": "github:skukla/demo-inspector-sdk",
     "@dropins/storefront-auth": "^2.1.5",
     "@dropins/storefront-cart": "^1.5.1",
     "@dropins/storefront-checkout": "^2.1.0",
